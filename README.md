@@ -1,6 +1,6 @@
-# ToolTopia
+# SnapTools
 
-ToolTopia is an all-in-one web application that provides a comprehensive suite of tools for creators, developers, students, and productivity enthusiasts. Built with modern web technologies, it offers a seamless and efficient user experience with no ads, no tracking, and blazing-fast performance.
+SnapTools is an all-in-one web application that provides a comprehensive suite of tools for creators, developers, students, and productivity enthusiasts. Built with modern web technologies, it offers a seamless and efficient user experience with no ads, no tracking, and blazing-fast performance.
 
 ## Features
 
