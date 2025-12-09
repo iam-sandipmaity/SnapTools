@@ -63,8 +63,19 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="mt-16 pt-8 border-t text-center text-muted-foreground">
-          <p className="text-base">© {new Date().getFullYear()} SanpTools. All rights reserved.</p>
+        <div className="mt-16 pt-8 border-t text-center text-muted-foreground space-y-2">
+          <p className="text-base">© 2025 - {new Date().getFullYear()} SnapTools. All rights reserved.</p>
+          <p className="text-sm">
+            Created by{" "}
+            <a 
+              href="https://sandipmaity.me" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary hover:underline font-medium"
+            >
+              Sandip Maity
+            </a>
+          </p>
         </div>
       </div>
     </footer>

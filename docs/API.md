@@ -1,5 +1,16 @@
 # SnapTools API Documentation
 
+> Comprehensive guide to integrating and working with SnapTools components and APIs.
+
+## 📑 Table of Contents
+
+- [Tool Integration](#tool-integration)
+- [Component Integration](#component-integration)
+- [URL Patterns](#url-patterns)
+- [Search Implementation](#search-implementation)
+- [Component Hierarchy](#component-hierarchy)
+- [State Management](#state-management)
+
 ## Tool Integration
 
 ### Tool Category Structure
@@ -98,6 +109,12 @@ App
 
 The application uses React's built-in state management:
 - Local component state for UI interactions
+
+## Resources
+
+- **Live Application**: [https://snaptools.sandipmaity.me](https://snaptools.sandipmaity.me)
+- **GitHub Repository**: [https://github.com/iam-sandipmaity/SnapTools](https://github.com/iam-sandipmaity/SnapTools)
+- **Documentation**: [https://snaptools.sandipmaity.me/documentation](https://snaptools.sandipmaity.me/documentation)
 - URL parameters for navigation state
 - Shared tool data via imports
 

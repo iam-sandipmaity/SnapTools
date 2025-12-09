@@ -1,8 +1,20 @@
 # SnapTools Documentation
 
+> Complete guide to using all tools available on SnapTools platform.
+
+🔗 **Visit**: [https://snaptools.sandipmaity.me](https://snaptools.sandipmaity.me)
+
+## 📑 Table of Contents
+
+- [Tool Categories](#tool-categories)
+- [Navigation](#navigation)
+- [Search Features](#search-features)
+- [User Interface](#user-interface)
+- [Best Practices](#best-practices)
+
 ## Tool Categories
 
-SnapTools organizes its utilities into distinct categories for easy access and navigation:
+SnapTools organizes its 100+ utilities into distinct categories for easy access and navigation:
 
 ### Image Tools
 - Image compression and optimization

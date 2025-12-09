@@ -33,12 +33,37 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => ({
   build: {
     target: 'esnext',
     sourcemap: true,
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       external: ['@vercel/analytics'],
       output: {
         format: 'es',
         inlineDynamicImports: false,
-        assetFileNames: 'assets/[name][extname]'
+        assetFileNames: 'assets/[name][extname]',
+        manualChunks: {
+          // React core
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          
+          // UI libraries
+          'ui-vendor': [
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-select',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-accordion',
+            '@radix-ui/react-tooltip',
+            'framer-motion',
+          ],
+          
+          // Large utilities
+          'pdf-vendor': ['pdf-lib'],
+          'chart-vendor': ['recharts'],
+          'crypto-vendor': ['crypto-js', 'crypto-browserify', 'bcryptjs', 'node-forge'],
+          'code-vendor': ['react-syntax-highlighter'],
+          
+          // Other heavy dependencies
+          'utility-vendor': ['html2canvas', 'qrcode', 'jsbarcode', 'axios'],
+        }
       },
       plugins: [
         NodeGlobalsPolyfillPlugin({

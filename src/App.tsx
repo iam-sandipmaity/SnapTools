@@ -8,22 +8,33 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { MotionConfig } from "framer-motion";
 import { Analytics } from "@vercel/analytics/react"
 import { HelmetProvider } from 'react-helmet-async';
+import { lazy, Suspense } from "react";
+
+// Critical pages loaded immediately
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import ToolPage from "./pages/ToolPage";
-import Contact from "./pages/Contact";
-import Privacy from "./pages/Privacy";
-import Terms from "./pages/Terms";
-import ToolList from "./pages/ToolList";
-import ToolCategoryPage from "./pages/ToolCategoryPage";
 
-import About from "./pages/AboutPage";
-import Documentation from "./pages/DocumentationPage";
-import Pricing from "./pages/pricing";
-import Features from "./pages/features";
-import Donate from "./pages/Donate"
-import PaymentSuccess from "./pages/PaymentSuccess"
-import BlogRouter from "./blog/router"
+// Lazy load non-critical pages
+const ToolPage = lazy(() => import("./pages/ToolPage"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
+const ToolList = lazy(() => import("./pages/ToolList"));
+const ToolCategoryPage = lazy(() => import("./pages/ToolCategoryPage"));
+const About = lazy(() => import("./pages/AboutPage"));
+const Documentation = lazy(() => import("./pages/DocumentationPage"));
+const Pricing = lazy(() => import("./pages/pricing"));
+const Features = lazy(() => import("./pages/features"));
+const Donate = lazy(() => import("./pages/Donate"));
+const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
+const BlogRouter = lazy(() => import("./blog/router"));
+
+// Loading component
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+  </div>
+);
 
 // Create the query client
 const queryClient = new QueryClient();
@@ -39,24 +50,26 @@ const App = () => (
               <Sonner />
               <BrowserRouter>
                 <ScrollToTop />
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/tools" element={<ToolList />} />
-                  <Route path="/tools/:categoryId" element={<ToolCategoryPage />} />
-                  <Route path="/tools/:categoryId/:toolId" element={<ToolPage />} />
-                  <Route path="/tools/:toolId" element={<ToolPage />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/Privacy" element={<Privacy />} />
-                  <Route path="/Terms" element={<Terms />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/documentation" element={<Documentation />} />
-                  <Route path="/pricing" element={<Pricing />} />
-                  <Route path="/features" element={<Features />} />
-                  <Route path="/donate" element={<Donate />} />
-                  <Route path="/payment-success" element={<PaymentSuccess />} />
-                  <Route path="/blog/*" element={<BlogRouter />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
+                <Suspense fallback={<PageLoader />}>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/tools" element={<ToolList />} />
+                    <Route path="/tools/:categoryId" element={<ToolCategoryPage />} />
+                    <Route path="/tools/:categoryId/:toolId" element={<ToolPage />} />
+                    <Route path="/tools/:toolId" element={<ToolPage />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/Privacy" element={<Privacy />} />
+                    <Route path="/Terms" element={<Terms />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/documentation" element={<Documentation />} />
+                    <Route path="/pricing" element={<Pricing />} />
+                    <Route path="/features" element={<Features />} />
+                    <Route path="/donate" element={<Donate />} />
+                    <Route path="/payment-success" element={<PaymentSuccess />} />
+                    <Route path="/blog/*" element={<BlogRouter />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </Suspense>
               </BrowserRouter>
             </TooltipProvider>
           </MotionConfig>

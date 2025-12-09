@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet";
 import { toolCategories } from "@/data/tools";
 
-const BASE_URL = "https://snaptools.app"; // Replace with your actual domain
+const BASE_URL = "https://snaptools.sandipmaity.me";
 
 interface SEOProps {
   title?: string;
@@ -105,7 +105,10 @@ const SEO = ({ title, description, categoryId, toolId, type, imageUrl, canonical
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={pageTitle} />
       <meta name="twitter:description" content={pageDescription} />
+      <meta name="twitter:site" content="@snaptools" />
+      <meta name="twitter:creator" content="@snaptools" />
       {imageUrl && <meta name="twitter:image" content={imageUrl} />}
+      {imageUrl && <meta name="twitter:image:alt" content={pageTitle} />}
 
       {/* Additional Meta Tags */}
       <meta name="author" content="SnapTools" />
@@ -114,6 +117,12 @@ const SEO = ({ title, description, categoryId, toolId, type, imageUrl, canonical
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="application-name" content="SnapTools" />
       <meta name="apple-mobile-web-app-title" content="SnapTools" />
+      <meta name="format-detection" content="telephone=no" />
+      <meta name="language" content="English" />
+      
+      {/* Additional SEO Meta Tags */}
+      {category && <meta name="category" content={category.title} />}
+      {tool && <meta name="keywords" content={`${tool.title}, free online tool, ${category?.title}, web tools, developer tools, productivity tools`} />}
 
       {/* Structured Data */}
       <script type="application/ld+json">

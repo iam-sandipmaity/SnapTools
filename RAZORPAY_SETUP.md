@@ -1,5 +1,9 @@
 # Razorpay Integration Setup
 
+> Configuration guide for enabling payment functionality in the SnapTools donation system.
+
+## 🚀 Setup Instructions
+
 To enable payments in the donation system, you'll need to set up Razorpay integration:
 
 1. Sign up for a Razorpay account at https://razorpay.com

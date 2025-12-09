@@ -1,26 +1,55 @@
+# robots.txt for SnapTools
+# https://snaptools.sandipmaity.me
+
+# Allow all bots to access all content
 User-agent: *
 Allow: /
+
+# Disallow sensitive areas
 Disallow: /api/
 Disallow: /admin/
+Disallow: /_next/
+Disallow: /private/
 
-# Allow specific bots
+# Allow specific search engine bots
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 0.5
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 0.5
 
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+# Social Media Bots
 User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
 Allow: /
 
-# Sitemap
-Sitemap: https://snap-tools.vercel.app/sitemap.xml
+User-agent: LinkedInBot
+Allow: /
 
-# Optimize crawl rate
+User-agent: Pinterestbot
+Allow: /
+
+# Sitemap
+Sitemap: https://snaptools.sandipmaity.me/sitemap.xml
+
+# Optimize crawl rate for common bots
 Crawl-delay: 1
+
+# Additional crawl optimization
+Request-rate: 1/1
 
 # Global allow
 User-agent: *
