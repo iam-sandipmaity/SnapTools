@@ -28,6 +28,7 @@ const Features = lazy(() => import("./pages/features"));
 const Donate = lazy(() => import("./pages/Donate"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const BlogRouter = lazy(() => import("./blog/router"));
+const ShareFileView = lazy(() => import("./components/tools/file-sharing/ShareFileView"));
 
 // Loading component
 const PageLoader = () => (
@@ -66,6 +67,7 @@ const App = () => (
                     <Route path="/features" element={<Features />} />
                     <Route path="/donate" element={<Donate />} />
                     <Route path="/payment-success" element={<PaymentSuccess />} />
+                    <Route path="/share/:peerId" element={<ShareFileView />} />
                     <Route path="/blog/*" element={<BlogRouter />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
