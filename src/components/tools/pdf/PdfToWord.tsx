@@ -7,6 +7,10 @@ import { Upload, FileText, FileType2, ArrowRight, Download } from "lucide-react"
 import { toast } from "sonner";
 import AnimatedElement from "@/components/animated-element";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import mammoth from "mammoth";
+// @ts-ignore - html2pdf.js doesn't have proper TypeScript definitions
+import html2pdf from "html2pdf.js";
+import { loadPdfDocument, downloadBlob } from "@/lib/pdf-utils";
 
 const PdfToWord = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,98 +19,243 @@ const PdfToWord = () => {
 
   const handlePdfFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    
+
     if (!file) return;
-    
+
     if (file.type !== "application/pdf") {
       toast.error("Please upload a PDF file");
       return;
     }
-    
+
     setPdfFile(file);
   };
 
   const handleWordFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    
+
     if (!file) return;
-    
+
     // Check if the file is a Word document
-    if (!file.type.includes("word") && 
-        !file.name.endsWith(".doc") && 
-        !file.name.endsWith(".docx")) {
+    if (!file.type.includes("word") &&
+      !file.name.endsWith(".doc") &&
+      !file.name.endsWith(".docx")) {
       toast.error("Please upload a Word document (.doc or .docx)");
       return;
     }
-    
+
     setWordFile(file);
   };
 
-  const convertPdfToWord = () => {
+  const convertPdfToWord = async () => {
     if (!pdfFile) {
       toast.error("Please upload a PDF file first");
       return;
     }
 
     setIsLoading(true);
-    
-    // In a real implementation, this would connect to a conversion API
-    // For now we'll simulate the conversion
-    setTimeout(() => {
-      toast.success("Your PDF has been converted to Word", {
-        description: "This is a simulated conversion. In a real app, this would use a document conversion API."
+
+    try {
+      // Load PDF and extract text
+      const pdf = await loadPdfDocument(pdfFile);
+      let htmlContent = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 12pt;
+      line-height: 1.5;
+      margin: 1in;
+    }
+    p {
+      margin: 0 0 12pt 0;
+    }
+    .page-break {
+      page-break-after: always;
+    }
+  </style>
+</head>
+<body>
+`;
+
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const textContent = await page.getTextContent();
+
+        // Group text items into lines based on Y position
+        const lines: { [key: number]: string[] } = {};
+        textContent.items.forEach((item: any) => {
+          const y = Math.round(item.transform[5]);
+          if (!lines[y]) {
+            lines[y] = [];
+          }
+          lines[y].push(item.str);
+        });
+
+        // Sort lines by Y position (top to bottom)
+        const sortedYPositions = Object.keys(lines).map(Number).sort((a, b) => b - a);
+
+        sortedYPositions.forEach(y => {
+          const lineText = lines[y].join(' ').trim();
+          if (lineText) {
+            // Escape HTML special characters
+            const escapedText = lineText
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;');
+            htmlContent += `<p>${escapedText}</p>\n`;
+          }
+        });
+
+        // Add page break after each page except the last
+        if (i < pdf.numPages) {
+          htmlContent += '<div class="page-break"></div>\n';
+        }
+      }
+
+      htmlContent += `</body>
+</html>`;
+
+      // Create HTML blob that Word can open
+      const blob = new Blob([htmlContent], {
+        type: 'application/msword'
       });
-      
-      // Create a mock download
-      const blob = new Blob(["This is a mock Word document"], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = pdfFile.name.replace(".pdf", ".docx");
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      
+
+      const fileName = pdfFile.name.replace('.pdf', '.doc');
+      downloadBlob(blob, fileName);
+
+      toast.success("PDF converted to Word successfully!", {
+        description: "Text has been extracted. Open the .doc file in Word to edit and save as .docx."
+      });
+
+    } catch (error) {
+      console.error('PDF to Word conversion error:', error);
+      toast.error("Failed to convert PDF to Word", {
+        description: error instanceof Error ? error.message : "An unknown error occurred"
+      });
+    } finally {
       setIsLoading(false);
-    }, 2000);
+    }
   };
 
-  const convertWordToPdf = () => {
+  const convertWordToPdf = async () => {
     if (!wordFile) {
       toast.error("Please upload a Word document first");
       return;
     }
 
     setIsLoading(true);
-    
-    // In a real implementation, this would connect to a conversion API
-    // For now we'll simulate the conversion
-    setTimeout(() => {
-      toast.success("Your Word document has been converted to PDF", {
-        description: "This is a simulated conversion. In a real app, this would use a document conversion API."
-      });
-      
-      // Create a mock download
-      const blob = new Blob(["This is a mock PDF"], { type: "application/pdf" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = wordFile.name.replace(/\.docx?$/, ".pdf");
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      
-      setIsLoading(false);
-    }, 2000);
-  };
 
-  const resetForm = (type: "pdf" | "word") => {
-    if (type === "pdf") {
-      setPdfFile(null);
-    } else {
-      setWordFile(null);
+    try {
+      // Read the Word file
+      const arrayBuffer = await wordFile.arrayBuffer();
+
+      // Convert Word to HTML using mammoth
+      const result = await mammoth.convertToHtml({ arrayBuffer });
+      let htmlContent = result.value;
+
+      // Pre-process: Detect likely tabbed patterns (names/IDs, TOC)
+      htmlContent = htmlContent.replace(
+        /([A-Z\s]+)\s{3,}([0-9]+)/g,
+        '<div style="display: flex; justify-content: space-between;"><span>$1</span><span>$2</span></div>'
+      );
+
+      // Create a styled wrapper for Word-like appearance
+      const styledHtml = `
+        <div style="
+          background-color: white;
+          padding: 25.4mm;
+          width: 210mm;
+          min-height: 297mm;
+          box-sizing: border-box;
+          font-family: 'Times New Roman', Times, serif;
+          font-size: 12pt;
+          line-height: 1.5;
+          color: #000;
+        ">
+          ${htmlContent}
+        </div>
+      `;
+
+      // Create a temporary container
+      const tempContainer = document.createElement('div');
+      tempContainer.style.position = 'absolute';
+      tempContainer.style.left = '-9999px';
+      tempContainer.innerHTML = styledHtml;
+      document.body.appendChild(tempContainer);
+
+      // Apply additional styling to elements
+      const wrapper = tempContainer.firstElementChild as HTMLElement;
+      if (wrapper) {
+        // Style paragraphs
+        const paragraphs = wrapper.querySelectorAll('p');
+        paragraphs.forEach(p => {
+          (p as HTMLElement).style.marginBottom = '12pt';
+          (p as HTMLElement).style.textAlign = 'justify';
+        });
+
+        // Style headings
+        const headings = wrapper.querySelectorAll('h1, h2, h3');
+        headings.forEach(h => {
+          (h as HTMLElement).style.fontFamily = 'Arial, Helvetica, sans-serif';
+          (h as HTMLElement).style.fontWeight = 'bold';
+          (h as HTMLElement).style.lineHeight = '1.2';
+          (h as HTMLElement).style.marginTop = '18pt';
+          (h as HTMLElement).style.marginBottom = '6pt';
+        });
+
+        // Style tables
+        const tables = wrapper.querySelectorAll('table');
+        tables.forEach(table => {
+          (table as HTMLElement).style.borderCollapse = 'collapse';
+          (table as HTMLElement).style.width = '100%';
+          (table as HTMLElement).style.margin = '15pt 0';
+        });
+
+        const cells = wrapper.querySelectorAll('td, th');
+        cells.forEach(cell => {
+          (cell as HTMLElement).style.border = '1px solid #000';
+          (cell as HTMLElement).style.padding = '8pt';
+          (cell as HTMLElement).style.verticalAlign = 'top';
+        });
+      }
+
+      // Convert to PDF using html2pdf
+      const options = {
+        margin: 0,
+        filename: wordFile.name.replace(/\.(docx?|DOCX?)$/, '.pdf'),
+        image: { type: 'jpeg' as const, quality: 1.0 },
+        html2canvas: {
+          scale: 3,
+          useCORS: true,
+          letterRendering: true,
+        },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      };
+
+      const pdfBlob = await html2pdf().from(wrapper).set(options).output('blob');
+
+      // Clean up
+      document.body.removeChild(tempContainer);
+
+      // Download the PDF
+      const fileName = wordFile.name.replace(/\.(docx?|DOCX?)$/, '.pdf');
+      downloadBlob(pdfBlob, fileName);
+
+      toast.success("Word document converted to PDF successfully!", {
+        description: "Your document has been converted with formatting preserved."
+      });
+
+    } catch (error) {
+      console.error('Word to PDF conversion error:', error);
+      toast.error("Failed to convert Word to PDF", {
+        description: error instanceof Error ? error.message : "An unknown error occurred"
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -123,7 +272,7 @@ const PdfToWord = () => {
             <span>Word to PDF</span>
           </TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="pdf-to-word" className="mt-6">
           <div className="bg-muted/40 rounded-lg border p-6">
             <div className="flex flex-col gap-4">
@@ -134,7 +283,7 @@ const PdfToWord = () => {
                 <p className="text-muted-foreground text-sm">
                   Upload the PDF file you want to convert to a Word document.
                 </p>
-                
+
                 <div className="flex gap-4 items-center mt-2">
                   <div className="relative">
                     <Input
@@ -149,15 +298,15 @@ const PdfToWord = () => {
                       Select PDF File
                     </Button>
                   </div>
-                  
-                  <Button 
-                    variant="default" 
-                    onClick={convertPdfToWord} 
+
+                  <Button
+                    variant="default"
+                    onClick={convertPdfToWord}
                     disabled={!pdfFile || isLoading}
                     className="gap-2"
                   >
                     <Download size={18} />
-                    Convert to Word
+                    {isLoading ? "Converting..." : "Convert to Word"}
                   </Button>
                 </div>
               </div>
@@ -178,7 +327,7 @@ const PdfToWord = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center">
                       <ArrowRight className="mx-4 text-muted-foreground" />
                       <div className="w-10 h-10 flex items-center justify-center bg-muted rounded">
@@ -188,14 +337,14 @@ const PdfToWord = () => {
                   </div>
                 </AnimatedElement>
               )}
-              
+
               <div className="mt-4 text-center text-sm text-muted-foreground">
-                <p>The conversion is processed securely. Maximum file size: 10MB.</p>
+                <p>Text will be extracted as HTML. Open in Word to edit and save as .docx.</p>
               </div>
             </div>
           </div>
         </TabsContent>
-        
+
         <TabsContent value="word-to-pdf" className="mt-6">
           <div className="bg-muted/40 rounded-lg border p-6">
             <div className="flex flex-col gap-4">
@@ -206,7 +355,7 @@ const PdfToWord = () => {
                 <p className="text-muted-foreground text-sm">
                   Upload the Word document you want to convert to a PDF file.
                 </p>
-                
+
                 <div className="flex gap-4 items-center mt-2">
                   <div className="relative">
                     <Input
@@ -221,15 +370,15 @@ const PdfToWord = () => {
                       Select Word File
                     </Button>
                   </div>
-                  
-                  <Button 
-                    variant="default" 
-                    onClick={convertWordToPdf} 
+
+                  <Button
+                    variant="default"
+                    onClick={convertWordToPdf}
                     disabled={!wordFile || isLoading}
                     className="gap-2"
                   >
                     <Download size={18} />
-                    Convert to PDF
+                    {isLoading ? "Converting..." : "Convert to PDF"}
                   </Button>
                 </div>
               </div>
@@ -250,7 +399,7 @@ const PdfToWord = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center">
                       <ArrowRight className="mx-4 text-muted-foreground" />
                       <div className="w-10 h-10 flex items-center justify-center bg-muted rounded">
@@ -260,9 +409,9 @@ const PdfToWord = () => {
                   </div>
                 </AnimatedElement>
               )}
-              
+
               <div className="mt-4 text-center text-sm text-muted-foreground">
-                <p>The conversion is processed securely. Maximum file size: 10MB.</p>
+                <p>Your document will be converted with formatting preserved as closely as possible.</p>
               </div>
             </div>
           </div>
