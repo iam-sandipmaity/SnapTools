@@ -8,6 +8,8 @@ import { toast } from "sonner";
 import AnimatedElement from "@/components/animated-element";
 import { Slider } from "@/components/ui/slider";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { PDFDocument } from "pdf-lib";
+import { loadPdfDocument, renderPageToCanvas, canvasToBlob, downloadBlob } from "@/lib/pdf-utils";
 
 const compressionLevels = [
   { value: "low", label: "Low Compression", description: "Better quality, larger file size" },
@@ -20,64 +22,118 @@ const PdfCompress = () => {
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [compressionLevel, setCompressionLevel] = useState("medium");
-  const [customCompression, setCustomCompression] = useState([75]);
-  
+  const [customCompression, setCustomCompression] = useState([50]);
+
   // Calculate estimated compressed size
-  const estimatedSize = pdfFile ? 
-    (pdfFile.size / 1024 / 1024) * 
-    (compressionLevel === "low" ? 0.8 : 
-     compressionLevel === "medium" ? 0.5 : 
-     compressionLevel === "high" ? 0.3 : 
-     (100 - customCompression[0]) / 100) : 0;
+  const estimatedSize = pdfFile ?
+    (pdfFile.size / 1024 / 1024) *
+    (compressionLevel === "low" ? 0.8 :
+      compressionLevel === "medium" ? 0.5 :
+        compressionLevel === "high" ? 0.3 :
+          (100 - customCompression[0]) / 100) : 0;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    
+
     if (!file) return;
-    
+
     if (file.type !== "application/pdf") {
       toast.error("Please upload a PDF file");
       return;
     }
-    
+
     setPdfFile(file);
   };
 
-  const compressPdf = () => {
+  const compressPdf = async () => {
     if (!pdfFile) {
       toast.error("Please upload a PDF file first");
       return;
     }
 
     setIsLoading(true);
-    
-    // Get the compression percentage based on level
-    const compressionPercentage = 
-      compressionLevel === "low" ? 20 :
-      compressionLevel === "medium" ? 50 :
-      compressionLevel === "high" ? 70 :
-      customCompression[0];
-    
-    // In a real implementation, this would connect to a compression API
-    // For now we'll simulate the compression
-    setTimeout(() => {
-      toast.success(`PDF compressed by approximately ${compressionPercentage}%`, {
-        description: "This is a simulated compression. In a real app, this would use a PDF compression API."
+
+    try {
+      // Get the compression percentage based on level
+      const compressionPercentage =
+        compressionLevel === "low" ? 20 :
+          compressionLevel === "medium" ? 50 :
+            compressionLevel === "high" ? 70 :
+              customCompression[0];
+
+      const arrayBuffer = await pdfFile.arrayBuffer();
+
+      // For low compression, use pdf-lib optimization only
+      if (compressionPercentage < 25) {
+        const pdfDoc = await PDFDocument.load(arrayBuffer);
+        const pdfBytes = await pdfDoc.save({
+          useObjectStreams: true,
+          addDefaultPage: false,
+        });
+
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const fileName = pdfFile.name.replace('.pdf', '_compressed.pdf');
+        downloadBlob(blob, fileName);
+
+        const originalSize = (pdfFile.size / 1024 / 1024).toFixed(2);
+        const compressedSize = (blob.size / 1024 / 1024).toFixed(2);
+        const reduction = (((pdfFile.size - blob.size) / pdfFile.size) * 100).toFixed(1);
+
+        toast.success(`PDF compressed successfully!`, {
+          description: `Reduced from ${originalSize}MB to ${compressedSize}MB (${reduction}% reduction)`
+        });
+      } else {
+        // For medium/high compression, re-render pages as compressed images
+        const pdf = await loadPdfDocument(pdfFile);
+        const newPdfDoc = await PDFDocument.create();
+
+        // Calculate scale and quality based on compression level
+        const scaleFactor = 1.5 - ((compressionPercentage - 25) / 70) * 0.5;
+        const quality = 0.8 - ((compressionPercentage - 25) / 70) * 0.6;
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const canvas = await renderPageToCanvas(page, scaleFactor);
+
+          // Convert canvas to JPEG blob
+          const imgBlob = await canvasToBlob(canvas, 'image/jpeg', quality);
+          const imgArrayBuffer = await imgBlob.arrayBuffer();
+
+          // Embed image in new PDF
+          const jpgImage = await newPdfDoc.embedJpg(imgArrayBuffer);
+          const viewport = page.getViewport({ scale: scaleFactor });
+
+          const newPage = newPdfDoc.addPage([viewport.width, viewport.height]);
+          newPage.drawImage(jpgImage, {
+            x: 0,
+            y: 0,
+            width: viewport.width,
+            height: viewport.height,
+          });
+        }
+
+        const pdfBytes = await newPdfDoc.save({ useObjectStreams: true });
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const fileName = pdfFile.name.replace('.pdf', '_compressed.pdf');
+        downloadBlob(blob, fileName);
+
+        const originalSize = (pdfFile.size / 1024 / 1024).toFixed(2);
+        const compressedSize = (blob.size / 1024 / 1024).toFixed(2);
+        const reduction = (((pdfFile.size - blob.size) / pdfFile.size) * 100).toFixed(1);
+
+        toast.success(`PDF compressed successfully!`, {
+          description: `Reduced from ${originalSize}MB to ${compressedSize}MB (${reduction}% reduction)`
+        });
+      }
+
+    } catch (error) {
+      console.error('PDF compression error:', error);
+      toast.error("Failed to compress PDF", {
+        description: error instanceof Error ? error.message : "An unknown error occurred"
       });
-      
-      // Create a mock download
-      const blob = new Blob(["Simulated compressed PDF data"], { type: "application/pdf" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = pdfFile.name.replace(".pdf", "_compressed.pdf");
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      
+    } finally {
       setIsLoading(false);
-    }, 2000);
+    }
   };
 
   return (
@@ -89,9 +145,9 @@ const PdfCompress = () => {
               Upload PDF File
             </Label>
             <p className="text-muted-foreground text-sm">
-              Upload the PDF file you want to compress. Maximum file size: 10MB.
+              Upload the PDF file you want to compress. Reduce file size while maintaining quality.
             </p>
-            
+
             <div className="flex gap-4 items-center mt-2">
               <div className="relative">
                 <Input
@@ -106,15 +162,15 @@ const PdfCompress = () => {
                   Select PDF File
                 </Button>
               </div>
-              
-              <Button 
-                variant="default" 
-                onClick={compressPdf} 
+
+              <Button
+                variant="default"
+                onClick={compressPdf}
                 disabled={!pdfFile || isLoading}
                 className="gap-2"
               >
                 <Minimize2 size={18} />
-                Compress PDF
+                {isLoading ? "Compressing..." : "Compress PDF"}
               </Button>
             </div>
           </div>
@@ -135,17 +191,17 @@ const PdfCompress = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="flex flex-col items-center gap-1">
                   <div className="text-sm">Estimated size after compression:</div>
                   <div className="font-medium">{estimatedSize.toFixed(2)} MB</div>
                 </div>
               </div>
-              
+
               <div>
                 <Label className="mb-3 block">Compression Level</Label>
-                <RadioGroup 
-                  value={compressionLevel} 
+                <RadioGroup
+                  value={compressionLevel}
                   onValueChange={setCompressionLevel}
                   className="space-y-3"
                 >
@@ -160,15 +216,15 @@ const PdfCompress = () => {
                   ))}
                 </RadioGroup>
               </div>
-              
+
               {compressionLevel === "custom" && (
                 <div className="mt-4">
                   <Label className="mb-2 block">Custom Compression Strength: {customCompression}%</Label>
                   <div className="flex items-center gap-4">
-                    <Slider 
-                      id="quality" 
-                      min={10} 
-                      max={90} 
+                    <Slider
+                      id="quality"
+                      min={10}
+                      max={90}
                       step={5}
                       value={customCompression}
                       onValueChange={setCustomCompression}
