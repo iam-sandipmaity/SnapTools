@@ -1,20 +1,18 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from "@/components/scroll-to-top";
-import { ThemeProvider } from "@/components/theme-provider";
-import { MotionConfig } from "framer-motion";
-import { Analytics } from "@vercel/analytics/react"
-import { HelmetProvider } from 'react-helmet-async';
 import { lazy, Suspense } from "react";
 import PageLoader from "@/components/PageLoader";
 import RouteChangeLoader from "@/components/RouteChangeLoader";
 
-// Critical pages loaded immediately
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+// Lazy-load providers for better code splitting
+const Providers = lazy(() => import("@/components/Providers"));
+
+// Lazy-load Analytics (non-critical)
+const Analytics = lazy(() => import("@vercel/analytics/react").then(m => ({ default: m.Analytics })));
+
+// Lazy-load all pages including Index
+const Index = lazy(() => import("./pages/Index"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Lazy load non-critical pages
 const ToolPage = lazy(() => import("./pages/ToolPage"));
@@ -32,50 +30,40 @@ const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const BlogRouter = lazy(() => import("./blog/router"));
 const ShareFileView = lazy(() => import("./components/tools/file-sharing/ShareFileView"));
 
-// Create the query client
-const queryClient = new QueryClient();
-
 const App = () => (
-  <>
-    <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <MotionConfig reducedMotion="user">
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                <RouteChangeLoader />
-                <ScrollToTop />
-                <Suspense fallback={<PageLoader />}>
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/tools" element={<ToolList />} />
-                    <Route path="/tools/:categoryId" element={<ToolCategoryPage />} />
-                    <Route path="/tools/:categoryId/:toolId" element={<ToolPage />} />
-                    <Route path="/tools/:toolId" element={<ToolPage />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/Privacy" element={<Privacy />} />
-                    <Route path="/Terms" element={<Terms />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/documentation" element={<Documentation />} />
-                    <Route path="/pricing" element={<Pricing />} />
-                    <Route path="/features" element={<Features />} />
-                    <Route path="/donate" element={<Donate />} />
-                    <Route path="/payment-success" element={<PaymentSuccess />} />
-                    <Route path="/share/:peerId" element={<ShareFileView />} />
-                    <Route path="/blog/*" element={<BlogRouter />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </Suspense>
-              </BrowserRouter>
-            </TooltipProvider>
-          </MotionConfig>
-        </ThemeProvider>
-      </QueryClientProvider>
-      <Analytics />
-    </HelmetProvider>
-  </>
+  <Suspense fallback={<PageLoader />}>
+    <Providers>
+      <BrowserRouter>
+        <RouteChangeLoader />
+        <ScrollToTop />
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/tools" element={<ToolList />} />
+            <Route path="/tools/:categoryId" element={<ToolCategoryPage />} />
+            <Route path="/tools/:categoryId/:toolId" element={<ToolPage />} />
+            <Route path="/tools/:toolId" element={<ToolPage />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/Privacy" element={<Privacy />} />
+            <Route path="/Terms" element={<Terms />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/documentation" element={<Documentation />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/features" element={<Features />} />
+            <Route path="/donate" element={<Donate />} />
+            <Route path="/payment-success" element={<PaymentSuccess />} />
+            <Route path="/share/:peerId" element={<ShareFileView />} />
+            <Route path="/blog/*" element={<BlogRouter />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+      <Suspense fallback={null}>
+        <Analytics />
+      </Suspense>
+    </Providers>
+  </Suspense>
 );
 
 export default App;
+
