@@ -9,6 +9,8 @@ import { MotionConfig } from "framer-motion";
 import { Analytics } from "@vercel/analytics/react"
 import { HelmetProvider } from 'react-helmet-async';
 import { lazy, Suspense } from "react";
+import PageLoader from "@/components/PageLoader";
+import RouteChangeLoader from "@/components/RouteChangeLoader";
 
 // Critical pages loaded immediately
 import Index from "./pages/Index";
@@ -30,13 +32,6 @@ const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const BlogRouter = lazy(() => import("./blog/router"));
 const ShareFileView = lazy(() => import("./components/tools/file-sharing/ShareFileView"));
 
-// Loading component
-const PageLoader = () => (
-  <div className="flex items-center justify-center min-h-screen">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-  </div>
-);
-
 // Create the query client
 const queryClient = new QueryClient();
 
@@ -50,6 +45,7 @@ const App = () => (
               <Toaster />
               <Sonner />
               <BrowserRouter>
+                <RouteChangeLoader />
                 <ScrollToTop />
                 <Suspense fallback={<PageLoader />}>
                   <Routes>
