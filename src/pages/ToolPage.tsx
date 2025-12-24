@@ -54,24 +54,25 @@ const ToolLoader = () => (
   </div>
 );
 
-// Import tool components
-import imageTools from "@/components/tools/image";
-import pdfTools from "@/components/tools/pdf";
-import calculatorTools from "@/components/tools/calculator";
-import conversionTools from "@/components/tools/conversion";
-import qrTools from "@/components/tools/qr";
-import passwordTools from "@/components/tools/password";
-import colorTools from "@/components/tools/color";
-import unitTools from "@/components/tools/unit";
-import currencyTools from "@/components/tools/currency";
-import miscellaneousTools from "@/components/tools/miscellaneous";
-import youtube from "@/components/tools/social-media";
-import seoandweb from "@/components/tools/seoandweb";
-import code from "@/components/tools/code";
-import socialMedia from "@/components/tools/social-media";
-import encryption from "@/components/tools/encryption";
-import clock from "@/components/tools/clock";
-import file from "@/components/tools/file-sharing";
+// Dynamic tool loader mapping - imports tools on-demand for better code splitting
+const toolLoaders: Record<string, () => Promise<any>> = {
+  image: () => import("@/components/tools/image"),
+  pdf: () => import("@/components/tools/pdf"),
+  calculator: () => import("@/components/tools/calculator"),
+  conversion: () => import("@/components/tools/conversion"),
+  qr: () => import("@/components/tools/qr"),
+  password: () => import("@/components/tools/password"),
+  color: () => import("@/components/tools/color"),
+  unit: () => import("@/components/tools/unit"),
+  currency: () => import("@/components/tools/currency"),
+  miscellaneous: () => import("@/components/tools/miscellaneous"),
+  social: () => import("@/components/tools/social-media"),
+  seoandweb: () => import("@/components/tools/seoandweb"),
+  code: () => import("@/components/tools/code"),
+  encryption: () => import("@/components/tools/encryption"),
+  clock: () => import("@/components/tools/clock"),
+  file: () => import("@/components/tools/file-sharing"),
+};
 
 
 const ToolPage = () => {
@@ -195,90 +196,63 @@ const ToolPage = () => {
     );
   }
 
-  // Render the tool component dynamically based on category and tool ID
-  const renderToolContent = () => {
-    if (categoryId === "image" && toolId && imageTools[toolId]) {
-      const ToolComponent = imageTools[toolId];
-      return <ToolComponent />;
+  // Dynamic tool loader component
+  const DynamicToolLoader = ({ categoryId, toolId }: { categoryId: string; toolId: string }) => {
+    const [ToolComponent, setToolComponent] = useState<React.ComponentType | null>(null);
+    const [error, setError] = useState<boolean>(false);
+
+    useEffect(() => {
+      let isMounted = true;
+
+      const loadTool = async () => {
+        try {
+          setError(false);
+          setToolComponent(null);
+
+          const loader = toolLoaders[categoryId];
+          if (!loader) {
+            setError(true);
+            return;
+          }
+
+          const toolModule = await loader();
+          const tools = toolModule.default;
+
+          if (isMounted && tools && tools[toolId]) {
+            setToolComponent(() => tools[toolId]);
+          } else if (isMounted) {
+            setError(true);
+          }
+        } catch (err) {
+          console.error('Error loading tool:', err);
+          if (isMounted) {
+            setError(true);
+          }
+        }
+      };
+
+      loadTool();
+
+      return () => {
+        isMounted = false;
+      };
+    }, [categoryId, toolId]);
+
+    if (error) {
+      return (
+        <div className="bg-muted/40 border rounded-xl p-6">
+          <p className="text-center text-muted-foreground">
+            Tool content for {subTool?.title} will be implemented here.
+          </p>
+        </div>
+      );
     }
 
-    if (categoryId === "pdf" && toolId && pdfTools[toolId]) {
-      const ToolComponent = pdfTools[toolId];
-      return <ToolComponent />;
+    if (!ToolComponent) {
+      return <ToolLoader />;
     }
 
-    if (categoryId === "calculator" && toolId && calculatorTools[toolId]) {
-      const ToolComponent = calculatorTools[toolId];
-      return <ToolComponent />;
-    }
-
-    if (categoryId === "conversion" && toolId && conversionTools[toolId]) {
-      const ToolComponent = conversionTools[toolId];
-      return <ToolComponent />;
-    }
-
-    if (categoryId === "qr" && toolId && qrTools[toolId]) {
-      const ToolComponent = qrTools[toolId];
-      return <ToolComponent />;
-    }
-
-    if (categoryId === "password" && toolId && passwordTools[toolId]) {
-      const ToolComponent = passwordTools[toolId];
-      return <ToolComponent />;
-    }
-
-    if (categoryId === "color" && toolId && colorTools[toolId]) {
-      const ToolComponent = colorTools[toolId];
-      return <ToolComponent />;
-    }
-
-    if (categoryId === "unit" && toolId && unitTools[toolId]) {
-      const ToolComponent = unitTools[toolId];
-      return <ToolComponent />;
-    }
-
-    if (categoryId === "miscellaneous" && toolId && miscellaneousTools[toolId]) {
-      const ToolComponent = miscellaneousTools[toolId];
-      return <ToolComponent />;
-    }
-    if (categoryId === "social" && toolId && socialMedia[toolId]) {
-      const ToolComponent = socialMedia[toolId];
-      return <ToolComponent />;
-    }
-    if (categoryId === "seoandweb" && toolId && seoandweb[toolId]) {
-      const ToolComponent = seoandweb[toolId];
-      return <ToolComponent />;
-    }
-    if (categoryId === "code" && toolId && code[toolId]) {
-      const ToolComponent = code[toolId];
-      return <ToolComponent />;
-    }
-
-    if (categoryId === "currency" && toolId && currencyTools[toolId]) {
-      const ToolComponent = currencyTools[toolId];
-      return <ToolComponent />;
-    }
-    if (categoryId === "encryption" && toolId && encryption[toolId]) {
-      const ToolComponent = encryption[toolId];
-      return <ToolComponent />;
-    }
-    if (categoryId === "clock" && toolId && clock[toolId]) {
-      const ToolComponent = clock[toolId];
-      return <ToolComponent />;
-    }
-    if (categoryId === "file" && toolId && file[toolId]) {
-      const ToolComponent = file[toolId];
-      return <ToolComponent />;
-    }
-
-    // Fallback for tools that haven't been implemented yet
-    return (
-      <div className="bg-muted/40 border rounded-xl p-6">
-        <p className="text-center text-muted-foreground">
-          Tool content for {subTool.title} will be implemented here.
-        </p>
-      </div>
-    );
+    return <ToolComponent />;
   };
 
   const Icon = category.icon;
@@ -322,9 +296,7 @@ const ToolPage = () => {
           )}
         </div>
 
-        <Suspense fallback={<ToolLoader />}>
-          {renderToolContent()}
-        </Suspense>
+        <DynamicToolLoader categoryId={categoryId!} toolId={toolId!} />
       </main>
       <Footer />
     </div>
