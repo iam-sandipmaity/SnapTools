@@ -4,7 +4,7 @@ import PdfSplitter from "./PdfSplitter";
 import PdfToWord from "./PdfToWord";
 import PdfToJpg from "./PdfToJpg";
 import PdfCompress from "./PdfCompress";
-import PdfUnlock from "./PdfUnlock";
+import PdfViewer from "./PdfViewer";
 import PdfOrganizer from "./PdfOrganizer";
 
 // Export all PDF tools
@@ -14,7 +14,7 @@ const pdfTools = {
   "pdf-word": PdfToWord,
   "pdf-jpg": PdfToJpg,
   "pdf-compress": PdfCompress,
-  "pdf-unlock": PdfUnlock,
+  "pdf-viewer": PdfViewer,
   "pdf-organizer": PdfOrganizer
 };
 
