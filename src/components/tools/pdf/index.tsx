@@ -5,6 +5,7 @@ import PdfToWord from "./PdfToWord";
 import PdfToJpg from "./PdfToJpg";
 import PdfCompress from "./PdfCompress";
 import PdfUnlock from "./PdfUnlock";
+import PdfOrganizer from "./PdfOrganizer";
 
 // Export all PDF tools
 const pdfTools = {
@@ -13,7 +14,8 @@ const pdfTools = {
   "pdf-word": PdfToWord,
   "pdf-jpg": PdfToJpg,
   "pdf-compress": PdfCompress,
-  "pdf-unlock": PdfUnlock
+  "pdf-unlock": PdfUnlock,
+  "pdf-organizer": PdfOrganizer
 };
 
 export default pdfTools;
