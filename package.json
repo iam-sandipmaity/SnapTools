@@ -110,6 +110,7 @@
     "@types/node": "^20.11.30",
     "@types/react": "^18.2.67",
     "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^5.1.2",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.20",
     "cities.json": "^1.1.50",
