@@ -1,406 +1,302 @@
-import React, { useState, useEffect } from 'react';
+'use client';
+
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { TIMEZONES, CityTimezone } from '@/data/timezones';
+import {
+  ComposableMap,
+  Geographies,
+  Geography,
+  Marker,
+} from 'react-simple-maps';
+import { useVirtualizer } from '@tanstack/react-virtual';
 
-interface TimeZoneCity {
-  city: string;
-  timezone: string;
-}
+/* ------------------------------------------------------------------ */
+/* Utils */
+/* ------------------------------------------------------------------ */
 
-interface CountryData {
-  name: string;
-  cities: TimeZoneCity[];
-}
-
-const countryData: CountryData[] = [
-  {
-    name: 'United States',
-    cities: [
-      { city: 'New York', timezone: 'America/New_York' },
-      { city: 'Los Angeles', timezone: 'America/Los_Angeles' },
-      { city: 'Chicago', timezone: 'America/Chicago' },
-      { city: 'Denver', timezone: 'America/Denver' },
-      { city: 'Phoenix', timezone: 'America/Phoenix' },
-      { city: 'Anchorage', timezone: 'America/Anchorage' },
-      { city: 'Honolulu', timezone: 'Pacific/Honolulu' },
-    ],
-  },
-  {
-    name: 'United Kingdom',
-    cities: [
-      { city: 'London', timezone: 'Europe/London' },
-      { city: 'Edinburgh', timezone: 'Europe/London' },
-      { city: 'Manchester', timezone: 'Europe/London' },
-      { city: 'Belfast', timezone: 'Europe/London' },
-    ],
-  },
-  {
-    name: 'Japan',
-    cities: [
-      { city: 'Tokyo', timezone: 'Asia/Tokyo' },
-      { city: 'Osaka', timezone: 'Asia/Tokyo' },
-      { city: 'Sapporo', timezone: 'Asia/Tokyo' },
-      { city: 'Fukuoka', timezone: 'Asia/Tokyo' },
-    ],
-  },
-  {
-    name: 'Australia',
-    cities: [
-      { city: 'Sydney', timezone: 'Australia/Sydney' },
-      { city: 'Melbourne', timezone: 'Australia/Melbourne' },
-      { city: 'Brisbane', timezone: 'Australia/Brisbane' },
-      { city: 'Perth', timezone: 'Australia/Perth' },
-      { city: 'Adelaide', timezone: 'Australia/Adelaide' },
-      { city: 'Darwin', timezone: 'Australia/Darwin' },
-      { city: 'Hobart', timezone: 'Australia/Hobart' },
-    ],
-  },
-  {
-    name: 'China',
-    cities: [
-      { city: 'Beijing', timezone: 'Asia/Shanghai' },
-      { city: 'Shanghai', timezone: 'Asia/Shanghai' },
-      { city: 'Guangzhou', timezone: 'Asia/Shanghai' },
-      { city: 'Shenzhen', timezone: 'Asia/Shanghai' },
-    ],
-  },
-  {
-    name: 'India',
-    cities: [
-      { city: 'New Delhi', timezone: 'Asia/Kolkata' },
-      { city: 'Kolkata', timezone: 'Asia/Kolkata' },
-      { city: 'Mumbai', timezone: 'Asia/Kolkata' },
-      { city: 'Bangalore', timezone: 'Asia/Kolkata' },
-      { city: 'Chennai', timezone: 'Asia/Kolkata' },
-    ],
-  },
-  {
-    name: 'Germany',
-    cities: [
-      { city: 'Berlin', timezone: 'Europe/Berlin' },
-      { city: 'Munich', timezone: 'Europe/Berlin' },
-      { city: 'Hamburg', timezone: 'Europe/Berlin' },
-      { city: 'Frankfurt', timezone: 'Europe/Berlin' },
-    ],
-  },
-  {
-    name: 'France',
-    cities: [
-      { city: 'Paris', timezone: 'Europe/Paris' },
-      { city: 'Lyon', timezone: 'Europe/Paris' },
-      { city: 'Marseille', timezone: 'Europe/Paris' },
-      { city: 'Toulouse', timezone: 'Europe/Paris' },
-    ],
-  },
-  {
-    name: 'Brazil',
-    cities: [
-      { city: 'Sao Paulo', timezone: 'America/Sao_Paulo' },
-      { city: 'Rio de Janeiro', timezone: 'America/Sao_Paulo' },
-      { city: 'Brasilia', timezone: 'America/Sao_Paulo' },
-      { city: 'Salvador', timezone: 'America/Bahia' },
-    ],
-  },
-  {
-    name: 'Canada',
-    cities: [
-      { city: 'Toronto', timezone: 'America/Toronto' },
-      { city: 'Vancouver', timezone: 'America/Vancouver' },
-      { city: 'Montreal', timezone: 'America/Montreal' },
-      { city: 'Calgary', timezone: 'America/Edmonton' },
-    ],
-  },
-  {
-    name: 'Russia',
-    cities: [
-      { city: 'Moscow', timezone: 'Europe/Moscow' },
-      { city: 'Saint Petersburg', timezone: 'Europe/Moscow' },
-      { city: 'Novosibirsk', timezone: 'Asia/Novosibirsk' },
-      { city: 'Vladivostok', timezone: 'Asia/Vladivostok' },
-    ],
-  },
-  {
-    name: 'South Korea',
-    cities: [
-      { city: 'Seoul', timezone: 'Asia/Seoul' },
-      { city: 'Busan', timezone: 'Asia/Seoul' },
-      { city: 'Incheon', timezone: 'Asia/Seoul' },
-      { city: 'Daegu', timezone: 'Asia/Seoul' },
-    ],
-  },
-  {
-    name: 'Mexico',
-    cities: [
-      { city: 'Mexico City', timezone: 'America/Mexico_City' },
-      { city: 'Guadalajara', timezone: 'America/Mexico_City' },
-      { city: 'Monterrey', timezone: 'America/Monterrey' },
-      { city: 'Tijuana', timezone: 'America/Tijuana' },
-    ],
-  },
-  {
-    name: 'Spain',
-    cities: [
-      { city: 'Madrid', timezone: 'Europe/Madrid' },
-      { city: 'Barcelona', timezone: 'Europe/Madrid' },
-      { city: 'Valencia', timezone: 'Europe/Madrid' },
-      { city: 'Seville', timezone: 'Europe/Madrid' },
-    ],
-  },
-  {
-    name: 'Italy',
-    cities: [
-      { city: 'Rome', timezone: 'Europe/Rome' },
-      { city: 'Milan', timezone: 'Europe/Rome' },
-      { city: 'Naples', timezone: 'Europe/Rome' },
-      { city: 'Turin', timezone: 'Europe/Rome' },
-    ],
-  },
-  {
-    name: 'Singapore',
-    cities: [
-      { city: 'Singapore', timezone: 'Asia/Singapore' },
-    ],
-  },
-  {
-    name: 'New Zealand',
-    cities: [
-      { city: 'Auckland', timezone: 'Pacific/Auckland' },
-      { city: 'Wellington', timezone: 'Pacific/Auckland' },
-      { city: 'Christchurch', timezone: 'Pacific/Auckland' },
-      { city: 'Hamilton', timezone: 'Pacific/Auckland' },
-    ],
-  },
-  {
-    name: 'South Africa',
-    cities: [
-      { city: 'Johannesburg', timezone: 'Africa/Johannesburg' },
-      { city: 'Cape Town', timezone: 'Africa/Johannesburg' },
-      { city: 'Durban', timezone: 'Africa/Johannesburg' },
-      { city: 'Pretoria', timezone: 'Africa/Johannesburg' },
-    ],
-  },
-  {
-    name: 'Argentina',
-    cities: [
-      { city: 'Buenos Aires', timezone: 'America/Argentina/Buenos_Aires' },
-      { city: 'Cordoba', timezone: 'America/Argentina/Cordoba' },
-      { city: 'Rosario', timezone: 'America/Argentina/Rosario' },
-      { city: 'Mendoza', timezone: 'America/Argentina/Mendoza' },
-    ],
-  },
-  {
-    name: 'Thailand',
-    cities: [
-      { city: 'Bangkok', timezone: 'Asia/Bangkok' },
-      { city: 'Phuket', timezone: 'Asia/Bangkok' },
-      { city: 'Chiang Mai', timezone: 'Asia/Bangkok' },
-      { city: 'Pattaya', timezone: 'Asia/Bangkok' },
-    ],
-  },
-  {
-    name: 'Netherlands',
-    cities: [
-      { city: 'Amsterdam', timezone: 'Europe/Amsterdam' },
-      { city: 'Rotterdam', timezone: 'Europe/Amsterdam' },
-      { city: 'The Hague', timezone: 'Europe/Amsterdam' },
-      { city: 'Utrecht', timezone: 'Europe/Amsterdam' },
-    ],
-  },
-  {
-    name: 'Sweden',
-    cities: [
-      { city: 'Stockholm', timezone: 'Europe/Stockholm' },
-      { city: 'Gothenburg', timezone: 'Europe/Stockholm' },
-      { city: 'Malmo', timezone: 'Europe/Stockholm' },
-      { city: 'Uppsala', timezone: 'Europe/Stockholm' },
-    ],
-  },
-  {
-    name: 'Norway',
-    cities: [
-      { city: 'Oslo', timezone: 'Europe/Oslo' },
-      { city: 'Bergen', timezone: 'Europe/Oslo' },
-      { city: 'Trondheim', timezone: 'Europe/Oslo' },
-      { city: 'Stavanger', timezone: 'Europe/Oslo' },
-    ],
-  },
-  {
-    name: 'Denmark',
-    cities: [
-      { city: 'Copenhagen', timezone: 'Europe/Copenhagen' },
-      { city: 'Aarhus', timezone: 'Europe/Copenhagen' },
-      { city: 'Odense', timezone: 'Europe/Copenhagen' },
-      { city: 'Aalborg', timezone: 'Europe/Copenhagen' },
-    ],
-  },
-  {
-    name: 'Poland',
-    cities: [
-      { city: 'Warsaw', timezone: 'Europe/Warsaw' },
-      { city: 'Krakow', timezone: 'Europe/Warsaw' },
-      { city: 'Lodz', timezone: 'Europe/Warsaw' },
-      { city: 'Wroclaw', timezone: 'Europe/Warsaw' },
-    ],
-  },
-  {
-    name: 'Turkey',
-    cities: [
-      { city: 'Istanbul', timezone: 'Europe/Istanbul' },
-      { city: 'Ankara', timezone: 'Europe/Istanbul' },
-      { city: 'Izmir', timezone: 'Europe/Istanbul' },
-      { city: 'Antalya', timezone: 'Europe/Istanbul' },
-    ],
-  },
-  {
-    name: 'Israel',
-    cities: [
-      { city: 'Jerusalem', timezone: 'Asia/Jerusalem' },
-      { city: 'Tel Aviv', timezone: 'Asia/Jerusalem' },
-      { city: 'Haifa', timezone: 'Asia/Jerusalem' },
-      { city: 'Eilat', timezone: 'Asia/Jerusalem' },
-    ],
-  },
-  {
-    name: 'United Arab Emirates',
-    cities: [
-      { city: 'Dubai', timezone: 'Asia/Dubai' },
-      { city: 'Abu Dhabi', timezone: 'Asia/Dubai' },
-      { city: 'Sharjah', timezone: 'Asia/Dubai' },
-      { city: 'Ajman', timezone: 'Asia/Dubai' },
-    ],
-  },
-  {
-    name: 'Malaysia',
-    cities: [
-      { city: 'Kuala Lumpur', timezone: 'Asia/Kuala_Lumpur' },
-      { city: 'George Town', timezone: 'Asia/Kuala_Lumpur' },
-      { city: 'Johor Bahru', timezone: 'Asia/Kuala_Lumpur' },
-      { city: 'Ipoh', timezone: 'Asia/Kuala_Lumpur' },
-    ],
-  },
-  {
-    name: 'Indonesia',
-    cities: [
-      { city: 'Jakarta', timezone: 'Asia/Jakarta' },
-      { city: 'Surabaya', timezone: 'Asia/Jakarta' },
-      { city: 'Medan', timezone: 'Asia/Jakarta' },
-      { city: 'Bandung', timezone: 'Asia/Jakarta' },
-    ],
-  },
-  {
-    name: 'Philippines',
-    cities: [
-      { city: 'Manila', timezone: 'Asia/Manila' },
-      { city: 'Quezon City', timezone: 'Asia/Manila' },
-      { city: 'Davao City', timezone: 'Asia/Manila' },
-      { city: 'Cebu City', timezone: 'Asia/Manila' },
-    ],
-  },
-  {
-    name: 'Vietnam',
-    cities: [
-      { city: 'Hanoi', timezone: 'Asia/Ho_Chi_Minh' },
-      { city: 'Ho Chi Minh City', timezone: 'Asia/Ho_Chi_Minh' },
-      { city: 'Da Nang', timezone: 'Asia/Ho_Chi_Minh' },
-      { city: 'Hai Phong', timezone: 'Asia/Ho_Chi_Minh' },
-    ],
-  },
-  {
-    name: 'Egypt',
-    cities: [
-      { city: 'Cairo', timezone: 'Africa/Cairo' },
-      { city: 'Alexandria', timezone: 'Africa/Cairo' },
-      { city: 'Giza', timezone: 'Africa/Cairo' },
-      { city: 'Shubra El Kheima', timezone: 'Africa/Cairo' },
-    ],
-  },
-];
-
-const WorldClock: React.FC = () => {
-  const [selectedCountry, setSelectedCountry] = useState<string>('');
-  const [selectedCity, setSelectedCity] = useState<string>('');
-  const [time, setTime] = useState(new Date());
+function useDebouncedValue<T>(value: T, delay = 150) {
+  const [debounced, setDebounced] = useState(value);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
+    const t = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(t);
+  }, [value, delay]);
 
+  return debounced;
+}
+
+/* ------------------------------------------------------------------ */
+
+const GEO_URL =
+  'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+
+const MAX_RESULTS = 1000;
+
+const WorldClock: React.FC = () => {
+  const [query, setQuery] = useState('');
+  const [now, setNow] = useState(new Date());
+  const [selectedCity, setSelectedCity] =
+    useState<CityTimezone | null>(null);
+
+  const debouncedQuery = useDebouncedValue(query);
+
+  /* ---------------- Clock Tick ---------------- */
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  const handleCountryChange = (country: string) => {
-    setSelectedCountry(country);
-    setSelectedCity('');
-  };
+  /* ---------------- Pre-index Cities ---------------- */
+  const cityIndex = useMemo(
+    () =>
+      TIMEZONES.map((c) => ({
+        ...c,
+        cityLower: c.city.toLowerCase(),
+        countryLower: c.country.toLowerCase(),
+      })),
+    []
+  );
 
-  const handleCityChange = (city: string) => {
-    setSelectedCity(city);
-  };
+  /* ---------------- Smart Search ---------------- */
+  const filteredCities = useMemo(() => {
+    if (!debouncedQuery.trim()) return [];
 
-  const getTimezone = (): string => {
-    if (!selectedCountry || !selectedCity) return 'UTC';
-    const country = countryData.find(c => c.name === selectedCountry);
-    const city = country?.cities.find(c => c.city === selectedCity);
-    return city?.timezone || 'UTC';
-  };
+    const q = debouncedQuery.toLowerCase();
 
-  const formatTime = (date: Date, timezone: string) => {
-    return new Intl.DateTimeFormat('en-US', {
-      timeZone: timezone,
+    /* 1️⃣ Country intent (exact or prefix) */
+    const countryMatches = cityIndex.filter(
+      (c) =>
+        c.countryLower === q ||
+        c.countryLower.startsWith(q)
+    );
+
+    if (countryMatches.length > 0) {
+      return countryMatches.slice(0, MAX_RESULTS);
+    }
+
+    /* 2️⃣ Starts-with (high priority) */
+    const startsWith = cityIndex.filter(
+      (c) =>
+        c.cityLower.startsWith(q) ||
+        c.countryLower.startsWith(q)
+    );
+
+    /* 3️⃣ Includes (lower priority) */
+    const includes = cityIndex.filter(
+      (c) =>
+        c.cityLower.includes(q) ||
+        c.countryLower.includes(q)
+    );
+
+    /* Merge safely */
+    const seen = new Set<string>();
+    const merged: CityTimezone[] = [];
+
+    for (const c of [...startsWith, ...includes]) {
+      const key = `${c.city}-${c.country}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        merged.push(c);
+        if (merged.length >= MAX_RESULTS) break;
+      }
+    }
+
+    return merged;
+  }, [debouncedQuery, cityIndex]);
+
+  /* ---------------- Virtualization ---------------- */
+  const parentRef = useRef<HTMLDivElement>(null);
+
+  const rowVirtualizer = useVirtualizer({
+    count: filteredCities.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 56,
+  });
+
+  /* ---------------- Time Formatter ---------------- */
+  const formattedTime = (tz: string) =>
+    new Intl.DateTimeFormat('en-US', {
+      timeZone: tz,
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
       hour12: true,
-      timeZoneName: 'short'
-    }).format(date);
-  };
+      timeZoneName: 'short',
+    }).format(now);
+
+  /* ------------------------------------------------------------------ */
 
   return (
-    <Card className="mt-4">
-      <CardContent className="pt-6">
-        <div className="flex flex-col items-center justify-center space-y-6">
-          <div className="flex flex-col space-y-4 w-full max-w-xs">
-            <Select
-              value={selectedCountry}
-              onValueChange={handleCountryChange}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a country" />
-              </SelectTrigger>
-              <SelectContent>
-                {countryData.map((country) => (
-                  <SelectItem key={country.name} value={country.name}>
-                    {country.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+    <Card className="mt-6">
+      <CardContent className="pt-6 space-y-6">
+        <div className="flex flex-col items-center gap-4">
 
-            <Select
-              value={selectedCity}
-              onValueChange={handleCityChange}
-              disabled={!selectedCountry}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a city" />
-              </SelectTrigger>
-              <SelectContent>
-                {selectedCountry &&
-                  countryData
-                    .find((c) => c.name === selectedCountry)
-                    ?.cities.map((city) => (
-                      <SelectItem key={city.city} value={city.city}>
-                        {city.city}
-                      </SelectItem>
-                    ))}
-              </SelectContent>
-            </Select>
-          </div>
+          {/* ---------------- SEARCH MODE ---------------- */}
+          {!selectedCity && (
+            <>
+              <Input
+                placeholder="Search city or country (Tokyo, India, New York)"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+              <div className="w-full px-2 text-xs text-muted-foreground">If you can't find your city, try searching by your country name.</div>
 
-          <div className="text-6xl font-mono font-bold">
-            {formatTime(time, getTimezone())}
-          </div>
+              {query && (
+                <div className="w-full space-y-2">
+                  <div className="px-2 text-xs text-muted-foreground">
+                    {filteredCities.length} result
+                    {filteredCities.length !== 1 ? 's' : ''}
+                  </div>
+
+                  {filteredCities.length > 0 ? (
+                    <div
+                      ref={parentRef}
+                      className="w-full max-h-64 overflow-auto border rounded-md"
+                    >
+                      <div
+                        style={{
+                          height: rowVirtualizer.getTotalSize(),
+                          position: 'relative',
+                        }}
+                      >
+                        {rowVirtualizer
+                          .getVirtualItems()
+                          .map((row) => {
+                            const city =
+                              filteredCities[row.index];
+
+                            return (
+                              <Button
+                                key={`${city.city}-${city.country}`}
+                                variant="ghost"
+                                className="absolute w-full justify-start"
+                                style={{
+                                  transform: `translateY(${row.start}px)`,
+                                }}
+                                onClick={() =>
+                                  setSelectedCity(city)
+                                }
+                              >
+                                <div className="flex flex-col items-start">
+                                  <span className="font-medium">
+                                    {city.city}
+                                  </span>
+                                  <span className="text-xs text-muted-foreground">
+                                    {city.country}
+                                  </span>
+                                </div>
+                              </Button>
+                            );
+                          })}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="p-4 text-center text-sm text-muted-foreground border rounded-md">
+                      <div>No cities found</div>
+                      <div className="mt-1 text-xs">If you can't find your city, try searching by your country name.</div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </>
+          )}
+
+          {/* ---------------- CLOCK MODE ---------------- */}
+          {selectedCity && (
+            <>
+              <div className="text-center">
+                <div className="text-2xl font-semibold">
+                  {selectedCity.city}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  {selectedCity.country}
+                </div>
+              </div>
+
+              <div className="text-6xl font-mono font-bold">
+                {formattedTime(selectedCity.timezone)}
+              </div>
+
+              {/* ---------------- MAP ---------------- */}
+              <div className="w-full max-w-2xl rounded-lg border overflow-hidden bg-gradient-to-br from-blue-50 to-blue-100 dark:from-slate-800 dark:to-slate-900">
+                <ComposableMap
+                  projection="geoMercator"
+                  projectionConfig={{
+                    center: [
+                      selectedCity.lng,
+                      selectedCity.lat,
+                    ],
+                    scale: 400,
+                  }}
+                  width={800}
+                  height={400}
+                  style={{ width: '100%', height: 'auto' }}
+                >
+                  <Geographies geography={GEO_URL}>
+                    {({ geographies }) =>
+                      geographies.map((geo) => (
+                        <Geography
+                          key={geo.rsmKey}
+                          geography={geo}
+                          fill="#10B981"
+                          stroke="#059669"
+                          strokeWidth={1}
+                          style={{
+                            default: { outline: 'none' },
+                            hover: {
+                              outline: 'none',
+                              fill: '#34D399',
+                            },
+                            pressed: { outline: 'none' },
+                          }}
+                        />
+                      ))
+                    }
+                  </Geographies>
+
+                  <Marker
+                    coordinates={[
+                      selectedCity.lng,
+                      selectedCity.lat,
+                    ]}
+                  >
+                    <g
+                      fill="none"
+                      stroke="#EF4444"
+                      strokeWidth="2"
+                      transform="translate(-12, -24)"
+                    >
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                      <circle
+                        cx="12"
+                        cy="9"
+                        r="2.5"
+                        fill="#EF4444"
+                      />
+                    </g>
+                  </Marker>
+                </ComposableMap>
+              </div>
+
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setSelectedCity(null);
+                  setQuery('');
+                }}
+              >
+                Change Location
+              </Button>
+            </>
+          )}
         </div>
       </CardContent>
     </Card>
