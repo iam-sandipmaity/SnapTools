@@ -63,6 +63,7 @@ export const toolCategories: ToolCategory[] = [
     subTools: [
       { id: "pdf-merger", title: "PDF Merger" },
       { id: "pdf-splitter", title: "PDF Splitter" },
+      { id: "pdf-organizer", title: "PDF Organizer" },
       { id: "pdf-word", title: "PDF to Word / Word to PDF" },
       { id: "pdf-jpg", title: "PDF to JPG / JPG to PDF" },
       { id: "pdf-compress", title: "Compress PDF" },
