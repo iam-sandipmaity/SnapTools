@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-import { Upload, Copy, QrCode, Users, Wifi } from 'lucide-react';
+import { Upload, Copy, QrCode, Users, Wifi, AlertCircle, Info } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useDropzone } from 'react-dropzone';
 import { QRCodeSVG } from 'qrcode.react';
 import AnimatedElement from '@/components/animated-element';
@@ -132,6 +133,33 @@ const FileSharer: React.FC = () => {
         </CardHeader>
 
         <CardContent className="space-y-6">
+          {/* Important Guidelines */}
+          <Alert className="border-amber-500/50 bg-amber-50 dark:bg-amber-950/20">
+            <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-500" />
+            <AlertTitle className="text-amber-900 dark:text-amber-400 font-semibold">
+              Important: Requirements for Successful File Sharing
+            </AlertTitle>
+            <AlertDescription className="text-amber-800 dark:text-amber-300 mt-2">
+              <ul className="space-y-1.5 text-sm list-disc list-inside">
+                <li>
+                  <strong>Stay on this page</strong> - Do not navigate away or close this tab until the transfer is complete
+                </li>
+                <li>
+                  <strong>Keep browser active</strong> - Do not minimize the browser or switch to another tab for extended periods
+                </li>
+                <li>
+                  <strong>Both parties must be online</strong> - You and the receiver must be connected simultaneously
+                </li>
+                <li>
+                  <strong>Stable network required</strong> - Maintain a stable internet connection throughout the transfer
+                </li>
+                <li>
+                  <strong>File size limit</strong> - Maximum file size is 500MB
+                </li>
+              </ul>
+            </AlertDescription>
+          </Alert>
+
           <div
             {...getRootProps()}
             className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${isDragActive ? 'border-primary bg-primary/5' : 'border-muted-foreground/25 hover:border-primary/50'
@@ -204,7 +232,7 @@ const FileSharer: React.FC = () => {
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Share this link with the receiver. Both of you must be online for the transfer to work.
+                  Share this link with the receiver. <strong className="text-amber-600 dark:text-amber-500">Keep this page open</strong> - both of you must stay online and on your respective pages for the transfer to work.
                 </p>
               </div>
 
