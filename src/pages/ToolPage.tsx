@@ -3,13 +3,56 @@ import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import SEO from "@/components/seo";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import { toolCategories, ToolCategory } from "@/data/tools";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
+
+// Tool loading component
+const ToolLoader = () => (
+  <div className="flex items-center justify-center py-20">
+    <div className="flex flex-col items-center gap-4">
+      <motion.div
+        className="relative"
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+      >
+        <motion.div
+          className="w-16 h-16 rounded-full border-4 border-primary/20 border-t-primary"
+          animate={{ rotate: 360 }}
+          transition={{
+            duration: 1,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+        <motion.div
+          className="absolute inset-0 m-auto w-8 h-8 rounded-full bg-primary/20"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.5, 0.8, 0.5]
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+      </motion.div>
+      <motion.p
+        className="text-sm font-medium text-muted-foreground"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1 }}
+      >
+        Loading tool...
+      </motion.p>
+    </div>
+  </div>
+);
 
 // Import tool components
 import imageTools from "@/components/tools/image";
@@ -99,7 +142,7 @@ const ToolPage = () => {
               <ArrowLeft size={16} className="mr-2" />
               Back
             </button>
-            
+
             <div className="flex items-center gap-4 mb-6">
               <div className={cn("w-12 h-12 rounded-lg flex items-center justify-center", category.color)}>
                 <Icon size={24} className="text-primary-foreground" />
@@ -158,37 +201,37 @@ const ToolPage = () => {
       const ToolComponent = imageTools[toolId];
       return <ToolComponent />;
     }
-    
+
     if (categoryId === "pdf" && toolId && pdfTools[toolId]) {
       const ToolComponent = pdfTools[toolId];
       return <ToolComponent />;
     }
-    
+
     if (categoryId === "calculator" && toolId && calculatorTools[toolId]) {
       const ToolComponent = calculatorTools[toolId];
       return <ToolComponent />;
     }
-    
+
     if (categoryId === "conversion" && toolId && conversionTools[toolId]) {
       const ToolComponent = conversionTools[toolId];
       return <ToolComponent />;
     }
-    
+
     if (categoryId === "qr" && toolId && qrTools[toolId]) {
       const ToolComponent = qrTools[toolId];
       return <ToolComponent />;
     }
-    
+
     if (categoryId === "password" && toolId && passwordTools[toolId]) {
       const ToolComponent = passwordTools[toolId];
       return <ToolComponent />;
     }
-    
+
     if (categoryId === "color" && toolId && colorTools[toolId]) {
       const ToolComponent = colorTools[toolId];
       return <ToolComponent />;
     }
-    
+
     if (categoryId === "unit" && toolId && unitTools[toolId]) {
       const ToolComponent = unitTools[toolId];
       return <ToolComponent />;
@@ -227,7 +270,7 @@ const ToolPage = () => {
       const ToolComponent = file[toolId];
       return <ToolComponent />;
     }
-    
+
     // Fallback for tools that haven't been implemented yet
     return (
       <div className="bg-muted/40 border rounded-xl p-6">
@@ -263,7 +306,7 @@ const ToolPage = () => {
             <ArrowLeft size={16} className="mr-2" />
             Back
           </motion.button>
-          
+
           <div className="flex items-center gap-4 mb-6">
             <div className={cn("w-12 h-12 rounded-lg flex items-center justify-center", category.color)}>
               <Icon size={24} className="text-primary-foreground" />
@@ -273,13 +316,15 @@ const ToolPage = () => {
               <p className="text-muted-foreground">{category.title} Tool</p>
             </div>
           </div>
-          
+
           {subTool.description && (
             <p className="text-muted-foreground max-w-2xl mb-6">{subTool.description}</p>
           )}
         </div>
-        
-        {renderToolContent()}
+
+        <Suspense fallback={<ToolLoader />}>
+          {renderToolContent()}
+        </Suspense>
       </main>
       <Footer />
     </div>
