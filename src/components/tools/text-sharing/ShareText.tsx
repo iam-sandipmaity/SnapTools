@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import { Copy, QrCode, Users, Wifi, AlertCircle, Download } from 'lucide-react';
+import { Copy, QrCode, Users, Wifi, AlertCircle, Download, Eye } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { QRCodeSVG } from 'qrcode.react';
 import AnimatedElement from '@/components/animated-element';
@@ -14,9 +14,12 @@ import Peer, { DataConnection } from 'peerjs';
 import {
   initializeTextPeer,
   sendTextUpdate,
+  broadcastTextUpdate,
+  sendPermissionMode,
   createTextShareLink,
   copyToClipboard,
-  downloadTextFile
+  downloadTextFile,
+  PermissionMode
 } from '@/lib/peer-text-transfer';
 
 const TextSharer: React.FC = () => {
@@ -27,8 +30,25 @@ const TextSharer: React.FC = () => {
   const [connections, setConnections] = useState<DataConnection[]>([]);
   const [isInitializing, setIsInitializing] = useState(false);
   const [connectedUsers, setConnectedUsers] = useState<number>(0);
+  const [permissionMode, setPermissionMode] = useState<PermissionMode>('read-only');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const connectionsRef = useRef<DataConnection[]>([]);
+  const peerIdRef = useRef<string | null>(null);
+  const permissionModeRef = useRef<PermissionMode>('read-only');
+
+  // Keep refs in sync
+  useEffect(() => {
+    connectionsRef.current = connections;
+  }, [connections]);
+
+  useEffect(() => {
+    peerIdRef.current = peerId;
+  }, [peerId]);
+
+  useEffect(() => {
+    permissionModeRef.current = permissionMode;
+  }, [permissionMode]);
 
   useEffect(() => {
     // Cleanup peer connection on unmount
@@ -52,6 +72,7 @@ const TextSharer: React.FC = () => {
 
       const newPeerId = newPeer.id!;
       setPeerId(newPeerId);
+      peerIdRef.current = newPeerId;
       const link = createTextShareLink(newPeerId);
       setShareLink(link);
 
@@ -63,10 +84,14 @@ const TextSharer: React.FC = () => {
           setConnections(prev => {
             const updated = [...prev, conn];
             setConnectedUsers(updated.length);
+            connectionsRef.current = updated;
             return updated;
           });
           
           toast.success('A viewer connected!');
+          
+          // Send permission mode first
+          sendPermissionMode(conn, permissionModeRef.current);
           
           // Send current text content immediately
           sendTextUpdate(conn, textContent);
@@ -75,6 +100,15 @@ const TextSharer: React.FC = () => {
           conn.on('data', (data: any) => {
             if (data.type === 'cursor-update') {
               console.log('Receiver cursor at:', data.data.cursorPosition);
+            } else if (data.type === 'text-update') {
+              // Handle incoming text updates from viewers (in read-write mode)
+              const update = data.data;
+              if (update.senderId !== peerIdRef.current) {
+                setTextContent(update.content);
+                // Broadcast to all other connections
+                const otherConnections = connectionsRef.current.filter(c => c !== conn && c.open);
+                broadcastTextUpdate(otherConnections, update.content, update.cursorPosition, update.senderId);
+              }
             }
           });
         });
@@ -84,6 +118,7 @@ const TextSharer: React.FC = () => {
           setConnections(prev => {
             const updated = prev.filter(c => c !== conn);
             setConnectedUsers(updated.length);
+            connectionsRef.current = updated;
             return updated;
           });
           toast.info('A viewer disconnected');
@@ -115,11 +150,12 @@ const TextSharer: React.FC = () => {
 
     updateTimeoutRef.current = setTimeout(() => {
       // Send update to all connected peers
-      connections.forEach(conn => {
-        if (conn.open) {
-          sendTextUpdate(conn, newText, textareaRef.current?.selectionStart);
-        }
-      });
+      broadcastTextUpdate(
+        connectionsRef.current,
+        newText,
+        textareaRef.current?.selectionStart,
+        peerIdRef.current || undefined
+      );
     }, 100); // 100ms debounce
   };
 
@@ -175,7 +211,7 @@ const TextSharer: React.FC = () => {
                   <strong>Stable network required</strong> - Maintain a stable internet connection
                 </li>
                 <li>
-                  <strong>Read-only for viewers</strong> - Viewers can only see your text, not edit it
+                  <strong>Choose access mode</strong> - Set read-only (viewers can't edit) or read-write (collaborative editing)
                 </li>
               </ul>
             </AlertDescription>
@@ -210,6 +246,44 @@ const TextSharer: React.FC = () => {
                     </span>
                   )}
                 </span>
+              </div>
+
+              {/* Permission Mode Toggle */}
+              <div className="space-y-2">
+                <label className="font-medium">Access Mode</label>
+                <div className="flex gap-2">
+                  <Button
+                    variant={permissionMode === 'read-only' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => {
+                      setPermissionMode('read-only');
+                      permissionModeRef.current = 'read-only';
+                      connectionsRef.current.forEach(conn => sendPermissionMode(conn, 'read-only'));
+                      toast.success('Mode changed to Read-Only');
+                    }}
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    Read-Only
+                  </Button>
+                  <Button
+                    variant={permissionMode === 'read-write' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => {
+                      setPermissionMode('read-write');
+                      permissionModeRef.current = 'read-write';
+                      connectionsRef.current.forEach(conn => sendPermissionMode(conn, 'read-write'));
+                      toast.success('Mode changed to Read-Write (Collaborative)');
+                    }}
+                  >
+                    <Users className="h-4 w-4 mr-2" />
+                    Read-Write
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {permissionMode === 'read-only' 
+                    ? 'Viewers can only read your text' 
+                    : 'Viewers can edit the text collaboratively in real-time'}
+                </p>
               </div>
 
               {/* Text Editor */}

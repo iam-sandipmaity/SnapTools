@@ -15,12 +15,26 @@ export interface TransferProgress {
 }
 
 /**
+ * Generate a short random peer ID
+ */
+function generateShortId(): string {
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let id = '';
+    for (let i = 0; i < 8; i++) {
+        id += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return id;
+}
+
+/**
  * Initialize a new PeerJS instance
  */
 export function initializePeer(peerId?: string): Promise<Peer> {
     return new Promise((resolve, reject) => {
+        // Use custom short ID if not provided
+        const id = peerId || generateShortId();
         // Use default PeerJS cloud server (0.peerjs.com)
-        const peer = new Peer(peerId, {
+        const peer = new Peer(id, {
             config: {
                 iceServers: [
                     { urls: 'stun:stun.l.google.com:19302' },

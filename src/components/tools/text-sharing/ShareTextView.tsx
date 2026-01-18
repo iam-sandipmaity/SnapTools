@@ -13,7 +13,9 @@ import {
   initializeTextPeer,
   copyToClipboard,
   downloadTextFile,
-  TextUpdate
+  sendTextUpdate,
+  TextUpdate,
+  PermissionMode
 } from '@/lib/peer-text-transfer';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
@@ -27,7 +29,10 @@ const ShareTextView: React.FC = () => {
   const [connection, setConnection] = useState<DataConnection | null>(null);
   const [textContent, setTextContent] = useState('');
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
+  const [permissionMode, setPermissionMode] = useState<PermissionMode>('read-only');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const myPeerIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!peerId) {
@@ -41,6 +46,7 @@ const ShareTextView: React.FC = () => {
         // Initialize our own peer
         const newPeer = await initializeTextPeer();
         setPeer(newPeer);
+        myPeerIdRef.current = newPeer.id!;
 
         // Connect to the sender
         const conn = newPeer.connect(peerId);
@@ -51,13 +57,19 @@ const ShareTextView: React.FC = () => {
           setStatus('connected');
           toast.success('Connected to text source!');
 
-          // Listen for text updates
+          // Listen for text updates and permissions
           conn.on('data', (data: any) => {
-            if (data.type === 'text-update') {
+            if (data.type === 'permission') {
+              setPermissionMode(data.data.mode);
+              toast.info(`Mode changed to ${data.data.mode === 'read-only' ? 'Read-Only' : 'Read-Write (Collaborative)'}`);
+            } else if (data.type === 'text-update') {
               const update: TextUpdate = data.data;
-              setTextContent(update.content);
-              setLastUpdate(new Date(update.timestamp));
-              setStatus('receiving');
+              // Only update if it's not from this viewer
+              if (update.senderId !== myPeerIdRef.current) {
+                setTextContent(update.content);
+                setLastUpdate(new Date(update.timestamp));
+                setStatus('receiving');
+              }
             }
           });
         });
@@ -86,6 +98,9 @@ const ShareTextView: React.FC = () => {
 
     // Cleanup
     return () => {
+      if (updateTimeoutRef.current) {
+        clearTimeout(updateTimeoutRef.current);
+      }
       if (connection) {
         connection.close();
       }
@@ -113,6 +128,28 @@ const ShareTextView: React.FC = () => {
     } else {
       toast.error('No text to download');
     }
+  };
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = e.target.value;
+    setTextContent(newText);
+
+    // Debounce updates to avoid flooding the connection
+    if (updateTimeoutRef.current) {
+      clearTimeout(updateTimeoutRef.current);
+    }
+
+    updateTimeoutRef.current = setTimeout(() => {
+      // Send update to owner and other viewers
+      if (connection && connection.open && permissionMode === 'read-write') {
+        sendTextUpdate(
+          connection,
+          newText,
+          textareaRef.current?.selectionStart,
+          myPeerIdRef.current || undefined
+        );
+      }
+    }, 100); // 100ms debounce
   };
 
   const getStatusBadge = () => {
@@ -269,22 +306,26 @@ const ShareTextView: React.FC = () => {
           </div>
           <Textarea
             ref={textareaRef}
-            value={textContent || 'Waiting for text...'}
-            readOnly
-            className="min-h-[300px] font-mono text-sm bg-muted/50"
+            value={textContent}
+            onChange={handleTextChange}
+            readOnly={permissionMode === 'read-only'}
+            placeholder={permissionMode === 'read-write' ? 'Type here to edit collaboratively...' : 'Waiting for text...'}
+            className={`min-h-[300px] font-mono text-sm ${permissionMode === 'read-only' ? 'bg-muted/50' : 'bg-background'}`}
             rows={15}
           />
           <p className="text-xs text-muted-foreground">
             {textContent.length} characters
             {textContent && ' • Updates in real-time'}
+            {permissionMode === 'read-write' && ' • Collaborative editing enabled'}
           </p>
         </div>
 
         <Alert className="border-blue-500/50 bg-blue-50 dark:bg-blue-950/20">
           <Eye className="h-4 w-4 text-blue-600 dark:text-blue-500" />
           <AlertDescription className="text-blue-800 dark:text-blue-300">
-            You are viewing this text in real-time. Any changes made by the sender will appear here instantly.
-            Keep this page open to maintain the connection.
+            {permissionMode === 'read-only' 
+              ? 'You are viewing this text in real-time. Any changes made by the owner will appear here instantly. Keep this page open to maintain the connection.'
+              : 'Collaborative editing enabled! You can edit this text and your changes will sync in real-time with all connected users. Keep this page open to maintain the connection.'}
           </AlertDescription>
         </Alert>
       </div>

@@ -1,9 +1,28 @@
 import Peer, { DataConnection } from 'peerjs';
 
+export type PermissionMode = 'read-only' | 'read-write';
+
 export interface TextUpdate {
     content: string;
     timestamp: number;
     cursorPosition?: number;
+    senderId?: string;
+}
+
+export interface PermissionUpdate {
+    mode: PermissionMode;
+}
+
+/**
+ * Generate a short random peer ID
+ */
+function generateShortId(): string {
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let id = '';
+    for (let i = 0; i < 8; i++) {
+        id += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return id;
 }
 
 /**
@@ -11,7 +30,9 @@ export interface TextUpdate {
  */
 export function initializeTextPeer(peerId?: string): Promise<Peer> {
     return new Promise((resolve, reject) => {
-        const peer = new Peer(peerId, {
+        // Use custom short ID if not provided
+        const id = peerId || generateShortId();
+        const peer = new Peer(id, {
             config: {
                 iceServers: [
                     { urls: 'stun:stun.l.google.com:19302' },
@@ -36,15 +57,43 @@ export function initializeTextPeer(peerId?: string): Promise<Peer> {
 export function sendTextUpdate(
     connection: DataConnection,
     content: string,
-    cursorPosition?: number
+    cursorPosition?: number,
+    senderId?: string
 ): void {
     const update: TextUpdate = {
         content,
         timestamp: Date.now(),
-        cursorPosition
+        cursorPosition,
+        senderId
     };
     
     connection.send({ type: 'text-update', data: update });
+}
+
+/**
+ * Broadcast text update to all connections
+ */
+export function broadcastTextUpdate(
+    connections: DataConnection[],
+    content: string,
+    cursorPosition?: number,
+    senderId?: string
+): void {
+    connections.forEach(conn => {
+        if (conn.open) {
+            sendTextUpdate(conn, content, cursorPosition, senderId);
+        }
+    });
+}
+
+/**
+ * Send permission mode to a connected peer
+ */
+export function sendPermissionMode(
+    connection: DataConnection,
+    mode: PermissionMode
+): void {
+    connection.send({ type: 'permission', data: { mode } });
 }
 
 /**
