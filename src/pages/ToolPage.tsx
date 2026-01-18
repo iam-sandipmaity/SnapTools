@@ -72,6 +72,7 @@ const toolLoaders: Record<string, () => Promise<any>> = {
   encryption: () => import("@/components/tools/encryption"),
   clock: () => import("@/components/tools/clock"),
   file: () => import("@/components/tools/file-sharing"),
+  text: () => import("@/components/tools/text-sharing"),
 };
 
 

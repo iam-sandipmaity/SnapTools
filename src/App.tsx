@@ -29,6 +29,7 @@ const Donate = lazy(() => import("./pages/Donate"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const BlogRouter = lazy(() => import("./blog/router"));
 const ShareFileView = lazy(() => import("./components/tools/file-sharing/ShareFileView"));
+const ShareTextView = lazy(() => import("./components/tools/text-sharing/ShareTextView"));
 
 const App = () => (
   <Suspense fallback={<PageLoader />}>
@@ -53,6 +54,7 @@ const App = () => (
             <Route path="/donate" element={<Donate />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/share/:peerId" element={<ShareFileView />} />
+            <Route path="/share-text/:peerId" element={<ShareTextView />} />
             <Route path="/blog/*" element={<BlogRouter />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

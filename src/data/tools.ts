@@ -272,6 +272,7 @@ export const toolCategories: ToolCategory[] = [
     color: "bg-tooltopia-soft-purple",
     subTools: [
       { id: "file-share", title: "Share files" },
+      { id: "text-share", title: "Share text (Real-time)" },
     ],
   },
 ];
