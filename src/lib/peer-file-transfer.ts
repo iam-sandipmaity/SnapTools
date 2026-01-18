@@ -148,14 +148,14 @@ export async function receiveFile(
  * Create a shareable link with peer ID
  */
 export function createShareLink(peerId: string): string {
-    return `${window.location.origin}/share/${peerId}`;
+    return `${window.location.origin}/s/${peerId}`;
 }
 
 /**
  * Extract peer ID from share URL
  */
 export function extractPeerIdFromUrl(url: string): string | null {
-    const match = url.match(/\/share\/([^\/]+)/);
+    const match = url.match(/\/s\/([^\/]+)/);
     return match ? match[1] : null;
 }
 

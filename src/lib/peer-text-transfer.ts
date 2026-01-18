@@ -77,14 +77,14 @@ export function sendTypingNotification(
  * Create a shareable link with peer ID for text sharing
  */
 export function createTextShareLink(peerId: string): string {
-    return `${window.location.origin}/share-text/${peerId}`;
+    return `${window.location.origin}/t/${peerId}`;
 }
 
 /**
  * Extract peer ID from text share URL
  */
 export function extractPeerIdFromTextUrl(url: string): string | null {
-    const match = url.match(/\/share-text\/([^\/]+)/);
+    const match = url.match(/\/t\/([^\/]+)/);
     return match ? match[1] : null;
 }
 

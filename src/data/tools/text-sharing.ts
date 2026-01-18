@@ -20,7 +20,7 @@ export const textSharing: Tool = {
       id: 'text-view',
       name: 'View Shared Text',
       description: 'View shared text in real-time',
-      path: '/share-text/:id',
+      path: '/t/:id',
       component: () => import('@/components/tools/text-sharing/ShareTextView'),
       icon: Eye,
       hidden: true

@@ -20,7 +20,7 @@ export const fileSharing: Tool = {
       id: 'share-view',
       name: 'View Shared File',
       description: 'View and download shared files',
-      path: '/share/:id',
+      path: '/s/:id',
       component: () => import('@/components/tools/file-sharing/ShareFileView'),
       icon: Download,
       hidden: true

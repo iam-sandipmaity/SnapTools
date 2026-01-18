@@ -53,8 +53,8 @@ const App = () => (
             <Route path="/features" element={<Features />} />
             <Route path="/donate" element={<Donate />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
-            <Route path="/share/:peerId" element={<ShareFileView />} />
-            <Route path="/share-text/:peerId" element={<ShareTextView />} />
+            <Route path="/s/:peerId" element={<ShareFileView />} />
+            <Route path="/t/:peerId" element={<ShareTextView />} />
             <Route path="/blog/*" element={<BlogRouter />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
