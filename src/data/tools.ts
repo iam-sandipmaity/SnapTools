@@ -18,6 +18,7 @@ import {
   Currency,
   Clock,
   FileIcon,
+  Wifi,
 } from "lucide-react";
 
 export type ToolCategory = {
@@ -273,6 +274,15 @@ export const toolCategories: ToolCategory[] = [
     subTools: [
       { id: "file-share", title: "Share files" },
       { id: "text-share", title: "Share text (Real-time)" },
+    ],
+  },
+  {
+    id: "internet",
+    title: "Internet Tools",
+    icon: Wifi,
+    color: "bg-tooltopia-soft-blue",
+    subTools: [
+      { id: "speed-test", title: "Internet Speed Test" },
     ],
   },
 ];
