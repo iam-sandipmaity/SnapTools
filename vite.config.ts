@@ -13,6 +13,12 @@ export default defineConfig({
     markdown(),
   ],
 
+  server: {
+    host: '0.0.0.0', // Listen on all network interfaces
+    port: 5173, // Default Vite port
+    strictPort: false, // Try next port if 5173 is busy
+  },
+
   resolve: {
     dedupe: ['react', 'react-dom'],
     alias: {
