@@ -15,11 +15,14 @@ export interface PermissionUpdate {
 
 /**
  * Generate a short random peer ID
+ * @param length - Length of the ID (3-10 characters, default: 5)
  */
-function generateShortId(): string {
-    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+function generateShortId(length: number = 5): string {
+    // Validate length
+    const validLength = Math.max(3, Math.min(10, length));
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let id = '';
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < validLength; i++) {
         id += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     return id;
@@ -27,11 +30,13 @@ function generateShortId(): string {
 
 /**
  * Initialize a new PeerJS instance for text sharing
+ * @param customId - Optional custom peer ID provided by user
+ * @param idLength - Optional length for auto-generated ID (3-10 characters)
  */
-export function initializeTextPeer(peerId?: string): Promise<Peer> {
+export function initializeTextPeer(customId?: string, idLength?: number): Promise<Peer> {
     return new Promise((resolve, reject) => {
-        // Use custom short ID if not provided
-        const id = peerId || generateShortId();
+        // Use custom ID if provided, otherwise generate one with specified length
+        const id = customId || generateShortId(idLength);
         const peer = new Peer(id, {
             config: {
                 iceServers: [
@@ -66,7 +71,7 @@ export function sendTextUpdate(
         cursorPosition,
         senderId
     };
-    
+
     connection.send({ type: 'text-update', data: update });
 }
 
@@ -103,9 +108,9 @@ export function sendCursorUpdate(
     connection: DataConnection,
     cursorPosition: number
 ): void {
-    connection.send({ 
-        type: 'cursor-update', 
-        data: { cursorPosition, timestamp: Date.now() } 
+    connection.send({
+        type: 'cursor-update',
+        data: { cursorPosition, timestamp: Date.now() }
     });
 }
 
@@ -116,9 +121,9 @@ export function sendTypingNotification(
     connection: DataConnection,
     isTyping: boolean
 ): void {
-    connection.send({ 
-        type: 'typing', 
-        data: { isTyping, timestamp: Date.now() } 
+    connection.send({
+        type: 'typing',
+        data: { isTyping, timestamp: Date.now() }
     });
 }
 
