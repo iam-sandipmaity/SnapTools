@@ -27,6 +27,8 @@ const FileSharer: React.FC = () => {
   const [connections, setConnections] = useState<DataConnection[]>([]);
   const [transferProgress, setTransferProgress] = useState<TransferProgress | null>(null);
   const [isTransferring, setIsTransferring] = useState(false);
+  const [customId, setCustomId] = useState('');
+  const [idLength, setIdLength] = useState(5);
 
   useEffect(() => {
     // Cleanup peer connection on unmount
@@ -36,6 +38,24 @@ const FileSharer: React.FC = () => {
       }
     };
   }, [peer]);
+
+  // Prevent page refresh when file is ready to share
+  useEffect(() => {
+    if (!fileInfo) return;
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = ''; // Chrome requires returnValue to be set
+      return ''; // Some browsers require a return value
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [fileInfo]);
+
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     if (acceptedFiles.length === 0) return;
@@ -51,8 +71,8 @@ const FileSharer: React.FC = () => {
     setIsUploading(true);
 
     try {
-      // Initialize PeerJS connection
-      const newPeer = await initializePeer();
+      // Initialize PeerJS connection with custom ID or length
+      const newPeer = await initializePeer(customId || undefined, idLength);
       setPeer(newPeer);
 
       const peerId = newPeer.id!;
@@ -106,11 +126,14 @@ const FileSharer: React.FC = () => {
     } finally {
       setIsUploading(false);
     }
-  }, []);
+  }, [customId, idLength]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    multiple: false
+    multiple: false,
+    noClick: false,
+    noKeyboard: false,
+    preventDropOnDocument: true, // Prevent browser from opening file
   });
 
   const copyToClipboard = async (text: string) => {
@@ -160,6 +183,55 @@ const FileSharer: React.FC = () => {
             </AlertDescription>
           </Alert>
 
+          {/* Link Customization */}
+          {!fileInfo && (
+            <div className="space-y-4 p-4 rounded-lg border bg-muted/30">
+              <div className="flex items-center gap-2 mb-2">
+                <Info className="h-4 w-4 text-primary" />
+                <h3 className="font-medium">Customize Your Share Link (Optional)</h3>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Custom ID</label>
+                <Input
+                  placeholder="Leave empty for auto-generated ID"
+                  value={customId}
+                  onChange={(e) => setCustomId(e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
+                  maxLength={10}
+                  disabled={isUploading}
+                  className="font-mono"
+                />
+                <p className="text-xs text-muted-foreground">
+                  Use only letters and numbers. Leave empty to auto-generate.
+                </p>
+              </div>
+
+              {!customId && (
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium">Auto-Generated ID Length</label>
+                    <span className="text-sm font-mono bg-primary/10 px-2 py-0.5 rounded">
+                      {idLength} characters
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="3"
+                    max="10"
+                    value={idLength}
+                    onChange={(e) => setIdLength(parseInt(e.target.value))}
+                    disabled={isUploading}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>3 (shorter)</span>
+                    <span>10 (more secure)</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           <div
             {...getRootProps()}
             className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${isDragActive ? 'border-primary bg-primary/5' : 'border-muted-foreground/25 hover:border-primary/50'
@@ -189,6 +261,17 @@ const FileSharer: React.FC = () => {
                   {fileInfo.file.name} ({(fileInfo.file.size / 1024 / 1024).toFixed(2)} MB)
                 </p>
               </div>
+
+              {/* Warning: Don't refresh */}
+              <Alert className="border-amber-500/50 bg-amber-50 dark:bg-amber-950/20">
+                <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-500" />
+                <AlertTitle className="text-amber-900 dark:text-amber-400 font-semibold">
+                  Keep This Page Open!
+                </AlertTitle>
+                <AlertDescription className="text-amber-800 dark:text-amber-300 text-sm">
+                  <strong>Do not refresh, close, or navigate away from this page.</strong> Your file is ready to share, and the connection will be lost if you leave.
+                </AlertDescription>
+              </Alert>
 
               <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
                 <Wifi className="h-4 w-4 text-green-500" />

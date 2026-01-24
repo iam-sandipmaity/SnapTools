@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import { Copy, QrCode, Users, Wifi, AlertCircle, Download, Eye } from 'lucide-react';
+import { Copy, QrCode, Users, Wifi, AlertCircle, Download, Eye, Info } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { QRCodeSVG } from 'qrcode.react';
 import AnimatedElement from '@/components/animated-element';
@@ -31,6 +31,8 @@ const TextSharer: React.FC = () => {
   const [isInitializing, setIsInitializing] = useState(false);
   const [connectedUsers, setConnectedUsers] = useState<number>(0);
   const [permissionMode, setPermissionMode] = useState<PermissionMode>('read-only');
+  const [customId, setCustomId] = useState('');
+  const [idLength, setIdLength] = useState(5);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const connectionsRef = useRef<DataConnection[]>([]);
@@ -66,8 +68,8 @@ const TextSharer: React.FC = () => {
     setIsInitializing(true);
 
     try {
-      // Initialize PeerJS connection
-      const newPeer = await initializeTextPeer();
+      // Initialize PeerJS connection with custom ID or length
+      const newPeer = await initializeTextPeer(customId || undefined, idLength);
       setPeer(newPeer);
 
       const newPeerId = newPeer.id!;
@@ -79,7 +81,7 @@ const TextSharer: React.FC = () => {
       // Listen for incoming connections
       newPeer.on('connection', (conn) => {
         console.log('Receiver connected:', conn.peer);
-        
+
         conn.on('open', () => {
           setConnections(prev => {
             const updated = [...prev, conn];
@@ -87,15 +89,15 @@ const TextSharer: React.FC = () => {
             connectionsRef.current = updated;
             return updated;
           });
-          
+
           toast.success('A viewer connected!');
-          
+
           // Send permission mode first
           sendPermissionMode(conn, permissionModeRef.current);
-          
+
           // Send current text content immediately
           sendTextUpdate(conn, textContent);
-          
+
           // Listen for incoming messages from receiver
           conn.on('data', (data: any) => {
             if (data.type === 'cursor-update') {
@@ -218,18 +220,67 @@ const TextSharer: React.FC = () => {
           </Alert>
 
           {!shareLink ? (
-            <div className="text-center py-8">
-              <Button
-                onClick={initializeSharing}
-                disabled={isInitializing}
-                size="lg"
-              >
-                {isInitializing ? 'Initializing...' : 'Start Text Sharing'}
-              </Button>
-              <p className="text-sm text-muted-foreground mt-4">
-                Click to initialize and get your shareable link
-              </p>
-            </div>
+            <>
+              {/* Link Customization */}
+              <div className="space-y-4 p-4 rounded-lg border bg-muted/30">
+                <div className="flex items-center gap-2 mb-2">
+                  <Info className="h-4 w-4 text-primary" />
+                  <h3 className="font-medium">Customize Your Share Link (Optional)</h3>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Custom ID</label>
+                  <Input
+                    placeholder="Leave empty for auto-generated ID"
+                    value={customId}
+                    onChange={(e) => setCustomId(e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
+                    maxLength={10}
+                    disabled={isInitializing}
+                    className="font-mono"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Use only letters and numbers. Leave empty to auto-generate.
+                  </p>
+                </div>
+
+                {!customId && (
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <label className="text-sm font-medium">Auto-Generated ID Length</label>
+                      <span className="text-sm font-mono bg-primary/10 px-2 py-0.5 rounded">
+                        {idLength} characters
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min="3"
+                      max="10"
+                      value={idLength}
+                      onChange={(e) => setIdLength(parseInt(e.target.value))}
+                      disabled={isInitializing}
+                      className="w-full"
+                    />
+                    <div className="flex justify-between text-xs text-muted-foreground">
+                      <span>3 (shorter)</span>
+                      <span>10 (more secure)</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="text-center py-8">
+                <Button
+                  onClick={initializeSharing}
+                  disabled={isInitializing}
+                  size="lg"
+                >
+                  {isInitializing ? 'Initializing...' : 'Start Text Sharing'}
+                </Button>
+                <p className="text-sm text-muted-foreground mt-4">
+                  Click to initialize and get your shareable link
+                </p>
+              </div>
+            </>
           ) : (
             <>
               {/* Connection Status */}
@@ -280,8 +331,8 @@ const TextSharer: React.FC = () => {
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  {permissionMode === 'read-only' 
-                    ? 'Viewers can only read your text' 
+                  {permissionMode === 'read-only'
+                    ? 'Viewers can only read your text'
                     : 'Viewers can edit the text collaboratively in real-time'}
                 </p>
               </div>
@@ -332,7 +383,7 @@ const TextSharer: React.FC = () => {
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Share this link with anyone who wants to view your text in real-time. 
+                  Share this link with anyone who wants to view your text in real-time.
                   <strong className="text-amber-600 dark:text-amber-500"> Keep this page open</strong> for the connection to work.
                 </p>
               </div>
