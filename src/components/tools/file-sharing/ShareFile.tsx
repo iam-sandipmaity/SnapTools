@@ -39,6 +39,24 @@ const FileSharer: React.FC = () => {
     };
   }, [peer]);
 
+  // Prevent page refresh when file is ready to share
+  useEffect(() => {
+    if (!fileInfo) return;
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = ''; // Chrome requires returnValue to be set
+      return ''; // Some browsers require a return value
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [fileInfo]);
+
+
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     if (acceptedFiles.length === 0) return;
 
@@ -112,7 +130,10 @@ const FileSharer: React.FC = () => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    multiple: false
+    multiple: false,
+    noClick: false,
+    noKeyboard: false,
+    preventDropOnDocument: true, // Prevent browser from opening file
   });
 
   const copyToClipboard = async (text: string) => {
@@ -240,6 +261,17 @@ const FileSharer: React.FC = () => {
                   {fileInfo.file.name} ({(fileInfo.file.size / 1024 / 1024).toFixed(2)} MB)
                 </p>
               </div>
+
+              {/* Warning: Don't refresh */}
+              <Alert className="border-amber-500/50 bg-amber-50 dark:bg-amber-950/20">
+                <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-500" />
+                <AlertTitle className="text-amber-900 dark:text-amber-400 font-semibold">
+                  Keep This Page Open!
+                </AlertTitle>
+                <AlertDescription className="text-amber-800 dark:text-amber-300 text-sm">
+                  <strong>Do not refresh, close, or navigate away from this page.</strong> Your file is ready to share, and the connection will be lost if you leave.
+                </AlertDescription>
+              </Alert>
 
               <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
                 <Wifi className="h-4 w-4 text-green-500" />
