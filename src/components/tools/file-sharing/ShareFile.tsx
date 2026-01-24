@@ -27,6 +27,8 @@ const FileSharer: React.FC = () => {
   const [connections, setConnections] = useState<DataConnection[]>([]);
   const [transferProgress, setTransferProgress] = useState<TransferProgress | null>(null);
   const [isTransferring, setIsTransferring] = useState(false);
+  const [customId, setCustomId] = useState('');
+  const [idLength, setIdLength] = useState(5);
 
   useEffect(() => {
     // Cleanup peer connection on unmount
@@ -51,8 +53,8 @@ const FileSharer: React.FC = () => {
     setIsUploading(true);
 
     try {
-      // Initialize PeerJS connection
-      const newPeer = await initializePeer();
+      // Initialize PeerJS connection with custom ID or length
+      const newPeer = await initializePeer(customId || undefined, idLength);
       setPeer(newPeer);
 
       const peerId = newPeer.id!;
@@ -106,7 +108,7 @@ const FileSharer: React.FC = () => {
     } finally {
       setIsUploading(false);
     }
-  }, []);
+  }, [customId, idLength]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -159,6 +161,55 @@ const FileSharer: React.FC = () => {
               </ul>
             </AlertDescription>
           </Alert>
+
+          {/* Link Customization */}
+          {!fileInfo && (
+            <div className="space-y-4 p-4 rounded-lg border bg-muted/30">
+              <div className="flex items-center gap-2 mb-2">
+                <Info className="h-4 w-4 text-primary" />
+                <h3 className="font-medium">Customize Your Share Link (Optional)</h3>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Custom ID</label>
+                <Input
+                  placeholder="Leave empty for auto-generated ID"
+                  value={customId}
+                  onChange={(e) => setCustomId(e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
+                  maxLength={10}
+                  disabled={isUploading}
+                  className="font-mono"
+                />
+                <p className="text-xs text-muted-foreground">
+                  Use only letters and numbers. Leave empty to auto-generate.
+                </p>
+              </div>
+
+              {!customId && (
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium">Auto-Generated ID Length</label>
+                    <span className="text-sm font-mono bg-primary/10 px-2 py-0.5 rounded">
+                      {idLength} characters
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="3"
+                    max="10"
+                    value={idLength}
+                    onChange={(e) => setIdLength(parseInt(e.target.value))}
+                    disabled={isUploading}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>3 (shorter)</span>
+                    <span>10 (more secure)</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           <div
             {...getRootProps()}
