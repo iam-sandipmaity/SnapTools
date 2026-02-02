@@ -169,16 +169,18 @@ const ImageCompressor = () => {
               </div>
             </div>
             
-            <div className="space-y-2">
-              <Label>Compressed Image</Label>
-              <div className="border rounded-md overflow-hidden bg-checkerboard">
-                <LazyImage 
-                  src={compressedImage || ''} 
-                  alt="Compressed" 
-                  className="w-full h-auto max-h-[300px] object-contain"
-                />
+            {compressedImage && (
+              <div className="space-y-2">
+                <Label>Compressed Image</Label>
+                <div className="border rounded-md overflow-hidden bg-checkerboard">
+                  <LazyImage 
+                    src={compressedImage} 
+                    alt="Compressed" 
+                    className="w-full h-auto max-h-[300px] object-contain"
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>
