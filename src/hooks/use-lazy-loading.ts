@@ -23,6 +23,15 @@ export function useLazyLoading({
     let mounted = true;
 
     const loadImage = (imageUrl: string) => {
+      // Don't attempt to load empty or invalid URLs
+      if (!imageUrl || imageUrl.trim() === '') {
+        if (mounted) {
+          setError('Invalid image URL');
+          setIsLoaded(false);
+        }
+        return;
+      }
+
       const img = new Image();
       img.src = imageUrl;
       img.onload = () => {
