@@ -166,8 +166,8 @@ async function generateTimezones() {
 
     // Major countries get 1500+ cities, others get 400+
     const MAJOR_COUNTRIES = ['United States', 'China', 'India', 'United Kingdom', 'Japan', 'Germany', 'France', 'Brazil', 'Russia', 'Canada', 'Australia', 'Italy', 'Spain', 'Mexico', 'Indonesia', 'South Korea', 'Turkey', 'Saudi Arabia'];
-    const MAX_CITIES_MAJOR_COUNTRIES = 1500;
-    const MAX_CITIES_OTHER_COUNTRIES = 400;
+    const MAX_CITIES_MAJOR_COUNTRIES = 20000;
+    const MAX_CITIES_OTHER_COUNTRIES = 10000;
 
     const getMaxCitiesForCountry = (countryName: string): number => {
         return MAJOR_COUNTRIES.includes(countryName) ? MAX_CITIES_MAJOR_COUNTRIES : MAX_CITIES_OTHER_COUNTRIES;

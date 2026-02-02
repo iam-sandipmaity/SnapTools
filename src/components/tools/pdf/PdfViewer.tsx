@@ -15,7 +15,15 @@ import {
   Minimize2,
   Printer,
   Loader2,
-  FileUp
+  FileUp,
+  Eye,
+  EyeOff,
+  Info,
+  FileType,
+  Copy,
+  Shield,
+  ShieldCheck,
+  ShieldAlert
 } from "lucide-react";
 import { toast } from "sonner";
 import AnimatedElement from "@/components/animated-element";
@@ -35,6 +43,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
+import { PDFDocument } from "pdf-lib-with-encrypt";
 
 type FitMode = "page" | "width" | "custom";
 type ViewMode = "single" | "scroll";
@@ -44,6 +60,7 @@ const PdfViewer = () => {
   const [password, setPassword] = useState("");
   const [isLocked, setIsLocked] = useState(false);
   const [showPasswordDialog, setShowPasswordDialog] = useState(false);
+  const [unlockPassword, setUnlockPassword] = useState<string>(""); // Store the password used to unlock
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [scale, setScale] = useState(1.2);
@@ -55,6 +72,16 @@ const PdfViewer = () => {
   const [viewMode, setViewMode] = useState<ViewMode>("single");
   const [pageInput, setPageInput] = useState("");
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showPasswordField, setShowPasswordField] = useState(false);
+  const [showExportDialog, setShowExportDialog] = useState(false);
+  const [exportOption, setExportOption] = useState<"decrypt" | "encrypt">("decrypt");
+  const [exportPassword, setExportPassword] = useState("");
+  const [showExportPassword, setShowExportPassword] = useState(false);
+  const [showMetadataDialog, setShowMetadataDialog] = useState(false);
+  const [showTextDialog, setShowTextDialog] = useState(false);
+  const [extractedText, setExtractedText] = useState("");
+  const [metadata, setMetadata] = useState<any>(null);
+  const [exporting, setExporting] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const scrollCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -204,6 +231,7 @@ const PdfViewer = () => {
     setPdfDocument(null);
     setRotation(0);
     setPageInput("");
+    setUnlockPassword("");
 
     loadPdf(f);
   };
@@ -227,9 +255,12 @@ const PdfViewer = () => {
       setIsLocked(false);
       setShowPasswordDialog(false);
       
+      // Store the unlock password for later use in export operations
       if (pwd) {
+        setUnlockPassword(pwd);
         toast.success(`PDF unlocked - ${pdf.numPages} page(s) loaded`);
       } else {
+        setUnlockPassword("");
         toast.success(`PDF loaded - ${pdf.numPages} page(s)`);
       }
     } catch (err: any) {
@@ -577,12 +608,144 @@ const PdfViewer = () => {
 
   /* ================= Export PDF ================= */
 
+  const handleExtractText = async () => {
+    if (!pdfDocument) return;
+    
+    try {
+      let allText = "";
+      for (let i = 1; i <= pdfDocument.numPages; i++) {
+        const page = await pdfDocument.getPage(i);
+        const textContent = await page.getTextContent();
+        const pageText = textContent.items.map((item: any) => item.str).join(" ");
+        allText += `\n--- Page ${i} ---\n${pageText}\n`;
+      }
+      setExtractedText(allText);
+      setShowTextDialog(true);
+      toast.success("Text extracted successfully");
+    } catch (err) {
+      console.error("Text extraction error:", err);
+      toast.error("Failed to extract text");
+    }
+  };
+
+  const handleCopyText = () => {
+    navigator.clipboard.writeText(extractedText);
+    toast.success("Text copied to clipboard");
+  };
+
+  const handleViewMetadata = async () => {
+    if (!pdfDocument) return;
+    
+    try {
+      const meta = await pdfDocument.getMetadata();
+      setMetadata(meta);
+      setShowMetadataDialog(true);
+    } catch (err) {
+      console.error("Metadata error:", err);
+      toast.error("Failed to load metadata");
+    }
+  };
+
+  const handleExportPdf = async () => {
+    if (!file) return;
+    
+    if (exportOption === "encrypt" && !exportPassword) {
+      toast.error("Please enter a password");
+      return;
+    }
+    
+    setExporting(true);
+    
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      
+      if (exportOption === "decrypt") {
+        // Decrypt mode: Just save without encryption
+        
+        // If the PDF was encrypted, provide the unlock password
+        const loadOptions: any = {};
+        if (unlockPassword) {
+          loadOptions.password = unlockPassword;
+        }
+        
+        const pdfDoc = await PDFDocument.load(arrayBuffer, loadOptions);
+        
+        const pdfBytes = await pdfDoc.save();
+        
+        const blob = new Blob([pdfBytes as any], { type: "application/pdf" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = file.name.replace(".pdf", "_decrypted.pdf");
+        a.click();
+        URL.revokeObjectURL(url);
+        
+        toast.success("PDF exported without password protection");
+        setShowExportDialog(false);
+        setExportPassword("");
+      } else {
+        // Encrypt mode: Use pdf-lib-with-encrypt
+        
+        try {
+          // If the PDF was encrypted, provide the unlock password
+          const loadOptions: any = {};
+          if (unlockPassword) {
+            loadOptions.password = unlockPassword;
+          }
+          
+          const pdfDoc = await PDFDocument.load(arrayBuffer, loadOptions);
+          
+          // Check if encrypt method exists
+          if (typeof (pdfDoc as any).encrypt === 'function') {
+            // Call encrypt before save
+            await (pdfDoc as any).encrypt({
+              userPassword: exportPassword,
+              ownerPassword: exportPassword,
+            });
+            
+            const pdfBytes = await pdfDoc.save();
+            
+            const blob = new Blob([pdfBytes as any], { type: "application/pdf" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = file.name.replace(".pdf", "_encrypted.pdf");
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            toast.success("PDF encrypted successfully! Try opening it to verify the password works.");
+            setShowExportDialog(false);
+            setExportPassword("");
+          } else {
+            // Fallback: encrypt method not available
+            console.warn("Encrypt method not available in pdf-lib");
+            toast.error("Browser encryption not available. The library doesn't support encryption on this PDF.");
+          }
+        } catch (encryptErr: any) {
+          console.error("Encryption error:", encryptErr);
+          
+          // Provide more helpful error messages
+          if (encryptErr.message?.includes("encrypt")) {
+            toast.error("Encryption failed: This PDF may use unsupported features. Try a different PDF or use a simpler one.");
+          } else {
+            toast.error("Encryption failed: " + (encryptErr.message || "Unknown error"));
+          }
+        }
+      }
+    } catch (err: any) {
+      console.error("Export error:", err);
+      toast.error("Failed to process PDF: " + (err.message || "Unknown error"));
+    } finally {
+      setExporting(false);
+    }
+  };
 
 
   /* ================= UI ================= */
 
   return (
     <AnimatedElement className="space-y-6">
+      <TooltipProvider>
       {/* Password Dialog */}
       <Dialog open={showPasswordDialog} onOpenChange={setShowPasswordDialog}>
         <DialogContent>
@@ -598,19 +761,35 @@ const PdfViewer = () => {
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="pdf-password">Password</Label>
-              <Input
-                id="pdf-password"
-                type="password"
-                placeholder="Enter PDF password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handlePasswordSubmit();
-                  }
-                }}
-                autoFocus
-              />
+              <div className="relative">
+                <Input
+                  id="pdf-password"
+                  type={showPasswordField ? "text" : "password"}
+                  placeholder="Enter PDF password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handlePasswordSubmit();
+                    }
+                  }}
+                  autoFocus
+                  className="pr-10"
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="absolute right-0 top-0 h-full px-3"
+                  onClick={() => setShowPasswordField(!showPasswordField)}
+                >
+                  {showPasswordField ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
             </div>
           </div>
           <DialogFooter>
@@ -624,9 +803,240 @@ const PdfViewer = () => {
         </DialogContent>
       </Dialog>
 
+      {/* Export Dialog */}
+      <Dialog open={showExportDialog} onOpenChange={setShowExportDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Shield className="h-5 w-5" />
+              Export PDF
+            </DialogTitle>
+            <DialogDescription>
+              Remove password protection from encrypted PDFs or add basic password protection (experimental).
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-3">
+              <Label>Export Option</Label>
+              <div className="space-y-2">
+                <button
+                  onClick={() => setExportOption("decrypt")}
+                  className={`w-full text-left p-3 rounded-lg border-2 transition-all ${
+                    exportOption === "decrypt"
+                      ? "border-primary bg-primary/5"
+                      : "border-border hover:border-primary/50"
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <ShieldCheck className="h-5 w-5 mt-0.5" />
+                    <div>
+                      <div className="font-medium">Remove Password Protection</div>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        Create an unencrypted copy of the PDF
+                      </div>
+                    </div>
+                  </div>
+                </button>
+                
+                <button
+                  onClick={() => setExportOption("encrypt")}
+                  className={`w-full text-left p-3 rounded-lg border-2 transition-all ${
+                    exportOption === "encrypt"
+                      ? "border-primary bg-primary/5"
+                      : "border-border hover:border-primary/50"
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <ShieldAlert className="h-5 w-5 mt-0.5" />
+                    <div>
+                      <div className="font-medium">Add Password Protection (Experimental)</div>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        Encrypt PDF with a password - May not work with all PDFs
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            {exportOption === "encrypt" && (
+              <div className="space-y-2">
+                <Label htmlFor="export-password">New Password</Label>
+                <div className="relative">
+                  <Input
+                    id="export-password"
+                    type={showExportPassword ? "text" : "password"}
+                    placeholder="Enter password"
+                    value={exportPassword}
+                    onChange={(e) => setExportPassword(e.target.value)}
+                    className="pr-10"
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="absolute right-0 top-0 h-full px-3"
+                    onClick={() => setShowExportPassword(!showExportPassword)}
+                  >
+                    {showExportPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+                {exportPassword && (
+                  <div className="text-xs">
+                    Strength: {exportPassword.length < 6 ? (
+                      <span className="text-red-500">Weak</span>
+                    ) : exportPassword.length < 10 ? (
+                      <span className="text-yellow-500">Medium</span>
+                    ) : (
+                      <span className="text-green-500">Strong</span>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {exportOption === "encrypt" && (
+              <div className="text-xs p-3 border rounded-lg bg-amber-50 dark:bg-amber-950/30 flex items-start gap-2">
+                <ShieldAlert className="h-4 w-4 mt-0.5 text-amber-600 flex-shrink-0" />
+                <div className="text-amber-800 dark:text-amber-200">
+                  <p className="font-medium mb-1">⚠️ Browser Encryption Limitations</p>
+                  <p>Browser-based encryption has limited compatibility and may not work with all PDFs. For reliable encryption, download the encrypted PDF and test if it asks for a password when you open it. The decryption option is more reliable.</p>
+                </div>
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowExportDialog(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleExportPdf} 
+              disabled={exporting || (exportOption === "encrypt" && !exportPassword)}
+            >
+              {exporting ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Exporting...
+                </>
+              ) : (
+                <>
+                  <Download className="h-4 w-4 mr-2" />
+                  Export PDF
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Metadata Dialog */}
+      <Dialog open={showMetadataDialog} onOpenChange={setShowMetadataDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Info className="h-5 w-5" />
+              PDF Metadata
+            </DialogTitle>
+            <DialogDescription>
+              Information about the PDF document
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3 py-4">
+            {metadata?.info && (
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                {metadata.info.Title && (
+                  <>
+                    <div className="font-medium">Title:</div>
+                    <div className="text-muted-foreground">{metadata.info.Title}</div>
+                  </>
+                )}
+                {metadata.info.Author && (
+                  <>
+                    <div className="font-medium">Author:</div>
+                    <div className="text-muted-foreground">{metadata.info.Author}</div>
+                  </>
+                )}
+                {metadata.info.Subject && (
+                  <>
+                    <div className="font-medium">Subject:</div>
+                    <div className="text-muted-foreground">{metadata.info.Subject}</div>
+                  </>
+                )}
+                {metadata.info.Creator && (
+                  <>
+                    <div className="font-medium">Creator:</div>
+                    <div className="text-muted-foreground">{metadata.info.Creator}</div>
+                  </>
+                )}
+                {metadata.info.Producer && (
+                  <>
+                    <div className="font-medium">Producer:</div>
+                    <div className="text-muted-foreground">{metadata.info.Producer}</div>
+                  </>
+                )}
+                {metadata.info.CreationDate && (
+                  <>
+                    <div className="font-medium">Created:</div>
+                    <div className="text-muted-foreground">
+                      {new Date(metadata.info.CreationDate).toLocaleDateString()}
+                    </div>
+                  </>
+                )}
+                {metadata.info.ModDate && (
+                  <>
+                    <div className="font-medium">Modified:</div>
+                    <div className="text-muted-foreground">
+                      {new Date(metadata.info.ModDate).toLocaleDateString()}
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+            {(!metadata || !metadata.info || Object.keys(metadata.info).length === 0) && (
+              <p className="text-sm text-muted-foreground text-center py-4">
+                No metadata available
+              </p>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Text Extraction Dialog */}
+      <Dialog open={showTextDialog} onOpenChange={setShowTextDialog}>
+        <DialogContent className="sm:max-w-2xl max-h-[80vh]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileType className="h-5 w-5" />
+              Extracted Text
+            </DialogTitle>
+            <DialogDescription>
+              Text content from all pages
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div className="max-h-[50vh] overflow-auto border rounded-lg p-4 bg-muted/30 text-sm font-mono whitespace-pre-wrap">
+              {extractedText || "No text found"}
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowTextDialog(false)}>
+              Close
+            </Button>
+            <Button onClick={handleCopyText}>
+              <Copy className="h-4 w-4 mr-2" />
+              Copy to Clipboard
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
 
-      <div className="border rounded-lg p-6 bg-muted/40 space-y-6">
+
+      <div className="border rounded-lg p-6 bg-gradient-to-br from-muted/40 to-muted/20 space-y-6">
         <div className="text-sm text-muted-foreground">
           <p className="font-medium text-foreground mb-1 text-lg">📄 PDF Viewer</p>
           <p>View and navigate PDF files with zoom, rotation, and keyboard shortcuts.</p>
@@ -657,14 +1067,27 @@ const PdfViewer = () => {
         {file && (
           <>
             {/* File Info */}
-            <div className="flex items-center justify-between gap-3 border rounded-lg p-4 bg-background/60 backdrop-blur">
+            <div className="space-y-3 border rounded-lg p-4 bg-gradient-to-r from-background/80 to-background/60 backdrop-blur shadow-sm">
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 <div className="flex-shrink-0">
-                  <FileText className="h-8 w-8 text-blue-600" />
+                  <FileText className="h-8 w-8 text-blue-600 dark:text-blue-400" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium truncate">{file.name}</div>
-                  <div className="text-xs text-muted-foreground flex items-center gap-2 flex-wrap">
+                  <div className="font-medium truncate flex items-center gap-2 flex-wrap">
+                    <span className="truncate">{file.name}</span>
+                    {isLocked ? (
+                      <Badge variant="destructive" className="text-xs flex-shrink-0">
+                        <Lock className="h-3 w-3 mr-1" />
+                        Encrypted
+                      </Badge>
+                    ) : pdfDocument ? (
+                      <Badge variant="secondary" className="text-xs flex-shrink-0">
+                        <ShieldCheck className="h-3 w-3 mr-1" />
+                        Unlocked
+                      </Badge>
+                    ) : null}
+                  </div>
+                  <div className="text-xs text-muted-foreground flex items-center gap-2 flex-wrap mt-1">
                     <span>{(file.size / 1024 / 1024).toFixed(2)} MB</span>
                     {totalPages > 0 && (
                       <>
@@ -676,14 +1099,52 @@ const PdfViewer = () => {
                 </div>
               </div>
               {pdfDocument && (
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={handlePrint} title="Print PDF">
-                    <Printer className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="sm" onClick={handleDownload}>
-                    <Download className="h-4 w-4 mr-2" />
-                    Download
-                  </Button>
+                <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="outline" size="sm" onClick={handleViewMetadata} className="w-full">
+                        <Info className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>View Metadata</TooltipContent>
+                  </Tooltip>
+                  
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="outline" size="sm" onClick={handleExtractText} className="w-full">
+                        <FileType className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Extract Text</TooltipContent>
+                  </Tooltip>
+                  
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="outline" size="sm" onClick={() => setShowExportDialog(true)} className="w-full">
+                        <Shield className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Encrypt/Decrypt</TooltipContent>
+                  </Tooltip>
+                  
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="outline" size="sm" onClick={handlePrint} className="w-full">
+                        <Printer className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Print PDF</TooltipContent>
+                  </Tooltip>
+                  
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="outline" size="sm" onClick={handleDownload} className="w-full col-span-2 sm:col-span-1">
+                        <Download className="h-4 w-4 sm:mr-0 mr-2" />
+                        <span className="sm:hidden">Download</span>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Download PDF</TooltipContent>
+                  </Tooltip>
                 </div>
               )}
             </div>
@@ -710,25 +1171,33 @@ const PdfViewer = () => {
                   {viewMode === "single" && (
                     <div className="flex items-center justify-between gap-4 border rounded-lg p-3 bg-background/60 backdrop-blur flex-wrap">
                     <div className="flex items-center gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={goToFirstPage}
-                        disabled={currentPage <= 1 || rendering}
-                        title="First page (Home)"
-                      >
-                        <ChevronLeft className="h-4 w-4" />
-                        <ChevronLeft className="h-4 w-4 -ml-3" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={goToPrevPage}
-                        disabled={currentPage <= 1 || rendering}
-                        title="Previous page (← or ↑)"
-                      >
-                        <ChevronLeft className="h-4 w-4" />
-                      </Button>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={goToFirstPage}
+                            disabled={currentPage <= 1 || rendering}
+                          >
+                            <ChevronLeft className="h-4 w-4" />
+                            <ChevronLeft className="h-4 w-4 -ml-3" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>First page (Home)</TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={goToPrevPage}
+                            disabled={currentPage <= 1 || rendering}
+                          >
+                            <ChevronLeft className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Previous page (← or ↑)</TooltipContent>
+                      </Tooltip>
                       
                       {/* Page Input */}
                       <form onSubmit={handlePageInputSubmit} className="flex items-center gap-2">
@@ -745,25 +1214,33 @@ const PdfViewer = () => {
                         </span>
                       </form>
 
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={goToNextPage}
-                        disabled={currentPage >= totalPages || rendering}
-                        title="Next page (→ or ↓)"
-                      >
-                        <ChevronRight className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={goToLastPage}
-                        disabled={currentPage >= totalPages || rendering}
-                        title="Last page (End)"
-                      >
-                        <ChevronRight className="h-4 w-4" />
-                        <ChevronRight className="h-4 w-4 -ml-3" />
-                      </Button>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={goToNextPage}
+                            disabled={currentPage >= totalPages || rendering}
+                          >
+                            <ChevronRight className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Next page (→ or ↓)</TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={goToLastPage}
+                            disabled={currentPage >= totalPages || rendering}
+                          >
+                            <ChevronRight className="h-4 w-4" />
+                            <ChevronRight className="h-4 w-4 -ml-3" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Last page (End)</TooltipContent>
+                      </Tooltip>
                     </div>
                   </div>
                   )}
@@ -784,79 +1261,134 @@ const PdfViewer = () => {
                     </Select>
 
                     <div className="flex items-center gap-1 border rounded-md">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={zoomOut}
-                        disabled={scale <= 0.25 || rendering}
-                        title="Zoom out (-)"
-                        className="h-9"
-                      >
-                        <ZoomOut className="h-4 w-4" />
-                      </Button>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={zoomOut}
+                            disabled={scale <= 0.25 || rendering}
+                            className="h-9"
+                          >
+                            <ZoomOut className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Zoom out (-)</TooltipContent>
+                      </Tooltip>
                       <span className="text-sm font-medium min-w-[50px] text-center px-2">
                         {Math.round(scale * 100)}%
                       </span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={zoomIn}
-                        disabled={scale >= 5 || rendering}
-                        title="Zoom in (+)"
-                        className="h-9"
-                      >
-                        <ZoomIn className="h-4 w-4" />
-                      </Button>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={zoomIn}
+                            disabled={scale >= 5 || rendering}
+                            className="h-9"
+                          >
+                            <ZoomIn className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Zoom in (+)</TooltipContent>
+                      </Tooltip>
                     </div>
 
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleRotate}
-                      disabled={rendering}
-                      title="Rotate 90° (R)"
-                    >
-                      <RotateCw className="h-4 w-4" />
-                    </Button>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleRotate}
+                          disabled={rendering}
+                        >
+                          <RotateCw className="h-4 w-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Rotate 90° (R)</TooltipContent>
+                    </Tooltip>
 
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={toggleFullscreen}
-                      title="Toggle fullscreen"
-                    >
-                      {isFullscreen ? (
-                        <Minimize2 className="h-4 w-4" />
-                      ) : (
-                        <Maximize2 className="h-4 w-4" />
-                      )}
-                    </Button>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={toggleFullscreen}
+                        >
+                          {isFullscreen ? (
+                            <Minimize2 className="h-4 w-4" />
+                          ) : (
+                            <Maximize2 className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Toggle fullscreen</TooltipContent>
+                    </Tooltip>
                   </div>
 
                   {/* Keyboard Shortcuts Info */}
-                  <details className="text-xs text-muted-foreground border rounded-lg p-3 bg-background/40">
-                    <summary className="cursor-pointer font-medium">⌨️ Keyboard Shortcuts</summary>
-                    <div className="mt-2 grid grid-cols-2 md:grid-cols-3 gap-2">
+                  <details className="text-xs text-muted-foreground border rounded-lg p-3 bg-gradient-to-r from-background/40 to-background/20">
+                    <summary className="cursor-pointer font-medium hover:text-foreground transition-colors">⌨️ Keyboard Shortcuts</summary>
+                    <div className="mt-3 grid grid-cols-2 md:grid-cols-3 gap-2">
                       {viewMode === "single" ? (
                         <>
-                          <div><kbd className="px-1.5 py-0.5 bg-muted rounded">←/↑</kbd> Previous page</div>
-                          <div><kbd className="px-1.5 py-0.5 bg-muted rounded">→/↓</kbd> Next page</div>
-                          <div><kbd className="px-1.5 py-0.5 bg-muted rounded">Home</kbd> First page</div>
-                          <div><kbd className="px-1.5 py-0.5 bg-muted rounded">End</kbd> Last page</div>
+                          <div className="flex items-center gap-2">
+                            <kbd className="px-2 py-1 bg-muted border border-border rounded text-xs font-mono shadow-sm">←/↑</kbd>
+                            <span>Previous</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <kbd className="px-2 py-1 bg-muted border border-border rounded text-xs font-mono shadow-sm">→/↓</kbd>
+                            <span>Next</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <kbd className="px-2 py-1 bg-muted border border-border rounded text-xs font-mono shadow-sm">Home</kbd>
+                            <span>First</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <kbd className="px-2 py-1 bg-muted border border-border rounded text-xs font-mono shadow-sm">End</kbd>
+                            <span>Last</span>
+                          </div>
                         </>
                       ) : (
                         <>
-                          <div><kbd className="px-1.5 py-0.5 bg-muted rounded">↑</kbd> Scroll up</div>
-                          <div><kbd className="px-1.5 py-0.5 bg-muted rounded">↓</kbd> Scroll down</div>
-                          <div><kbd className="px-1.5 py-0.5 bg-muted rounded">PgUp</kbd> Page up</div>
-                          <div><kbd className="px-1.5 py-0.5 bg-muted rounded">PgDn</kbd> Page down</div>
-                          <div><kbd className="px-1.5 py-0.5 bg-muted rounded">Home</kbd> Scroll to top</div>
-                          <div><kbd className="px-1.5 py-0.5 bg-muted rounded">End</kbd> Scroll to bottom</div>
+                          <div className="flex items-center gap-2">
+                            <kbd className="px-2 py-1 bg-muted border border-border rounded text-xs font-mono shadow-sm">↑</kbd>
+                            <span>Scroll up</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <kbd className="px-2 py-1 bg-muted border border-border rounded text-xs font-mono shadow-sm">↓</kbd>
+                            <span>Scroll down</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <kbd className="px-2 py-1 bg-muted border border-border rounded text-xs font-mono shadow-sm">PgUp</kbd>
+                            <span>Page up</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <kbd className="px-2 py-1 bg-muted border border-border rounded text-xs font-mono shadow-sm">PgDn</kbd>
+                            <span>Page down</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <kbd className="px-2 py-1 bg-muted border border-border rounded text-xs font-mono shadow-sm">Home</kbd>
+                            <span>Top</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <kbd className="px-2 py-1 bg-muted border border-border rounded text-xs font-mono shadow-sm">End</kbd>
+                            <span>Bottom</span>
+                          </div>
                         </>
                       )}
-                      <div><kbd className="px-1.5 py-0.5 bg-muted rounded">+</kbd> Zoom in</div>
-                      <div><kbd className="px-1.5 py-0.5 bg-muted rounded">-</kbd> Zoom out</div>
-                      <div><kbd className="px-1.5 py-0.5 bg-muted rounded">R</kbd> Rotate</div>
+                      <div className="flex items-center gap-2">
+                        <kbd className="px-2 py-1 bg-muted border border-border rounded text-xs font-mono shadow-sm">+</kbd>
+                        <span>Zoom in</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <kbd className="px-2 py-1 bg-muted border border-border rounded text-xs font-mono shadow-sm">-</kbd>
+                        <span>Zoom out</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <kbd className="px-2 py-1 bg-muted border border-border rounded text-xs font-mono shadow-sm">R</kbd>
+                        <span>Rotate</span>
+                      </div>
                     </div>
                   </details>
                 </div>
@@ -865,14 +1397,14 @@ const PdfViewer = () => {
                 <div className="space-y-2">
                   <div 
                     ref={containerRef}
-                    className="relative border rounded-lg overflow-auto bg-gradient-to-br from-muted/30 to-muted/60 flex justify-center items-start p-4"
+                    className="relative border rounded-lg overflow-auto bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-800 flex justify-center items-start p-4 shadow-inner"
                     style={{ minHeight: "500px", maxHeight: "70vh" }}
                   >
                     {rendering && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm z-10">
-                        <div className="flex flex-col items-center gap-2">
+                      <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm z-10 rounded-lg">
+                        <div className="flex flex-col items-center gap-3 p-6 bg-background/80 rounded-lg shadow-lg border">
                           <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm font-medium">
                             {viewMode === "scroll" ? "Rendering all pages..." : "Rendering page..."}
                           </p>
                         </div>
@@ -881,12 +1413,12 @@ const PdfViewer = () => {
                     {viewMode === "single" ? (
                       <canvas
                         ref={canvasRef}
-                        className="shadow-2xl bg-white"
+                        className="shadow-2xl bg-white rounded-sm"
                       />
                     ) : (
                       <canvas
                         ref={scrollCanvasRef}
-                        className="shadow-2xl bg-white"
+                        className="shadow-2xl bg-white rounded-sm"
                       />
                     )}
                   </div>
@@ -906,14 +1438,17 @@ const PdfViewer = () => {
           </>
         )}
 
-        <div className="text-xs p-3 border rounded-lg bg-blue-50 dark:bg-blue-950/30 flex items-start gap-2">
-          <span>🔒</span>
+        <div className="text-xs p-4 border rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 flex items-start gap-3 shadow-sm">
+          <span className="text-lg">🔒</span>
           <div>
-            <p className="font-medium mb-1">Privacy & Security</p>
-            <p className="text-muted-foreground">All processing happens locally in your browser. Your PDF files never leave your device and are not uploaded to any server.</p>
+            <p className="font-semibold mb-1 text-foreground">Privacy & Security</p>
+            <p className="text-muted-foreground leading-relaxed">
+              All processing happens locally in your browser. Your PDF files never leave your device and are not uploaded to any server. Encryption is performed client-side for maximum privacy.
+            </p>
           </div>
         </div>
       </div>
+      </TooltipProvider>
     </AnimatedElement>
   );
 };
