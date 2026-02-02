@@ -68,6 +68,8 @@ export const toolCategories: ToolCategory[] = [
       { id: "pdf-word", title: "PDF to Word / Word to PDF" },
       { id: "pdf-jpg", title: "PDF to JPG / JPG to PDF" },
       { id: "pdf-compress", title: "Compress PDF" },
+      { id: "pdf-encryption", title: "PDF Encryption" },
+      { id: "pdf-decryption", title: "PDF Decryption" },
       { id: "pdf-viewer", title: "PDF Viewer" },
     ],
   },
