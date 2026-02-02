@@ -9,9 +9,10 @@ import {
   KeyRound, 
   FileText,
   Calculator,
-  Palette,
   Code,
-  Clock
+  Clock,
+  Video,
+  Eye
 } from "lucide-react";
 
 interface FeaturedTool {
@@ -84,12 +85,20 @@ const featuredTools: FeaturedTool[] = [
     gradient: { from: "#8b5cf6", to: "#6366f1" }
   },
   {
-    id: "color-picker",
-    categoryId: "color",
-    title: "Color Picker",
-    description: "Pick and convert colors in multiple formats",
-    icon: Palette,
-    gradient: { from: "#ec4899", to: "#a855f7" }
+    id: "pdf-viewer",
+    categoryId: "pdf",
+    title: "PDF Viewer",
+    description: "View, encrypt, decrypt and manipulate PDFs",
+    icon: Eye,
+    gradient: { from: "#f43f5e", to: "#fb923c" }
+  },
+  {
+    id: "webcam-test",
+    categoryId: "miscellaneous",
+    title: "Webcam Tester",
+    description: "Test your webcam and capture photos",
+    icon: Video,
+    gradient: { from: "#06b6d4", to: "#3b82f6" }
   },
   {
     id: "bmi-calculator",
