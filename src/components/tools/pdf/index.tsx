@@ -6,6 +6,8 @@ import PdfToJpg from "./PdfToJpg";
 import PdfCompress from "./PdfCompress";
 import PdfViewer from "./PdfViewer";
 import PdfOrganizer from "./PdfOrganizer";
+// import PdfEncryption from "./PdfEncryption";
+// import PdfDecryption from "./PdfDecryption"; 
 
 // Export all PDF tools
 const pdfTools = {
@@ -15,7 +17,9 @@ const pdfTools = {
   "pdf-jpg": PdfToJpg,
   "pdf-compress": PdfCompress,
   "pdf-viewer": PdfViewer,
-  "pdf-organizer": PdfOrganizer
+  "pdf-organizer": PdfOrganizer,
+  // "pdf-encryption": PdfEncryption 
+  // "pdf-decryption": PdfDecryption
 };
 
 export default pdfTools;
