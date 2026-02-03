@@ -37,7 +37,9 @@ export default defineConfig({
     target: 'esnext',
     sourcemap: false, // Disable source maps for production
     chunkSizeWarningLimit: 3000,
-    modulePreload: false,
+    modulePreload: {
+      polyfill: true,
+    },
     rollupOptions: {
       output: {
         manualChunks(id) {
@@ -174,8 +176,7 @@ export default defineConfig({
             return 'maps-vendor';
           }
 
-          // Remaining node_modules go into common vendor (should be minimal now)
-          return 'vendor';
+          // Let Vite handle remaining dependencies automatically to avoid circular dependency issues
         },
         // Optimize chunk naming for better caching
         chunkFileNames: 'assets/[name]-[hash].js',
