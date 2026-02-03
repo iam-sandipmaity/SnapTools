@@ -1,6 +1,6 @@
 
 import Logo from "./ui/logo";
-import { Facebook, Twitter, Instagram, Linkedin, Github } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin, Github, Rss } from "lucide-react";
 import { quickLinks } from "@/data/navigation";
 import QuickLinks from "./ui/quick-links";
 import ScrollToTop from "./ui/scroll-to-top";
@@ -11,6 +11,7 @@ const socialLinks = [
   { icon: Instagram, href: "https://instagram.com/iam_sandipmaity", label: "Instagram" },
   { icon: Linkedin, href: "https://linkedin.com/in/iam_sandipmaity", label: "LinkedIn" },
   { icon: Github, href: "https://github.com/iam-sandipmaity/", label: "GitHub"},
+  { icon: Rss, href: "/rss.xml", label: "RSS Feed"},
 ];
 
 const Footer = () => {
