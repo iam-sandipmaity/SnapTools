@@ -1,6 +1,6 @@
 # SnapTools 🛠️
 
-[![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://snaptools.sandipmaity.me)
+[![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://snaptools.xyz)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Made with React](https://img.shields.io/badge/Made%20with-React-61dafb.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -8,7 +8,7 @@
 
 > **SnapTools** is a comprehensive all-in-one web application that provides 100+ free tools for creators, developers, students, and productivity enthusiasts. Built with modern web technologies, it offers a seamless and efficient user experience with **no ads**, **no tracking**, and **blazing-fast performance**.
 
-🔗 **[Live Demo](https://snaptools.sandipmaity.me)** | 📖 **[Documentation](https://snaptools.sandipmaity.me/documentation)** | 🐛 **[Report Bug](https://github.com/iam-sandipmaity/SnapTools/issues)** | ✨ **[Request Feature](https://github.com/iam-sandipmaity/SnapTools/issues)**
+🔗 **[Live Demo](https://snaptools.xyz)** | 📖 **[Documentation](https://snaptools.xyz/documentation)** | 🐛 **[Report Bug](https://github.com/iam-sandipmaity/SnapTools/issues)** | ✨ **[Request Feature](https://github.com/iam-sandipmaity/SnapTools/issues)**
 
 ## ✨ Features
 
@@ -142,7 +142,7 @@ src/
 
 ## 🌐 Deployment
 
-The application is deployed on Vercel and accessible at [https://snaptools.sandipmaity.me](https://snaptools.sandipmaity.me)
+The application is deployed on Vercel and accessible at [https://snaptools.xyz](https://snaptools.xyz)
 
 ### Deploy Your Own
 
@@ -192,7 +192,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Project Link: [https://github.com/iam-sandipmaity/SnapTools](https://github.com/iam-sandipmaity/SnapTools)
 
-Live Demo: [https://snaptools.sandipmaity.me](https://snaptools.sandipmaity.me)
+Live Demo: [https://snaptools.xyz](https://snaptools.xyz)
 
 ---
 

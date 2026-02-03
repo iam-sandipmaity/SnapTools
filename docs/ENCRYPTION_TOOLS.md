@@ -2,7 +2,7 @@
 
 > Comprehensive guide to encryption and hashing tools available on SnapTools.
 
-🔗 **Visit**: [https://snaptools.sandipmaity.me/tools/encryption](https://snaptools.sandipmaity.me/tools/encryption)
+🔗 **Visit**: [https://snaptools.xyz/tools/encryption](https://snaptools.xyz/tools/encryption)
 
 ## Overview
 This document provides detailed information about the encryption tools available in SnapTools, including their functionality, use cases, and implementation details. All encryption happens **locally in your browser** - your data never leaves your device.

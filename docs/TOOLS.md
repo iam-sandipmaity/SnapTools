@@ -2,7 +2,7 @@
 
 > Complete guide to using all tools available on SnapTools platform.
 
-🔗 **Visit**: [https://snaptools.sandipmaity.me](https://snaptools.sandipmaity.me)
+🔗 **Visit**: [https://snaptools.xyz](https://snaptools.xyz)
 
 ## 📑 Table of Contents
 

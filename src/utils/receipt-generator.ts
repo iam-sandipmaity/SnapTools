@@ -101,7 +101,7 @@ export const generateReceiptImage = async (paymentDetails: PaymentDetails): Prom
   // Add footer with website and date
   ctx.fillStyle = '#3b82f6';
   ctx.font = '16px Inter, system-ui, sans-serif';
-  ctx.fillText('https://snaptools.sandipmaity.me/', canvas.width / 2, canvas.height - 80);
+  ctx.fillText('https://snaptools.xyz/', canvas.width / 2, canvas.height - 80);
   
   // Add generated date
   ctx.fillStyle = '#64748b';
