@@ -9,7 +9,7 @@ import React, {
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { TIMEZONES, CityTimezone } from '@/data/timezones';
+import type { CityTimezone } from '@/data/timezones';
 import {
   ComposableMap,
   Geographies,
@@ -45,8 +45,24 @@ const WorldClock: React.FC = () => {
   const [now, setNow] = useState(new Date());
   const [selectedCity, setSelectedCity] =
     useState<CityTimezone | null>(null);
+  const [timezones, setTimezones] = useState<CityTimezone[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const debouncedQuery = useDebouncedValue(query);
+
+  /* ---------------- Load Timezones Data ---------------- */
+  useEffect(() => {
+    fetch('/timezones.json')
+      .then((res) => res.json())
+      .then((data) => {
+        setTimezones(data.timezones);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error('Failed to load timezones:', err);
+        setIsLoading(false);
+      });
+  }, []);
 
   /* ---------------- Clock Tick ---------------- */
   useEffect(() => {
@@ -57,12 +73,12 @@ const WorldClock: React.FC = () => {
   /* ---------------- Pre-index Cities ---------------- */
   const cityIndex = useMemo(
     () =>
-      TIMEZONES.map((c) => ({
+      timezones.map((c) => ({
         ...c,
         cityLower: c.city.toLowerCase(),
         countryLower: c.country.toLowerCase(),
       })),
-    []
+    [timezones]
   );
 
   /* ---------------- Smart Search ---------------- */
@@ -137,7 +153,15 @@ const WorldClock: React.FC = () => {
   return (
     <Card className="mt-6">
       <CardContent className="pt-6 space-y-6">
-        <div className="flex flex-col items-center gap-4">
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center space-y-2">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+              <p className="text-sm text-muted-foreground">Loading timezones...</p>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center gap-4">
 
           {/* ---------------- SEARCH MODE ---------------- */}
           {!selectedCity && (
@@ -298,6 +322,7 @@ const WorldClock: React.FC = () => {
             </>
           )}
         </div>
+        )}
       </CardContent>
     </Card>
   );
