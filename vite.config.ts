@@ -4,6 +4,7 @@ import path from 'path'
 import wasm from 'vite-plugin-wasm'
 import topLevelAwait from 'vite-plugin-top-level-await'
 import markdown from './vite-plugin-markdown'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 export default defineConfig({
   plugins: [
@@ -11,6 +12,12 @@ export default defineConfig({
     wasm(),
     topLevelAwait(),
     markdown(),
+    visualizer({
+      open: false, // Set to true to open bundle analysis in browser
+      gzipSize: true,
+      brotliSize: true,
+      filename: 'dist/stats.html',
+    }),
   ],
 
   server: {
@@ -28,55 +35,168 @@ export default defineConfig({
 
   build: {
     target: 'esnext',
-    sourcemap: true,
-    chunkSizeWarningLimit: 6000,
+    sourcemap: false, // Disable source maps for production
+    chunkSizeWarningLimit: 3000,
     modulePreload: false,
-
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (!id.includes('node_modules')) return
+          if (!id.includes('node_modules')) {
+            // Split application code by feature/directory
+            if (id.includes('src/components/tools/')) {
+              const toolMatch = id.match(/src\/components\/tools\/([^/]+)/);
+              if (toolMatch) {
+                return `tool-${toolMatch[1]}`;
+              }
+            }
+            if (id.includes('src/blog/')) {
+              return 'blog';
+            }
+            return;
+          }
 
+          // Core React packages (needed on every page)
           if (
-            id.includes('react') ||
-            id.includes('react-dom') ||
-            id.includes('react-router')
+            id.includes('react/') ||
+            id.includes('react-dom/') ||
+            id.includes('scheduler/')
           ) {
-            return 'react-vendor'
+            return 'react-vendor';
           }
 
-          if (id.includes('@radix-ui') || id.includes('shadcn')) {
-            return 'ui-vendor'
+          // React Router (needed for navigation)
+          if (id.includes('react-router')) {
+            return 'router-vendor';
           }
 
-          // ❗ DO NOT chunk framer-motion manually
-          // Let Rollup handle it
+          // UI Framework - Radix UI
+          if (id.includes('@radix-ui')) {
+            return 'radix-vendor';
+          }
 
+          // Framer Motion (animation) - used heavily
+          if (id.includes('framer-motion')) {
+            return 'animation-vendor';
+          }
+
+          // PDF libraries (LAZY LOADED)
           if (id.includes('pdf-lib') || id.includes('pdfjs-dist')) {
-            return 'pdf-vendor'
+            return 'pdf-vendor';
           }
 
+          // Crypto libraries (LAZY LOADED)
           if (
             id.includes('crypto-js') ||
             id.includes('bcryptjs') ||
             id.includes('node-forge') ||
             id.includes('scrypt-js')
           ) {
-            return 'crypto-vendor'
+            return 'crypto-vendor';
           }
 
-          if (id.includes('qrcode')) {
-            return 'qr-vendor'
+          // QR Code (LAZY LOADED)
+          if (id.includes('qrcode') || id.includes('html5-qrcode')) {
+            return 'qr-vendor';
           }
 
-          if (id.includes('recharts')) {
-            return 'chart-vendor'
+          // Charts (LAZY LOADED)
+          if (id.includes('recharts') || id.includes('d3-')) {
+            return 'chart-vendor';
           }
 
-          if (id.includes('axios') || id.includes('jszip')) {
-            return 'utility-vendor'
+          // Image processing (LAZY LOADED)
+          if (id.includes('browser-image-compression') || id.includes('pica')) {
+            return 'image-vendor';
           }
+
+          // Lucide icons (used on homepage)
+          if (id.includes('lucide-react')) {
+            return 'icons-vendor';
+          }
+
+          // JSZip and File utilities (LAZY LOADED)
+          if (id.includes('jszip') || id.includes('file-saver')) {
+            return 'zip-vendor';
+          }
+
+          // Date utilities (used in some tools)
+          if (id.includes('date-fns') || id.includes('dayjs')) {
+            return 'date-vendor';
+          }
+
+          // Form libraries (used across site)
+          if (id.includes('react-hook-form') || id.includes('@hookform') || id.includes('zod')) {
+            return 'form-vendor';
+          }
+
+          // Markdown (LAZY LOADED - blog/docs)
+          if (id.includes('react-markdown') || id.includes('remark') || id.includes('rehype') || id.includes('marked')) {
+            return 'markdown-vendor';
+          }
+
+          // HTML/Canvas libraries (LAZY LOADED)
+          if (id.includes('html2canvas') || id.includes('html2pdf') || id.includes('jspdf') || id.includes('mammoth')) {
+            return 'canvas-vendor';
+          }
+
+          // PeerJS (LAZY LOADED - file/text sharing)
+          if (id.includes('peerjs')) {
+            return 'peer-vendor';
+          }
+
+          // Barcode libraries (LAZY LOADED)
+          if (id.includes('jsbarcode')) {
+            return 'barcode-vendor';
+          }
+
+          // React Query (state management)
+          if (id.includes('@tanstack/react-query')) {
+            return 'query-vendor';
+          }
+
+          // Theme libraries (needed early)
+          if (id.includes('next-themes') || id.includes('class-variance-authority') || id.includes('clsx') || id.includes('tailwind-merge')) {
+            return 'theme-vendor';
+          }
+
+          // Sonner (toast notifications)
+          if (id.includes('sonner')) {
+            return 'toast-vendor';
+          }
+
+          // EmailJS (contact form)
+          if (id.includes('@emailjs')) {
+            return 'email-vendor';
+          }
+
+          // React Simple Maps (LAZY LOADED)
+          if (id.includes('react-simple-maps')) {
+            return 'maps-vendor';
+          }
+
+          // Remaining node_modules go into common vendor (should be minimal now)
+          return 'vendor';
         },
+        // Optimize chunk naming for better caching
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+      },
+    },
+    // Enable additional optimizations
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug'],
+        passes: 2,
+      },
+      mangle: {
+        safari10: true,
+      },
+      format: {
+        comments: false,
       },
     },
   },
