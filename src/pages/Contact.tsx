@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import { Mail, Twitter, MapPin, Clock } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { initEmailJS, sendEmail } from "@/lib/emailjs";
 import { Loader2 } from "lucide-react";
@@ -65,11 +65,11 @@ const Contact = () => {
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <Mail className="h-5 w-5" />
-                <span>help.snaptools@gmail.com</span>
+                <span>contact.sandipmaity@gmail.com</span>
               </div>
               <div className="flex items-center gap-3">
-                <Phone className="h-5 w-5" />
-                <span>+91 7866089993 (Call me if you really need)</span>
+                <Twitter className="h-5 w-5" />
+                <span>x.com/iam_sandipmaity</span>
               </div>
               <div className="flex items-center gap-3">
                 <MapPin className="h-5 w-5" />
