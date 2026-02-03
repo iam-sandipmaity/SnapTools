@@ -2,1144 +2,929 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://snaptools.xyz/</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://snaptools.xyz/blog </loc>
-    <lastmod>2024-12-09</lastmod>
+    <loc>https://snaptools.xyz/blog</loc>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    </url>
+  </url>
   <url>
     <loc>https://snaptools.xyz/about</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-  
   <url>
     <loc>https://snaptools.xyz/features</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/pricing</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/donate</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/documentation</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/contact</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/privacy</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/terms</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
+
   <!-- Tool Categories -->
-  <!-- Category Pages -->
   <url>
     <loc>https://snaptools.xyz/tools/image</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/pdf</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/calculator</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/conversion</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/code</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/qr</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/password</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/color</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/unit</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/currency</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/document</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/social</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/seoandweb</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/miscellaneous</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/encryption</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/clock</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/file</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/internet</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/markdown</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Individual Tools -->
+
   <!-- Image Tools -->
   <url>
     <loc>https://snaptools.xyz/tools/image/image-compressor</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/image/image-size-increaser</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/image/image-base64</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/image/image-format-converter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/image/image-dimension-changer</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/image/image-cropper</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/image/image-color-inverter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/image/image-black-and-white</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/image/image-filter-effects</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+
   <!-- PDF Tools -->
   <url>
     <loc>https://snaptools.xyz/tools/pdf/pdf-merger</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/pdf/pdf-splitter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/pdf/pdf-organizer</loc>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/pdf/pdf-word</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/pdf/pdf-jpg</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/pdf/pdf-compress</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://snaptools.xyz/tools/pdf/pdf-unlock</loc>
-    <lastmod>2024-12-09</lastmod>
+    <loc>https://snaptools.xyz/tools/pdf/pdf-encryption</loc>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/pdf/pdf-decryption</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/pdf/pdf-viewer</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- Calculator Tools -->
   <url>
     <loc>https://snaptools.xyz/tools/calculator/basic-calculator</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/calculator/scientific-calculator</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/calculator/bmi-calculator</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/calculator/age-calculator</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Conversion Tools -->
+
+  <!-- Conversion Tools Tools -->
   <url>
     <loc>https://snaptools.xyz/tools/conversion/binary-decimal</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/conversion/binary-hex</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/conversion/hex-decimal</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/conversion/base64</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/conversion/text-ascii</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/conversion/timestamp-converter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/conversion/timezone-converter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/conversion/morse-code-converter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Code Tools -->
+
+  <!-- Code Tools Tools -->
   <url>
     <loc>https://snaptools.xyz/tools/code/code-runner</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/code/code-formatter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/code/json-formatter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/code/xml-formatter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/code/html-formatter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/code/css-formatter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/code/js-minifier</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- QR Tools -->
+
+  <!-- QR Tools Tools -->
   <url>
     <loc>https://snaptools.xyz/tools/qr/qr-generator</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/qr/barcode-generator</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/qr/qr-scanner</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Password & Text Tools -->
+
+  <!-- Password & Text Tools Tools -->
   <url>
     <loc>https://snaptools.xyz/tools/password/password-generator</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/password/lorem-ipsum-generator</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/password/word-counter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/password/character-counter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Color & Design Tools -->
+
+  <!-- Color & Design Tools Tools -->
   <url>
     <loc>https://snaptools.xyz/tools/color/color-picker</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/color/hex-rgb</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/color/gradient-generator</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Unit Converters -->
+
+  <!-- Unit Converters Tools -->
   <url>
     <loc>https://snaptools.xyz/tools/unit/length-converter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/unit/weight-converter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/unit/temperature-converter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/unit/speed-converter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/unit/area-converter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/unit/volume-converter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/unit/pressure-converter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Currency Tools -->
+
+  <!-- Currency Tools Tools -->
   <url>
     <loc>https://snaptools.xyz/tools/currency/currency-converter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/currency/crypto-converter</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Document Tools -->
+
+  <!-- Document Converters Tools -->
   <url>
     <loc>https://snaptools.xyz/tools/document/word-pdf</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/document/excel-pdf</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/document/ppt-pdf</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/document/txt-pdf</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Social Media Tools -->
+
+  <!-- social media Tools -->
   <url>
     <loc>https://snaptools.xyz/tools/social/yt-thumbnail</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/social/yt-video</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/social/tweet-generator</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/social/instagram-post</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/social/instagram-downloader</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/social/yt-trending</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/social/yt-tags</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/social/yt-most-viewed</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/social/youtube-stats</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-    
-  <url>
-    <loc>https://snaptools.xyz/tools/pdf/pdf-word</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/pdf/pdf-jpg</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/pdf/pdf-compress</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/pdf/pdf-unlock</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Calculator Tools -->
-  <url>
-    <loc>https://snaptools.xyz/tools/calculator/basic-calculator</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/calculator/scientific-calculator</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/calculator/bmi-calculator</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/calculator/age-calculator</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Conversion Tools -->
-  <url>
-    <loc>https://snaptools.xyz/tools/conversion/binary-decimal</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/conversion/binary-hex</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/conversion/hex-decimal</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/conversion/base64</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/conversion/text-ascii</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/conversion/timestamp-converter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/conversion/timezone-converter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/conversion/morse-code-converter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Code Tools -->
-  <url>
-    <loc>https://snaptools.xyz/tools/code/code-runner</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/code/code-formatter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/code/json-formatter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/code/xml-formatter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/code/html-formatter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/code/css-formatter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/code/js-minifier</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- QR Tools -->
-  <url>
-    <loc>https://snaptools.xyz/tools/qr/qr-generator</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/qr/barcode-generator</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/qr/qr-scanner</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Password & Text Tools -->
-  <url>
-    <loc>https://snaptools.xyz/tools/password/password-generator</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/password/lorem-ipsum-generator</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/password/word-counter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/password/character-counter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Color & Design Tools -->
-  <url>
-    <loc>https://snaptools.xyz/tools/color/color-picker</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/color/hex-rgb</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/color/gradient-generator</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Unit Converters -->
-  <url>
-    <loc>https://snaptools.xyz/tools/unit/length-converter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/unit/weight-converter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/unit/temperature-converter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/unit/speed-converter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/unit/area-converter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/unit/volume-converter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/unit/pressure-converter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Currency Tools -->
-  <url>
-    <loc>https://snaptools.xyz/tools/currency/currency-converter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/currency/crypto-converter</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Document Converters -->
-  <url>
-    <loc>https://snaptools.xyz/tools/document/word-pdf</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/document/excel-pdf</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/document/ppt-pdf</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/document/txt-pdf</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- Social Media Tools -->
-  <url>
-    <loc>https://snaptools.xyz/tools/social/yt-thumbnail</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/social/yt-video</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/social/tweet-generator</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/social/instagram-post</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/social/instagram-downloader</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/social/yt-trending</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/social/yt-tags</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/social/yt-most-viewed</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/social/youtube-stats</loc>
-    <lastmod>2024-12-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- SEO & Web Tools -->
+
+  <!-- SEO & Web Tools Tools -->
   <url>
     <loc>https://snaptools.xyz/tools/seoandweb/meta-generator</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/seoandweb/ogen-preview</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/seoandweb/website-screenshot</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Miscellaneous Tools -->
+
+  <!-- Miscellaneous Tools Tools -->
   <url>
     <loc>https://snaptools.xyz/tools/miscellaneous/uuid_generator</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/miscellaneous/number-words</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/miscellaneous/words-number</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/miscellaneous/file-corruptor</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/miscellaneous/random-ip-generator</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/miscellaneous/webcam-test</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Encryption Tools -->
+  <url>
+    <loc>https://snaptools.xyz/tools/miscellaneous/ascii-art-generator</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- encryption Tools Tools -->
   <url>
     <loc>https://snaptools.xyz/tools/encryption/aes</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/base64</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/blowfish</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/cast5</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/des</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/3des</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/rsa</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/sha</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/md5</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/md4</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/md2</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/mdc2</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/mcd</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/url</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/html</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/ripemd160</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/bcrypt</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/scrypt</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/encryption/pbkdf2</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Clock Tools -->
+
+  <!-- Clock Tools Tools -->
   <url>
     <loc>https://snaptools.xyz/tools/clock/current-time</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/clock/stopwatch</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/clock/timer</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://snaptools.xyz/tools/world-clock</loc>
-    <lastmod>2024-12-09</lastmod>
+    <loc>https://snaptools.xyz/tools/clock/world-clock</loc>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- File Share -->
+
+  <!-- File Share Tools -->
   <url>
-    <loc>https://snaptools.xyz/file/file-share</loc>
-    <lastmod>2024-12-09</lastmod>
+    <loc>https://snaptools.xyz/tools/file/file-share</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/file/text-share</loc>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
+  <!-- Internet Tools Tools -->
+  <url>
+    <loc>https://snaptools.xyz/tools/internet/speed-test</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
-<!-- Blogs List -->
- <url>
+  <!-- Markdown Tools Tools -->
+  <url>
+    <loc>https://snaptools.xyz/tools/markdown/markdown-editor</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/markdown/markdown-preview</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/markdown/markdown-to-html</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/markdown/html-to-markdown</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/markdown/markdown-table-generator</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Blog Posts -->
+  <url>
     <loc>https://snaptools.xyz/blog/posts/</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
- <url>
+  <url>
     <loc>https://snaptools.xyz/blog/posts/image-optimization-guide</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
- <url>
+  <url>
     <loc>https://snaptools.xyz/blog/posts/pdf-manipulation-techniques</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
- <url>
+  <url>
     <loc>https://snaptools.xyz/blog/posts/secure-password-guide</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
- <url>
+  <url>
     <loc>https://snaptools.xyz/blog/posts/qr-code-best-practices</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
- <url>
+  <url>
     <loc>https://snaptools.xyz/blog/posts/unit-conversion-guide</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
- <url>
+  <url>
     <loc>https://snaptools.xyz/blog/posts/developer-tool-kit-guide</loc>
-    <lastmod>2024-12-09</lastmod>
+    <lastmod>2026-02-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-
-
 
 </urlset>
-
