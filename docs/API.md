@@ -112,9 +112,9 @@ The application uses React's built-in state management:
 
 ## Resources
 
-- **Live Application**: [https://snaptools.sandipmaity.me](https://snaptools.sandipmaity.me)
+- **Live Application**: [https://snaptools.xyz](https://snaptools.xyz)
 - **GitHub Repository**: [https://github.com/iam-sandipmaity/SnapTools](https://github.com/iam-sandipmaity/SnapTools)
-- **Documentation**: [https://snaptools.sandipmaity.me/documentation](https://snaptools.sandipmaity.me/documentation)
+- **Documentation**: [https://snaptools.xyz/documentation](https://snaptools.xyz/documentation)
 - URL parameters for navigation state
 - Shared tool data via imports
 

@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet";
 import { toolCategories } from "@/data/tools";
 
-const BASE_URL = "https://snaptools.sandipmaity.me";
+const BASE_URL = "https://snaptools.xyz";
 
 interface SEOProps {
   title?: string;

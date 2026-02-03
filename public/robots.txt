@@ -1,5 +1,5 @@
 # robots.txt for SnapTools
-# https://snaptools.sandipmaity.me
+# https://snaptools.xyz
 
 # Allow all bots to access all content
 User-agent: *
@@ -43,7 +43,7 @@ User-agent: Pinterestbot
 Allow: /
 
 # Sitemap
-Sitemap: https://snaptools.sandipmaity.me/sitemap.xml
+Sitemap: https://snaptools.xyz/sitemap.xml
 
 # Optimize crawl rate for common bots
 Crawl-delay: 1

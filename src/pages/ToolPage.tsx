@@ -74,6 +74,7 @@ const toolLoaders: Record<string, () => Promise<any>> = {
   file: () => import("@/components/tools/file-sharing"),
   text: () => import("@/components/tools/text-sharing"),
   internet: () => import("@/components/tools/internet"),
+  markdown: () => import("@/components/tools/markdown"),
 };
 
 

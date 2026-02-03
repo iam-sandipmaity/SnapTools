@@ -69,7 +69,7 @@ const PdfViewer = () => {
   const [loading, setLoading] = useState(false);
   const [rendering, setRendering] = useState(false);
   const [fitMode, setFitMode] = useState<FitMode>("custom");
-  const [viewMode, setViewMode] = useState<ViewMode>("single");
+  const [viewMode, setViewMode] = useState<ViewMode>("scroll");
   const [pageInput, setPageInput] = useState("");
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showPasswordField, setShowPasswordField] = useState(false);
@@ -82,6 +82,7 @@ const PdfViewer = () => {
   const [extractedText, setExtractedText] = useState("");
   const [metadata, setMetadata] = useState<any>(null);
   const [exporting, setExporting] = useState(false);
+  const [lastTouchDistance, setLastTouchDistance] = useState<number | null>(null);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const scrollCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -212,6 +213,86 @@ const PdfViewer = () => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [pdfDocument, currentPage, scale, rotation, viewMode]);
+
+  // Mouse wheel zoom
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      // Only zoom if Ctrl key is pressed (standard browser behavior)
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        
+        const delta = e.deltaY;
+        const zoomSpeed = 0.1;
+        
+        if (delta < 0) {
+          // Scroll up - zoom in
+          setScale(prev => Math.min(prev + zoomSpeed, 5));
+        } else {
+          // Scroll down - zoom out
+          setScale(prev => Math.max(prev - zoomSpeed, 0.25));
+        }
+        setFitMode("custom");
+      }
+    };
+
+    const container = containerRef.current;
+    if (container && pdfDocument) {
+      container.addEventListener("wheel", handleWheel, { passive: false });
+      return () => container.removeEventListener("wheel", handleWheel);
+    }
+  }, [pdfDocument]);
+
+  // Pinch-to-zoom for mobile
+  useEffect(() => {
+    const getTouchDistance = (touches: TouchList): number => {
+      const dx = touches[0].clientX - touches[1].clientX;
+      const dy = touches[0].clientY - touches[1].clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const distance = getTouchDistance(e.touches);
+        setLastTouchDistance(distance);
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 2 && lastTouchDistance !== null) {
+        e.preventDefault();
+        
+        const distance = getTouchDistance(e.touches);
+        const delta = distance - lastTouchDistance;
+        const zoomSpeed = 0.005;
+        
+        setScale(prev => {
+          const newScale = prev + (delta * zoomSpeed);
+          return Math.max(0.25, Math.min(5, newScale));
+        });
+        
+        setLastTouchDistance(distance);
+        setFitMode("custom");
+      }
+    };
+
+    const handleTouchEnd = () => {
+      setLastTouchDistance(null);
+    };
+
+    const container = containerRef.current;
+    if (container && pdfDocument) {
+      container.addEventListener("touchstart", handleTouchStart, { passive: false });
+      container.addEventListener("touchmove", handleTouchMove, { passive: false });
+      container.addEventListener("touchend", handleTouchEnd);
+      
+      return () => {
+        container.removeEventListener("touchstart", handleTouchStart);
+        container.removeEventListener("touchmove", handleTouchMove);
+        container.removeEventListener("touchend", handleTouchEnd);
+      };
+    }
+  }, [pdfDocument, lastTouchDistance]);
 
   /* ================= Upload ================= */
 
@@ -1328,8 +1409,9 @@ const PdfViewer = () => {
 
                   {/* Keyboard Shortcuts Info */}
                   <details className="text-xs text-muted-foreground border rounded-lg p-3 bg-gradient-to-r from-background/40 to-background/20">
-                    <summary className="cursor-pointer font-medium hover:text-foreground transition-colors">⌨️ Keyboard Shortcuts</summary>
-                    <div className="mt-3 grid grid-cols-2 md:grid-cols-3 gap-2">
+                    <summary className="cursor-pointer font-medium hover:text-foreground transition-colors">⌨️ Keyboard Shortcuts & Gestures</summary>
+                    <div className="mt-3 space-y-3">
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                       {viewMode === "single" ? (
                         <>
                           <div className="flex items-center gap-2">
@@ -1389,6 +1471,20 @@ const PdfViewer = () => {
                         <kbd className="px-2 py-1 bg-muted border border-border rounded text-xs font-mono shadow-sm">R</kbd>
                         <span>Rotate</span>
                       </div>
+                      </div>
+                      <div className="pt-2 border-t border-border/50">
+                        <p className="font-medium mb-2 text-foreground">🖱️ Mouse & Touch Gestures</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          <div className="flex items-center gap-2">
+                            <kbd className="px-2 py-1 bg-muted border border-border rounded text-xs font-mono shadow-sm whitespace-nowrap">Ctrl + Scroll</kbd>
+                            <span>Zoom in/out (Desktop)</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="px-2 py-1 bg-muted border border-border rounded text-xs shadow-sm">🤏</span>
+                            <span>Pinch to zoom (Mobile)</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </details>
                 </div>
@@ -1400,8 +1496,111 @@ const PdfViewer = () => {
                     className="relative border rounded-lg overflow-auto bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-800 flex justify-center items-start p-4 shadow-inner"
                     style={{ minHeight: "500px", maxHeight: "70vh" }}
                   >
+                    {/* Fullscreen Toolbar - Google Drive Style */}
+                    {isFullscreen && (
+                      <div className="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-lg border-b border-gray-700/50 shadow-xl">
+                        <div className="flex items-center justify-between px-4 py-3 gap-4">
+                          {/* Left: PDF Name */}
+                          <div className="flex items-center gap-3 flex-1 min-w-0">
+                            <FileText className="h-5 w-5 text-blue-400 flex-shrink-0" />
+                            <div className="flex-1 min-w-0">
+                              <h3 className="text-sm font-medium text-white truncate">{file?.name}</h3>
+                              <p className="text-xs text-gray-400">{totalPages} pages</p>
+                            </div>
+                          </div>
+
+                          {/* Center: Zoom Controls */}
+                          <div className="hidden md:flex items-center gap-2 bg-gray-800/50 rounded-lg px-3 py-1.5 border border-gray-700/50">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={zoomOut}
+                              disabled={scale <= 0.25 || rendering}
+                              className="h-7 w-7 p-0 text-gray-300 hover:text-white hover:bg-gray-700"
+                            >
+                              <ZoomOut className="h-4 w-4" />
+                            </Button>
+                            <span className="text-xs font-medium text-gray-300 min-w-[45px] text-center">
+                              {Math.round(scale * 100)}%
+                            </span>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={zoomIn}
+                              disabled={scale >= 5 || rendering}
+                              className="h-7 w-7 p-0 text-gray-300 hover:text-white hover:bg-gray-700"
+                            >
+                              <ZoomIn className="h-4 w-4" />
+                            </Button>
+                          </div>
+
+                          {/* Right: Actions */}
+                          <div className="flex items-center gap-1">
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={handleRotate}
+                                  disabled={rendering}
+                                  className="h-8 w-8 p-0 text-gray-300 hover:text-white hover:bg-gray-700"
+                                >
+                                  <RotateCw className="h-4 w-4" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>Rotate</TooltipContent>
+                            </Tooltip>
+
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={handlePrint}
+                                  className="h-8 w-8 p-0 text-gray-300 hover:text-white hover:bg-gray-700"
+                                >
+                                  <Printer className="h-4 w-4" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>Print</TooltipContent>
+                            </Tooltip>
+
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={handleDownload}
+                                  className="h-8 w-8 p-0 text-gray-300 hover:text-white hover:bg-gray-700"
+                                >
+                                  <Download className="h-4 w-4" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>Download</TooltipContent>
+                            </Tooltip>
+
+                            <div className="w-px h-6 bg-gray-700 mx-1"></div>
+
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={toggleFullscreen}
+                                  className="h-8 w-8 p-0 text-gray-300 hover:text-white hover:bg-gray-700"
+                                >
+                                  <Minimize2 className="h-4 w-4" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>Exit Fullscreen</TooltipContent>
+                            </Tooltip>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     {rendering && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm z-10 rounded-lg">
+                      <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm z-10 rounded-lg" style={{ marginTop: isFullscreen ? '60px' : '0' }}>
                         <div className="flex flex-col items-center gap-3 p-6 bg-background/80 rounded-lg shadow-lg border">
                           <Loader2 className="h-8 w-8 animate-spin text-primary" />
                           <p className="text-sm font-medium">
@@ -1410,17 +1609,19 @@ const PdfViewer = () => {
                         </div>
                       </div>
                     )}
-                    {viewMode === "single" ? (
-                      <canvas
-                        ref={canvasRef}
-                        className="shadow-2xl bg-white rounded-sm"
-                      />
-                    ) : (
-                      <canvas
-                        ref={scrollCanvasRef}
-                        className="shadow-2xl bg-white rounded-sm"
-                      />
-                    )}
+                    <div className={isFullscreen ? "pt-16" : ""}>
+                      {viewMode === "single" ? (
+                        <canvas
+                          ref={canvasRef}
+                          className="shadow-2xl bg-white rounded-sm"
+                        />
+                      ) : (
+                        <canvas
+                          ref={scrollCanvasRef}
+                          className="shadow-2xl bg-white rounded-sm"
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
               </>

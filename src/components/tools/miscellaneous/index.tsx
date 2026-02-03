@@ -4,6 +4,7 @@ import WordsToNumber from './WordsToNumber';
 import FileCorruptor from './FileCorruptor';
 import RandomIpGenerator from './RandomIpGenerator';
 import WebcamTest from './WebcamTest';
+import ASCIIArtGenerator from './ASCIIArtGenerator';
 
 const miscellaneousTools = {
   "uuid_generator": UuidGenerator,
@@ -12,6 +13,7 @@ const miscellaneousTools = {
   "file-corruptor": FileCorruptor,
   "random-ip-generator": RandomIpGenerator,
   "webcam-test": WebcamTest,
+  "ascii-art-generator": ASCIIArtGenerator,
 };
 
 export default miscellaneousTools;

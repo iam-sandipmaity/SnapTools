@@ -19,6 +19,7 @@ import {
   Clock,
   FileIcon,
   Wifi,
+  FileDown,
 } from "lucide-react";
 
 export type ToolCategory = {
@@ -227,6 +228,7 @@ export const toolCategories: ToolCategory[] = [
       { id: "file-corruptor", title: "File Corruptor" },
       { id: "random-ip-generator", title: "Random IP Generator" },
       { id: "webcam-test", title: "Webcam Tester" },
+      { id: "ascii-art-generator", title: "ASCII Art Generator" },
     ],
   },
   {
@@ -285,6 +287,19 @@ export const toolCategories: ToolCategory[] = [
     color: "bg-tooltopia-soft-blue",
     subTools: [
       { id: "speed-test", title: "Internet Speed Test" },
+    ],
+  },
+  {
+    id: "markdown",
+    title: "Markdown Tools",
+    icon: FileDown,
+    color: "bg-tooltopia-soft-green",
+    subTools: [
+      { id: "markdown-editor", title: "Markdown Editor", description: "Write and preview markdown in real-time" },
+      { id: "markdown-preview", title: "Markdown Preview", description: "Preview markdown content" },
+      { id: "markdown-to-html", title: "Markdown to HTML", description: "Convert markdown to HTML" },
+      { id: "html-to-markdown", title: "HTML to Markdown", description: "Convert HTML to markdown" },
+      { id: "markdown-table-generator", title: "Markdown Table Generator", description: "Generate markdown tables easily" },
     ],
   },
 ];
