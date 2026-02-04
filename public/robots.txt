@@ -4,30 +4,38 @@
 # Allow all bots to access all content
 User-agent: *
 Allow: /
-
-# Disallow sensitive areas
 Disallow: /api/
 Disallow: /admin/
 Disallow: /_next/
 Disallow: /private/
 
-# Allow specific search engine bots
+# Allow specific search engine bots with optimized crawl delay
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 0.5
+Crawl-delay: 0
+
+User-agent: Googlebot-Image
+Allow: /
 
 User-agent: Bingbot
 Allow: /
-Crawl-delay: 0.5
+Crawl-delay: 0
 
 User-agent: Slurp
 Allow: /
+Crawl-delay: 1
 
 User-agent: DuckDuckBot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Baiduspider
 Allow: /
+Crawl-delay: 1
+
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 1
 
 # Social Media Bots
 User-agent: Twitterbot
@@ -42,11 +50,22 @@ Allow: /
 User-agent: Pinterestbot
 Allow: /
 
-# Sitemap
-Sitemap: https://snaptools.xyz/sitemap.xml
+User-agent: Applebot
+Allow: /
 
-# Optimize crawl rate for common bots
-Crawl-delay: 1
+# Sitemaps
+Sitemap: https://snaptools.xyz/sitemap.xml
+Sitemap: https://snaptools.xyz/rss.xml
+
+# Block bad bots
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
 
 # Additional crawl optimization
 Request-rate: 1/1
