@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import SEO from "@/components/seo";
+import ToolSEO from "@/components/seo/ToolSEO";
 import { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import { toolCategories, ToolCategory } from "@/data/tools";
@@ -72,9 +73,10 @@ const toolLoaders: Record<string, () => Promise<any>> = {
   encryption: () => import("@/components/tools/encryption"),
   clock: () => import("@/components/tools/clock"),
   file: () => import("@/components/tools/file-sharing"),
-  text: () => import("@/components/tools/text-sharing"),
   internet: () => import("@/components/tools/internet"),
   markdown: () => import("@/components/tools/markdown"),
+  text: () => import("@/components/tools/text"),
+  network: () => import("@/components/tools/networktools"),
 };
 
 
@@ -260,9 +262,19 @@ const ToolPage = () => {
 
   const Icon = category.icon;
 
+  // Create a Tool object for SEO
+  const toolForSEO = {
+    id: subTool.id,
+    name: subTool.title,
+    description: subTool.description || `Free online ${subTool.title.toLowerCase()} tool. Fast, secure, and easy to use.`,
+    category: category.title,
+    icon: category.icon,
+    features: [],
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO type="tool" categoryId={categoryId} toolId={toolId} />
+      <ToolSEO tool={toolForSEO} />
       <Header />
       <main className="flex-grow container py-8 pt-[80px]">
         <div className="mb-8">
