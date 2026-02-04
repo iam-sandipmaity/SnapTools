@@ -1,6 +1,6 @@
 
 import React from "react";
-import { LucideIcon } from "lucide-react";
+import { LucideIcon, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ToolCardProps {
@@ -15,6 +15,7 @@ interface ToolCardProps {
     to: string;
   };
   style?: React.CSSProperties;
+  comingSoon?: boolean;
 }
 
 const ToolCard = ({
@@ -26,6 +27,7 @@ const ToolCard = ({
   color = "bg-tooltopia-purple",
   gradient,
   style,
+  comingSoon = false,
 }: ToolCardProps) => {
   const gradientClasses = gradient
     ? `from-${gradient.from} to-${gradient.to}`
@@ -34,12 +36,19 @@ const ToolCard = ({
   return (
     <div
       className={cn(
-        "tool-card flex flex-col items-center text-center cursor-pointer",
+        "tool-card flex flex-col items-center text-center cursor-pointer relative",
+        comingSoon && "opacity-75",
         className
       )}
       onClick={onClick}
       style={style}
     >
+      {comingSoon && (
+        <div className="absolute top-0 right-0 bg-yellow-500 text-black text-xs font-semibold px-2 py-1 rounded-bl-lg rounded-tr-lg flex items-center gap-1">
+          <Clock size={12} />
+          Coming Soon
+        </div>
+      )}
       <div
         className={cn(
           "w-16 h-16 rounded-2xl flex-center mb-4",
