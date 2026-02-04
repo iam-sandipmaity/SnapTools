@@ -67,6 +67,7 @@ const ToolsSection = () => {
               color={category.color}
               gradient={category.gradient}
               onClick={() => handleToolCardClick(category)}
+              comingSoon={category.comingSoon}
             />
           </AnimatedElement>
         ))}
@@ -126,14 +127,36 @@ const ToolsSection = () => {
                 {selectedCategory?.subTools?.map((tool) => (
                   <div
                     key={tool.id}
-                    className="p-4 border rounded-lg hover:bg-accent/50 transition-colors cursor-pointer"
+                    className={`p-4 border rounded-lg hover:bg-accent/50 transition-colors cursor-pointer relative ${
+                      tool.comingSoon ? "opacity-60" : ""
+                    }`}
                     onClick={() =>
+                      !tool.comingSoon &&
                       handleSubToolClick(
                         selectedCategory.id,
                         tool.id
                       )
                     }
                   >
+                    {tool.comingSoon && (
+                      <span className="absolute top-2 right-2 bg-yellow-500 text-black text-xs font-semibold px-2 py-0.5 rounded flex items-center gap-1">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <circle cx="12" cy="12" r="10" />
+                          <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                        Coming Soon
+                      </span>
+                    )}
                     <h3 className="font-medium">{tool.title}</h3>
                     {tool.description && (
                       <p className="text-sm text-muted-foreground mt-1">

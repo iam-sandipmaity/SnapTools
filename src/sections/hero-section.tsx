@@ -44,14 +44,35 @@ const HeroSection = () => {
       <div className="container relative z-10 text-center">
         <AnimatedElement animation="fadeIn">
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-tooltopia-purple-vivid to-primary">
-            One Platform,<br className="md:hidden" /> Every Tool You Need
+            SnapTools - Free Online Tools<br className="hidden sm:block" /> for Everyone
           </h1>
         </AnimatedElement>
         
         <AnimatedElement delay={0.1} animation="fadeIn">
-          <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
-            Access 100+ powerful tools in one place. No ads, no tracking, just blazing fast productivity.
+          <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-4xl mx-auto leading-relaxed">
+            100+ Free Online Tools: <span className="text-foreground font-medium">PDF Merger</span>, <span className="text-foreground font-medium">PDF Compressor</span>, <span className="text-foreground font-medium">Image Compressor</span>, <span className="text-foreground font-medium">QR Code Generator</span>, Converters, Calculators & More
           </p>
+          
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mb-10 max-w-3xl mx-auto text-sm sm:text-base">
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 backdrop-blur-sm">
+              <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              <span className="text-foreground font-medium">No Registration</span>
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 backdrop-blur-sm">
+              <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <span className="text-foreground font-medium">Fast & Secure</span>
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 backdrop-blur-sm">
+              <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <span className="text-foreground font-medium">Privacy-Focused</span>
+            </div>
+          </div>
         </AnimatedElement>
         
         <AnimatedElement delay={0.2} animation="fadeIn">

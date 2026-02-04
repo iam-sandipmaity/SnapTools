@@ -112,3 +112,22 @@ body {
                     linear-gradient(45deg, transparent 75%, #2a2a2a 75%),
                     linear-gradient(-45deg, transparent 75%, #2a2a2a 75%);
 }
+
+/* Horizontal scroll animation for testimonials */
+@keyframes scroll-horizontal {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-horizontal {
+  animation: scroll-horizontal 30s linear infinite;
+}
+
+.animate-scroll-horizontal:hover,
+.pause-animation:hover {
+  animation-play-state: paused;
+}
