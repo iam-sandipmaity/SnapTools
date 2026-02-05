@@ -78,6 +78,7 @@ const toolLoaders: Record<string, () => Promise<any>> = {
   text: () => import("@/components/tools/text"),
   network: () => import("@/components/tools/networktools"),
   finance: () => import("@/components/tools/finance"),
+  datetime: () => import("@/components/tools/date-and-time"),
 };
 
 
