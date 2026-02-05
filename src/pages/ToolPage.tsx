@@ -77,6 +77,7 @@ const toolLoaders: Record<string, () => Promise<any>> = {
   markdown: () => import("@/components/tools/markdown"),
   text: () => import("@/components/tools/text"),
   network: () => import("@/components/tools/networktools"),
+  finance: () => import("@/components/tools/finance"),
 };
 
 
