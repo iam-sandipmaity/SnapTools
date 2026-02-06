@@ -1,26 +1,11 @@
 {
   "redirects": [
     {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "host",
-          "value": "snaptools.sandipmaity.me"
-        }
-      ],
-      "destination": "https://snaptools.xyz/:path*",
-      "permanent": true,
-      "statusCode": 301
-    }
-  ],
-  "rewrites": [
-    {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": "https://snaptools.xyz/$1",
+      "permanent": true
     }
   ],
-  "cleanUrls": true,
-  "trailingSlash": false,
   "headers": [
     {
       "source": "/assets/(.*)",
@@ -32,38 +17,11 @@
       ]
     },
     {
-      "source": "/(.*\\.(js|css|woff|woff2|ttf|otf|eot))",
+      "source": "/(.*\\.(js|css|woff|woff2|ttf|otf|eot|jpg|jpeg|png|gif|ico|svg|webp|avif))",
       "headers": [
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "/(.*\\.(jpg|jpeg|png|gif|ico|svg|webp|avif))",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "/manifest.json",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=86400"
-        }
-      ]
-    },
-    {
-      "source": "/(robots.txt|sitemap.xml|rss.xml)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600"
         }
       ]
     },
@@ -90,10 +48,6 @@
         {
           "key": "X-Frame-Options",
           "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
         },
         {
           "key": "Referrer-Policy",
