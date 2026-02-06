@@ -1,4 +1,4 @@
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { toolCategories } from "@/data/tools";
 
 export { default as ToolSEO } from './ToolSEO';
@@ -100,13 +100,16 @@ const SEO = ({ title, description, categoryId, toolId, type, imageUrl, canonical
     ]
   };
 
+  const defaultImage = imageUrl || `${BASE_URL}/og-image.png`;
+
   return (
     <Helmet>
       <html lang="en" />
       <title>{pageTitle}</title>
       <meta name="description" content={pageDescription} />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta name="robots" content="index, follow" />
+      <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+      <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
       <link rel="canonical" href={canonical || `${BASE_URL}${window.location.pathname}`} />
 
       {/* OpenGraph tags */}
@@ -115,7 +118,10 @@ const SEO = ({ title, description, categoryId, toolId, type, imageUrl, canonical
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content="SnapTools" />
       <meta property="og:url" content={canonical || `${BASE_URL}${window.location.pathname}`} />
-      {imageUrl && <meta property="og:image" content={imageUrl} />}
+      <meta property="og:image" content={defaultImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:type" content="image/png" />
       <meta property="og:locale" content="en_US" />
 
       {/* Twitter Card tags */}
@@ -124,8 +130,8 @@ const SEO = ({ title, description, categoryId, toolId, type, imageUrl, canonical
       <meta name="twitter:description" content={pageDescription} />
       <meta name="twitter:site" content="@snaptools" />
       <meta name="twitter:creator" content="@snaptools" />
-      {imageUrl && <meta name="twitter:image" content={imageUrl} />}
-      {imageUrl && <meta name="twitter:image:alt" content={pageTitle} />}
+      <meta name="twitter:image" content={defaultImage} />
+      <meta name="twitter:image:alt" content={pageTitle} />
 
       {/* Additional Meta Tags */}
       <meta name="author" content="SnapTools" />
@@ -136,6 +142,7 @@ const SEO = ({ title, description, categoryId, toolId, type, imageUrl, canonical
       <meta name="apple-mobile-web-app-title" content="SnapTools" />
       <meta name="format-detection" content="telephone=no" />
       <meta name="language" content="English" />
+      <meta httpEquiv="content-language" content="en-US" />
       
       {/* Enhanced SEO Meta Tags */}
       <meta name="keywords" content={getKeywords()} />
@@ -145,6 +152,7 @@ const SEO = ({ title, description, categoryId, toolId, type, imageUrl, canonical
       <meta name="revisit-after" content="7 days" />
       <meta name="coverage" content="Worldwide" />
       <meta name="target" content="all" />
+      <meta name="referrer" content="strict-origin-when-cross-origin" />
 
       {/* Structured Data */}
       <script type="application/ld+json">

@@ -49,11 +49,10 @@ const ToolsSection = () => {
     <section id="tools" className="container-padding">
       <div className="text-center mb-16">
         <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-          Super Tools
+          Explore Our Free Online Tools
         </h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Browse our collection of powerful tools designed to boost your
-          productivity
+          Browse our collection of 100+ powerful free tools designed to boost your productivity - from PDF tools to image converters
         </p>
       </div>
 

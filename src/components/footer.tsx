@@ -16,7 +16,7 @@ const socialLinks = [
 
 const Footer = () => {
   return (
-    <footer className="bg-background border-t">
+    <footer className="bg-background border-t" role="contentinfo">
       <div className="container py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
           <div className="space-y-6">
@@ -24,20 +24,20 @@ const Footer = () => {
             <p className="text-muted-foreground text-lg leading-relaxed">
               All-in-one tool suite for creators, developers, students, and productivity enthusiasts.
             </p>
-            <div className="flex space-x-6">
+            <nav className="flex space-x-6" aria-label="Social media links">
               {socialLinks.map((social) => (
                 <a 
                   key={social.label} 
                   href={social.href}
-                  aria-label={social.label}
+                  aria-label={`Follow us on ${social.label}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="h-12 w-12 flex items-center justify-center rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transform hover:scale-110 transition-all duration-300"
                 >
-                  <social.icon size={22} />
+                  <social.icon size={22} aria-hidden="true" />
                 </a>
               ))}
-            </div>
+            </nav>
           </div>
           
           <QuickLinks 
@@ -51,13 +51,18 @@ const Footer = () => {
             <p className="text-muted-foreground text-lg leading-relaxed">
               Subscribe to get the latest updates and news.
             </p>
-            <form className="flex flex-col sm:flex-row gap-3">
+            <form className="flex flex-col sm:flex-row gap-3" aria-label="Newsletter subscription">
               <input 
                 type="email" 
-                placeholder="Your email" 
+                placeholder="Your email"
+                aria-label="Email address"
                 className="flex h-12 w-full rounded-lg border border-input bg-background px-4 py-2 text-base hover:border-primary focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300"
               />
-              <button className="h-12 px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transform hover:scale-105 transition-all duration-300 whitespace-nowrap">
+              <button 
+                type="submit"
+                className="h-12 px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transform hover:scale-105 transition-all duration-300 whitespace-nowrap"
+                aria-label="Subscribe to newsletter"
+              >
                 Subscribe
               </button>
             </form>

@@ -10,7 +10,7 @@ const FeaturesSection = () => {
       className="bg-accent py-16 md:py-24 px-4 sm:px-6 md:px-12 lg:px-24 space-y-12"
     >
       <div className="text-center max-w-4xl mx-auto space-y-6">
-        <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Why Choose SanpTools?</h2>
+        <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Why Choose SnapTools?</h2>
         <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
           Built with productivity in mind, our platform offers everything you need to work smarter, not harder
         </p>

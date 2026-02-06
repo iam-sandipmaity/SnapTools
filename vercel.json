@@ -9,7 +9,8 @@
         }
       ],
       "destination": "https://snaptools.xyz/:path*",
-      "permanent": true
+      "permanent": true,
+      "statusCode": 301
     }
   ],
   "rewrites": [
@@ -18,10 +19,70 @@
       "destination": "/index.html"
     }
   ],
+  "cleanUrls": true,
+  "trailingSlash": false,
   "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*\\.(js|css|woff|woff2|ttf|otf|eot))",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*\\.(jpg|jpeg|png|gif|ico|svg|webp|avif))",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/manifest.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ]
+    },
+    {
+      "source": "/(robots.txt|sitemap.xml|rss.xml)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains; preload"
+        },
         {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
@@ -33,6 +94,14 @@
         {
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
         }
       ]
     }
