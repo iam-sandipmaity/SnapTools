@@ -62,7 +62,6 @@ const ToolCategoryPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <SEO type="category" categoryId={categoryId} />
-      <SEO type="category" categoryId={categoryId} />
       <Header />
       <main className="flex-grow container py-8  pt-20">
         <div className="mb-8 ">

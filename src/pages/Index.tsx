@@ -15,8 +15,8 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <SEO 
-        title="SnapTools - Free Online Tools for PDF, Image, Converter & More | 100+ Tools"
-        description="SnapTools offers 100+ free online tools including PDF merger, PDF splitter, PDF compressor, image compressor, image converter, QR code generator, calculator, password generator, and more. No registration required, fast, secure, and privacy-focused."
+        title="SnapTools - 100+ Free Online PDF, Image & Converter Tools"
+        description="Free online tools for PDF merge/split/compress, image compression, QR codes, calculators & more. No registration. Fast, secure & privacy-focused."
       />
       <Header />
       <main className="flex-grow pt-16">
