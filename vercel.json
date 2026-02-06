@@ -1,14 +1,14 @@
 {
   "redirects": [
     {
-      "source": "/(.*)",
-      "destination": "https://snaptools.xyz/$1",
+      "source": "/:path*",
+      "destination": "https://snaptools.xyz/:path*",
       "permanent": true
     }
   ],
   "headers": [
     {
-      "source": "/assets/(.*)",
+      "source": "/assets/:path*",
       "headers": [
         {
           "key": "Cache-Control",
@@ -17,7 +17,34 @@
       ]
     },
     {
-      "source": "/(.*\\.(js|css|woff|woff2|ttf|otf|eot|jpg|jpeg|png|gif|ico|svg|webp|avif))",
+      "source": "/:path*.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/:path*.css",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/:path*.woff2",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/:path*.png",
       "headers": [
         {
           "key": "Cache-Control",
@@ -35,7 +62,7 @@
       ]
     },
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "headers": [
         {
           "key": "Strict-Transport-Security",
