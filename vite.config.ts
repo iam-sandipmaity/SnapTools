@@ -24,6 +24,10 @@ export default defineConfig({
     host: '0.0.0.0', // Listen on all network interfaces
     port: 5173, // Default Vite port
     strictPort: false, // Try next port if 5173 is busy
+    // headers: {
+    //   'Cross-Origin-Opener-Policy': 'same-origin',
+    //   'Cross-Origin-Embedder-Policy': 'require-corp',
+    // },
   },
 
   resolve: {
@@ -200,5 +204,8 @@ export default defineConfig({
         comments: false,
       },
     },
+  },
+  optimizeDeps: {
+    exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util'],
   },
 })
