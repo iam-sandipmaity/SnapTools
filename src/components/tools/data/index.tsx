@@ -1,15 +1,20 @@
+
 import JsonSchemaValidator from './JsonSchemaValidator';
+import ExcelViewer from './ExcelViewer';
+import CsvEditor from './CsvEditor';
+import FakeDataGenerator from './FakeDataGenerator';
+import RandomNameGenerator from './RandomNameGenerator';
+import RandomAddressGenerator from './RandomAddressGenerator';
+import CsvJsonConverter from './CsvJsonConverter';
 
-export {
-  JsonSchemaValidator,
-};
+const dataTools = {
+  "json-validator": JsonSchemaValidator,
+  "excel-viewer": ExcelViewer,
+  "csv-editor": CsvEditor,
+  "fake-data-generator": FakeDataGenerator,
+  "random-name": RandomNameGenerator,
+  "random-address": RandomAddressGenerator,
+  "csv-json": CsvJsonConverter,
+}
 
-export const dataTools = [
-  {
-    name: 'JSON Schema Validator',
-    description: 'Validate JSON data against JSON Schema specifications',
-    icon: '📊',
-    component: JsonSchemaValidator,
-    category: 'Data Processing',
-  },
-];
+export default dataTools;
