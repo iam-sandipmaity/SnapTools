@@ -26,10 +26,10 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
 
   // Generate compelling SEO-optimized description with CTAs
   const generateDescription = () => {
-    const baseDesc = tool.description.length > 155 
-      ? tool.description.substring(0, 150) 
+    const baseDesc = tool.description.length > 155
+      ? tool.description.substring(0, 150)
       : tool.description;
-    
+
     // Add power words and CTA
     return `${baseDesc}. Free, fast, secure & no signup required. Try now!`;
   };
@@ -117,7 +117,7 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
     const toolName = tool.name.toLowerCase();
     const category = tool.category.toLowerCase();
     const toolWords = toolName.split(' ');
-    
+
     const keywords: string[] = [
       // Primary keywords
       toolName,
@@ -129,7 +129,7 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
       `free online ${toolName}`,
       `best ${toolName}`,
       `${toolName} ${currentYear}`,
-      
+
       // Long-tail keywords
       `${toolName} no download`,
       `${toolName} no registration`,
@@ -139,12 +139,12 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
       `${toolName} online free no sign up`,
       `best free ${toolName}`,
       `${toolName} without watermark`,
-      
+
       // Question-based keywords (high intent)
       `what is ${toolName}`,
       `how to ${toolName}`,
       `where to ${toolName}`,
-      
+
       // Voice search keywords (natural language)
       `ok google ${toolName}`,
       `hey siri ${toolName}`,
@@ -153,7 +153,7 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
       `${toolName} for free`,
       `i need ${toolName}`,
       `help me ${toolName}`,
-      
+
       // Use case specific keywords - AUTO-GENERATED
       `${toolName} for website`,
       `${toolName} for mobile`,
@@ -344,7 +344,7 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
     },
     "description": tool.description,
     "url": canonicalUrl,
-    "screenshot": "https://snaptools.xyz/og-image.png",
+    "screenshot": "https://snaptools.xyz/og-image.jpg",
     "featureList": tool.features || [
       "100% Free",
       "No Registration Required",
@@ -584,7 +584,7 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
       <meta name="description" content={description} />
       <meta name="keywords" content={generateKeywords()} />
       <link rel="canonical" href={canonicalUrl} />
-      
+
       {/* AUTO-GENERATED International SEO - hreflang tags */}
       {supportedLanguages.map((lang) => {
         const hreflang = lang.region ? `${lang.code}-${lang.region}` : lang.code;
@@ -604,7 +604,7 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content="https://snaptools.xyz/og-image.png" />
+      <meta property="og:image" content="https://snaptools.xyz/og-image.jpg" />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:site_name" content="SnapTools" />
@@ -615,7 +615,7 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
       <meta property="twitter:url" content={canonicalUrl} />
       <meta property="twitter:title" content={title} />
       <meta property="twitter:description" content={description} />
-      <meta property="twitter:image" content="https://snaptools.xyz/og-image.png" />
+      <meta property="twitter:image" content="https://snaptools.xyz/og-image.jpg" />
       <meta name="twitter:creator" content="@snaptools" />
       <meta name="twitter:site" content="@snaptools" />
 
@@ -630,34 +630,34 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
       <meta name="revisit-after" content="7 days" />
       <meta name="rating" content="general" />
       <meta name="distribution" content="global" />
-      
+
       {/* Geographic targeting - International */}
       <meta name="geo.region" content="US" />
       <meta name="geo.placename" content="United States" />
       <meta name="target" content="global" />
       <meta name="audience" content="all" />
-      
+
       {/* AUTO-GENERATED Performance hints for faster loading */}
       <link rel="dns-prefetch" href="//snaptools.xyz" />
       <link rel="dns-prefetch" href="//fonts.googleapis.com" />
       <link rel="dns-prefetch" href="//www.google-analytics.com" />
       <link rel="preconnect" href="https://snaptools.xyz" />
       <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
-      <link rel="preload" as="image" href="https://snaptools.xyz/og-image.png" />
+      <link rel="preload" as="image" href="https://snaptools.xyz/og-image.jpg" />
       <meta httpEquiv="x-dns-prefetch-control" content="on" />
       <meta name="theme-color" content="#000000" />
       <meta name="msapplication-TileColor" content="#000000" />
-      
+
       {/* Security and trust signals */}
       <meta name="referrer" content="origin-when-cross-origin" />
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-      
+
       {/* Mobile optimization */}
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       <meta name="apple-mobile-web-app-title" content={tool.name} />
-      
+
       {/* Additional metadata for search engines */}
       <meta name="subject" content={tool.category} />
       <meta name="topic" content={tool.name} />
@@ -671,12 +671,12 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
       <meta name="owner" content="SnapTools" />
       <meta name="url" content={canonicalUrl} />
       <meta name="target_country" content="Global" />
-      
+
       {/* Semantic web and AI optimization */}
       <meta property="og:determiner" content="the" />
       <meta property="og:type:tag" content={tool.category} />
       <meta name="semantic-annotations" content={`tool, utility, ${tool.category.toLowerCase()}, free online tool`} />
-      
+
       {/* Structured Data - Multiple schemas for better visibility */}
       <script type="application/ld+json">
         {JSON.stringify(structuredData)}
