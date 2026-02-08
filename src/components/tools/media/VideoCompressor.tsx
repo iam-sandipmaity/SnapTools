@@ -60,7 +60,7 @@ const VideoCompressor = () => {
             ];
 
             if (resolution !== 'original') {
-                ffmpegArgs.push('-vf', `scale=-1:${resolution}`);
+                ffmpegArgs.push('-vf', `scale=-2:${resolution}`);
             }
 
             ffmpegArgs.push(outputFileName);
