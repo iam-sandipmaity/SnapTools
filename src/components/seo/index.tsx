@@ -31,17 +31,17 @@ const SEO = ({ title, description, categoryId, toolId, type, imageUrl, canonical
     return "snaptools, snaptool, free online tools, pdf tools, image tools, converter tools, calculator tools, web tools";
   };
 
-  const pageTitle = title || 
-    (type === "tool" && tool ? `${tool.title} - Free Online Tool | SnapTools` : 
-    type === "category" && category ? `${category.title} Tools - Free Online ${category.title} Tools | SnapTools` : 
-    "SnapTools - Free Online Tools for PDF, Image, Converter & More");
+  const pageTitle = title ||
+    (type === "tool" && tool ? `${tool.title} - Free Online Tool | SnapTools` :
+      type === "category" && category ? `${category.title} Tools - Free Online ${category.title} Tools | SnapTools` :
+        "SnapTools - Free Online Tools for PDF, Image, Converter & More");
 
-  const pageDescription = description || 
-    (type === "tool" && tool ? 
+  const pageDescription = description ||
+    (type === "tool" && tool ?
       `Free online ${tool.title} tool by SnapTools. ${tool.description || `Use our ${tool.title.toLowerCase()} tool online for free. No registration required, fast, secure, and privacy-focused.`}` :
-    type === "category" && category ? 
-      `Explore ${category.title} tools on SnapTools. Free online ${category.title.toLowerCase()} tools with no ads, no registration required. Fast, secure, and privacy-focused.` :
-    "SnapTools offers 100+ free online tools for PDF, images, converters, calculators, and more. No registration, no ads. Fast, secure, and privacy-focused.");
+      type === "category" && category ?
+        `Explore ${category.title} tools on SnapTools. Free online ${category.title.toLowerCase()} tools with no ads, no registration required. Fast, secure, and privacy-focused.` :
+        "SnapTools offers 100+ free online tools for PDF, images, converters, calculators, and more. No registration, no ads. Fast, secure, and privacy-focused.");
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -100,7 +100,7 @@ const SEO = ({ title, description, categoryId, toolId, type, imageUrl, canonical
     ]
   };
 
-  const defaultImage = imageUrl || `${BASE_URL}/og-image.png`;
+  const defaultImage = imageUrl || `${BASE_URL}/og-image.jpg`;
 
   return (
     <Helmet>
@@ -121,7 +121,7 @@ const SEO = ({ title, description, categoryId, toolId, type, imageUrl, canonical
       <meta property="og:image" content={defaultImage} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
-      <meta property="og:image:type" content="image/png" />
+      <meta property="og:image:type" content="image/jpeg" />
       <meta property="og:locale" content="en_US" />
 
       {/* Twitter Card tags */}
@@ -143,7 +143,7 @@ const SEO = ({ title, description, categoryId, toolId, type, imageUrl, canonical
       <meta name="format-detection" content="telephone=no" />
       <meta name="language" content="English" />
       <meta httpEquiv="content-language" content="en-US" />
-      
+
       {/* Enhanced SEO Meta Tags */}
       <meta name="keywords" content={getKeywords()} />
       {category && <meta name="category" content={category.title} />}

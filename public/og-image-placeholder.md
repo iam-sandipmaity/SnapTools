@@ -3,10 +3,10 @@
 You need to create an Open Graph image for better SEO and social media sharing.
 
 ## Required Specifications:
-- **Filename**: `og-image.png`
+- **Filename**: `og-image.jpg`
 - **Size**: 1200x630 pixels
-- **Format**: PNG
-- **Location**: `f:\SnapTools\public\og-image.png`
+- **Format**: JPG
+- **Location**: `f:\SnapTools\public\og-image.jpg`
 
 ## Content Suggestions:
 - SnapTools logo
@@ -27,4 +27,4 @@ You need to create an Open Graph image for better SEO and social media sharing.
 - SEO benefits for image search
 
 ## Temporary Solution:
-Until you create the proper image, the site will use `/og-image.png` which should be created ASAP.
+Until you create the proper image, the site will use `/og-image.jpg` which should be created ASAP.
