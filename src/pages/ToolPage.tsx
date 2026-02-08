@@ -7,7 +7,7 @@ import ToolSEO from "@/components/seo/ToolSEO";
 import { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import { toolCategories, ToolCategory } from "@/data/tools";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -80,6 +80,10 @@ const toolLoaders: Record<string, () => Promise<any>> = {
   finance: () => import("@/components/tools/finance"),
   datetime: () => import("@/components/tools/date-and-time"),
   media: () => import("@/components/tools/media"),
+  random: () => import("@/components/tools/random"),
+  data: () => import("@/components/tools/data"),
+  link: () => import("@/components/tools/link"),
+  health: () => import("@/components/tools/health"),
 };
 
 
@@ -88,6 +92,8 @@ const ToolPage = () => {
   const navigate = useNavigate();
   const [category, setCategory] = useState<ToolCategory | null>(null);
   const [subTool, setSubTool] = useState<{ id: string; title: string; description?: string } | null>(null);
+  const [ToolComponent, setToolComponent] = useState<React.ComponentType | null>(null);
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     // Direct tool ID route handling
@@ -119,6 +125,52 @@ const ToolPage = () => {
     }
   }, [categoryId, toolId]);
 
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadTool = async () => {
+      if (!categoryId || !toolId) return;
+
+      try {
+        setError(false);
+        setToolComponent(null);
+
+        const loader = toolLoaders[categoryId];
+        if (!loader) {
+          console.warn(`No loader found for category: ${categoryId}`);
+          // Fallback: Check if tool ID matches a known pattern or try to find it elsewhere
+          // For now, just error
+          setError(true);
+          return;
+        }
+
+        const toolModule = await loader();
+        const tools = toolModule.default;
+
+        if (isMounted) {
+          if (tools && tools[toolId]) {
+            setToolComponent(() => tools[toolId]);
+          } else {
+            console.warn(`Tool ${toolId} not found in category ${categoryId}`);
+            setError(true);
+          }
+        }
+      } catch (err) {
+        console.error('Error loading tool:', err);
+        if (isMounted) {
+          setError(true);
+        }
+      }
+    };
+
+    loadTool();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [categoryId, toolId]);
+
+
   if (!category) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -137,8 +189,32 @@ const ToolPage = () => {
   }
 
   // If we have a category but no specific tool selected, show the category view
-  if (!toolId) {
+  if (!toolId || !subTool) {
     const Icon = category.icon;
+
+    // If we are listing categories, we should show the list.
+    // However if toolId is present but subTool is null, it means tool not found in category logic above handled it.
+    // But wait, the first useEffect handles setting subTool.
+
+    // If toolId exists but subTool is null (invalid tool id for this category)
+    if (toolId && !subTool) {
+      return (
+        <div className="min-h-screen flex flex-col">
+          <Header />
+          <main className="flex-grow flex items-center justify-center">
+            <div className="text-center">
+              <h1 className="text-2xl font-bold mb-4">Tool not found</h1>
+              <Link to={`/tools/${category.id}`}>
+                <Button>Back to Category</Button>
+              </Link>
+            </div>
+          </main>
+          <Footer />
+        </div>
+      );
+    }
+
+    // List view
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
@@ -170,9 +246,14 @@ const ToolPage = () => {
                 to={`/tools/${category.id}/${tool.id}`}
                 className="group block p-6 rounded-xl border bg-card hover:shadow-lg transition-all hover:border-primary/20"
               >
-                <h3 className="text-xl font-medium group-hover:text-primary transition-colors mb-2">
-                  {tool.title}
-                </h3>
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="text-xl font-medium group-hover:text-primary transition-colors">
+                    {tool.title}
+                  </h3>
+                  {tool.comingSoon && (
+                    <span className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded-full">Coming Soon</span>
+                  )}
+                </div>
                 {tool.description && (
                   <p className="text-muted-foreground">
                     {tool.description}
@@ -186,82 +267,6 @@ const ToolPage = () => {
       </div>
     );
   }
-
-  if (!subTool) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-grow flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Tool not found</h1>
-            <Link to={`/tools/${category.id}`}>
-              <Button>Back to Category</Button>
-            </Link>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-
-  // Dynamic tool loader component
-  const DynamicToolLoader = ({ categoryId, toolId }: { categoryId: string; toolId: string }) => {
-    const [ToolComponent, setToolComponent] = useState<React.ComponentType | null>(null);
-    const [error, setError] = useState<boolean>(false);
-
-    useEffect(() => {
-      let isMounted = true;
-
-      const loadTool = async () => {
-        try {
-          setError(false);
-          setToolComponent(null);
-
-          const loader = toolLoaders[categoryId];
-          if (!loader) {
-            setError(true);
-            return;
-          }
-
-          const toolModule = await loader();
-          const tools = toolModule.default;
-
-          if (isMounted && tools && tools[toolId]) {
-            setToolComponent(() => tools[toolId]);
-          } else if (isMounted) {
-            setError(true);
-          }
-        } catch (err) {
-          console.error('Error loading tool:', err);
-          if (isMounted) {
-            setError(true);
-          }
-        }
-      };
-
-      loadTool();
-
-      return () => {
-        isMounted = false;
-      };
-    }, [categoryId, toolId]);
-
-    if (error) {
-      return (
-        <div className="bg-muted/40 border rounded-xl p-6">
-          <p className="text-center text-muted-foreground">
-            Tool content for {subTool?.title} will be implemented here.
-          </p>
-        </div>
-      );
-    }
-
-    if (!ToolComponent) {
-      return <ToolLoader />;
-    }
-
-    return <ToolComponent />;
-  };
 
   const Icon = category.icon;
 
@@ -314,7 +319,24 @@ const ToolPage = () => {
           )}
         </div>
 
-        <DynamicToolLoader categoryId={categoryId!} toolId={toolId!} />
+        {error ? (
+          <div className="bg-muted/40 border rounded-xl p-12 flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
+              <Wrench className="w-8 h-8 text-muted-foreground opacity-50" />
+            </div>
+            <h3 className="text-lg font-semibold mb-2">Tool Under Construction</h3>
+            <p className="text-center text-muted-foreground max-w-md">
+              The tool <span className="font-medium text-foreground">"{subTool.title}"</span> is currently being built and will be available soon.
+            </p>
+            <Button className="mt-6" variant="outline" onClick={() => navigate(`/tools/${categoryId}`)}>
+              Try Other {category.title}
+            </Button>
+          </div>
+        ) : !ToolComponent ? (
+          <ToolLoader />
+        ) : (
+          <ToolComponent />
+        )}
       </main>
       <Footer />
     </div>
