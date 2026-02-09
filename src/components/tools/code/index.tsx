@@ -1,19 +1,15 @@
-import CodeFormatter from './CodeFormatter';
-import JsonFormatter from "./JsonFormatter";
-import XmlFormatter from "./XmlFormatter";
-import HtmlFormatter from "./HtmlFormatter";
-import CssFormatter from "./CssFormatter";
-import JavaScriptMinifier from "./JavaScriptMinifier";
-import CodeRunner from "./CodeRunner";
+import { lazy } from 'react';
 
+// Lazy load each code tool to split into separate chunks
+// This reduces the tool-code chunk from 1.1MB to smaller, on-demand chunks
 const codeTools = {
-  "code-formatter": CodeFormatter,
-  "json-formatter": JsonFormatter,
-  "xml-formatter": XmlFormatter,
-  "html-formatter": HtmlFormatter,
-  "css-formatter": CssFormatter,
-  "js-minifier": JavaScriptMinifier,
-  "code-runner": CodeRunner,
+  "code-formatter": lazy(() => import('./CodeFormatter')),
+  "json-formatter": lazy(() => import('./JsonFormatter')),
+  "xml-formatter": lazy(() => import('./XmlFormatter')),
+  "html-formatter": lazy(() => import('./HtmlFormatter')),
+  "css-formatter": lazy(() => import('./CssFormatter')),
+  "js-minifier": lazy(() => import('./JavaScriptMinifier')),
+  "code-runner": lazy(() => import('./CodeRunner')),
 };
 
 export default codeTools;

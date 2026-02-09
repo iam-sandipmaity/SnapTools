@@ -9,7 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import AnimatedElement from "@/components/animated-element";
 import { Database, Download, RefreshCw, Copy } from "lucide-react";
-import { faker } from "@faker-js/faker";
+// Import only English locale to reduce bundle size (~500KB savings)
+import { faker } from "@faker-js/faker/locale/en";
 import Papa from "papaparse";
 
 const FakeDataGenerator = () => {

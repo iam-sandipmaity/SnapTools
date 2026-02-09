@@ -1,25 +1,17 @@
+import { lazy } from 'react';
 
-import PdfMerger from "./PdfMerger";
-import PdfSplitter from "./PdfSplitter";
-import PdfToWord from "./PdfToWord";
-import PdfToJpg from "./PdfToJpg";
-import PdfCompress from "./PdfCompress";
-import PdfViewer from "./PdfViewer";
-import PdfOrganizer from "./PdfOrganizer";
-import PdfEncryption from "./PdfEncryption";
-import PdfDecryption from "./PdfDecryption"; 
-
-// Export all PDF tools
+// Lazy load each PDF tool to split into separate chunks
+// PDF tools use heavy libraries (pdf-lib, pdfjs-dist) totaling ~1MB
 const pdfTools = {
-  "pdf-merger": PdfMerger,
-  "pdf-splitter": PdfSplitter,
-  "pdf-word": PdfToWord,
-  "pdf-jpg": PdfToJpg,
-  "pdf-compress": PdfCompress,
-  "pdf-viewer": PdfViewer,
-  "pdf-organizer": PdfOrganizer,
-  "pdf-encryption": PdfEncryption,
-  "pdf-decryption": PdfDecryption
+  "pdf-merger": lazy(() => import('./PdfMerger')),
+  "pdf-splitter": lazy(() => import('./PdfSplitter')),
+  "pdf-word": lazy(() => import('./PdfToWord')),
+  "pdf-jpg": lazy(() => import('./PdfToJpg')),
+  "pdf-compress": lazy(() => import('./PdfCompress')),
+  "pdf-viewer": lazy(() => import('./PdfViewer')),
+  "pdf-organizer": lazy(() => import('./PdfOrganizer')),
+  "pdf-encryption": lazy(() => import('./PdfEncryption')),
+  "pdf-decryption": lazy(() => import('./PdfDecryption')),
 };
 
 export default pdfTools;
