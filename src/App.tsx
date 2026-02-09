@@ -60,9 +60,12 @@ const App = () => (
           </Routes>
         </Suspense>
       </BrowserRouter>
-      <Suspense fallback={null}>
-        <Analytics />
-      </Suspense>
+      {/* Only load Analytics in production (Vercel deployment) */}
+      {import.meta.env.PROD && (
+        <Suspense fallback={null}>
+          <Analytics />
+        </Suspense>
+      )}
     </Providers>
   </Suspense>
 );

@@ -1,28 +1,21 @@
-
-import ImageCompressor from "./ImageCompressor";
-import ImageSizeIncreaser from "./ImageSizeIncreaser";
-import ImageBase64Converter from "./ImageBase64Converter";
-import ImageFormatConverter from "./ImageFormatConverter";
-import ImageDimensionChanger from "./ImageDimensionChanger";
-import ImageCropper from "./ImageCropper";
-import ImageColorInverter from "./ImageColorInverter";
-import ImageBlackAndWhite from "./ImageBlackAndWhite";
-import ImageFilterEffects from "./ImageFilterEffects";
+import { lazy } from 'react';
 
 type ImageToolComponentMap = {
-  [key: string]: React.ComponentType;
+  [key: string]: React.LazyExoticComponent<React.ComponentType<any>>;
 };
 
+// Lazy load each image tool to split into separate chunks
+// Image tools use heavy libraries (browser-image-compression, pica)
 const imageTools: ImageToolComponentMap = {
-  "image-compressor": ImageCompressor,
-  "image-size-increaser": ImageSizeIncreaser,
-  "image-base64": ImageBase64Converter,
-  "image-format-converter": ImageFormatConverter,
-  "image-dimension-changer": ImageDimensionChanger,
-  "image-cropper": ImageCropper,
-  "image-color-inverter": ImageColorInverter,
-  "image-black-and-white": ImageBlackAndWhite,
-  "image-filter-effects": ImageFilterEffects
+  "image-compressor": lazy(() => import('./ImageCompressor')),
+  "image-size-increaser": lazy(() => import('./ImageSizeIncreaser')),
+  "image-base64": lazy(() => import('./ImageBase64Converter')),
+  "image-format-converter": lazy(() => import('./ImageFormatConverter')),
+  "image-dimension-changer": lazy(() => import('./ImageDimensionChanger')),
+  "image-cropper": lazy(() => import('./ImageCropper')),
+  "image-color-inverter": lazy(() => import('./ImageColorInverter')),
+  "image-black-and-white": lazy(() => import('./ImageBlackAndWhite')),
+  "image-filter-effects": lazy(() => import('./ImageFilterEffects')),
 };
 
 export default imageTools;

@@ -50,9 +50,25 @@ export default defineConfig({
           if (!id.includes('node_modules')) {
             // Split application code by feature/directory
             if (id.includes('src/components/tools/')) {
-              const toolMatch = id.match(/src\/components\/tools\/([^/]+)/);
+              const toolMatch = id.match(/src[\/\\]components[\/\\]tools[\/\\]([^\/\\]+)[\/\\]([^\/\\]+)/);
               if (toolMatch) {
-                return `tool-${toolMatch[1]}`;
+                const category = toolMatch[1];
+                const component = toolMatch[2].replace(/\.(tsx|ts|jsx|js)$/, '');
+
+                // For heavy tool components, create individual chunks
+                if (category === 'data') {
+                  // Split data tools individually due to heavy dependencies
+                  if (component === 'FakeDataGenerator') return 'tool-data-faker';
+                  if (component === 'ExcelViewer') return 'tool-data-excel';
+                  if (component.includes('Csv')) return 'tool-data-csv';
+                  return `tool-data-${component.toLowerCase()}`;
+                }
+                if (category === 'code') {
+                  // Split code tools individually
+                  return `tool-code-${component.toLowerCase()}`;
+                }
+                // Other tools: group by category
+                return `tool-${category}`;
               }
             }
             if (id.includes('src/blog/')) {
@@ -83,6 +99,22 @@ export default defineConfig({
           // Framer Motion (animation) - used heavily
           if (id.includes('framer-motion')) {
             return 'animation-vendor';
+          }
+
+          // CRITICAL: Split heavy data libraries into separate chunks
+          // @faker-js/faker is ~2MB - must be separate
+          if (id.includes('@faker-js/faker')) {
+            return 'faker-vendor';
+          }
+
+          // xlsx is ~800KB - must be separate
+          if (id.includes('xlsx')) {
+            return 'xlsx-vendor';
+          }
+
+          // papaparse is ~100KB - group with CSV tools
+          if (id.includes('papaparse')) {
+            return 'csv-vendor';
           }
 
           // PDF libraries (LAZY LOADED)

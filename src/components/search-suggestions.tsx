@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { toolCategories } from '@/data/tools';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from './ui/button';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,35 +16,54 @@ interface MatchingTool {
 
 const SearchSuggestions = ({ query, onSelect }: SearchSuggestionsProps) => {
   const [matches, setMatches] = useState<MatchingTool[]>([]);
+  const [toolCategories, setToolCategories] = useState<any[]>([]);
+  const [categoriesLoaded, setCategoriesLoaded] = useState(false);
+
+  // Lazy load tool categories only when search is used
+  const loadToolCategories = useCallback(async () => {
+    if (categoriesLoaded) return toolCategories;
+
+    const { toolCategories: categories } = await import('@/data/tools');
+    setToolCategories(categories);
+    setCategoriesLoaded(true);
+    return categories;
+  }, [categoriesLoaded, toolCategories]);
 
   useEffect(() => {
-    if (!query.trim()) {
-      setMatches([]);
-      return;
-    }
+    const searchTools = async () => {
+      if (!query.trim()) {
+        setMatches([]);
+        return;
+      }
 
-    const searchQuery = query.toLowerCase();
-    const matchingTools: MatchingTool[] = [];
+      // Load tool categories only when user starts searching
+      const categories = await loadToolCategories();
 
-    for (const category of toolCategories) {
-      const subTools = category.subTools || [];
-      const categoryMatches = subTools
-        .filter(tool => 
-          tool.title.toLowerCase().includes(searchQuery) ||
-          tool.description?.toLowerCase().includes(searchQuery)
-        )
-        .map(tool => ({
-          title: tool.title,
-          id: tool.id,
-          categoryId: category.id,
-          description: tool.description
-        }));
-      
-      matchingTools.push(...categoryMatches);
-    }
+      const searchQuery = query.toLowerCase();
+      const matchingTools: MatchingTool[] = [];
 
-    setMatches(matchingTools.slice(0, 5)); // Limit to top 5 matches
-  }, [query]);
+      for (const category of categories) {
+        const subTools = category.subTools || [];
+        const categoryMatches = subTools
+          .filter(tool =>
+            tool.title.toLowerCase().includes(searchQuery) ||
+            tool.description?.toLowerCase().includes(searchQuery)
+          )
+          .map(tool => ({
+            title: tool.title,
+            id: tool.id,
+            categoryId: category.id,
+            description: tool.description
+          }));
+
+        matchingTools.push(...categoryMatches);
+      }
+
+      setMatches(matchingTools.slice(0, 5)); // Limit to top 5 matches
+    };
+
+    searchTools();
+  }, [query, loadToolCategories]);
 
   if (!matches.length) return null;
 
