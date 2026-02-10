@@ -5,13 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run generate:sitemap && npm run generate:rss && npm run generate:timezones && cross-env NODE_OPTIONS=--max-old-space-size=4096 vite build",
+    "build": "npm run generate:sitemap && npm run generate:rss && npm run generate:timezones && cross-env NODE_OPTIONS=--max-old-space-size=4096 vite build && npm run generate:static-pages",
     "build:dev": "cross-env NODE_OPTIONS=--max-old-space-size=4096 vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate:sitemap": "tsx scripts/generate-sitemap.ts",
     "generate:rss": "tsx scripts/generate-rss.ts",
-    "generate:timezones": "tsx scripts/export-timezones-json.ts"
+    "generate:timezones": "tsx scripts/export-timezones-json.ts",
+    "generate:static-pages": "tsx scripts/generate-static-pages.ts"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
