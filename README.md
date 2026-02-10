@@ -200,6 +200,5 @@ Live Demo: [https://snaptools.xyz](https://snaptools.xyz)
   <strong>Built with ❤️ by the SnapTools team</strong>
   <br>
   <sub>⭐ Star us on GitHub — it helps!</sub>
-  
 </div>
 
