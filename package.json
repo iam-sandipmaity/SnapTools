@@ -5,13 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run generate:sitemap && npm run generate:rss && npm run generate:timezones && cross-env NODE_OPTIONS=--max-old-space-size=4096 vite build",
+    "build": "npm run generate:sitemap && npm run generate:rss && npm run generate:timezones && cross-env NODE_OPTIONS=--max-old-space-size=4096 vite build && npm run generate:static-pages",
     "build:dev": "cross-env NODE_OPTIONS=--max-old-space-size=4096 vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate:sitemap": "tsx scripts/generate-sitemap.ts",
     "generate:rss": "tsx scripts/generate-rss.ts",
-    "generate:timezones": "tsx scripts/export-timezones-json.ts"
+    "generate:timezones": "tsx scripts/export-timezones-json.ts",
+    "generate:static-pages": "tsx scripts/generate-static-pages.ts"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -88,6 +89,7 @@
     "prettier": "^3.5.3",
     "qrcode": "^1.5.4",
     "qrcode.react": "^4.2.0",
+    "quill": "^2.0.3",
     "react": "^18.3.1",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
@@ -96,6 +98,7 @@
     "react-helmet-async": "^2.0.5",
     "react-hook-form": "^7.53.0",
     "react-markdown": "^10.1.0",
+    "react-quill": "^2.0.0",
     "react-resizable-panels": "^2.1.3",
     "react-router-dom": "^6.26.2",
     "react-simple-maps": "^3.0.0",

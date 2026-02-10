@@ -429,6 +429,8 @@ export const toolCategories: ToolCategory[] = [
     subTools: [
       { id: "excel-viewer", title: "Excel Viewer Online", description: "View Excel files online free. Open and read XLSX, XLS files in browser without Excel." },
       { id: "csv-editor", title: "CSV Editor", description: "Edit CSV files online free. View, edit, and modify CSV data in a table format." },
+      { id: "text-editor", title: "Text Editor & Viewer", description: "Edit and view text files online free. Rich text editor with syntax highlighting and formatting." },
+      { id: "word-viewer", title: "Word Viewer & Editor", description: "View and edit Word documents online free. Open DOCX files in browser without Microsoft Word." },
       { id: "fake-data-generator", title: "Fake Data Generator", description: "Generate fake data online free. Create test data for development and testing." },
       { id: "random-name", title: "Random Name Generator", description: "Generate random names online free. Create realistic fake names for testing." },
       { id: "random-address", title: "Random Address Generator", description: "Generate random addresses online free. Create fake addresses for testing purposes." },
