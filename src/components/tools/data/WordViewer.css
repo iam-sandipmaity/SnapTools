@@ -1,0 +1,331 @@
+/* Word Editor Custom Styles */
+
+.word-editor-container {
+  min-height: 600px;
+}
+
+.word-editor {
+  height: 600px;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Quill Editor Customization */
+.word-editor .ql-toolbar {
+  background: #f8f9fa;
+  border: 1px solid #e2e8f0;
+  border-bottom: 2px solid #e2e8f0;
+  border-radius: 8px 8px 0 0;
+  padding: 12px;
+}
+
+.word-editor .ql-container {
+  border: 1px solid #e2e8f0;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  font-family: 'Calibri', 'Arial', sans-serif;
+  font-size: 11pt;
+  height: calc(600px - 62px);
+}
+
+.word-editor .ql-editor {
+  padding: 1in;
+  min-height: 11in;
+  max-width: 8.5in;
+  margin: 0 auto;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.word-editor .ql-editor.ql-blank::before {
+  color: #9ca3af;
+  font-style: italic;
+  left: 1in;
+}
+
+/* Toolbar Button Styling */
+.word-editor .ql-toolbar button {
+  width: 28px;
+  height: 28px;
+  padding: 3px;
+  margin: 2px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.word-editor .ql-toolbar button:hover {
+  background: #e2e8f0;
+}
+
+.word-editor .ql-toolbar button.ql-active {
+  background: #3b82f6;
+  color: white;
+}
+
+.word-editor .ql-toolbar .ql-stroke {
+  stroke: #374151;
+}
+
+.word-editor .ql-toolbar button.ql-active .ql-stroke {
+  stroke: white;
+}
+
+.word-editor .ql-toolbar .ql-fill {
+  fill: #374151;
+}
+
+.word-editor .ql-toolbar button.ql-active .ql-fill {
+  fill: white;
+}
+
+/* Dropdown Styling */
+.word-editor .ql-toolbar select {
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 2px;
+  background: white;
+}
+
+.word-editor .ql-toolbar select:hover {
+  border-color: #3b82f6;
+}
+
+/* Editor Content Styling */
+.word-editor .ql-editor h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin-top: 0.67em;
+  margin-bottom: 0.67em;
+}
+
+.word-editor .ql-editor h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+}
+
+.word-editor .ql-editor h3 {
+  font-size: 1.17em;
+  font-weight: bold;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.word-editor .ql-editor p {
+  margin-bottom: 1em;
+}
+
+.word-editor .ql-editor ul,
+.word-editor .ql-editor ol {
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.word-editor .ql-editor blockquote {
+  border-left: 4px solid #e2e8f0;
+  padding-left: 16px;
+  margin-left: 0;
+  margin-bottom: 1em;
+  color: #6b7280;
+}
+
+.word-editor .ql-editor pre {
+  background: #f3f4f6;
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 1em;
+  overflow-x: auto;
+}
+
+.word-editor .ql-editor code {
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+}
+
+.word-editor .ql-editor a {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+.word-editor .ql-editor img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1em auto;
+}
+
+/* Preview Mode Styling */
+.word-preview {
+  font-family: 'Calibri', 'Arial', sans-serif;
+  font-size: 11pt;
+  line-height: 1.6;
+}
+
+.word-preview h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin-top: 0.67em;
+  margin-bottom: 0.67em;
+}
+
+.word-preview h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+}
+
+.word-preview h3 {
+  font-size: 1.17em;
+  font-weight: bold;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.word-preview p {
+  margin-bottom: 1em;
+}
+
+.word-preview ul,
+.word-preview ol {
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.word-preview blockquote {
+  border-left: 4px solid #e2e8f0;
+  padding-left: 16px;
+  margin-left: 0;
+  margin-bottom: 1em;
+  color: #6b7280;
+}
+
+.word-preview img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1em auto;
+}
+
+/* Print Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  .word-editor .ql-editor,
+  .word-editor .ql-editor * {
+    visibility: visible;
+  }
+  
+  .word-editor .ql-editor {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none;
+    padding: 0;
+  }
+  
+  .word-editor .ql-toolbar {
+    display: none;
+  }
+}
+
+/* Dark Mode Support */
+.dark .word-editor {
+  background: #1f2937;
+}
+
+.dark .word-editor .ql-toolbar {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+.dark .word-editor .ql-container {
+  border-color: #4b5563;
+}
+
+.dark .word-editor .ql-editor {
+  background: #1f2937;
+  color: #f3f4f6;
+}
+
+.dark .word-editor .ql-toolbar .ql-stroke {
+  stroke: #f3f4f6;
+}
+
+.dark .word-editor .ql-toolbar .ql-fill {
+  fill: #f3f4f6;
+}
+
+.dark .word-editor .ql-toolbar select {
+  background: #374151;
+  color: #f3f4f6;
+  border-color: #4b5563;
+}
+
+.dark .word-editor .ql-editor.ql-blank::before {
+  color: #6b7280;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .word-editor .ql-editor {
+    padding: 0.5in;
+    max-width: 100%;
+  }
+  
+  .word-editor {
+    height: 500px;
+  }
+  
+  .word-editor .ql-container {
+    height: calc(500px - 62px);
+  }
+  
+  .word-editor .ql-toolbar {
+    padding: 8px;
+  }
+  
+  .word-editor .ql-toolbar button {
+    width: 24px;
+    height: 24px;
+    margin: 1px;
+  }
+}
+
+/* Scrollbar Styling */
+.word-editor .ql-editor::-webkit-scrollbar {
+  width: 8px;
+}
+
+.word-editor .ql-editor::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.word-editor .ql-editor::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.word-editor .ql-editor::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.dark .word-editor .ql-editor::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.dark .word-editor .ql-editor::-webkit-scrollbar-thumb {
+  background: #6b7280;
+}
+
+.dark .word-editor .ql-editor::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
