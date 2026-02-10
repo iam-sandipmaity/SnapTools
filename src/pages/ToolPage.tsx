@@ -4,6 +4,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import SEO from "@/components/seo";
 import ToolSEO from "@/components/seo/ToolSEO";
+import ToolContentSection from "@/components/seo/ToolContentSection";
 import { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import { toolCategories, ToolCategory } from "@/data/tools";
@@ -335,7 +336,12 @@ const ToolPage = () => {
         ) : !ToolComponent ? (
           <ToolLoader />
         ) : (
-          <ToolComponent />
+          <>
+            <ToolComponent />
+
+            {/* SEO Content Section - Adds 300+ words of rich content */}
+            <ToolContentSection tool={toolForSEO} />
+          </>
         )}
       </main>
       <Footer />

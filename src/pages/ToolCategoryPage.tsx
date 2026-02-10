@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import SEO from "@/components/seo";
+import CategoryContentSection from "@/components/seo/CategoryContentSection";
 import { toolCategories, ToolCategory } from "@/data/tools";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -74,7 +75,7 @@ const ToolCategoryPage = () => {
             <ArrowLeft size={16} className="mr-2" />
             Back
           </motion.button>
-          
+
           <div className="flex items-center gap-4 mb-6">
             <div className={cn("w-12 h-12 rounded-lg flex items-center justify-center", category.color)}>
               <Icon size={24} className="text-primary-foreground" />
@@ -136,6 +137,18 @@ const ToolCategoryPage = () => {
           <div className="text-center py-12">
             <p className="text-muted-foreground">No tools found matching your search.</p>
           </div>
+        )}
+
+        {/* SEO Content Section - Only show when not searching */}
+        {!searchQuery && (
+          <CategoryContentSection
+            category={{
+              id: category.id,
+              title: category.title,
+              description: category.description
+            }}
+            toolCount={category.subTools?.length || 0}
+          />
         )}
       </main>
       <Footer />
