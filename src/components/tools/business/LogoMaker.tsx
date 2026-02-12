@@ -669,8 +669,8 @@ const LogoMaker: React.FC = () => {
                             {/* Controls */}
                             <div className="space-y-4 overflow-y-auto max-h-[700px] pr-2">
                                 {/* Basic Text */}
-                                <div className="space-y-4 border rounded-lg p-4 bg-gray-50">
-                                    <h3 className="font-semibold flex items-center gap-2">
+                                <div className="space-y-4 border rounded-lg p-4 bg-muted/30 dark:bg-slate-900/50">
+                                    <h3 className="font-semibold flex items-center gap-2 text-primary">
                                         <Type className="h-4 w-4" />
                                         Text & Content
                                     </h3>
@@ -805,9 +805,9 @@ const LogoMaker: React.FC = () => {
                                 </div>
 
                                 {/* Colors */}
-                                <div className="space-y-4 border rounded-lg p-4">
+                                <div className="space-y-4 border rounded-lg p-4 bg-muted/30 dark:bg-slate-900/50">
                                     <div className="flex justify-between items-center">
-                                        <h3 className="font-semibold flex items-center gap-2">
+                                        <h3 className="font-semibold flex items-center gap-2 text-primary">
                                             <Palette className="h-4 w-4" />
                                             Colors
                                         </h3>
@@ -875,8 +875,8 @@ const LogoMaker: React.FC = () => {
                                 </div>
 
                                 {/* Style Selection */}
-                                <div className="space-y-4 border rounded-lg p-4">
-                                    <h3 className="font-semibold">Design Style</h3>
+                                <div className="space-y-4 border rounded-lg p-4 bg-muted/30 dark:bg-slate-900/50">
+                                    <h3 className="font-semibold text-primary">Design Style</h3>
                                     <Tabs value={config.style} onValueChange={(v) => updateConfig({ style: v as any })}>
                                         <TabsList className="grid grid-cols-3 w-full">
                                             <TabsTrigger value="modern">Modern</TabsTrigger>
@@ -897,8 +897,8 @@ const LogoMaker: React.FC = () => {
                                 </div>
 
                                 {/* Advanced Options */}
-                                <div className="space-y-4 border rounded-lg p-4">
-                                    <div className="flex justify-between items-center">
+                                <div className="space-y-4 border rounded-lg p-4 bg-muted/30 dark:bg-slate-900/50">
+                                    <div className="flex justify-between items-center text-primary">
                                         <h3 className="font-semibold flex items-center gap-2">
                                             <Settings className="h-4 w-4" />
                                             Advanced Options
@@ -995,14 +995,14 @@ const LogoMaker: React.FC = () => {
 
                             {/* Preview */}
                             <div className="space-y-4">
-                                <div className="flex justify-between items-center sticky top-0 bg-white z-10 pb-2">
+                                <div className="flex justify-between items-center sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10 pb-4 border-b">
                                     <h3 className="font-semibold text-lg flex items-center gap-2">
-                                        <Eye className="h-5 w-5" />
+                                        <Eye className="h-5 w-5 text-primary" />
                                         Live Preview
                                     </h3>
                                 </div>
 
-                                <div className="border rounded-lg p-6 bg-gray-100 flex items-center justify-center min-h-[500px]">
+                                <div className="border rounded-lg p-6 bg-muted/50 dark:bg-slate-950 flex items-center justify-center min-h-[500px] shadow-inner">
                                     <canvas
                                         ref={canvasRef}
                                         className="max-w-full h-auto shadow-2xl rounded"

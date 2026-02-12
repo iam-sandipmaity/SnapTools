@@ -718,14 +718,18 @@ const BusinessCardGenerator: React.FC = () => {
         <AnimatedElement>
             <div className="max-w-7xl mx-auto">
                 <Card className="shadow-2xl">
-                    <CardHeader className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-900">
-                        <div className="flex items-center gap-3">
-                            <Sparkles className="h-8 w-8 text-blue-600" />
-                            <div>
-                                <CardTitle className="text-3xl">Business Card Generator Pro</CardTitle>
-                                <CardDescription className="text-base mt-1">
-                                    Design stunning professional business cards with advanced customization
-                                </CardDescription>
+                    <CardHeader className="bg-muted/50 dark:bg-slate-900/80 border-b">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <Sparkles className="h-10 w-10 text-blue-600" />
+                                <div>
+                                    <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                                        Business Card Generator Pro
+                                    </CardTitle>
+                                    <CardDescription className="text-base mt-1">
+                                        Design stunning professional business cards with advanced customization
+                                    </CardDescription>
+                                </div>
                             </div>
                         </div>
                     </CardHeader>
@@ -734,8 +738,8 @@ const BusinessCardGenerator: React.FC = () => {
                         <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
                             {/* Input Form - Takes 2 columns */}
                             <div className="xl:col-span-2 space-y-6">
-                                <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 p-4 rounded-lg">
-                                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                                <div className="bg-muted/30 dark:bg-slate-900/50 p-6 rounded-xl border">
+                                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2 text-primary">
                                         <Type className="h-5 w-5" />
                                         Card Information
                                     </h3>
@@ -747,7 +751,7 @@ const BusinessCardGenerator: React.FC = () => {
                                                 placeholder="John Doe"
                                                 value={cardData.name}
                                                 onChange={(e) => updateField('name', e.target.value)}
-                                                className="bg-white dark:bg-gray-800"
+                                                className="bg-background"
                                             />
                                         </div>
 
@@ -758,7 +762,7 @@ const BusinessCardGenerator: React.FC = () => {
                                                 placeholder="Senior Developer"
                                                 value={cardData.title}
                                                 onChange={(e) => updateField('title', e.target.value)}
-                                                className="bg-white dark:bg-gray-800"
+                                                className="bg-background"
                                             />
                                         </div>
 
@@ -769,7 +773,7 @@ const BusinessCardGenerator: React.FC = () => {
                                                 placeholder="Acme Inc."
                                                 value={cardData.company}
                                                 onChange={(e) => updateField('company', e.target.value)}
-                                                className="bg-white dark:bg-gray-800"
+                                                className="bg-background"
                                             />
                                         </div>
 
@@ -781,7 +785,7 @@ const BusinessCardGenerator: React.FC = () => {
                                                 placeholder="john@example.com"
                                                 value={cardData.email}
                                                 onChange={(e) => updateField('email', e.target.value)}
-                                                className="bg-white dark:bg-gray-800"
+                                                className="bg-background"
                                             />
                                         </div>
 
@@ -792,7 +796,7 @@ const BusinessCardGenerator: React.FC = () => {
                                                 placeholder="+1 (555) 123-4567"
                                                 value={cardData.phone}
                                                 onChange={(e) => updateField('phone', e.target.value)}
-                                                className="bg-white dark:bg-gray-800"
+                                                className="bg-background"
                                             />
                                         </div>
 
@@ -803,7 +807,7 @@ const BusinessCardGenerator: React.FC = () => {
                                                 placeholder="www.example.com"
                                                 value={cardData.website}
                                                 onChange={(e) => updateField('website', e.target.value)}
-                                                className="bg-white dark:bg-gray-800"
+                                                className="bg-background"
                                             />
                                         </div>
 
@@ -814,14 +818,14 @@ const BusinessCardGenerator: React.FC = () => {
                                                 placeholder="123 Main St, City"
                                                 value={cardData.address}
                                                 onChange={(e) => updateField('address', e.target.value)}
-                                                className="bg-white dark:bg-gray-800"
+                                                className="bg-background"
                                             />
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-900 p-4 rounded-lg">
-                                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                                <div className="bg-muted/30 dark:bg-slate-900/50 p-6 rounded-xl border">
+                                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2 text-primary">
                                         <Palette className="h-5 w-5" />
                                         Color Customization
                                     </h3>
@@ -912,8 +916,8 @@ const BusinessCardGenerator: React.FC = () => {
                                     </div>
                                 </div>
 
-                                <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-800 dark:to-gray-900 p-4 rounded-lg">
-                                    <h3 className="font-semibold text-lg mb-4">Advanced Settings</h3>
+                                <div className="bg-muted/30 dark:bg-slate-900/50 p-6 rounded-xl border">
+                                    <h3 className="font-semibold text-lg mb-4 text-primary">Advanced Settings</h3>
 
                                     <div className="space-y-4">
                                         <div className="space-y-2">
@@ -945,8 +949,8 @@ const BusinessCardGenerator: React.FC = () => {
 
                             {/* Preview Section - Takes 3 columns */}
                             <div className="xl:col-span-3 space-y-4">
-                                <div className="bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-gray-800 dark:to-gray-900 p-4 rounded-lg">
-                                    <div className="flex justify-between items-center mb-4">
+                                <div className="bg-muted/30 dark:bg-slate-900/50 p-6 rounded-xl border">
+                                    <div className="flex justify-between items-center mb-4 text-primary">
                                         <h3 className="font-semibold text-lg">Design Template</h3>
                                     </div>
 
@@ -968,7 +972,7 @@ const BusinessCardGenerator: React.FC = () => {
                                     </Tabs>
                                 </div>
 
-                                <div className="border-4 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center min-h-[500px]">
+                                <div className="border-4 border-dashed border-muted rounded-xl p-8 bg-muted/50 dark:bg-slate-950 flex items-center justify-center min-h-[500px] shadow-inner">
                                     <canvas
                                         ref={canvasRef}
                                         className="max-w-full h-auto shadow-2xl rounded-lg"

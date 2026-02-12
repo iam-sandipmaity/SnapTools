@@ -149,9 +149,11 @@ const MemeGenerator: React.FC = () => {
         <AnimatedElement>
             <div className="max-w-6xl mx-auto">
                 <Card>
-                    <CardHeader>
-                        <CardTitle>Meme Generator</CardTitle>
-                        <CardDescription>
+                    <CardHeader className="bg-muted/50 dark:bg-slate-900/80 border-b">
+                        <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                            Meme Generator Pro
+                        </CardTitle>
+                        <CardDescription className="text-base mt-1">
                             Create funny memes with custom text and images
                         </CardDescription>
                     </CardHeader>
@@ -286,9 +288,9 @@ const MemeGenerator: React.FC = () => {
 
                             {/* Preview */}
                             <div className="space-y-4">
-                                <h3 className="font-semibold text-lg">Preview</h3>
+                                <h3 className="font-semibold text-lg text-primary">Preview</h3>
 
-                                <div className="border rounded-lg p-4 bg-gray-50 min-h-[500px] flex items-center justify-center">
+                                <div className="border border-dashed border-muted rounded-xl p-4 bg-muted/50 dark:bg-slate-950 min-h-[500px] flex items-center justify-center shadow-inner">
                                     {image ? (
                                         <canvas
                                             ref={canvasRef}

@@ -781,7 +781,7 @@ const EnhancedInvoiceGenerator: React.FC = () => {
         <AnimatedElement>
             <div className="max-w-[1900px] mx-auto">
                 <Card className="border-2">
-                    <CardHeader className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border-b">
+                    <CardHeader className="bg-muted/50 dark:bg-slate-900/80 border-b">
                         <div className="flex items-center justify-between flex-wrap gap-4">
                             <div>
                                 <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-2">
@@ -841,8 +841,8 @@ const EnhancedInvoiceGenerator: React.FC = () => {
                                 <div className="xl:col-span-2">
                                     <TabsContent value="details" className="space-y-6 mt-0">
                                         {/* Invoice Info */}
-                                        <Card className="p-6 border-2">
-                                            <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                                        <Card className="p-6 border-2 dark:bg-slate-900/50">
+                                            <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-primary">
                                                 <Receipt className="h-5 w-5" />
                                                 Invoice Information
                                             </h3>
@@ -922,8 +922,8 @@ const EnhancedInvoiceGenerator: React.FC = () => {
                                         </Card>
 
                                         {/* From Section */}
-                                        <Card className="p-6 border-2">
-                                            <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                                        <Card className="p-6 border-2 dark:bg-slate-900/50">
+                                            <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-primary">
                                                 <Building2 className="h-5 w-5" />
                                                 Your Business Details
                                             </h3>
@@ -992,9 +992,9 @@ const EnhancedInvoiceGenerator: React.FC = () => {
                                         </Card>
 
                                         {/* Client Section */}
-                                        <Card className="p-6 border-2">
+                                        <Card className="p-6 border-2 dark:bg-slate-900/50">
                                             <div className="flex items-center justify-between mb-4">
-                                                <h3 className="font-bold text-lg flex items-center gap-2">
+                                                <h3 className="font-bold text-lg flex items-center gap-2 text-primary">
                                                     <User className="h-5 w-5" />
                                                     Client Details
                                                 </h3>
@@ -1079,7 +1079,7 @@ const EnhancedInvoiceGenerator: React.FC = () => {
                                     </TabsContent>
 
                                     <TabsContent value="items" className="space-y-4 mt-0">
-                                        <Card className="p-6 border-2">
+                                        <Card className="p-6 border-2 dark:bg-slate-900/50">
                                             <div className="flex items-center justify-between mb-4">
                                                 <h3 className="font-bold text-lg flex items-center gap-2">
                                                     <Calculator className="h-5 w-5" />
@@ -1093,7 +1093,7 @@ const EnhancedInvoiceGenerator: React.FC = () => {
 
                                             <div className="space-y-4">
                                                 {invoice.items.map((item, index) => (
-                                                    <Card key={item.id} className="p-4 border-2 bg-gray-50">
+                                                    <Card key={item.id} className="p-4 border-2 bg-muted/50 dark:bg-slate-950">
                                                         <div className="space-y-3">
                                                             <div className="flex items-center justify-between">
                                                                 <span className="font-semibold text-blue-600">Item {index + 1}</span>
@@ -1176,7 +1176,7 @@ const EnhancedInvoiceGenerator: React.FC = () => {
                                         </Card>
 
                                         {/* Calculations */}
-                                        <Card className="p-6 border-2 bg-gradient-to-br from-blue-50 to-indigo-50">
+                                        <Card className="p-6 border-2 bg-muted/30 dark:bg-slate-900/50">
                                             <h3 className="font-bold text-lg mb-4">Calculations</h3>
                                             <div className="space-y-4">
                                                 <div className="grid grid-cols-2 gap-4">
@@ -1186,7 +1186,7 @@ const EnhancedInvoiceGenerator: React.FC = () => {
                                                             value={invoice.discountType}
                                                             onValueChange={(value: any) => updateField('discountType', value)}
                                                         >
-                                                            <SelectTrigger className="mt-1 bg-white">
+                                                            <SelectTrigger className="mt-1 bg-background">
                                                                 <SelectValue />
                                                             </SelectTrigger>
                                                             <SelectContent>
@@ -1203,7 +1203,7 @@ const EnhancedInvoiceGenerator: React.FC = () => {
                                                             step="0.01"
                                                             value={invoice.discountValue}
                                                             onChange={(e) => updateField('discountValue', parseFloat(e.target.value) || 0)}
-                                                            className="mt-1 bg-white"
+                                                            className="mt-1 bg-background"
                                                         />
                                                     </div>
                                                     <div>
@@ -1215,7 +1215,7 @@ const EnhancedInvoiceGenerator: React.FC = () => {
                                                             step="0.1"
                                                             value={invoice.taxRate}
                                                             onChange={(e) => updateField('taxRate', parseFloat(e.target.value) || 0)}
-                                                            className="mt-1 bg-white"
+                                                            className="mt-1 bg-background"
                                                         />
                                                     </div>
                                                     <div>
@@ -1226,7 +1226,7 @@ const EnhancedInvoiceGenerator: React.FC = () => {
                                                             step="0.01"
                                                             value={invoice.shippingCost}
                                                             onChange={(e) => updateField('shippingCost', parseFloat(e.target.value) || 0)}
-                                                            className="mt-1 bg-white"
+                                                            className="mt-1 bg-background"
                                                         />
                                                     </div>
                                                 </div>
@@ -1264,7 +1264,7 @@ const EnhancedInvoiceGenerator: React.FC = () => {
                                     </TabsContent>
 
                                     <TabsContent value="payment" className="space-y-4 mt-0">
-                                        <Card className="p-6 border-2">
+                                        <Card className="p-6 border-2 dark:bg-slate-900/50">
                                             <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
                                                 <CreditCard className="h-5 w-5" />
                                                 Payment Information
@@ -1335,7 +1335,7 @@ const EnhancedInvoiceGenerator: React.FC = () => {
                                         </Card>
 
                                         {/* Payment Tracking */}
-                                        <Card className="p-6 border-2">
+                                        <Card className="p-6 border-2 dark:bg-slate-900/50">
                                             <div className="flex items-center justify-between mb-4">
                                                 <h3 className="font-bold text-lg flex items-center gap-2">
                                                     <Clock className="h-5 w-5" />
@@ -1442,7 +1442,7 @@ const EnhancedInvoiceGenerator: React.FC = () => {
                                     </TabsContent>
 
                                     <TabsContent value="additional" className="space-y-4 mt-0">
-                                        <Card className="p-6 border-2">
+                                        <Card className="p-6 border-2 dark:bg-slate-900/50">
                                             <h3 className="font-bold text-lg mb-4">Additional Information</h3>
                                             <div className="space-y-4">
                                                 <div>
@@ -1515,7 +1515,7 @@ const EnhancedInvoiceGenerator: React.FC = () => {
                                     </TabsContent>
 
                                     <TabsContent value="settings" className="space-y-4 mt-0">
-                                        <Card className="p-6 border-2">
+                                        <Card className="p-6 border-2 dark:bg-slate-900/50">
                                             <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
                                                 <Settings className="h-5 w-5" />
                                                 Invoice Settings
@@ -1621,7 +1621,7 @@ const EnhancedInvoiceGenerator: React.FC = () => {
                                     </TabsContent>
 
                                     <TabsContent value="preview" className="mt-0">
-                                        <Card className="p-6 border-2">
+                                        <Card className="p-6 border-2 dark:bg-slate-900/50">
                                             <div className="mb-4 flex items-center justify-between">
                                                 <h3 className="font-bold text-lg">Invoice Preview</h3>
                                                 <Button
@@ -1710,7 +1710,7 @@ const EnhancedInvoiceGenerator: React.FC = () => {
                                         </Card>
 
                                         {/* Actions */}
-                                        <Card className="p-6 border-2">
+                                        <Card className="p-6 border-2 dark:bg-slate-900/50">
                                             <h3 className="font-bold text-lg mb-4">Actions</h3>
                                             <div className="space-y-2">
                                                 <Button onClick={downloadInvoice} className="w-full justify-start" size="lg">

@@ -578,12 +578,12 @@ const ReceiptMaker: React.FC = () => {
         <AnimatedElement>
             <div className="max-w-7xl mx-auto">
                 <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <FileText className="h-6 w-6" />
+                    <CardHeader className="bg-muted/50 dark:bg-slate-900/80 border-b">
+                        <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-2">
+                            <FileText className="h-8 w-8 text-blue-600" />
                             Professional Receipt Maker
                         </CardTitle>
-                        <CardDescription>
+                        <CardDescription className="text-base mt-2">
                             Create beautiful, customizable receipts with advanced features
                         </CardDescription>
                     </CardHeader>
@@ -593,8 +593,8 @@ const ReceiptMaker: React.FC = () => {
                             {/* Input Form */}
                             <div className="space-y-4 overflow-y-auto max-h-[800px] pr-2">
                                 {/* Basic Info */}
-                                <div className="space-y-4 border rounded-lg p-4 bg-gray-50">
-                                    <h3 className="font-semibold flex items-center gap-2">
+                                <div className="space-y-4 border rounded-lg p-4 bg-muted/30 dark:bg-slate-900/50">
+                                    <h3 className="font-semibold flex items-center gap-2 text-primary">
                                         <FileText className="h-4 w-4" />
                                         Basic Information
                                     </h3>
@@ -620,8 +620,8 @@ const ReceiptMaker: React.FC = () => {
                                 </div>
 
                                 {/* Business Information */}
-                                <div className="space-y-4 border rounded-lg p-4">
-                                    <h3 className="font-semibold">Business Information</h3>
+                                <div className="space-y-4 border rounded-lg p-4 bg-muted/30 dark:bg-slate-900/50">
+                                    <h3 className="font-semibold text-primary">Business Information</h3>
                                     <div className="space-y-3">
                                         <div>
                                             <Label>Logo (Max 500KB)</Label>
@@ -679,8 +679,8 @@ const ReceiptMaker: React.FC = () => {
                                 </div>
 
                                 {/* Customer Information */}
-                                <div className="space-y-4 border rounded-lg p-4">
-                                    <h3 className="font-semibold">Customer Information</h3>
+                                <div className="space-y-4 border rounded-lg p-4 bg-muted/30 dark:bg-slate-900/50">
+                                    <h3 className="font-semibold text-primary">Customer Information</h3>
                                     <div className="space-y-3">
                                         <Input
                                             placeholder="Customer Name"
@@ -722,8 +722,8 @@ const ReceiptMaker: React.FC = () => {
                                 </div>
 
                                 {/* Items */}
-                                <div className="space-y-4 border rounded-lg p-4">
-                                    <div className="flex justify-between items-center">
+                                <div className="space-y-4 border rounded-lg p-4 bg-muted/30 dark:bg-slate-900/50">
+                                    <div className="flex justify-between items-center text-primary">
                                         <h3 className="font-semibold flex items-center gap-2">
                                             <Calculator className="h-4 w-4" />
                                             Items
@@ -736,7 +736,7 @@ const ReceiptMaker: React.FC = () => {
 
                                     <div className="space-y-3">
                                         {receipt.items.map((item, index) => (
-                                            <div key={item.id} className="border rounded-lg p-3 space-y-2 bg-white">
+                                            <div key={item.id} className="border rounded-lg p-3 space-y-2 bg-background/50">
                                                 <div className="flex justify-between items-start">
                                                     <span className="text-sm font-medium">Item {index + 1}</span>
                                                     <div className="flex gap-1">
@@ -804,8 +804,8 @@ const ReceiptMaker: React.FC = () => {
                                 </div>
 
                                 {/* Advanced Settings */}
-                                <div className="space-y-4 border rounded-lg p-4">
-                                    <div className="flex justify-between items-center">
+                                <div className="space-y-4 border rounded-lg p-4 bg-muted/30 dark:bg-slate-900/50">
+                                    <div className="flex justify-between items-center text-primary">
                                         <h3 className="font-semibold flex items-center gap-2">
                                             <Settings className="h-4 w-4" />
                                             Advanced Settings
@@ -950,7 +950,7 @@ const ReceiptMaker: React.FC = () => {
                                 </div>
 
                                 {/* Summary */}
-                                <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 space-y-2">
+                                <div className="bg-muted/50 dark:bg-slate-900/50 rounded-lg p-4 space-y-2 border">
                                     <div className="flex justify-between text-sm">
                                         <span>Subtotal:</span>
                                         <span>{getCurrencySymbol()}{calculateSubtotal().toFixed(2)}</span>
@@ -973,7 +973,7 @@ const ReceiptMaker: React.FC = () => {
                                             <span>{getCurrencySymbol()}{receipt.shipping.toFixed(2)}</span>
                                         </div>
                                     )}
-                                    <div className="flex justify-between text-xl font-bold pt-2 border-t-2 border-gray-300">
+                                    <div className="flex justify-between text-xl font-bold pt-2 border-t-2 border-muted-foreground/20">
                                         <span>Total:</span>
                                         <span>{getCurrencySymbol()}{calculateTotal().toFixed(2)}</span>
                                     </div>
@@ -982,14 +982,14 @@ const ReceiptMaker: React.FC = () => {
 
                             {/* Preview */}
                             <div className="space-y-4">
-                                <div className="flex justify-between items-center sticky top-0 bg-white z-10 pb-2">
+                                <div className="flex justify-between items-center sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10 pb-4 border-b">
                                     <h3 className="font-semibold text-lg flex items-center gap-2">
-                                        <Eye className="h-5 w-5" />
+                                        <Eye className="h-5 w-5 text-primary" />
                                         Live Preview
                                     </h3>
                                 </div>
 
-                                <div className="border rounded-lg p-2 bg-gray-100 overflow-auto max-h-[600px]">
+                                <div className="border rounded-lg p-4 bg-muted/50 dark:bg-slate-950 overflow-auto max-h-[700px] shadow-inner">
                                     <div dangerouslySetInnerHTML={{ __html: generateReceiptHTML() }} />
                                 </div>
 
