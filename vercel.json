@@ -14,13 +14,13 @@
   ],
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "destination": "/index.html"
     }
   ],
   "headers": [
     {
-      "source": "/assets/(.*)",
+      "source": "/assets/:path*",
       "headers": [
         {
           "key": "Cache-Control",
@@ -29,7 +29,7 @@
       ]
     },
     {
-      "source": "/(.*)\\.(?:js|css|woff|woff2|ttf|otf|eot)",
+      "source": "/:path*(js|css|woff|woff2|ttf|otf|eot)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -38,7 +38,7 @@
       ]
     },
     {
-      "source": "/(.*)\\.(?:jpg|jpeg|png|gif|ico|svg|webp|avif)",
+      "source": "/:path*(jpg|jpeg|png|gif|ico|svg|webp|avif)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -65,7 +65,7 @@
       ]
     },
     {
-      "source": "/(.*)\\.html",
+      "source": "/:path*.html",
       "headers": [
         {
           "key": "Cache-Control",
@@ -74,7 +74,7 @@
       ]
     },
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "headers": [
         {
           "key": "X-Content-Type-Options",
