@@ -909,7 +909,7 @@ const EnhancedResumeBuilder: React.FC = () => {
         <AnimatedElement>
             <div className="max-w-[1800px] mx-auto">
                 <Card className="border-2">
-                    <CardHeader className="bg-gradient-to-r from-blue-50 to-purple-50 border-b">
+                    <CardHeader className="bg-muted/50 dark:bg-slate-900/80 border-b">
                         <div className="flex items-center justify-between">
                             <div>
                                 <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-2">
@@ -945,7 +945,7 @@ const EnhancedResumeBuilder: React.FC = () => {
                             {/* Sidebar Navigation */}
                             <div className="xl:col-span-1">
                                 <div className="sticky top-4 space-y-2">
-                                    <h3 className="font-semibold text-sm text-gray-500 mb-3">SECTIONS</h3>
+                                    <h3 className="font-semibold text-sm text-muted-foreground mb-3 uppercase tracking-wider">SECTIONS</h3>
                                     {[
                                         { id: 'personal', label: 'Personal Info', icon: Mail },
                                         { id: 'summary', label: 'Summary', icon: FileText },
@@ -976,7 +976,7 @@ const EnhancedResumeBuilder: React.FC = () => {
                                 {/* Personal Information */}
                                 {activeSection === 'personal' && (
                                     <div className="space-y-4 animate-in fade-in duration-300">
-                                        <h3 className="font-bold text-xl flex items-center gap-2">
+                                        <h3 className="font-bold text-xl flex items-center gap-2 text-primary">
                                             <Mail className="h-5 w-5" />
                                             Personal Information
                                         </h3>
@@ -1062,7 +1062,7 @@ const EnhancedResumeBuilder: React.FC = () => {
                                 {activeSection === 'summary' && (
                                     <div className="space-y-4 animate-in fade-in duration-300">
                                         <div className="flex items-center justify-between">
-                                            <h3 className="font-bold text-xl flex items-center gap-2">
+                                            <h3 className="font-bold text-xl flex items-center gap-2 text-primary">
                                                 <FileText className="h-5 w-5" />
                                                 Professional Summary
                                             </h3>
@@ -1087,7 +1087,7 @@ const EnhancedResumeBuilder: React.FC = () => {
                                             onChange={(e) => updateField('summary', e.target.value)}
                                             rows={6}
                                         />
-                                        <p className="text-sm text-gray-500">
+                                        <p className="text-sm text-muted-foreground italic">
                                             Tip: Include 3-4 sentences highlighting your expertise, achievements, and career goals.
                                         </p>
                                     </div>
@@ -1097,7 +1097,7 @@ const EnhancedResumeBuilder: React.FC = () => {
                                 {activeSection === 'experience' && (
                                     <div className="space-y-4 animate-in fade-in duration-300">
                                         <div className="flex items-center justify-between">
-                                            <h3 className="font-bold text-xl flex items-center gap-2">
+                                            <h3 className="font-bold text-xl flex items-center gap-2 text-primary">
                                                 <Briefcase className="h-5 w-5" />
                                                 Work Experience
                                             </h3>
@@ -1109,8 +1109,8 @@ const EnhancedResumeBuilder: React.FC = () => {
 
                                         {resume.experience.length === 0 ? (
                                             <div className="text-center py-8 border-2 border-dashed rounded-lg">
-                                                <Briefcase className="h-12 w-12 mx-auto text-gray-400 mb-2" />
-                                                <p className="text-gray-500">No experience added yet</p>
+                                                <Briefcase className="h-12 w-12 mx-auto text-muted-foreground/50 mb-2" />
+                                                <p className="text-muted-foreground">No experience added yet</p>
                                                 <Button onClick={addExperience} variant="outline" size="sm" className="mt-2">
                                                     Add Your First Experience
                                                 </Button>
@@ -1118,7 +1118,7 @@ const EnhancedResumeBuilder: React.FC = () => {
                                         ) : (
                                             <div className="space-y-4">
                                                 {resume.experience.map((exp, index) => (
-                                                    <Card key={exp.id} className="p-4 border-2">
+                                                    <Card key={exp.id} className="p-4 border-2 dark:bg-slate-900/50">
                                                         <div className="space-y-3">
                                                             <div className="flex justify-between items-start">
                                                                 <span className="text-sm font-semibold text-blue-600">
@@ -1250,7 +1250,7 @@ const EnhancedResumeBuilder: React.FC = () => {
                                 {activeSection === 'education' && (
                                     <div className="space-y-4 animate-in fade-in duration-300">
                                         <div className="flex items-center justify-between">
-                                            <h3 className="font-bold text-xl flex items-center gap-2">
+                                            <h3 className="font-bold text-xl flex items-center gap-2 text-primary">
                                                 <GraduationCap className="h-5 w-5" />
                                                 Education
                                             </h3>
@@ -1262,8 +1262,8 @@ const EnhancedResumeBuilder: React.FC = () => {
 
                                         {resume.education.length === 0 ? (
                                             <div className="text-center py-8 border-2 border-dashed rounded-lg">
-                                                <GraduationCap className="h-12 w-12 mx-auto text-gray-400 mb-2" />
-                                                <p className="text-gray-500">No education added yet</p>
+                                                <GraduationCap className="h-12 w-12 mx-auto text-muted-foreground/50 mb-2" />
+                                                <p className="text-muted-foreground">No education added yet</p>
                                                 <Button onClick={addEducation} variant="outline" size="sm" className="mt-2">
                                                     Add Your Education
                                                 </Button>
@@ -1271,7 +1271,7 @@ const EnhancedResumeBuilder: React.FC = () => {
                                         ) : (
                                             <div className="space-y-4">
                                                 {resume.education.map((edu, index) => (
-                                                    <Card key={edu.id} className="p-4 border-2">
+                                                    <Card key={edu.id} className="p-4 border-2 dark:bg-slate-900/50">
                                                         <div className="space-y-3">
                                                             <div className="flex justify-between items-start">
                                                                 <span className="text-sm font-semibold text-blue-600">
@@ -1539,7 +1539,7 @@ const EnhancedResumeBuilder: React.FC = () => {
                                 {/* Skills */}
                                 {activeSection === 'skills' && (
                                     <div className="space-y-4 animate-in fade-in duration-300">
-                                        <h3 className="font-bold text-xl flex items-center gap-2">
+                                        <h3 className="font-bold text-xl flex items-center gap-2 text-primary">
                                             <Star className="h-5 w-5" />
                                             Skills
                                         </h3>
@@ -1558,15 +1558,15 @@ const EnhancedResumeBuilder: React.FC = () => {
 
                                         {resume.skills.length === 0 ? (
                                             <div className="text-center py-8 border-2 border-dashed rounded-lg">
-                                                <Star className="h-12 w-12 mx-auto text-gray-400 mb-2" />
-                                                <p className="text-gray-500">No skills added yet</p>
+                                                <Star className="h-12 w-12 mx-auto text-muted-foreground/50 mb-2" />
+                                                <p className="text-muted-foreground">No skills added yet</p>
                                             </div>
                                         ) : (
                                             <div className="flex flex-wrap gap-2">
                                                 {resume.skills.map((skill, index) => (
                                                     <div
                                                         key={index}
-                                                        className="bg-blue-100 text-blue-800 px-3 py-2 rounded-full flex items-center gap-2 group"
+                                                        className="bg-primary/10 text-primary border border-primary/20 px-3 py-1.5 rounded-full flex items-center gap-2 group hover:bg-primary/20 transition-colors"
                                                     >
                                                         <span>{skill}</span>
                                                         <button
@@ -1580,8 +1580,8 @@ const EnhancedResumeBuilder: React.FC = () => {
                                             </div>
                                         )}
 
-                                        <div className="bg-blue-50 p-4 rounded-lg">
-                                            <p className="text-sm text-blue-900">
+                                        <div className="bg-muted/50 dark:bg-slate-900/50 p-4 rounded-lg border border-primary/20">
+                                            <p className="text-sm text-primary">
                                                 <strong>Pro Tip:</strong> Include both technical and soft skills. Be specific and include proficiency levels when relevant.
                                             </p>
                                         </div>
@@ -1592,7 +1592,7 @@ const EnhancedResumeBuilder: React.FC = () => {
                                 {activeSection === 'languages' && (
                                     <div className="space-y-4 animate-in fade-in duration-300">
                                         <div className="flex items-center justify-between">
-                                            <h3 className="font-bold text-xl flex items-center gap-2">
+                                            <h3 className="font-bold text-xl flex items-center gap-2 text-primary">
                                                 <Languages className="h-5 w-5" />
                                                 Languages
                                             </h3>
@@ -1604,8 +1604,8 @@ const EnhancedResumeBuilder: React.FC = () => {
 
                                         {resume.languages.length === 0 ? (
                                             <div className="text-center py-8 border-2 border-dashed rounded-lg">
-                                                <Languages className="h-12 w-12 mx-auto text-gray-400 mb-2" />
-                                                <p className="text-gray-500">No languages added yet</p>
+                                                <Languages className="h-12 w-12 mx-auto text-muted-foreground/50 mb-2" />
+                                                <p className="text-muted-foreground">No languages added yet</p>
                                                 <Button onClick={addLanguage} variant="outline" size="sm" className="mt-2">
                                                     Add a Language
                                                 </Button>
@@ -1651,7 +1651,7 @@ const EnhancedResumeBuilder: React.FC = () => {
                                 {/* Settings */}
                                 {activeSection === 'settings' && (
                                     <div className="space-y-6 animate-in fade-in duration-300">
-                                        <h3 className="font-bold text-xl flex items-center gap-2">
+                                        <h3 className="font-bold text-xl flex items-center gap-2 text-primary">
                                             <Settings className="h-5 w-5" />
                                             Resume Settings
                                         </h3>
@@ -1660,7 +1660,7 @@ const EnhancedResumeBuilder: React.FC = () => {
                                             <div className="space-y-4">
                                                 <div>
                                                     <Label className="text-base font-semibold">Accent Color</Label>
-                                                    <p className="text-sm text-gray-500 mb-3">Choose your resume's accent color</p>
+                                                    <p className="text-sm text-muted-foreground mb-3">Choose your resume's accent color</p>
                                                     <div className="flex gap-3 flex-wrap">
                                                         {['#667eea', '#f56565', '#48bb78', '#ed8936', '#9f7aea', '#38b2ac'].map((color) => (
                                                             <button
@@ -1681,7 +1681,7 @@ const EnhancedResumeBuilder: React.FC = () => {
 
                                                 <div>
                                                     <Label className="text-base font-semibold">Font Size</Label>
-                                                    <p className="text-sm text-gray-500 mb-3">Adjust text size for readability</p>
+                                                    <p className="text-sm text-muted-foreground mb-3">Adjust text size for readability</p>
                                                     <Select
                                                         value={resume.fontSize}
                                                         onValueChange={(value: any) => updateField('fontSize', value)}
@@ -1697,10 +1697,10 @@ const EnhancedResumeBuilder: React.FC = () => {
                                                     </Select>
                                                 </div>
 
-                                                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                                <div className="flex items-center justify-between p-4 bg-muted/50 dark:bg-slate-900/50 rounded-lg border">
                                                     <div>
                                                         <Label className="text-base font-semibold">Profile Photo</Label>
-                                                        <p className="text-sm text-gray-500">Show photo on resume (Modern template only)</p>
+                                                        <p className="text-sm text-muted-foreground">Show photo on resume (Modern template only)</p>
                                                     </div>
                                                     <Switch
                                                         checked={resume.showPhoto}
@@ -1729,7 +1729,7 @@ const EnhancedResumeBuilder: React.FC = () => {
                             <div className="xl:col-span-2 space-y-4">
                                 <div className="sticky top-4 space-y-4">
                                     <div className="flex items-center justify-between">
-                                        <h3 className="font-semibold text-lg flex items-center gap-2">
+                                        <h3 className="font-semibold text-lg flex items-center gap-2 text-primary">
                                             {previewMode ? <Eye className="h-5 w-5" /> : <EyeOff className="h-5 w-5" />}
                                             Preview
                                         </h3>
@@ -1755,8 +1755,10 @@ const EnhancedResumeBuilder: React.FC = () => {
                                     </Tabs>
 
                                     {previewMode && (
-                                        <div className="border-2 rounded-lg p-6 bg-white min-h-[700px] max-h-[800px] overflow-auto shadow-lg">
-                                            <div dangerouslySetInnerHTML={{ __html: generateResumeHTML() }} />
+                                        <div className="border-2 rounded-lg p-6 bg-slate-50 dark:bg-white min-h-[700px] max-h-[800px] overflow-auto shadow-lg">
+                                            <div className="resume-container transform scale-95 origin-top">
+                                                <div dangerouslySetInnerHTML={{ __html: generateResumeHTML() }} />
+                                            </div>
                                         </div>
                                     )}
 
@@ -1795,12 +1797,12 @@ const EnhancedResumeBuilder: React.FC = () => {
                                         </Dialog>
                                     </div>
 
-                                    <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg border">
-                                        <h4 className="font-semibold mb-2 flex items-center gap-2">
-                                            <Sparkles className="h-4 w-4 text-blue-600" />
+                                    <div className="bg-muted/50 dark:bg-slate-900/50 p-4 rounded-lg border border-primary/20">
+                                        <h4 className="font-semibold mb-2 flex items-center gap-2 text-primary">
+                                            <Sparkles className="h-4 w-4" />
                                             Quick Tips
                                         </h4>
-                                        <ul className="text-sm space-y-1 text-gray-700">
+                                        <ul className="text-sm space-y-1 text-muted-foreground italic">
                                             <li>• Use action verbs and quantify achievements</li>
                                             <li>• Keep your resume to 1-2 pages</li>
                                             <li>• Tailor content for each job application</li>
