@@ -505,9 +505,10 @@ export const toolCategories: ToolCategory[] = [
     title: "AI Tools",
     icon: Brain,
     color: "bg-tooltopia-soft-blue",
-    comingSoon: true,
-    description: "Free online AI-powered tools. Summarize text, paraphrase content, generate content with artificial intelligence.",
+    comingSoon: false,
+    description: "Free online AI-powered tools. Vision OCR, Summarization, and Content Generation supporting Indic languages via Sarvam AI.",
     subTools: [
+      { id: "ai-vision", title: "AI Vision (OCR & Summarizer)", description: "Upload images or PDFs to summarize, transcribe (OCR), and caption in 22+ Indic languages using Sarvam Vision AI.", comingSoon: false },
       { id: "text-summarizer", title: "AI Text Summarizer", description: "Summarize text with AI online free. Get concise summaries of long articles and documents.", comingSoon: true },
       { id: "paraphrasing-tool", title: "AI Paraphrasing Tool", description: "Paraphrase text with AI online free. Rewrite content while maintaining meaning.", comingSoon: true },
       { id: "content-generator", title: "AI Content Generator", description: "Generate content with AI online free. Create articles, blog posts, and marketing copy.", comingSoon: true },
