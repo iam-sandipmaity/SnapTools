@@ -86,6 +86,7 @@ const toolLoaders: Record<string, () => Promise<any>> = {
   link: () => import("@/components/tools/link"),
   health: () => import("@/components/tools/health"),
   business: () => import("@/components/tools/business"),
+  ai: () => import("@/components/tools/ai"),
 };
 
 

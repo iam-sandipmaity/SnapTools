@@ -24,10 +24,21 @@ export default defineConfig({
     host: '0.0.0.0', // Listen on all network interfaces
     port: 5173, // Default Vite port
     strictPort: false, // Try next port if 5173 is busy
-    // headers: {
-    //   'Cross-Origin-Opener-Policy': 'same-origin',
-    //   'Cross-Origin-Embedder-Policy': 'require-corp',
-    // },
+    proxy: {
+      // Proxy Azure Blob Storage PUT requests to avoid CORS.
+      // Requests to /azure-upload/... are forwarded to Azure's blob endpoint.
+      '/azure-upload': {
+        target: 'https://appsprodaksharpublicsa.blob.core.windows.net',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/azure-upload/, ''),
+        configure: (proxy) => {
+          proxy.on('proxyReq', (proxyReq) => {
+            // Azure SAS PUT requires this header to identify the blob type
+            proxyReq.setHeader('x-ms-blob-type', 'BlockBlob');
+          });
+        },
+      },
+    },
   },
 
   resolve: {
