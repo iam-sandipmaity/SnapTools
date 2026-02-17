@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronRight, Image, Zap, Settings, MonitorSpeaker, Smartphone, Globe, BarChart3, Clock, User, Calendar, Tag, TrendingUp, Archive, FileImage, Palette, Eye, Code, Target } from 'lucide-react';
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ImageOptimizationGuide = () => {
   const [activeSection, setActiveSection] = useState(null);
@@ -138,237 +139,129 @@ const ImageOptimizationGuide = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-4xl mx-auto px-4 py-6">
-          <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
-            <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-medium">Web Performance</span>
-            <ChevronRight className="w-4 h-4" />
-            <span>Image Optimization</span>
-          </div>
-
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-            The Ultimate Guide to Image Optimization for Web Performance
-          </h1>
-
-          <p className="text-xl text-gray-600 mb-6 leading-relaxed">
-            Master the art of image optimization to dramatically improve your website's loading speed, user experience, and search engine rankings. Learn industry-proven techniques and modern best practices.
-          </p>
-
-          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-            <div className="flex items-center gap-1">
-              <User className="w-4 h-4" />
-              <span>SnapTools Team</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Calendar className="w-4 h-4" />
-              <span>January 22, 2024</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Clock className="w-4 h-4" />
-              <span>12 min read</span>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-8">
-        {/* Introduction */}
-        <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-xl p-6 mb-8">
-          <div className="flex items-start gap-4">
-            <div className="p-3 bg-green-100 rounded-lg">
-              <Image className="w-6 h-6 text-green-700" />
-            </div>
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-2">Why Image Optimization Matters</h2>
-              <p className="text-gray-700 leading-relaxed">
-                Images account for over 60% of the average webpage's total size. Proper optimization can dramatically improve loading speeds, reduce bandwidth costs, and enhance user experience across all devices. This comprehensive guide covers everything from basic compression to advanced delivery strategies.
-              </p>
-            </div>
-          </div>
+    <>
+      <div className="mb-16">
+        <div className="flex flex-wrap items-center gap-6 text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-8">
+          <span className="px-4 py-2 bg-primary/10 rounded-full">Imaging Architecture</span>
+          <span className="flex items-center gap-2 text-muted-foreground"><User className="w-3 h-3" /> SnapTools Team</span>
+          <span className="flex items-center gap-2 text-muted-foreground"><Calendar className="w-3 h-3" /> January 22, 2024</span>
+          <span className="flex items-center gap-2 text-muted-foreground"><Clock className="w-3 h-3" /> 12 min read</span>
         </div>
 
-        {/* Key Metrics */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-          {keyMetrics.map((metric, index) => (
-            <div key={index} className="bg-white border border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition-shadow">
-              <div className="flex justify-center mb-2 text-green-600">
-                {metric.icon}
-              </div>
-              <div className="text-2xl font-bold text-gray-900 mb-1">{metric.value}</div>
-              <div className="text-sm text-gray-600">{metric.label}</div>
-            </div>
-          ))}
-        </div>
+        <h1 className="leading-[0.85] mb-12">
+          Mastering Image <br />
+          <em className="italic font-light text-primary">Fidelity.</em>
+        </h1>
 
-        {/* Techniques */}
-        <div className="space-y-6">
-          {techniques.map((technique, index) => (
+        <p className="text-xl text-muted-foreground leading-relaxed font-medium mb-12">
+          Master the art of neural compression, responsive delivery protocols, and next-gen format architecture to dramatically improve your website's structural performance.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
+        {keyMetrics.map((metric, index) => (
+          <div key={index} className="p-6 rounded-[2rem] border border-black/5 dark:border-white/5 bg-white/50 dark:bg-white/[0.01] hover:bg-white dark:hover:bg-white/[0.03] transition-all duration-500 text-center">
+            <div className="flex justify-center mb-4 text-primary">
+              {metric.icon}
+            </div>
+            <div className="text-3xl font-serif font-black tracking-tight text-foreground mb-1">{metric.value}</div>
+            <div className="text-[9px] uppercase tracking-widest font-black text-muted-foreground/60">{metric.label}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="space-y-12">
+        {techniques.map((technique) => (
+          <div
+            key={technique.id}
+            className={`group relative overflow-hidden rounded-[3rem] border border-black/5 dark:border-white/5 bg-white/50 dark:bg-white/[0.01] transition-all duration-700 ${activeSection === technique.id ? 'ring-2 ring-primary/20 shadow-2xl' : 'hover:bg-white dark:hover:bg-white/[0.03]'
+              }`}
+          >
             <div
-              key={technique.id}
-              className={`border-2 rounded-xl transition-all duration-300 hover:shadow-lg cursor-pointer ${activeSection === technique.id
-                  ? getColorClasses(technique.color)
-                  : 'bg-white border-gray-200 hover:border-gray-300'
-                }`}
+              className="p-10 cursor-pointer"
               onClick={() => setActiveSection(activeSection === technique.id ? null : technique.id)}
             >
-              <div className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className={`p-3 rounded-lg flex-shrink-0 ${getBadgeClasses(technique.color)}`}>
-                    {technique.icon}
+              <div className="flex items-start gap-8">
+                <div className="shrink-0 w-16 h-16 rounded-[1.5rem] bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-500">
+                  {technique.icon}
+                </div>
+
+                <div className="flex-1">
+                  <div className="flex items-center gap-4 mb-3">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-primary/50">Module {technique.id}</span>
+                    <h2 className="m-0 text-3xl font-serif font-black tracking-tight group-hover:text-primary transition-colors">
+                      {technique.title}
+                    </h2>
                   </div>
 
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium flex-shrink-0 ${getBadgeClasses(technique.color)}`}>
-                        #{technique.id}
-                      </span>
-                      <h3 className="text-xl font-bold text-gray-900 truncate">
-                        {technique.title}
-                      </h3>
-                    </div>
+                  <p className="m-0 text-lg font-medium text-muted-foreground/80 leading-relaxed">
+                    {technique.description}
+                  </p>
 
-                    <p className="text-gray-600 mb-3">
-                      {technique.description}
-                    </p>
-
+                  <AnimatePresence>
                     {activeSection === technique.id && (
-                      <div className="mt-4 space-y-4">
-                        <div className="p-4 bg-white rounded-lg border border-gray-200">
-                          <h4 className="font-semibold text-gray-900 mb-3">Key Techniques:</h4>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-8 pt-8 border-t border-black/5 dark:border-white/5 space-y-6">
+                          <h3 className="m-0 text-sm font-black uppercase tracking-widest text-foreground">Operational Logic</h3>
+                          <ul className="grid md:grid-cols-2 gap-4 m-0">
                             {technique.features.map((feature, idx) => (
-                              <div key={idx} className="flex items-center gap-2 text-gray-700">
-                                <div className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0"></div>
-                                <span className="text-sm">{feature}</span>
-                              </div>
+                              <li key={idx} className="flex items-center gap-3 text-sm font-medium text-muted-foreground pl-0 before:hidden">
+                                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                                {feature}
+                              </li>
                             ))}
-                          </div>
-                        </div>
+                          </ul>
 
-                        {technique.tips && (
-                          <div className="p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg border-l-4 border-blue-500">
-                            <div className="flex items-start gap-2">
-                              <Target className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                              <div>
-                                <h5 className="font-semibold text-blue-900 mb-1">Pro Tip:</h5>
-                                <p className="text-blue-800 text-sm">{technique.tips}</p>
-                              </div>
+                          {technique.tips && (
+                            <div className="p-6 rounded-3xl bg-primary/5 border-l-4 border-primary">
+                              <p className="m-0 text-sm font-medium">
+                                <strong className="text-primary uppercase tracking-widest text-[9px] block mb-2">Protocol Insight</strong>
+                                {technique.tips}
+                              </p>
                             </div>
-                          </div>
-                        )}
-                      </div>
+                          )}
+                        </div>
+                      </motion.div>
                     )}
-                  </div>
-
-                  <ChevronRight className={`w-5 h-5 text-gray-400 transition-transform duration-300 flex-shrink-0 ${activeSection === technique.id ? 'rotate-90' : ''
-                    }`} />
+                  </AnimatePresence>
                 </div>
+
+                <ChevronRight className={`w-6 h-6 text-muted-foreground/30 transition-all duration-500 ${activeSection === technique.id ? 'rotate-90 text-primary' : 'group-hover:translate-x-1'
+                  }`} />
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
 
-        {/* Implementation Checklist */}
-        <div className="mt-12 bg-gray-50 rounded-xl p-6">
-          <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <Code className="w-5 h-5" />
-            Quick Implementation Checklist
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[
-              "Choose appropriate image formats",
-              "Implement responsive images",
-              "Set up lazy loading",
-              "Configure image CDN",
-              "Optimize compression settings",
-              "Add proper alt attributes",
-              "Monitor Core Web Vitals",
-              "Test across devices"
-            ].map((item, index) => (
-              <div key={index} className="flex items-center gap-2 text-gray-700">
-                <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <span>{item}</span>
-              </div>
-            ))}
+      <div className="mt-32 p-12 rounded-[3.5rem] bg-black dark:bg-white text-white dark:text-black relative overflow-hidden shadow-2xl">
+        <div className="absolute inset-0 bg-primary/20 blur-[100px] opacity-40" />
+        <div className="relative z-10 text-center space-y-8">
+          <h2 className="m-0 text-4xl md:text-5xl font-serif font-black tracking-tighter text-white dark:text-black leading-tight">
+            Deploy Neural <br />
+            <em className="italic font-light text-primary underline underline-offset-8 decoration-1 decoration-primary/30">Compression.</em>
+          </h2>
+          <p className="text-white/60 dark:text-black/60 max-w-xl mx-auto text-lg leading-relaxed font-medium">
+            Transform your website's performance with professional-grade imaging tools.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/tools" className="no-underline">
+              <button className="bg-primary text-white hover:bg-primary/90 px-10 py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] transition-all shadow-2xl shadow-primary/20 hover:scale-105 active:scale-95 border-none cursor-pointer">
+                Initialize Suite
+              </button>
+            </Link>
+            <button className="bg-white/10 dark:bg-black/5 hover:bg-white/20 dark:hover:bg-black/10 text-white dark:text-black px-10 py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] transition-all border border-white/10 dark:border-black/10 cursor-pointer">
+              Performance Specs
+            </button>
           </div>
         </div>
-
-        {/* Keywords Section */}
-        <div className="mt-8 p-6 bg-white border border-gray-200 rounded-xl">
-          <div className="flex items-center gap-2 mb-4">
-            <Tag className="w-5 h-5 text-gray-600" />
-            <h3 className="font-semibold text-gray-900">Related Topics</h3>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {[
-              'image optimization',
-              'web performance',
-              'image compression techniques',
-              'responsive images',
-              'WebP format',
-              'lazy loading',
-              'Core Web Vitals',
-              'mobile optimization',
-              'CDN strategies',
-              'SEO images'
-            ].map((keyword, index) => (
-              <span
-                key={index}
-                className="px-3 py-1 bg-gray-100 border border-gray-200 rounded-full text-sm text-gray-700 hover:bg-gray-200 transition-colors cursor-pointer"
-              >
-                {keyword}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Call to Action */}
-        <div className="mt-12 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-xl p-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold mb-4">Start Optimizing Your Images Today</h2>
-
-            <p className="text-lg mb-6 opacity-90 max-w-2xl mx-auto">
-              Transform your website's performance with professional image optimization tools. Reduce loading times, improve user experience, and boost your search rankings with our comprehensive suite of image optimization tools.
-            </p>
-
-            <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-6 border border-white border-opacity-20 mb-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
-                <div className="bg-white bg-opacity-10 rounded-lg p-4">
-                  <Archive className="w-8 h-8 mx-auto mb-2" />
-                  <h4 className="font-semibold mb-1">Image Compressor</h4>
-                  <p className="text-sm opacity-90">Reduce file sizes by up to 80%</p>
-                </div>
-                <div className="bg-white bg-opacity-10 rounded-lg p-4">
-                  <FileImage className="w-8 h-8 mx-auto mb-2" />
-                  <h4 className="font-semibold mb-1">Format Converter</h4>
-                  <p className="text-sm opacity-90">Convert to modern formats like WebP</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/tools/image/image-compressor" target="_blank" rel="noopener noreferrer">
-                <button className="bg-white text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center gap-2 justify-center">
-                  Try Image Compressor
-                  <Archive className="w-4 h-4" />
-                </button>
-              </Link>
-              <Link to="/tools/image/image-format-converter" target="_blank" rel="noopener noreferrer">
-                <button className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-green-600 transition-colors inline-flex items-center gap-2 justify-center">
-                  Format Converter
-                  <FileImage className="w-4 h-4" />
-                </button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
+      </div>
+    </>
   );
 };
 
