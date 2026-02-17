@@ -12,13 +12,17 @@ export default {
 	theme: {
 		container: {
 			center: true,
-			padding: '2rem',
-			screens: {
-				'mobile': '950px',
-				'2xl': '1400px'
-			}
+			padding: {
+				DEFAULT: '1rem',
+				sm: '2rem',
+				lg: '4rem',
+			},
 		},
 		extend: {
+			fontFamily: {
+				serif: ["Playfair Display", "serif"],
+				sans: ["Inter", "sans-serif"],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -65,12 +69,12 @@ export default {
 				},
 				tooltopia: {
 					purple: {
-						DEFAULT: '#9b87f5',
-						dark: '#1A1F2C',
-						light: '#D6BCFA',
-						secondary: '#7E69AB',
-						tertiary: '#6E59A5',
-						vivid: '#8B5CF6'
+						DEFAULT: '#3b82f6',
+						dark: '#1e3a8a',
+						light: '#93c5fd',
+						secondary: '#2563eb',
+						tertiary: '#1d4ed8',
+						vivid: '#1d4ed8'
 					},
 					gray: {
 						DEFAULT: '#8E9196',
@@ -82,7 +86,7 @@ export default {
 						green: '#F2FCE2',
 						yellow: '#FEF7CD',
 						orange: '#FEC6A1',
-						purple: '#E5DEFF',
+						purple: '#E0F7FA',
 						pink: '#FFDEE2',
 						peach: '#FDE1D3',
 						blue: '#D3E4FD'

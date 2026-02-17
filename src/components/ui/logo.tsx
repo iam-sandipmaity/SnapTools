@@ -22,7 +22,7 @@ const Logo = ({ className }: LogoProps) => {
 
   return (
     <Link to="/" className={cn("flex items-center", className)} onClick={handleClick}>
-      <img src={logoSrc} alt="SnapTools Logo" className="h-24" />
+      <img src={logoSrc} alt="SnapTools Logo" className="h-12 md:h-16 lg:h-20 transition-all" />
     </Link>
   );
 };

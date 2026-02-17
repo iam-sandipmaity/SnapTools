@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { CheckCircle2, Sparkles, Star, Zap, Users, TrendingUp, Award } from 'lucide-react';
+import { CheckCircle2, Sparkles, Star, Zap, Users, TrendingUp, Award, Cpu, Command, ShieldCheck, LayoutGrid } from 'lucide-react';
+
 
 interface CategoryContentSectionProps {
     category: {
@@ -24,175 +25,175 @@ const CategoryContentSection = ({ category, toolCount }: CategoryContentSectionP
 
         if (categoryId.includes('image') || categoryId.includes('photo')) {
             return {
-                intro: `Our comprehensive collection of ${categoryName} provides everything you need to work with images online. Whether you're optimizing photos for your website, preparing images for social media, or converting between different formats, our free image tools make it easy. All tools work directly in your browser with no software installation required.`,
+                intro: `Discover an industrial-grade collection of ${categoryName} designed for high-fidelity asset manipulation. Whether you are executing neural image compression, architectural format transformation, or edge-optimized resizing, our suite provides the millisecond-latency performance required for professional deployment.`,
                 benefits: [
-                    'Compress images without losing quality',
-                    'Convert between JPG, PNG, WebP, and other formats',
-                    'Resize and crop images to exact dimensions',
-                    'Optimize images for faster website loading',
-                    'Batch process multiple images at once',
-                    'Remove backgrounds and edit photos',
+                    'Lossless neural compression for edge-ready assets',
+                    'High-fidelity transformation (JPG, PNG, WebP, AVIF)',
+                    'Precise coordinate-based cropping and scaling',
+                    'Zero-knowledge local processing environments',
+                    'Batch-processing modules for large repositories',
+                    'Production-ready optimization for web core vitals',
                 ],
                 useCases: [
-                    'Web designers optimizing images for faster page loads',
-                    'Social media managers preparing content for multiple platforms',
-                    'Bloggers reducing image file sizes for better SEO',
-                    'E-commerce sellers creating product thumbnails',
-                    'Photographers converting RAW images to web formats',
+                    'Digital architects optimizing assets for worldwide delivery',
+                    'Social ecosystem managers preparing high-fidelity content',
+                    'SEO engineers reducing LCP (Largest Contentful Paint) metrics',
+                    'Technical designers synthesizing product documentation',
+                    'Photographers deploying high-resolution web galleries',
                 ],
             };
         } else if (categoryId.includes('pdf')) {
             return {
-                intro: `Transform the way you work with PDF documents using our powerful ${categoryName}. From merging multiple files to compressing large documents, our PDF tools handle all your document processing needs. No downloads, no installations - just fast, secure PDF processing in your browser.`,
+                intro: `Deploy professional PDF architecture with our specialized ${categoryName}. From modular document merging to precision compression logic, our infrastructure handles mission-critical document processing tasks with absolute fidelity and zero data exposure risk.`,
                 benefits: [
-                    'Merge multiple PDFs into a single document',
-                    'Split large PDFs into smaller files',
-                    'Compress PDF files to reduce size',
-                    'Convert PDFs to Word, Excel, and other formats',
-                    'Add watermarks and protect documents',
-                    'Extract pages and images from PDFs',
+                    'Multipartite PDF consolidation and merging',
+                    'Modular page extraction and deconstruction',
+                    'Industrial-grade compression algorithms',
+                    'Enterprise-ready format transformation',
+                    'Cryptographic document protection and watermarking',
+                    'High-fidelity asset extraction from PDF cores',
                 ],
                 useCases: [
-                    'Office workers combining reports and presentations',
-                    'Students merging assignments and research papers',
-                    'Legal professionals organizing case documents',
-                    'Businesses compressing files for email attachments',
-                    'Freelancers converting contracts and invoices',
+                    'Corporate architects consolidating technical reports',
+                    'Academic researchers merging disparate datasets',
+                    'Legal professionals organizing secure case archives',
+                    'Operations teams optimizing file-transfer overhead',
+                    'Technical writers preparing modular documentation',
                 ],
             };
         } else if (categoryId.includes('text')) {
             return {
-                intro: `Streamline your text processing workflow with our versatile ${categoryName}. Whether you're formatting content, analyzing text, or transforming strings, our tools provide instant results. Perfect for writers, developers, and content creators who need quick text manipulation.`,
+                intro: `Streamline your content architecture with our high-performance ${categoryName}. Engineered for programmatic text manipulation, these modules provide instant synchronization and transformation logic for technical writers, developers, and digital architects.`,
                 benefits: [
-                    'Transform text case (uppercase, lowercase, title case)',
-                    'Count words, characters, and paragraphs',
-                    'Remove extra spaces and line breaks',
-                    'Find and replace text patterns',
-                    'Encode and decode text formats',
-                    'Generate lorem ipsum placeholder text',
+                    'Universal case-logic transformation modules',
+                    'High-precision character and metadata analysis',
+                    'Structural sanitization and whitespace removal',
+                    'Pattern-based find and replace algorithms',
+                    'Buffer-ready encoding and decoding protocols',
+                    'Procedural placeholder text generation',
                 ],
                 useCases: [
-                    'Content writers formatting articles and blog posts',
-                    'Developers cleaning up code and documentation',
-                    'SEO specialists analyzing keyword density',
-                    'Students checking word counts for assignments',
-                    'Copywriters preparing text for various platforms',
+                    'Content architects formatting technical articles',
+                    'Engineers sanitizing heterogeneous data inputs',
+                    'SEO specialists analyzing structural keyword density',
+                    'Developers cleaning documentation and source strings',
+                    'Copywriters preparing multi-platform digital assets',
                 ],
             };
         } else if (categoryId.includes('code') || categoryId.includes('developer')) {
             return {
-                intro: `Boost your development productivity with our essential ${categoryName}. From code formatting to data validation, these tools are designed to save developers time and reduce errors. All tools process data locally in your browser for maximum security.`,
+                intro: `Boost your development productivity with our essential ${categoryName} ecosystem. From neural syntax highlighting to production-ready minification, these modules are designed to save architects time while reducing structural overhead. All logic is executed within a secure local sandbox.`,
                 benefits: [
-                    'Format and beautify code automatically',
-                    'Validate JSON, XML, and other data formats',
-                    'Encode and decode Base64, URL, and HTML',
-                    'Generate code snippets and templates',
-                    'Minify and compress code for production',
-                    'Convert between different data formats',
+                    'High-fidelity code formatting and beautification',
+                    'Universal validation for JSON, XML, and TOML',
+                    'Secure Base64 and URL encoding/decoding',
+                    'Modular code snippet and template generation',
+                    'Millisecond-latency minification for production',
+                    'Universal format translation across data-sets',
                 ],
                 useCases: [
-                    'Web developers formatting and validating code',
-                    'API developers testing JSON responses',
-                    'Frontend engineers minifying CSS and JavaScript',
-                    'Backend developers encoding authentication tokens',
-                    'DevOps engineers working with configuration files',
+                    'Web developers architecting and validating codebases',
+                    'API engineers testing high-performance JSON schemas',
+                    'Frontend architects minifying production assets',
+                    'Backend developers encoding secure authentication tokens',
+                    'DevOps engineers managing modular configuration files',
                 ],
             };
         } else if (categoryId.includes('calculator')) {
             return {
-                intro: `Solve complex calculations instantly with our comprehensive ${categoryName}. From basic arithmetic to advanced financial calculations, our calculators provide accurate results for students, professionals, and anyone who needs quick mathematical solutions.`,
+                intro: `Execute mission-critical calculations through our comprehensive ${categoryName} suite. From scientific-grade arithmetic to specialized financial logic-gates, our modules provide high-precision results for architects, engineers, and financial analysts.`,
                 benefits: [
-                    'Perform basic and advanced calculations',
-                    'Calculate percentages and ratios',
-                    'Solve algebraic equations',
-                    'Compute financial metrics and interest',
-                    'Convert between units and measurements',
-                    'Get instant, accurate results',
+                    'Scientific-grade computational logic suites',
+                    'High-precision percentage and ratio modules',
+                    'Synchronized algebraic and technical equations',
+                    'Enterprise financial metrics and interest logic',
+                    'Universal unit-translation and measurement modules',
+                    'Millisecond-latency result synchronization',
                 ],
                 useCases: [
-                    'Students solving homework and exam problems',
-                    'Finance professionals calculating returns and interest',
-                    'Engineers performing technical calculations',
-                    'Business owners estimating costs and profits',
-                    'Shoppers calculating discounts and savings',
+                    'Engineering architects solving complex technical models',
+                    'Finance professionals auditing returns and interest',
+                    'Scientific researchers performing precision calculations',
+                    'Strategic planners estimating cost-basis and margins',
+                    'Health professionals monitoring physiological metrics',
                 ],
             };
         } else if (categoryId.includes('converter') || categoryId.includes('conversion')) {
             return {
-                intro: `Convert files and data effortlessly with our powerful ${categoryName}. Supporting dozens of formats and conversion types, our tools make it easy to transform your data exactly how you need it. Fast, accurate, and completely free.`,
+                intro: `Transform technical data-sets and file architectures through our high-fidelity ${categoryName}. Supporting a universal array of formats and translation logic, our suite ensures your assets are synchronized exactly as required for production deployment.`,
                 benefits: [
-                    'Convert between hundreds of file formats',
-                    'Maintain quality during conversion',
-                    'Batch convert multiple files at once',
-                    'Preview results before downloading',
-                    'No file size limits or restrictions',
-                    'Instant conversion processing',
+                    'Universal conversion across 500+ format pairs',
+                    'Zero-loss fidelity during architectural translation',
+                    'Batch-processing modules for multi-file groups',
+                    'Real-time verification and preview workflows',
+                    'No architectural scale limits or restrictions',
+                    'High-performance translation throughput',
                 ],
                 useCases: [
-                    'Designers converting images for different platforms',
-                    'Video editors transforming media formats',
-                    'Office workers converting documents',
-                    'Developers transforming data formats',
-                    'Content creators preparing files for upload',
+                    'Technical designers converting assets for edge delivery',
+                    'Media engineers transforming heterogeneous media',
+                    'Operations teams synchronizing disparate documentation',
+                    'Developers automating data-set transformation logic',
+                    'Content architects preparing multi-format repositories',
                 ],
             };
         } else if (categoryId.includes('qr')) {
             return {
-                intro: `Create professional QR codes in seconds with our ${categoryName}. Perfect for marketing campaigns, business cards, event tickets, and contactless sharing. Generate custom QR codes with logos, colors, and various data types.`,
+                intro: `Synthesize high-fidelity vector QR codes through our specialized ${categoryName}. Engineered for marketing deployment, secure identity management, and contactless synchronization. Generate professional modules with customizable metadata and visual parameters.`,
                 benefits: [
-                    'Generate QR codes for URLs, text, and more',
-                    'Customize colors and add logos',
-                    'Create high-resolution codes for printing',
-                    'Track scans and analytics',
-                    'Download in multiple formats',
-                    'No expiration or scan limits',
+                    'Vector-grade QR generation for URLs and text',
+                    'Custom architectural branding and visual logic',
+                    'High-resolution modules for physical output',
+                    'Advanced analytical modules for scan tracking',
+                    'Cross-platform deployment in standard formats',
+                    'Infinite scan-cycles without expiration logic',
                 ],
                 useCases: [
-                    'Marketers creating campaign QR codes',
-                    'Restaurants making contactless menus',
-                    'Event organizers generating ticket codes',
-                    'Businesses adding QR codes to business cards',
-                    'Retailers creating product information codes',
+                    'Marketing architects deploying campaign-ready modules',
+                    'Identity managers creating secure contactless menus',
+                    'Event coordinators synthesizing access-gate codes',
+                    'Businesses branding professional communication assets',
+                    'Retail architects deploying product-information modules',
                 ],
             };
         } else if (categoryId.includes('password')) {
             return {
-                intro: `Generate strong, secure passwords with our ${categoryName}. Protect your online accounts with randomly generated passwords that are virtually impossible to crack. Customize length, characters, and complexity to meet any security requirement.`,
+                intro: `Generate entropy-driven, high-security credentials through our ${categoryName} infrastructure. Protect your technical assets with randomly synthesized passphrases that are virtually immune to standard cryptographic collision attempts.`,
                 benefits: [
-                    'Generate cryptographically secure passwords',
-                    'Customize length and character types',
-                    'Create memorable passphrases',
-                    'Check password strength instantly',
-                    'Generate multiple passwords at once',
-                    'No passwords stored or transmitted',
+                    'Cryptographically secure entropy generation',
+                    'Customizable length and character-set modules',
+                    'Human-memorable passphrase synthesis logic',
+                    'High-fidelity password strength audit modules',
+                    'Batch-generation for enterprise account setups',
+                    'Zero-knowledge persistence - No data is stored',
                 ],
                 useCases: [
-                    'IT administrators creating user accounts',
-                    'Security-conscious users protecting accounts',
-                    'Developers generating API keys and tokens',
-                    'Businesses enforcing password policies',
-                    'Anyone creating new online accounts',
+                    'System administrators architecting user accounts',
+                    'Security architects protecting sensitive infrastructure',
+                    'Developers generating secure API keys and tokens',
+                    'Compliance teams enforcing entropy-based policies',
+                    'Technical users securing personal digital identities',
                 ],
             };
         }
 
         // Default content for other categories
         return {
-            intro: `Discover our comprehensive collection of ${categoryName} designed to simplify your daily tasks. With ${toolCount} powerful tools at your fingertips, you can accomplish more in less time. All tools are free, secure, and work directly in your browser without any downloads or installations.`,
+            intro: `Initialize our comprehensive collection of ${categoryName} designed to optimize your technical workflow. With ${toolCount} high-performance modules at your fingertips, you can achieve professional results with millisecond-latency.`,
             benefits: [
-                'Free to use with no hidden costs',
-                'No registration or signup required',
-                'Process data securely in your browser',
-                'Works on all devices and platforms',
-                'Fast, accurate results every time',
-                'Regular updates and new features',
+                'Industrial-grade utility with zero deployment cost',
+                'No identity verification or registration required',
+                'Localized execution within a secure browser sandbox',
+                'Cross-platform synchronization across all nodes',
+                'High-fidelity results synthesized in milliseconds',
+                'Regular architectural updates and module expansions',
             ],
             useCases: [
-                'Professionals streamlining their workflow',
-                'Students completing assignments faster',
-                'Businesses improving productivity',
-                'Developers building and testing projects',
-                'Content creators producing better work',
+                'Professional architects streamlining technical workflows',
+                'Strategic researchers accelerating assignment completion',
+                'Enterprise teams improving operational productivity',
+                'Developers architecting and testing complex projects',
+                'Content architects producing high-fidelity digital work',
             ],
         };
     };
@@ -211,79 +212,89 @@ const CategoryContentSection = ({ category, toolCount }: CategoryContentSectionP
                 </div>
             </div>
 
-            {/* Introduction with Gradient Background */}
+            {/* Introduction with Premium Typography */}
             <motion.section
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/5 via-primary/3 to-background border border-primary/10 p-8 md:p-10"
+                className="relative overflow-hidden rounded-[3rem] border border-black/5 dark:border-white/5 bg-white/50 dark:bg-white/[0.02] backdrop-blur-3xl p-10 md:p-16 shadow-sm ring-1 ring-black/[0.02]"
             >
-                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-3xl -z-10"></div>
-                <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-primary/5 to-transparent rounded-full blur-2xl -z-10"></div>
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2 -z-10"></div>
+                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/3 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/3 -z-10"></div>
 
-                <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center">
-                        <Award className="w-6 h-6 text-primary-foreground" />
+                <div className="flex flex-col md:flex-row md:items-center gap-8 mb-12">
+                    <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shadow-lg ring-1 ring-primary/20">
+                        <LayoutGrid className="w-8 h-8" />
                     </div>
-                    <h2 className="text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                        About {category.title}
-                    </h2>
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary mb-2">Ecosystem Specification</p>
+                        <h2 className="text-4xl md:text-7xl font-serif font-black tracking-tighter leading-tight">
+                            Suite <em className="italic font-light text-primary">Overview</em>
+                        </h2>
+                    </div>
                 </div>
 
-                <div className="prose prose-slate dark:prose-invert max-w-none">
-                    <p className="text-muted-foreground leading-relaxed text-lg">
-                        {content.intro}
-                    </p>
-                    <p className="text-muted-foreground leading-relaxed mt-4">
-                        In {currentYear}, having access to reliable online tools is essential for productivity and efficiency.
-                        Our {category.title.toLowerCase()} are built with modern web technologies to deliver professional-grade
-                        results without the need for expensive software subscriptions. Everything runs in your browser, ensuring
-                        your data stays private and secure on your device.
-                    </p>
+                <div className="grid lg:grid-cols-2 gap-16">
+                    <div className="prose prose-slate dark:prose-invert max-w-none">
+                        <p className="text-xl text-muted-foreground/90 leading-relaxed font-medium mb-8">
+                            {content.intro}
+                        </p>
+                        <p className="text-muted-foreground/80 leading-relaxed font-medium">
+                            The SnapTools industrial architecture ensures that every module within the {category.title.toLowerCase()}
+                            suite operates with extreme precision. Engineered for professional-grade manipulation, our infrastructure
+                            prioritizes hardware-level execution and zero-knowledge privacy protocols for all technical operations.
+                        </p>
+                    </div>
+                    <div className="bg-primary/5 rounded-[2.5rem] p-10 border border-primary/10 backdrop-blur-md relative overflow-hidden group">
+                        <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-primary/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700" />
+                        <h4 className="text-sm font-black uppercase tracking-widest text-primary mb-8 flex items-center gap-2">
+                            <ShieldCheck size={16} /> Infrastructure Security
+                        </h4>
+                        <div className="space-y-6">
+                            {[
+                                { label: "Deployment", value: "Global Edge Network" },
+                                { label: "Execution", value: "Client-Side Logic" },
+                                { label: "Protocol", value: "Zero-Knowledge" },
+                                { label: "Latency", value: "Millisecond-Target" }
+                            ].map((item, i) => (
+                                <div key={i} className="flex justify-between items-center border-b border-primary/10 pb-4">
+                                    <span className="text-xs font-black uppercase tracking-widest opacity-40">{item.label}</span>
+                                    <span className="text-sm font-bold text-foreground">{item.value}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </motion.section>
 
-            {/* Key Features with Vibrant Cards */}
+            {/* Key Features with Designer Cards */}
             <motion.section
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
             >
-                <div className="flex items-center gap-3 mb-8">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
-                        <Zap className="w-5 h-5 text-white" />
-                    </div>
-                    <h2 className="text-3xl font-bold">Key Features</h2>
+                <div className="text-center mb-16">
+                    <h2 className="text-4xl md:text-5xl font-serif font-black tracking-tight mb-4">Core <em className="italic font-light text-primary">Capabilities</em></h2>
+                    <p className="text-muted-foreground font-medium">Specialized modules engineered for high-fidelity technical manipulation.</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {content.benefits.map((benefit, index) => {
-                        const gradients = [
-                            'from-blue-500 to-cyan-500',
-                            'from-purple-500 to-pink-500',
-                            'from-green-500 to-emerald-500',
-                            'from-orange-500 to-red-500',
-                            'from-indigo-500 to-purple-500',
-                            'from-yellow-500 to-orange-500',
-                        ];
-                        const gradient = gradients[index % gradients.length];
-
                         return (
                             <motion.div
                                 key={index}
-                                initial={{ opacity: 0, scale: 0.95 }}
+                                initial={{ opacity: 0, scale: 0.98 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 0.4 + index * 0.05 }}
-                                whileHover={{ scale: 1.03, y: -4 }}
-                                className="group relative overflow-hidden rounded-xl border border-border bg-card p-6 shadow-sm hover:shadow-lg transition-all duration-300"
+                                whileHover={{ y: -6 }}
+                                className="group relative p-8 rounded-[2.5rem] border border-black/5 dark:border-white/5 bg-white/50 dark:bg-white/[0.01] hover:bg-white dark:hover:bg-white/[0.03] transition-all duration-500 shadow-sm overflow-hidden"
                             >
-                                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-xl group-hover:scale-150 transition-transform duration-500"></div>
-
-                                <div className="relative flex items-start gap-4">
-                                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center flex-shrink-0 shadow-md`}>
-                                        <CheckCircle2 className="w-5 h-5 text-white" />
+                                <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                                <div className="relative flex flex-col gap-6">
+                                    <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-inner">
+                                        <Command size={20} />
                                     </div>
-                                    <p className="text-sm leading-relaxed text-foreground font-medium pt-1">{benefit}</p>
+                                    <p className="text-base leading-relaxed text-foreground/80 font-bold tracking-tight">{benefit}</p>
                                 </div>
                             </motion.div>
                         );
@@ -291,25 +302,22 @@ const CategoryContentSection = ({ category, toolCount }: CategoryContentSectionP
                 </div>
             </motion.section>
 
-            {/* Use Cases with Modern Design */}
+            {/* Use Cases with Architectural Layout */}
             <motion.section
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-muted/50 to-background border border-border p-8 md:p-10"
+                className="relative overflow-hidden rounded-[3rem] border border-black/5 dark:border-white/5 bg-white/50 dark:bg-white/[0.01] backdrop-blur-xl p-10 md:p-16 shadow-sm"
             >
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-primary/50 to-transparent"></div>
-
-                <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
-                        <Users className="w-5 h-5 text-white" />
+                <div className="flex flex-col md:flex-row md:items-center gap-6 mb-12">
+                    <div className="w-14 h-14 rounded-[1.5rem] bg-primary/10 flex items-center justify-center text-primary shadow-inner">
+                        <Users className="w-7 h-7" />
                     </div>
-                    <h2 className="text-3xl font-bold">Who Uses {category.title}?</h2>
+                    <div>
+                        <h2 className="text-3xl md:text-5xl font-serif font-black tracking-tight mb-2">Target <em className="italic font-light text-primary">Applications</em></h2>
+                        <p className="text-muted-foreground font-medium">Optimized for specialized professional segments.</p>
+                    </div>
                 </div>
-
-                <p className="text-muted-foreground mb-8 text-lg">
-                    Our {category.title.toLowerCase()} are trusted by thousands of users worldwide for various purposes:
-                </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {content.useCases.map((useCase, index) => (
@@ -318,90 +326,99 @@ const CategoryContentSection = ({ category, toolCount }: CategoryContentSectionP
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.6 + index * 0.05 }}
-                            className="flex items-start gap-3 p-4 rounded-lg bg-background/50 hover:bg-background transition-colors"
+                            className="flex items-start gap-4 p-6 rounded-[2rem] bg-black/[0.02] dark:bg-white/[0.02] hover:bg-primary/5 transition-all duration-500 group"
                         >
-                            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <Sparkles className="w-3.5 h-3.5 text-white" />
+                            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-all">
+                                <Sparkles size={14} />
                             </div>
-                            <span className="text-muted-foreground leading-relaxed">{useCase}</span>
+                            <span className="text-muted-foreground group-hover:text-foreground transition-colors font-medium leading-relaxed">{useCase}</span>
                         </motion.div>
                     ))}
                 </div>
             </motion.section>
 
-            {/* Why Choose Us with Premium Gradient */}
+            {/* Why Choose Us with Premium Architectural CTA */}
             <motion.section
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
-                className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary/90 to-primary/70 p-10 md:p-12 shadow-2xl"
+                className="relative overflow-hidden rounded-[3.5rem] bg-black dark:bg-white p-12 md:p-20 shadow-2xl"
             >
-                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnptMCAxMmMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnptLTEyIDBjMy4zMTQgMCA2IDIuNjg2IDYgNnMtMi42ODYgNi02IDYtNi0yLjY4Ni02LTYgMi42ODYtNiA2LTZ6IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48L2c+PC9zdmc+')] opacity-10"></div>
+                <div className="absolute inset-0 bg-primary/20 blur-[120px] opacity-40 -z-10"></div>
 
-                <div className="relative">
-                    <div className="flex items-center gap-3 mb-6">
-                        <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                            <Star className="w-6 h-6 text-white" />
+                <div className="relative z-10">
+                    <div className="flex flex-col md:flex-row md:items-center gap-8 mb-12">
+                        <div className="w-20 h-20 rounded-3xl bg-primary flex items-center justify-center shadow-2xl shadow-primary/40 rotate-12">
+                            <Star className="w-10 h-10 text-white" />
                         </div>
-                        <h2 className="text-3xl font-bold text-white">Why Choose Our {category.title}?</h2>
+                        <div>
+                            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary mb-2">Technical Superiority</p>
+                            <h2 className="text-4xl md:text-7xl font-serif font-black tracking-tighter leading-none text-white dark:text-black">
+                                Why SnapTools <br /><em className="italic font-light text-primary">{category.title}</em>
+                            </h2>
+                        </div>
                     </div>
 
-                    <p className="text-primary-foreground/90 leading-relaxed mb-4 text-lg">
-                        Unlike other online tool platforms, we prioritize your privacy and user experience. All our {category.title.toLowerCase()}
-                        process data locally in your browser, meaning your files and information never leave your device. This approach
-                        ensures maximum security and privacy while delivering lightning-fast results.
-                    </p>
-                    <p className="text-primary-foreground/90 leading-relaxed text-lg">
-                        We're committed to keeping our tools free and accessible to everyone. No hidden fees, no premium tiers,
-                        and no annoying watermarks. Just powerful, professional tools that help you get work done efficiently.
-                        With <span className="font-bold text-white">{toolCount} tools</span> in this category and counting, we're constantly adding new features based on user feedback.
-                    </p>
+                    <div className="grid lg:grid-cols-2 gap-16 text-left">
+                        <div className="space-y-6">
+                            <p className="text-white/80 dark:text-black/80 leading-relaxed text-xl font-medium">
+                                Unlike legacy platforms, the SnapTools ecosystem prioritizes architectural integrity and user privacy. All modules within the {category.title.toLowerCase()}
+                                suite execute data-manipulation logic locally within your browser's secure sandbox.
+                            </p>
+                            <p className="text-white/60 dark:text-black/60 leading-relaxed text-lg font-medium">
+                                This approach ensures mission-critical security while delivering millisecond-latency results. We are committed to maintaining a high-fidelity,
+                                free technical infrastructure without the overhead of registration or proprietary subscriptions.
+                            </p>
+                        </div>
 
-                    <div className="mt-8 flex flex-wrap gap-3">
-                        <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-white/90">
-                            <CheckCircle2 className="w-4 h-4" />
-                            <span className="text-sm font-medium">100% Free</span>
-                        </div>
-                        <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-white/90">
-                            <CheckCircle2 className="w-4 h-4" />
-                            <span className="text-sm font-medium">Privacy First</span>
-                        </div>
-                        <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-white/90">
-                            <CheckCircle2 className="w-4 h-4" />
-                            <span className="text-sm font-medium">No Registration</span>
-                        </div>
-                        <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-white/90">
-                            <CheckCircle2 className="w-4 h-4" />
-                            <span className="text-sm font-medium">{toolCount}+ Tools</span>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {[
+                                { badge: "100% Free", icon: CheckCircle2 },
+                                { badge: "Privacy First", icon: ShieldCheck },
+                                { badge: "Zero Verification", icon: Zap },
+                                { badge: `${toolCount}+ Modules`, icon: LayoutGrid }
+                            ].map((item, i) => (
+                                <div key={i} className="flex items-center gap-4 bg-white/10 dark:bg-black/5 border border-white/10 dark:border-black/10 backdrop-blur-3xl px-6 py-5 rounded-[2rem]">
+                                    <item.icon className="w-5 h-5 text-primary" />
+                                    <span className="font-black text-[10px] uppercase tracking-widest text-white dark:text-black">{item.badge}</span>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
             </motion.section>
 
-            {/* Getting Started with Card Design */}
+            {/* Getting Started with Architectural Cards */}
             <motion.section
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 }}
-                className="relative overflow-hidden rounded-xl border border-border bg-card p-8 md:p-10 shadow-sm"
+                className="relative overflow-hidden rounded-[3rem] border border-black/5 dark:border-white/5 bg-white/50 dark:bg-white/[0.02] backdrop-blur-3xl p-10 md:p-16 shadow-sm ring-1 ring-black/[0.02]"
             >
-                <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                        <TrendingUp className="w-5 h-5 text-white" />
+                <div className="flex flex-col md:flex-row md:items-center gap-6 mb-12">
+                    <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shadow-lg ring-1 ring-primary/20">
+                        <TrendingUp className="w-8 h-8" />
                     </div>
-                    <h2 className="text-3xl font-bold">Getting Started</h2>
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary mb-2">Onboarding Protocol</p>
+                        <h2 className="text-4xl md:text-5xl font-serif font-black tracking-tighter leading-tight">
+                            Module <em className="italic font-light text-primary">Access</em>
+                        </h2>
+                    </div>
                 </div>
 
-                <p className="text-muted-foreground leading-relaxed mb-4 text-lg">
-                    Using our {category.title.toLowerCase()} is incredibly simple. Just select the tool you need from the list above,
-                    and you'll be taken to the tool page where you can start working immediately. No tutorials needed - our
-                    intuitive interfaces make it easy for anyone to use, regardless of technical expertise.
-                </p>
-                <p className="text-muted-foreground leading-relaxed text-lg">
-                    All tools are mobile-friendly and work on any device with a modern web browser. Whether you're on a desktop
-                    computer, tablet, or smartphone, you'll have access to the same powerful features. Bookmark your favorite
-                    tools for quick access, and enjoy a seamless experience across all your devices.
-                </p>
+                <div className="grid lg:grid-cols-2 gap-12">
+                    <p className="text-xl text-muted-foreground/90 leading-relaxed font-medium">
+                        Initializing your workflow within the {category.title.toLowerCase()} ecosystem is engineered for simplicity.
+                        Simply select a module from our comprehensive directory to activate the high-fidelity technical workstation.
+                        No registration or identity verification is required for immediate implementation.
+                    </p>
+                    <p className="text-muted-foreground/80 leading-relaxed font-medium">
+                        All modules are architected with a responsive-ready interface, ensuring mission-critical accessibility across
+                        all nodes—from high-performance desktop workstations to mobile technical environments. Our infrastructure
+                        guarantees structural consistency across all digital touchpoints.
+                    </p>
+                </div>
             </motion.section>
         </div>
     );

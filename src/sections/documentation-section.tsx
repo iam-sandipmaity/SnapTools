@@ -4,15 +4,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const DocumentationSection = () => {
   return (
-    <section 
-      id="documentation" 
-      className="bg-accent py-16 md:py-24 px-4 sm:px-6 md:px-12 lg:px-24 space-y-12"
+    <section
+      id="documentation"
+      className="bg-blue-50/50 dark:bg-slate-900/50 py-16 md:py-24 px-4 sm:px-6 md:px-12 lg:px-24 space-y-12"
     >
       <div className="text-center max-w-4xl mx-auto space-y-6">
         <AnimatedElement animation="fadeIn">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Documentation</h2>
           <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto mt-4">
-            Everything you need to know about using ToolTopia
+            Everything you need to know about using SnapTools
           </p>
         </AnimatedElement>
       </div>
@@ -28,9 +28,9 @@ const DocumentationSection = () => {
           <TabsContent value="getting-started" className="mt-6">
             <Card>
               <CardContent className="p-6 space-y-4">
-                <h3 className="text-xl font-semibold">Welcome to ToolTopia</h3>
+                <h3 className="text-xl font-semibold">Welcome to SnapTools</h3>
                 <p className="text-muted-foreground">
-                  Getting started with ToolTopia is easy! Simply choose a tool from our extensive collection and start using it right away. No registration required.
+                  Getting started with SnapTools is easy! Simply choose a tool from our extensive collection and start using it right away. No registration required.
                 </p>
                 <div className="space-y-2">
                   <h4 className="font-medium">Quick Start Steps:</h4>
@@ -73,7 +73,7 @@ const DocumentationSection = () => {
                 <h3 className="text-xl font-semibold">Frequently Asked Questions</h3>
                 <div className="space-y-4">
                   <div>
-                    <h4 className="font-medium">Is ToolTopia free to use?</h4>
+                    <h4 className="font-medium">Is SnapTools free to use?</h4>
                     <p className="text-muted-foreground">Yes, all our tools are completely free to use with no hidden charges.</p>
                   </div>
                   <div>

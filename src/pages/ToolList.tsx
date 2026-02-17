@@ -3,13 +3,20 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ToolsSearchBar from "@/components/tools-search-bar";
 import { toolCategories } from "@/data/tools";
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { ChevronDown, ArrowLeft } from "lucide-react";
+import {
+  ChevronDown,
+  ArrowRight,
+  LayoutGrid,
+  Command,
+  Zap,
+  ArrowLeft,
+  Search
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useNavigate } from "react-router-dom";
 
 const ToolList = () => {
   const navigate = useNavigate();
@@ -28,13 +35,13 @@ const ToolList = () => {
   useEffect(() => {
     const filtered = toolCategories.map(category => ({
       ...category,
-      subTools: category.subTools?.filter(tool => 
+      subTools: category.subTools?.filter(tool =>
         (tool.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tool.description?.toLowerCase().includes(searchQuery.toLowerCase())) &&
+          tool.description?.toLowerCase().includes(searchQuery.toLowerCase())) &&
         (!selectedCategory || category.id === selectedCategory)
       )
     })).filter(category => category.subTools && category.subTools.length > 0);
-    
+
     setFilteredCategories(filtered);
   }, [searchQuery, selectedCategory]);
 
@@ -43,99 +50,186 @@ const ToolList = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background selection:bg-primary/10">
       <Header />
-      <main className="flex-grow container py-8 pt-20">
-        <div className="mb-8">
-          <motion.button
-            onClick={() => navigate('/')}
-            className="inline-flex items-center text-muted-foreground hover:text-primary transition-colors mb-4 bg-transparent border-none cursor-pointer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <ArrowLeft size={16} className="mr-2" />
-            Back
-          </motion.button>
-          <h1 className="text-4xl font-bold mb-4">All Tools</h1>
-          <p className="text-muted-foreground max-w-2xl mb-6">
-            Browse our complete collection of tools, organized by category.
-          </p>
-          <div className="flex gap-4 items-start mb-8">
-            <ToolsSearchBar 
-              onSearch={handleSearch}
-              className="flex-1"
-            />
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="flex items-center gap-2">
-                  {selectedCategory ? 
-                    toolCategories.find(c => c.id === selectedCategory)?.title : 
-                    "All Categories"}
-                  <ChevronDown className="h-4 w-4" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-56">
-                <div className="space-y-2">
-                  <button
-                    className={cn(
-                      "w-full text-left px-2 py-1 rounded hover:bg-accent/50 transition-colors",
-                      !selectedCategory && "bg-accent/50"
-                    )}
-                    onClick={() => handleCategorySelect(null)}
-                  >
-                    All Categories
-                  </button>
-                  {filteredCategories.map((category) => (
+
+      <main className="flex-grow pt-32 pb-40 relative overflow-hidden">
+        {/* Decorative Background Elements */}
+        <div className="absolute top-0 right-0 w-1/3 h-[800px] bg-primary/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none -z-10" />
+        <div className="absolute bottom-0 left-0 w-1/4 h-[600px] bg-primary/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none -z-10" />
+
+        <div className="container max-w-7xl mx-auto px-6 relative z-10">
+
+          {/* HERO SECTION */}
+          <header className="max-w-4xl mx-auto text-center mb-24 animate-fade-in-up">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary font-black text-[10px] uppercase tracking-widest mb-8">
+              <LayoutGrid className="w-3 h-3" />
+              Unified Ecosystem
+            </div>
+            <h1 className="text-6xl md:text-8xl font-serif font-black tracking-tighter mb-8 leading-[0.9]">
+              Specialist <br />
+              <em className="italic font-light text-primary">Workstation</em>
+            </h1>
+            <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-12">
+              A comprehensive directory of high-performance utilities engineered for technical precision. Search or filter to find your tool.
+            </p>
+
+            {/* SEARCH & FILTER COMMAND BAR */}
+            <div className="max-w-4xl mx-auto bg-white/50 dark:bg-white/[0.02] backdrop-blur-2xl border border-black/5 dark:border-white/5 p-2 rounded-[2rem] flex items-center gap-2 shadow-2xl focus-within:ring-2 ring-primary/20 transition-all">
+              <div className="flex-1">
+                <ToolsSearchBar
+                  onSearch={handleSearch}
+                  className="px-4"
+                />
+              </div>
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="ghost" className="h-14 px-4 md:px-6 rounded-[1.5rem] bg-black dark:bg-white text-white dark:text-black font-black text-[9px] md:text-[10px] uppercase tracking-widest group shrink-0">
+                    <span className="hidden sm:inline">
+                      {selectedCategory ? toolCategories.find(c => c.id === selectedCategory)?.title : "Filter Ecosystem"}
+                    </span>
+                    <span className="sm:hidden">
+                      {selectedCategory ? toolCategories.find(c => c.id === selectedCategory)?.title : "Filter"}
+                    </span>
+                    <ChevronDown className="ml-2 w-3 h-3 md:w-4 md:h-4 transition-transform group-data-[state=open]:rotate-180" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-64 p-2 rounded-2xl bg-white/95 dark:bg-black/95 backdrop-blur-xl border-black/5 dark:border-white/10 shadow-2xl">
+                  <div className="space-y-1">
                     <button
-                      key={category.id}
+                      onClick={() => handleCategorySelect(null)}
                       className={cn(
-                        "w-full text-left px-2 py-1 rounded hover:bg-accent/50 transition-colors",
-                        selectedCategory === category.id && "bg-accent/50"
+                        "w-full text-left px-4 py-3 rounded-xl text-xs font-bold transition-all",
+                        !selectedCategory ? "bg-primary text-white" : "hover:bg-muted/50"
                       )}
-                      onClick={() => handleCategorySelect(category.id)}
                     >
-                      {category.title}
+                      All Tools
                     </button>
-                  ))}
+                    {toolCategories.map((category) => (
+                      <button
+                        key={category.id}
+                        onClick={() => handleCategorySelect(category.id)}
+                        className={cn(
+                          "w-full text-left px-4 py-3 rounded-xl text-xs font-bold transition-all",
+                          selectedCategory === category.id ? "bg-primary text-white" : "hover:bg-muted/50"
+                        )}
+                      >
+                        {category.title}
+                      </button>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
+          </header>
+
+          {/* TOOLS GRID */}
+          <div className="space-y-32">
+            <AnimatePresence mode="wait">
+              {filteredCategories.length > 0 ? (
+                filteredCategories.map((category) => (
+                  <motion.section
+                    key={category.id}
+                    layout
+                    initial={{ opacity: 0, filter: "blur(10px)", y: 20 }}
+                    animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                    exit={{ opacity: 0, filter: "blur(10px)", scale: 0.98, transition: { duration: 0.2 } }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 20,
+                      opacity: { duration: 0.3 }
+                    }}
+                    className="relative"
+                  >
+                    <div className="flex items-center gap-4 mb-12">
+                      <div className={cn("w-14 h-14 rounded-2xl flex items-center justify-center text-primary bg-primary/10 shadow-inner", category.color)}>
+                        {category.icon && <category.icon size={28} />}
+                      </div>
+                      <div>
+                        <h2 className="text-3xl font-serif font-black tracking-tight">{category.title}</h2>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-60">
+                          {category.subTools?.length} Modules Available
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {category.subTools?.map((tool) => (
+                        <motion.div
+                          key={tool.id}
+                          layout
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.9 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Link
+                            to={`/tools/${category.id}/${tool.id}`}
+                            className="group relative h-full p-8 rounded-[2rem] border border-black/5 dark:border-white/5 bg-white/30 dark:bg-white/[0.01] hover:bg-white dark:hover:bg-white/[0.03] transition-all duration-500 shadow-sm hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 block overflow-hidden"
+                          >
+                            <Zap className="absolute -right-4 -top-4 w-24 h-24 text-primary opacity-0 group-hover:opacity-[0.03] -rotate-12 transition-all duration-700 group-hover:rotate-0 group-hover:-translate-x-4" />
+
+                            <h3 className="text-xl font-bold mb-3 tracking-tight group-hover:text-primary transition-colors flex items-center gap-2">
+                              {tool.title}
+                              <ArrowRight className="w-4 h-4 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
+                            </h3>
+
+                            {tool.description && (
+                              <p className="text-sm text-muted-foreground leading-relaxed">
+                                {tool.description}
+                              </p>
+                            )}
+
+                            <div className="mt-8 flex items-center justify-between">
+                              <span className="text-[9px] font-black uppercase tracking-[0.2em] text-primary/40 group-hover:text-primary transition-colors">
+                                Launch Module
+                              </span>
+                              <div className="w-8 h-8 rounded-full bg-muted/50 dark:bg-white/[0.03] flex items-center justify-center text-muted-foreground group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                                <Command size={14} />
+                              </div>
+                            </div>
+                          </Link>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.section>
+                ))
+              ) : (
+                <div className="text-center py-40 animate-fade-in-up">
+                  <div className="w-20 h-20 bg-muted/50 rounded-full flex items-center justify-center mx-auto mb-8">
+                    <Search size={40} className="text-muted-foreground" />
+                  </div>
+                  <h2 className="text-3xl font-serif font-black mb-4 tracking-tight">No processing modules found</h2>
+                  <p className="text-muted-foreground max-w-sm mx-auto">
+                    We couldn't find any tools matching your search criteria. Try a different keyword or browse by category.
+                  </p>
+                  <Button
+                    variant="link"
+                    className="mt-8 text-primary font-bold"
+                    onClick={() => { setSearchQuery(""); setSelectedCategory(null); }}
+                  >
+                    Reset Discovery Engine
+                  </Button>
                 </div>
-              </PopoverContent>
-            </Popover>
+              )}
+            </AnimatePresence>
           </div>
         </div>
-
-        <div className="space-y-12">
-          {filteredCategories.map((category) => (
-            <div key={category.id} className="space-y-4">
-              <div className="flex items-center gap-3 mb-4">
-                <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center", category.color)}>
-                  {category.icon && <category.icon size={20} className="text-primary-foreground" />}
-                </div>
-                <h2 className="text-2xl font-semibold">{category.title}</h2>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {category.subTools?.map((tool) => (
-                  <Link
-                    key={tool.id}
-                    to={`/tools/${category.id}/${tool.id}`}
-                    className="group block p-4 rounded-lg border bg-card hover:shadow-md transition-all"
-                  >
-                    <h3 className="text-lg font-medium group-hover:text-primary transition-colors">
-                      {tool.title}
-                    </h3>
-                    {tool.description && (
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {tool.description}
-                      </p>
-                    )}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
       </main>
+
       <Footer />
+
+      <style>{`
+        @keyframes fade-in-up {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+          animation: fade-in-up 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+      `}</style>
     </div>
   );
 };

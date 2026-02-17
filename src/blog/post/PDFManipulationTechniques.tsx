@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronRight, FileText, Scissors, RotateCcw, Shield, Zap, RefreshCw, Edit3, Search, Clock, User, Calendar, Tag } from 'lucide-react';
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 const PDFManipulationTechniques = () => {
   const [activeSection, setActiveSection] = useState(null);
@@ -121,160 +122,123 @@ const PDFManipulationTechniques = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-4xl mx-auto px-4 py-6">
-          <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
-            <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs font-medium">PDF Tools</span>
-            <ChevronRight className="w-4 h-4" />
-            <span>Advanced Techniques</span>
-          </div>
-          
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-            10 Advanced PDF Manipulation Techniques for Professionals
-          </h1>
-          
-          <p className="text-xl text-gray-600 mb-6 leading-relaxed">
-            Master professional-grade PDF manipulation with these advanced techniques. Learn expert methods for merging, splitting, and converting PDFs efficiently.
-          </p>
-          
-          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-            <div className="flex items-center gap-1">
-              <User className="w-4 h-4" />
-              <span>SnapTools Team</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Calendar className="w-4 h-4" />
-              <span>January 18, 2024</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Clock className="w-4 h-4" />
-              <span>8 min read</span>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-8">
-        {/* Introduction */}
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-12">
-          <p className="text-lg text-blue-900 leading-relaxed">
-            PDF manipulation is a crucial skill for professionals who work with digital documents. In this comprehensive guide, we'll explore 10 advanced techniques that will enhance your PDF workflow and productivity. Whether you're a document management expert, business professional, or developer, these techniques will help you master PDF manipulation.
-          </p>
+    <>
+      <div className="mb-16">
+        <div className="flex flex-wrap items-center gap-6 text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-8">
+          <span className="px-4 py-2 bg-primary/10 rounded-full">PDF Architecture</span>
+          <span className="flex items-center gap-2 text-muted-foreground"><User className="w-3 h-3" /> SnapTools Engineering</span>
+          <span className="flex items-center gap-2 text-muted-foreground"><Calendar className="w-3 h-3" /> January 18, 2024</span>
+          <span className="flex items-center gap-2 text-muted-foreground"><Clock className="w-3 h-3" /> 8 min read</span>
         </div>
 
-        {/* Techniques Grid */}
-        <div className="space-y-8">
-          {techniques.map((technique, index) => (
-            <div
-              key={technique.id}
-              className={`border-2 rounded-xl p-6 transition-all duration-300 hover:shadow-lg cursor-pointer ${
-                activeSection === technique.id 
-                  ? getColorClasses(technique.color) 
-                  : 'bg-white border-gray-200 hover:border-gray-300'
+        <h1 className="leading-[0.85] mb-12">
+          Advanced PDF <br />
+          <em className="italic font-light text-primary">Manipulation.</em>
+        </h1>
+
+        <p className="text-xl text-muted-foreground leading-relaxed font-medium mb-12">
+          Strategic protocols for document integrity, architectural merging, and cryptographic security within the portable document format ecosystem.
+        </p>
+      </div>
+
+      <div className="bg-primary/5 border border-primary/10 rounded-[2.5rem] p-10 mb-20 shadow-sm">
+        <p className="m-0 italic">
+          Mastery of document architecture is a mission-critical skill for modern digital engineers. This technical repository explores 10 strategic manipulation protocols designed to maximize throughput and ensure architectural consistency across all digital touchpoints.
+        </p>
+      </div>
+
+      <div className="space-y-12">
+        {techniques.map((technique) => (
+          <div
+            key={technique.id}
+            className={`group relative overflow-hidden rounded-[3rem] border border-black/5 dark:border-white/5 bg-white/50 dark:bg-white/[0.01] transition-all duration-700 ${activeSection === technique.id ? 'ring-2 ring-primary/20 shadow-2xl' : 'hover:bg-white dark:hover:bg-white/[0.03]'
               }`}
+          >
+            <div
+              className="p-10 cursor-pointer"
               onClick={() => setActiveSection(activeSection === technique.id ? null : technique.id)}
             >
-              <div className="flex items-start gap-4">
-                <div className={`p-3 rounded-lg ${getBadgeClasses(technique.color)}`}>
+              <div className="flex items-start gap-8">
+                <div className="shrink-0 w-16 h-16 rounded-[1.5rem] bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-500">
                   {technique.icon}
                 </div>
-                
+
                 <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getBadgeClasses(technique.color)}`}>
-                      #{technique.id}
-                    </span>
-                    <h2 className="text-xl font-bold text-gray-900">
+                  <div className="flex items-center gap-4 mb-3">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-primary/50">Protocol {technique.id}</span>
+                    <h2 className="m-0 text-3xl font-serif font-black tracking-tight group-hover:text-primary transition-colors">
                       {technique.title}
                     </h2>
                   </div>
-                  
-                  <p className="text-gray-600 mb-4">
+
+                  <p className="m-0 text-lg font-medium text-muted-foreground/80 leading-relaxed">
                     {technique.description}
                   </p>
-                  
-                  {activeSection === technique.id && (
-                    <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200">
-                      <h3 className="font-semibold text-gray-900 mb-3">Key Features:</h3>
-                      <ul className="space-y-2">
-                        {technique.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-center gap-2 text-gray-700">
-                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-                      
-                      {technique.id === 1 && (
-                        <div className="mt-4 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
-                          <p className="text-blue-900">
-                            <strong>Pro Tip:</strong> Using SnapTools' PDF Merger, you can achieve this with just a few clicks while maintaining document integrity. Our intelligent merging algorithm ensures that your documents retain their original quality and interactive elements.
-                          </p>
+
+                  <AnimatePresence>
+                    {activeSection === technique.id && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-8 pt-8 border-t border-black/5 dark:border-white/5 space-y-6">
+                          <h3 className="m-0 text-sm font-black uppercase tracking-widest text-foreground">Operational Parameters</h3>
+                          <ul className="grid md:grid-cols-2 gap-4 m-0">
+                            {technique.features.map((feature, idx) => (
+                              <li key={idx} className="flex items-center gap-3 text-sm font-medium text-muted-foreground pl-0 before:hidden">
+                                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                                {feature}
+                              </li>
+                            ))}
+                          </ul>
+
+                          {technique.id === 1 && (
+                            <div className="p-6 rounded-3xl bg-primary/5 border-l-4 border-primary">
+                              <p className="m-0 text-sm font-medium">
+                                <strong className="text-primary uppercase tracking-widest text-[9px] block mb-2">Engineering Insight</strong>
+                                Leveraging the SnapTools neural engine allows for millisecond-latency manipulation while maintaining zero-knowledge security protocols.
+                              </p>
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-                
-                <ChevronRight className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${
-                  activeSection === technique.id ? 'rotate-90' : ''
-                }`} />
+
+                <ChevronRight className={`w-6 h-6 text-muted-foreground/30 transition-all duration-500 ${activeSection === technique.id ? 'rotate-90 text-primary' : 'group-hover:translate-x-1'
+                  }`} />
               </div>
             </div>
-          ))}
-        </div>
-
-        {/* Keywords Section */}
-        <div className="mt-12 p-6 bg-gray-50 rounded-xl">
-          <div className="flex items-center gap-2 mb-4">
-            <Tag className="w-5 h-5 text-gray-600" />
-            <h3 className="font-semibold text-gray-900">Related Topics</h3>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {[
-              'pdf manipulation',
-              'advanced pdf techniques',
-              'pdf editing tips',
-              'pdf merger',
-              'pdf splitter',
-              'pdf to word conversion'
-            ].map((keyword, index) => (
-              <span
-                key={index}
-                className="px-3 py-1 bg-white border border-gray-200 rounded-full text-sm text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
-              >
-                {keyword}
-              </span>
-            ))}
-          </div>
-        </div>
+        ))}
+      </div>
 
-        {/* Conclusion */}
-        <div className="mt-12 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl p-8">
-          <h2 className="text-2xl font-bold mb-4">Ready to Master PDF Manipulation?</h2>
-          
-          <p className="text-lg mb-6 opacity-90">
-            Mastering these advanced PDF manipulation techniques will significantly enhance your document management capabilities. Whether you're working with complex forms, securing sensitive information, or automating document workflows, these skills will help you work more efficiently.
+      <div className="mt-32 p-12 rounded-[3.5rem] bg-black dark:bg-white text-white dark:text-black relative overflow-hidden shadow-2xl">
+        <div className="absolute inset-0 bg-primary/20 blur-[100px] opacity-40" />
+        <div className="relative z-10 text-center space-y-8">
+          <h2 className="m-0 text-4xl md:text-5xl font-serif font-black tracking-tighter text-white dark:text-black leading-tight">
+            Ready to Initialize <br />
+            <em className="italic font-light text-primary underline underline-offset-8 decoration-1 decoration-primary/30">Mastery.</em>
+          </h2>
+          <p className="text-white/60 dark:text-black/60 max-w-xl mx-auto text-lg leading-relaxed font-medium">
+            Deploy advanced manipulation protocols across your document architecture with the SnapTools technical suite.
           </p>
-          
-          <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-6 border border-white border-opacity-20">
-            <p className="mb-4 text-blue-100">
-              Start implementing these techniques today with SnapTools' comprehensive suite of PDF tools. Our intuitive interface and powerful features make it easy to apply these advanced techniques to your workflow.
-            </p>
-            
-            <Link to="/tools/pdf/" target="_blank" rel="noopener noreferrer">
-            <button className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors inline-flex items-center gap-2">
-              Get Started with SnapTools
-              <ChevronRight className="w-4 h-4" />
-            </button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/tools" className="no-underline">
+              <button className="bg-primary text-white hover:bg-primary/90 px-10 py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] transition-all shadow-2xl shadow-primary/20 hover:scale-105 active:scale-95 border-none cursor-pointer">
+                Initialize Suite
+              </button>
             </Link>
+            <button className="bg-white/10 dark:bg-black/5 hover:bg-white/20 dark:hover:bg-black/10 text-white dark:text-black px-10 py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] transition-all border border-white/10 dark:border-black/10 cursor-pointer">
+              Documentation
+            </button>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </>
   );
 };
 

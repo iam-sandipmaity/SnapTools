@@ -1,18 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import AnimatedElement from "@/components/animated-element";
 import { motion } from "framer-motion";
-import { 
-  Share2, 
-  MessageSquare, 
-  ImageDown, 
-  QrCode, 
-  KeyRound, 
+import {
+  Share2,
+  MessageSquare,
+  ImageDown,
+  QrCode,
+  KeyRound,
   FileText,
-  Calculator,
   Code,
   Clock,
   Video,
-  Eye
+  Eye,
+  Calculator,
+  Zap,
+  Command,
+  ArrowRight
 } from "lucide-react";
 
 interface FeaturedTool {
@@ -32,7 +35,7 @@ const featuredTools: FeaturedTool[] = [
     id: "file-share",
     categoryId: "file",
     title: "File Share",
-    description: "Share files securely with peer-to-peer connection",
+    description: "Secure peer-to-peer file transfer engine",
     icon: Share2,
     gradient: { from: "#6366f1", to: "#8b5cf6" }
   },
@@ -40,7 +43,7 @@ const featuredTools: FeaturedTool[] = [
     id: "text-share",
     categoryId: "file",
     title: "Text Share",
-    description: "Share text in real-time with anyone instantly",
+    description: "Instant real-time cryptographic text sharing",
     icon: MessageSquare,
     gradient: { from: "#8b5cf6", to: "#d946ef" }
   },
@@ -48,7 +51,7 @@ const featuredTools: FeaturedTool[] = [
     id: "image-compressor",
     categoryId: "image",
     title: "Image Compressor",
-    description: "Reduce image size without losing quality",
+    description: "Lossless neural image reduction logic",
     icon: ImageDown,
     gradient: { from: "#06b6d4", to: "#3b82f6" }
   },
@@ -56,7 +59,7 @@ const featuredTools: FeaturedTool[] = [
     id: "qr-generator",
     categoryId: "qr",
     title: "QR Generator",
-    description: "Create custom QR codes for any purpose",
+    description: "High-fidelity vector QR generation",
     icon: QrCode,
     gradient: { from: "#f59e0b", to: "#ef4444" }
   },
@@ -64,7 +67,7 @@ const featuredTools: FeaturedTool[] = [
     id: "password-generator",
     categoryId: "password",
     title: "Password Generator",
-    description: "Generate strong and secure passwords",
+    description: "Entropy-driven security string generation",
     icon: KeyRound,
     gradient: { from: "#ec4899", to: "#f43f5e" }
   },
@@ -72,7 +75,7 @@ const featuredTools: FeaturedTool[] = [
     id: "pdf-merger",
     categoryId: "pdf",
     title: "PDF Merger",
-    description: "Combine multiple PDFs into one file",
+    description: "Professional multi-document consolidation",
     icon: FileText,
     gradient: { from: "#f43f5e", to: "#fb923c" }
   },
@@ -80,7 +83,7 @@ const featuredTools: FeaturedTool[] = [
     id: "json-formatter",
     categoryId: "code",
     title: "JSON Formatter",
-    description: "Format and validate JSON data easily",
+    description: "Syntax-aware data validation & formatting",
     icon: Code,
     gradient: { from: "#8b5cf6", to: "#6366f1" }
   },
@@ -88,7 +91,7 @@ const featuredTools: FeaturedTool[] = [
     id: "pdf-viewer",
     categoryId: "pdf",
     title: "PDF Viewer",
-    description: "View, encrypt, decrypt and manipulate PDFs",
+    description: "Advanced PDF manipulation & encryption",
     icon: Eye,
     gradient: { from: "#f43f5e", to: "#fb923c" }
   },
@@ -96,7 +99,7 @@ const featuredTools: FeaturedTool[] = [
     id: "webcam-test",
     categoryId: "miscellaneous",
     title: "Webcam Tester",
-    description: "Test your webcam and capture photos",
+    description: "Hardware-accelerated sensor diagnostics",
     icon: Video,
     gradient: { from: "#06b6d4", to: "#3b82f6" }
   },
@@ -104,17 +107,9 @@ const featuredTools: FeaturedTool[] = [
     id: "bmi-calculator",
     categoryId: "calculator",
     title: "BMI Calculator",
-    description: "Calculate your Body Mass Index quickly",
+    description: "Precise physiological index calculation",
     icon: Calculator,
     gradient: { from: "#10b981", to: "#06b6d4" }
-  },
-  {
-    id: "world-clock",
-    categoryId: "clock",
-    title: "World Clock",
-    description: "View time zones around the world",
-    icon: Clock,
-    gradient: { from: "#8b5cf6", to: "#ec4899" }
   }
 ];
 
@@ -126,84 +121,93 @@ const FeaturedToolsSection = () => {
   };
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-accent/20">
-      <div className="container mx-auto">
-      <div className="text-center mb-12">
-        <AnimatedElement animation="fadeIn">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Featured Tools
-          </h2>
-        </AnimatedElement>
-        <AnimatedElement delay={0.1} animation="fadeIn">
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Quick access to our most popular and essential tools
-          </p>
-        </AnimatedElement>
-      </div>
+    <section className="py-32 px-6 relative overflow-hidden bg-background">
+      {/* Decorative Grid Background */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-        {featuredTools.map((tool, index) => (
-          <AnimatedElement key={tool.id} delay={index * 0.05}>
-            <motion.div
-              whileHover={{ scale: 1.05, y: -5 }}
-              whileTap={{ scale: 0.98 }}
-              className="relative group cursor-pointer"
-              onClick={() => handleToolClick(tool.categoryId, tool.id)}
-            >
-              <div className="relative overflow-hidden rounded-xl p-6 h-full bg-card border border-border hover:border-primary/50 transition-all duration-300 shadow-sm hover:shadow-lg">
-                {/* Gradient Background */}
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300"
-                  style={{
-                    background: `linear-gradient(135deg, ${tool.gradient.from}, ${tool.gradient.to})`
-                  }}
-                />
-                
-                {/* Icon */}
-                <div 
-                  className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 relative z-10"
-                  style={{
-                    background: `linear-gradient(135deg, ${tool.gradient.from}, ${tool.gradient.to})`
-                  }}
-                >
-                  <tool.icon className="w-6 h-6 text-white" />
-                </div>
-
-                {/* Content */}
-                <div className="relative z-10">
-                  <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">
-                    {tool.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    {tool.description}
-                  </p>
-                </div>
-
-                {/* Hover Arrow */}
-                <motion.div
-                  className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity"
-                  initial={{ x: -10 }}
-                  whileHover={{ x: 0 }}
-                >
-                  <svg
-                    className="w-5 h-5 text-primary"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 7l5 5m0 0l-5 5m5-5H6"
-                    />
-                  </svg>
-                </motion.div>
+      <div className="container max-w-7xl mx-auto relative z-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+          <div className="max-w-2xl">
+            <AnimatedElement animation="fadeIn">
+              <div className="flex items-center gap-2 text-primary font-black text-[10px] uppercase tracking-[0.3em] mb-4">
+                <Zap className="w-3 h-3" />
+                Elite Selection
               </div>
-            </motion.div>
+              <h2 className="text-5xl md:text-7xl font-serif font-black tracking-tighter leading-[0.9] mb-6">
+                Featured <br />
+                <em className="italic font-light text-primary">Modules</em>
+              </h2>
+              <p className="text-xl text-muted-foreground/80 leading-relaxed font-medium">
+                Direct access to our most powerful and frequently deployed technical utilities. Engineered for speed and precision.
+              </p>
+            </AnimatedElement>
+          </div>
+
+          <AnimatedElement animation="fadeIn" delay={0.2}>
+            <button
+              onClick={() => navigate('/tools')}
+              className="group flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.2em] text-foreground hover:text-primary transition-colors"
+            >
+              View Full Ecosystem
+              <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center group-hover:border-primary group-hover:bg-primary group-hover:text-white transition-all">
+                <ArrowRight className="w-4 h-4" />
+              </div>
+            </button>
           </AnimatedElement>
-        ))}
-      </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+          {featuredTools.map((tool, index) => (
+            <AnimatedElement key={tool.id} delay={index * 0.05}>
+              <motion.div
+                whileHover={{ y: -8 }}
+                className="relative group cursor-pointer h-full"
+                onClick={() => handleToolClick(tool.categoryId, tool.id)}
+              >
+                <div className="h-full bg-white/70 dark:bg-white/[0.02] backdrop-blur-3xl border border-black/[0.03] dark:border-white/5 rounded-[2.5rem] p-8 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 group-hover:bg-white dark:group-hover:bg-white/[0.04] isolate overflow-hidden">
+
+                  {/* Background Accents for Light Mode */}
+                  <div
+                    className="absolute inset-0 opacity-[0.03] dark:opacity-0 transition-opacity group-hover:opacity-[0.06] -z-10"
+                    style={{ background: `linear-gradient(135deg, ${tool.gradient.from}, ${tool.gradient.to})` }}
+                  />
+
+                  {/* Icon with Dynamic Gradient Glow */}
+                  <div className="relative mb-8">
+                    <div
+                      className="absolute inset-0 blur-2xl opacity-20 group-hover:opacity-40 transition-opacity"
+                      style={{ background: tool.gradient.from }}
+                    />
+                    <div
+                      className="w-14 h-14 rounded-2xl flex items-center justify-center relative z-10 text-white shadow-xl isolate"
+                      style={{ background: `linear-gradient(135deg, ${tool.gradient.from}, ${tool.gradient.to})` }}
+                    >
+                      <tool.icon className="w-6 h-6" />
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="space-y-3">
+                    <h3 className="font-bold text-lg tracking-tight group-hover:text-primary transition-colors">
+                      {tool.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground/80 leading-relaxed font-medium line-clamp-2">
+                      {tool.description}
+                    </p>
+                  </div>
+
+                  {/* Interactive Status */}
+                  <div className="mt-8 flex items-center justify-between">
+                    <span className="text-[9px] font-black uppercase tracking-widest text-primary/40 group-hover:text-primary transition-colors">
+                      Launch
+                    </span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary/20 group-hover:bg-primary group-hover:scale-150 transition-all opacity-0 group-hover:opacity-100" />
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatedElement>
+          ))}
+        </div>
       </div>
     </section>
   );
