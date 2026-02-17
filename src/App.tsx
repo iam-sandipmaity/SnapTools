@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from "@/components/scroll-to-top";
+import ScrollToTopButton from "@/components/ui/scroll-to-top";
 import { lazy, Suspense } from "react";
 import PageLoader from "@/components/PageLoader";
 import RouteChangeLoader from "@/components/RouteChangeLoader";
@@ -25,6 +26,7 @@ const About = lazy(() => import("./pages/AboutPage"));
 const Documentation = lazy(() => import("./pages/DocumentationPage"));
 const Pricing = lazy(() => import("./pages/pricing"));
 const Features = lazy(() => import("./pages/features"));
+const Changelog = lazy(() => import("./pages/Changelog"));
 const Donate = lazy(() => import("./pages/Donate"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const BlogRouter = lazy(() => import("./blog/router"));
@@ -37,6 +39,7 @@ const App = () => (
       <BrowserRouter>
         <RouteChangeLoader />
         <ScrollToTop />
+        <ScrollToTopButton />
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Index />} />
@@ -51,6 +54,7 @@ const App = () => (
             <Route path="/documentation" element={<Documentation />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/features" element={<Features />} />
+            <Route path="/changelog" element={<Changelog />} />
             <Route path="/donate" element={<Donate />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/s/:peerId" element={<ShareFileView />} />
