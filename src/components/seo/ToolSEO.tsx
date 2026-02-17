@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { toolCategories } from '@/data/tools';
 
 interface ToolSEOProps {
   tool: {
@@ -604,7 +605,7 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content="https://snaptools.xyz/og-image.jpg" />
+      <meta property="og:image" content={`https://snaptools.xyz/api/og?title=${encodeURIComponent(tool.name)}&description=${encodeURIComponent(tool.description)}&category=${tool.category.toLowerCase().replace(/\s+/g, '-')}&icon=${toolCategories.find(c => c.id === tool.category.toLowerCase().replace(/\s+/g, '-') || c.title.toLowerCase() === tool.category.toLowerCase())?.iconName || 'wrench'}`} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:site_name" content="SnapTools" />
@@ -615,7 +616,7 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
       <meta property="twitter:url" content={canonicalUrl} />
       <meta property="twitter:title" content={title} />
       <meta property="twitter:description" content={description} />
-      <meta property="twitter:image" content="https://snaptools.xyz/og-image.jpg" />
+      <meta property="twitter:image" content={`https://snaptools.xyz/api/og?title=${encodeURIComponent(tool.name)}&description=${encodeURIComponent(tool.description)}&category=${tool.category.toLowerCase().replace(/\s+/g, '-')}&icon=${toolCategories.find(c => c.id === tool.category.toLowerCase().replace(/\s+/g, '-') || c.title.toLowerCase() === tool.category.toLowerCase())?.iconName || 'wrench'}`} />
       <meta name="twitter:creator" content="@snaptools" />
       <meta name="twitter:site" content="@snaptools" />
 
