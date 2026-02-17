@@ -213,7 +213,7 @@ export default async function (req: Request) {
                         }
                     ]
                 }
-            },
+            } as any,
             { width: 1200, height: 630 }
         );
     } catch (e: any) {
