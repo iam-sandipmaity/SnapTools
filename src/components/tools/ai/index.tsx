@@ -1,7 +1,7 @@
-import Vision from './Vision';
+import Sarvam from './Sarvam';
 
 const aiTools = {
-    'ai-vision': Vision,
+    'ai-sarvam': Sarvam,
 };
 
 export default aiTools;
