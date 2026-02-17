@@ -51,7 +51,9 @@ export type ToolCategory = {
     title: string;
     description?: string;
     comingSoon?: boolean;
+    iconName?: string;
   }[];
+  iconName?: string;
 };
 
 export const toolCategories: ToolCategory[] = [
@@ -59,6 +61,7 @@ export const toolCategories: ToolCategory[] = [
     id: "image",
     title: "Image",
     icon: Image,
+    iconName: "image",
     color: "bg-tooltopia-soft-blue",
     description: "Free online image tools to compress, convert, edit, and optimize images. Reduce file sizes, change formats, crop, and apply filters - all free.",
     subTools: [
@@ -77,6 +80,7 @@ export const toolCategories: ToolCategory[] = [
     id: "pdf",
     title: "PDF",
     icon: FileText,
+    iconName: "file-text",
     color: "bg-tooltopia-soft-pink",
     description: "Free online PDF tools to merge, split, compress, convert, and edit PDF files. All PDF tools work in your browser without uploading files.",
     subTools: [
@@ -95,6 +99,7 @@ export const toolCategories: ToolCategory[] = [
     id: "calculator",
     title: "Calculator",
     icon: Calculator,
+    iconName: "calculator",
     color: "bg-tooltopia-soft-green",
     description: "Free online calculators for basic math, scientific calculations, BMI, age, and more. Fast and accurate calculators.",
     subTools: [
@@ -108,6 +113,7 @@ export const toolCategories: ToolCategory[] = [
     id: "conversion",
     title: "Conversion Tools",
     icon: Zap,
+    iconName: "zap",
     color: "bg-tooltopia-soft-yellow",
     description: "Free online converter tools for units, currencies, numbers, and more. Fast and accurate conversions.",
     subTools: [
@@ -125,6 +131,7 @@ export const toolCategories: ToolCategory[] = [
     id: "code",
     title: "Code Tools",
     icon: Code,
+    iconName: "code",
     color: "bg-tooltopia-soft-purple",
     description: "Free online code tools for formatting, validating, and minifying code. JSON formatter, HTML beautifier, CSS minifier, and more.",
     subTools: [
@@ -141,6 +148,7 @@ export const toolCategories: ToolCategory[] = [
     id: "qr",
     title: "QR Tools",
     icon: QrCode,
+    iconName: "qr-code",
     color: "bg-tooltopia-soft-orange",
     description: "Free online QR code generator and scanner. Create QR codes, barcodes, and scan QR codes instantly.",
     subTools: [
@@ -153,6 +161,7 @@ export const toolCategories: ToolCategory[] = [
     id: "password",
     title: "Password & Text Tools",
     icon: KeyRound,
+    iconName: "key-round",
     color: "bg-tooltopia-soft-peach",
     description: "Free online password generator and text tools. Create strong passwords, generate Lorem Ipsum, and count words.",
     subTools: [
@@ -166,6 +175,7 @@ export const toolCategories: ToolCategory[] = [
     id: "color",
     title: "Color & Design Tools",
     icon: PaintBucket,
+    iconName: "paint-bucket",
     color: "bg-tooltopia-soft-pink",
     description: "Free online color tools for designers. Color picker, hex to RGB converter, and gradient generator.",
     subTools: [
@@ -178,6 +188,7 @@ export const toolCategories: ToolCategory[] = [
     id: "unit",
     title: "Unit Converters",
     icon: Ruler,
+    iconName: "ruler",
     color: "bg-tooltopia-soft-blue",
     description: "Free online unit converter tools. Convert length, weight, temperature, speed, area, volume, and more.",
     subTools: [
@@ -194,6 +205,7 @@ export const toolCategories: ToolCategory[] = [
     id: "currency",
     title: "Currency Tools",
     icon: IndianRupee,
+    iconName: "indian-rupee",
     color: "bg-tooltopia-soft-green",
     description: "Free online currency converter. Convert currencies and cryptocurrencies with real-time exchange rates.",
     subTools: [
@@ -205,6 +217,7 @@ export const toolCategories: ToolCategory[] = [
     id: "document",
     title: "Document Converters",
     icon: FileType,
+    iconName: "file-type",
     color: "bg-tooltopia-soft-green",
     subTools: [
       { id: "word-pdf", title: "Word to PDF / PDF to Word" },
@@ -217,6 +230,7 @@ export const toolCategories: ToolCategory[] = [
     id: "social",
     title: "social media",
     icon: Youtube,
+    iconName: "youtube",
     color: "bg-tooltopia-soft-peach",
     description: "Free online social media tools. Download YouTube thumbnails and videos, generate tweets, Instagram posts, view YouTube trending videos, tags, and statistics.",
     subTools: [
@@ -235,6 +249,7 @@ export const toolCategories: ToolCategory[] = [
     id: "seoandweb",
     title: "SEO & Web Tools",
     icon: Globe,
+    iconName: "globe",
     color: "bg-tooltopia-soft-purple",
     description: "Free online SEO and web tools. Generate meta tags, preview Open Graph, capture website screenshots, and optimize your website for search engines.",
     subTools: [
@@ -247,6 +262,7 @@ export const toolCategories: ToolCategory[] = [
     id: "miscellaneous",
     title: "Miscellaneous Tools",
     icon: Wrench,
+    iconName: "wrench",
     color: "bg-tooltopia-soft-yellow",
     description: "Free online miscellaneous tools. Generate UUIDs, convert numbers to words, create random IPs, test webcam, generate ASCII art, and more useful utilities.",
     subTools: [
@@ -263,6 +279,7 @@ export const toolCategories: ToolCategory[] = [
     id: "encryption",
     title: "encryption Tools",
     icon: Eye,
+    iconName: "eye",
     color: "bg-tooltopia-soft-yellow",
     description: "Free online encryption and hashing tools. Encrypt/decrypt data with AES, RSA, DES, generate hashes with MD5, SHA, bcrypt, and encode/decode Base64, URL, HTML.",
     subTools: [
@@ -291,6 +308,7 @@ export const toolCategories: ToolCategory[] = [
     id: "clock",
     title: "Clock Tools",
     icon: Clock,
+    iconName: "clock",
     color: "bg-tooltopia-soft-purple",
     description: "Free online clock tools. View current time with seconds, use stopwatch, set timers, and check world clock for different time zones.",
     subTools: [
