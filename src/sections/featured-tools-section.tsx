@@ -164,7 +164,9 @@ const FeaturedToolsSection = () => {
                 className="relative group cursor-pointer h-full"
                 onClick={() => handleToolClick(tool.categoryId, tool.id)}
               >
-                <div className="h-full bg-white/70 dark:bg-white/[0.02] backdrop-blur-3xl border border-black/[0.03] dark:border-white/5 rounded-[2.5rem] p-8 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 group-hover:bg-white dark:group-hover:bg-white/[0.04] isolate overflow-hidden">
+                <div className="h-full bg-white/70 dark:bg-white/[0.02] backdrop-blur-3xl border border-black/[0.03] dark:border-white/5 rounded-[2.5rem] p-8 transition-all duration-500 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)] group-hover:bg-white dark:group-hover:bg-white/[0.04] isolate overflow-hidden">
+                  {/* Glass Top Highlight for 3D depth */}
+                  <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-black/5 dark:via-white/10 to-transparent" />
 
                   {/* Background Accents for Light Mode */}
                   <div

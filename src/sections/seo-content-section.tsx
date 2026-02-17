@@ -166,8 +166,10 @@ const SEOContentSection = () => {
               <AnimatedElement key={index} delay={index * 0.1} animation="slideUp">
                 <Link
                   to={category.link}
-                  className="group relative p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem] border border-black/5 dark:border-white/5 bg-white/30 dark:bg-white/[0.01] hover:bg-white dark:hover:bg-white/[0.03] transition-all duration-500 shadow-sm hover:shadow-2xl hover:shadow-primary/5 block overflow-hidden"
+                  className="group relative p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem] border border-black/5 dark:border-white/5 bg-white/70 dark:bg-white/[0.01] hover:bg-white dark:hover:bg-white/[0.03] transition-all duration-500 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)] hover:-translate-y-2 block overflow-hidden outline-none ring-primary/20 focus-visible:ring-4"
                 >
+                  {/* Glass Top Highlight for 3D depth */}
+                  <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-black/5 dark:via-white/10 to-transparent" />
                   <div className={cn("w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-6 md:mb-8 shadow-lg transition-transform group-hover:scale-110", category.color)}>
                     <category.icon size={24} className="text-primary" />
                   </div>
@@ -339,7 +341,7 @@ const SEOContentSection = () => {
                 <div className="lg:w-1/2 w-full">
                   <div className="p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] bg-primary text-white space-y-6 md:space-y-8 shadow-2xl transform lg:rotate-2 hover:rotate-0 transition-transform duration-700">
                     <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/20 flex items-center justify-center">
-                      <Rocket size={24} md:size={32} />
+                      <Rocket className="w-6 h-6 md:w-8 md:h-8" />
                     </div>
                     <h4 className="text-2xl md:text-3xl font-black tracking-tight leading-tight uppercase">
                       Enterprise Logic <br />
@@ -387,7 +389,7 @@ const SEOContentSection = () => {
                       target="_blank"
                       className="h-14 md:h-16 px-8 md:px-10 rounded-xl md:rounded-2xl bg-[#000000] text-white flex items-center justify-center font-black text-[9px] md:text-[10px] uppercase tracking-widest gap-4 shadow-2xl hover:scale-[1.02] transition-all"
                     >
-                      <Github size={18} md:size={20} />
+                      <Github className="w-[18px] h-[18px] md:w-5 md:h-5" />
                       Fork Protocol <ArrowUpRight size={14} />
                     </a>
                     <a
@@ -395,7 +397,7 @@ const SEOContentSection = () => {
                       target="_blank"
                       className="h-14 md:h-16 px-8 md:px-10 rounded-xl md:rounded-2xl border-2 border-primary/20 flex items-center justify-center font-black text-[9px] md:text-[10px] uppercase tracking-widest gap-4 hover:bg-primary/5 transition-all text-foreground"
                     >
-                      <Star size={16} md:size={18} className="text-primary fill-current" />
+                      <Star className="w-4 h-4 md:w-[18px] md:h-[18px] text-primary fill-current" />
                       Star Repository
                     </a>
                   </div>
@@ -407,7 +409,7 @@ const SEOContentSection = () => {
                     <h4 className="text-lg md:text-xl font-bold mb-2">Community Driven</h4>
                     <p className="text-[10px] md:text-xs text-muted-foreground font-medium mb-6 md:mb-8">Maintain our free infrastructure by supporting the project on GitHub.</p>
                     <div className="flex items-center justify-center gap-1 py-1">
-                      {[...Array(5)].map((_, i) => <Star key={i} size={12} md:size={14} className="text-amber-500 fill-current" />)}
+                      {[...Array(5)].map((_, i) => <Star key={i} className="w-3 h-3 md:w-3.5 md:h-3.5 text-amber-500 fill-current" />)}
                     </div>
                     <p className="text-[10px] font-black uppercase tracking-widest mt-2 opacity-60">Architectural Rating</p>
                   </div>
