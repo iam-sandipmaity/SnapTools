@@ -22,11 +22,6 @@
       "destination": "/index.html"
     }
   ],
-  "functions": {
-    "api/og.tsx": {
-      "runtime": "edge"
-    }
-  },
   "headers": [
     {
       "source": "/assets/:path*",
