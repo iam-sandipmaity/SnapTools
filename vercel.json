@@ -14,10 +14,19 @@
   ],
   "rewrites": [
     {
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
+    },
+    {
       "source": "/:path*",
       "destination": "/index.html"
     }
   ],
+  "functions": {
+    "api/og.tsx": {
+      "runtime": "edge"
+    }
+  },
   "headers": [
     {
       "source": "/assets/:path*",
