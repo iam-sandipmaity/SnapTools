@@ -35,23 +35,30 @@ function getMetaTagsForRoute(pathname: string): MetaTags {
         const category = toolCategories.find((cat) => cat.id === categoryId);
 
         if (category) {
+            const iconName = category.iconName || 'wrench';
             if (toolId) {
                 // Tool page
                 const tool = category.subTools?.find((t) => t.id === toolId);
                 if (tool) {
+                    const desc = tool.description || `Free online ${tool.title} tool by SnapTools. Use our ${tool.title.toLowerCase()} tool online for free. No registration required, fast, secure, and privacy-focused.`;
+                    const ogImageUrl = `${BASE_URL}/api/og?title=${encodeURIComponent(tool.title)}&description=${encodeURIComponent(desc)}&category=${categoryId}&icon=${iconName}`;
+
                     metaTags = {
                         title: `${tool.title} - Free Online Tool | SnapTools`,
-                        description: tool.description || `Free online ${tool.title} tool by SnapTools. Use our ${tool.title.toLowerCase()} tool online for free. No registration required, fast, secure, and privacy-focused.`,
-                        image: `${BASE_URL}/og-image.png`,
+                        description: desc,
+                        image: ogImageUrl,
                         url: `${BASE_URL}/tools/${categoryId}/${toolId}`,
                     };
                 }
             } else {
                 // Category page
+                const desc = `Explore ${category.title} tools on SnapTools. Free online ${category.title.toLowerCase()} tools with no ads, no registration required. Fast, secure, and privacy-focused.`;
+                const ogImageUrl = `${BASE_URL}/api/og?title=${encodeURIComponent(category.title)}&description=${encodeURIComponent(desc)}&category=${categoryId}&icon=${iconName}`;
+
                 metaTags = {
                     title: `${category.title} Tools - Free Online ${category.title} Tools | SnapTools`,
-                    description: `Explore ${category.title} tools on SnapTools. Free online ${category.title.toLowerCase()} tools with no ads, no registration required. Fast, secure, and privacy-focused.`,
-                    image: `${BASE_URL}/og-image.png`,
+                    description: desc,
+                    image: ogImageUrl,
                     url: `${BASE_URL}/tools/${categoryId}`,
                 };
             }
