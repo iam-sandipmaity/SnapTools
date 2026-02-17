@@ -1,5 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type Tab = "chat" | "stt" | "tts" | "translate" | "vision" | "doc";
@@ -95,69 +97,69 @@ const STT_MODE_OPTIONS = STT_MODES.map(m => ({ value: m.value, label: m.label })
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 const Icons = {
-    Key: () => (
-        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    Key: (props: any) => (
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
         </svg>
     ),
-    Chat: () => (
-        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    Chat: (props: any) => (
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
         </svg>
     ),
-    Mic: () => (
-        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    Mic: (props: any) => (
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
         </svg>
     ),
-    Speaker: () => (
-        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    Speaker: (props: any) => (
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
         </svg>
     ),
-    Translate: () => (
-        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    Translate: (props: any) => (
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
         </svg>
     ),
-    Vision: () => (
-        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    Vision: (props: any) => (
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
     ),
-    Send: () => (
-        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    Send: (props: any) => (
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
         </svg>
     ),
-    Eye: () => (
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    Eye: (props: any) => (
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
         </svg>
     ),
-    EyeOff: () => (
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    EyeOff: (props: any) => (
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
         </svg>
     ),
-    Upload: () => (
-        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    Upload: (props: any) => (
+        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
         </svg>
     ),
-    Copy: () => (
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    Copy: (props: any) => (
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
         </svg>
     ),
-    Loader: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} style={{ animation: "spin 1s linear infinite" }}>
+    Loader: (props: any) => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className={cn("animate-spin", props.className)} {...props}>
             <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" strokeLinecap="round" />
         </svg>
     ),
-    Brain: () => (
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    Brain: (props: any) => (
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} {...props}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
         </svg>
     ),
@@ -252,25 +254,23 @@ function Select({ value, onChange, options, label, disabled }: {
     disabled?: boolean;
 }) {
     return (
-        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-            {label && <label style={{ fontSize: 11, fontWeight: 600, color: "#a78bfa", textTransform: "uppercase", letterSpacing: "0.08em" }}>{label}</label>}
+        <div className="flex flex-col gap-2 group">
+            {label && (
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/40 group-hover:text-primary transition-colors pl-1">
+                    {label}
+                </label>
+            )}
             <select
                 value={value}
                 onChange={e => onChange(e.target.value)}
                 disabled={disabled}
-                style={{
-                    background: "rgba(139,92,246,0.08)",
-                    border: "1px solid rgba(139,92,246,0.25)",
-                    borderRadius: 8,
-                    color: "#e2e8f0",
-                    padding: "8px 12px",
-                    fontSize: 13,
-                    cursor: "pointer",
-                    outline: "none",
-                    width: "100%",
-                }}
+                className="w-full h-12 px-4 bg-black/5 dark:bg-white/[0.03] border border-black/5 dark:border-white/10 rounded-xl text-sm font-bold text-foreground focus:ring-4 ring-primary/10 outline-none transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed appearance-none"
             >
-                {options.map((o, i) => <option key={`${o.value}-${i}`} value={o.value} style={{ background: "#1e1b4b" }}>{o.label}</option>)}
+                {options.map((o, i) => (
+                    <option key={`${o.value}-${i}`} value={o.value} className="bg-background text-foreground">
+                        {o.label}
+                    </option>
+                ))}
             </select>
         </div>
     );
@@ -278,18 +278,11 @@ function Select({ value, onChange, options, label, disabled }: {
 
 function ErrorBanner({ msg }: { msg: string }) {
     return (
-        <div style={{
-            background: "rgba(239,68,68,0.1)",
-            border: "1px solid rgba(239,68,68,0.3)",
-            borderRadius: 10,
-            padding: "12px 16px",
-            color: "#fca5a5",
-            fontSize: 13,
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-        }}>
-            <span style={{ fontSize: 16 }}>⚠</span> {msg}
+        <div className="flex items-center gap-3 p-4 bg-red-500/5 border border-red-500/10 rounded-2xl text-red-500/80 text-xs font-bold leading-relaxed shadow-sm animate-in fade-in slide-in-from-top-2">
+            <div className="w-5 h-5 flex-shrink-0 flex items-center justify-center bg-red-500/10 rounded-full text-[10px]">
+                ⚠
+            </div>
+            {msg}
         </div>
     );
 }
@@ -330,11 +323,11 @@ function ChatTab({ apiKey }: { apiKey: string }) {
     };
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", height: "100%", gap: 12 }}>
+        <div className="flex flex-col h-full gap-6">
             {/* Model selector row */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Select
-                    label="Model"
+                    label="Model Protocol"
                     value={chatModel}
                     onChange={v => { setChatModel(v); setMessages([]); }}
                     options={[
@@ -343,181 +336,124 @@ function ChatTab({ apiKey }: { apiKey: string }) {
                     ]}
                 />
                 <Select
-                    label="Reasoning"
+                    label="Reasoning Effort"
                     value={reasoningEffort}
                     onChange={setReasoningEffort}
                     options={[
-                        { value: "", label: "No Reasoning" },
-                        { value: "low", label: "Low" },
-                        { value: "medium", label: "Medium" },
-                        { value: "high", label: "High" },
+                        { value: "", label: "Standard Execution" },
+                        { value: "low", label: "Efficiency Mode" },
+                        { value: "medium", label: "Balanced Analysis" },
+                        { value: "high", label: "Deep Reasoning" },
                     ]}
                 />
             </div>
 
-            {/* Controls */}
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
-                <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer", fontSize: 12, color: "#c4b5fd" }}>
-                    <input type="checkbox" checked={wikiGrounding} onChange={e => setWikiGrounding(e.target.checked)}
-                        style={{ accentColor: "#8b5cf6" }} />
-                    Wiki Grounding
+            {/* Controls Protocol */}
+            <div className="flex items-center gap-4 flex-wrap">
+                <label className="flex items-center gap-3 cursor-pointer group select-none">
+                    <div className="relative w-5 h-5 flex items-center justify-center">
+                        <input
+                            type="checkbox"
+                            checked={wikiGrounding}
+                            onChange={e => setWikiGrounding(e.target.checked)}
+                            className="peer sr-only"
+                        />
+                        <div className="w-5 h-5 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-md transition-all group-hover:border-primary/40 peer-checked:bg-primary peer-checked:border-primary" />
+                        <svg className="absolute w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                    </div>
+                    <span className="text-[11px] font-black uppercase tracking-widest text-muted-foreground/60 group-hover:text-primary transition-colors">Wiki Grounding</span>
                 </label>
+
+                <div className="h-4 w-px bg-black/5 dark:bg-white/5 mx-2 hidden md:block" />
+
                 <button
                     onClick={() => setShowSystem(s => !s)}
-                    style={{
-                        background: showSystem ? "rgba(139,92,246,0.3)" : "rgba(139,92,246,0.1)",
-                        border: "1px solid rgba(139,92,246,0.3)",
-                        borderRadius: 8,
-                        color: "#c4b5fd",
-                        padding: "7px 12px",
-                        fontSize: 12,
-                        cursor: "pointer",
-                    }}
+                    className={cn(
+                        "px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border",
+                        showSystem
+                            ? "bg-primary text-white border-primary shadow-lg shadow-primary/20"
+                            : "bg-black/5 dark:bg-white/5 text-muted-foreground/60 border-transparent hover:border-black/10 dark:hover:border-white/10"
+                    )}
                 >
-                    {showSystem ? "Hide" : "System"} Prompt
+                    System Protocol
                 </button>
+
                 {messages.length > 0 && (
                     <button
                         onClick={() => setMessages([])}
-                        style={{
-                            background: "rgba(239,68,68,0.1)",
-                            border: "1px solid rgba(239,68,68,0.25)",
-                            borderRadius: 8,
-                            color: "#fca5a5",
-                            padding: "7px 12px",
-                            fontSize: 12,
-                            cursor: "pointer",
-                        }}
+                        className="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-red-500/5 text-red-500/60 border border-transparent hover:border-red-500/20 transition-all ml-auto"
                     >
-                        Clear
+                        Clear Memory
                     </button>
                 )}
-                {/* Model badge */}
-                <span style={{
-                    marginLeft: "auto",
-                    fontSize: 11,
-                    color: "#8b5cf6",
-                    background: "rgba(139,92,246,0.12)",
-                    border: "1px solid rgba(139,92,246,0.25)",
-                    borderRadius: 20,
-                    padding: "3px 9px",
-                }}>
-                    {chatModel}
-                </span>
             </div>
 
             {showSystem && (
                 <textarea
                     value={systemPrompt}
                     onChange={e => setSystemPrompt(e.target.value)}
-                    placeholder="Enter system prompt..."
-                    rows={2}
-                    style={{
-                        background: "rgba(139,92,246,0.06)",
-                        border: "1px solid rgba(139,92,246,0.25)",
-                        borderRadius: 10,
-                        color: "#e2e8f0",
-                        padding: "10px 14px",
-                        fontSize: 13,
-                        resize: "vertical",
-                        outline: "none",
-                        fontFamily: "inherit",
-                    }}
+                    placeholder="Initialize system instructions..."
+                    rows={3}
+                    className="w-full bg-black/5 dark:bg-black/40 border border-black/10 dark:border-white/5 rounded-2xl p-4 text-sm text-foreground focus:ring-4 ring-primary/10 outline-none transition-all resize-none placeholder:text-muted-foreground/20 font-medium"
                 />
             )}
 
             {error && <ErrorBanner msg={error} />}
 
-            {/* Messages */}
-            <div style={{
-                flex: 1,
-                overflowY: "auto",
-                display: "flex",
-                flexDirection: "column",
-                gap: 14,
-                padding: "4px 2px",
-                minHeight: 200,
-                maxHeight: 380,
-            }}>
-                {messages.length === 0 && (
-                    <div style={{ textAlign: "center", color: "#6d7a8f", marginTop: 60 }}>
-                        <div style={{ fontSize: 40, marginBottom: 12 }}>🇮🇳</div>
-                        <div style={{ fontSize: 14 }}>Start a conversation in any Indian language</div>
-                        <div style={{ fontSize: 12, marginTop: 6, color: "#4a5568" }}>Supports Hindi, Tamil, Telugu, Bengali and 19 more</div>
+            {/* Messages Protocol Viewport */}
+            <div className="flex-grow overflow-y-auto space-y-4 min-h-[300px] max-h-[500px] pr-2 custom-scrollbar">
+                {messages.length === 0 ? (
+                    <div className="h-full flex flex-col items-center justify-center opacity-40 py-20 translate-y-4">
+                        <div className="text-4xl mb-6 grayscale group-hover:grayscale-0 transition-all duration-700">🇮🇳</div>
+                        <p className="text-xs font-black uppercase tracking-[0.2em] text-center mb-2">Neural Link Initialized</p>
+                        <p className="text-[10px] font-medium text-center">Ready for multilingual intelligence across 23 Indian protocols</p>
                     </div>
-                )}
-                {messages.map((m, i) => (
-                    <div key={i} style={{
-                        display: "flex",
-                        justifyContent: m.role === "user" ? "flex-end" : "flex-start",
-                    }}>
-                        <div style={{
-                            maxWidth: "80%",
-                            padding: "12px 16px",
-                            borderRadius: m.role === "user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px",
-                            background: m.role === "user"
-                                ? "linear-gradient(135deg, #7c3aed, #5b21b6)"
-                                : "rgba(30, 27, 75, 0.8)",
-                            border: m.role === "user" ? "none" : "1px solid rgba(139,92,246,0.2)",
-                            color: "#e9e5ff",
-                            fontSize: 14,
-                            lineHeight: 1.6,
-                            whiteSpace: "pre-wrap",
-                            boxShadow: m.role === "user" ? "0 4px 16px rgba(124,58,237,0.35)" : "none",
-                        }}>
-                            {m.content}
+                ) : (
+                    messages.map((m, i) => (
+                        <div key={i} className={cn(
+                            "flex flex-col gap-2 max-w-[85%] animate-in fade-in slide-in-from-bottom-2 duration-300",
+                            m.role === "user" ? "ml-auto items-end" : "mr-auto items-start"
+                        )}>
+                            <div className={cn(
+                                "px-4 py-3 rounded-2xl text-sm leading-relaxed",
+                                m.role === "user"
+                                    ? "bg-primary text-white font-medium shadow-lg shadow-primary/10"
+                                    : "bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-foreground"
+                            )}>
+                                {m.content}
+                            </div>
+                            <span className="text-[9px] font-black uppercase tracking-widest opacity-30 px-1">
+                                {m.role === "user" ? "Transmitted" : "Neural Response"}
+                            </span>
                         </div>
-                    </div>
-                ))}
+                    ))
+                )}
                 {loading && (
-                    <div style={{ display: "flex", alignItems: "center", gap: 10, color: "#8b5cf6", fontSize: 13 }}>
-                        <Icons.Loader />
-                        Sarvam-M is thinking...
+                    <div className="flex items-center gap-3 text-primary text-[10px] font-black uppercase tracking-widest animate-pulse px-2">
+                        <Icons.Loader className="w-3 h-3" />
+                        Neural Processing...
                     </div>
                 )}
                 <div ref={bottomRef} />
             </div>
 
-            {/* Input */}
-            <div style={{ display: "flex", gap: 8 }}>
-                <textarea
+            {/* Input Protocol */}
+            <div className="relative group mt-2">
+                <input
+                    type="text"
                     value={input}
                     onChange={e => setInput(e.target.value)}
-                    onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
-                    placeholder="Type in any language... (Enter to send)"
-                    rows={2}
-                    style={{
-                        flex: 1,
-                        background: "rgba(139,92,246,0.06)",
-                        border: "1px solid rgba(139,92,246,0.3)",
-                        borderRadius: 12,
-                        color: "#e2e8f0",
-                        padding: "12px 16px",
-                        fontSize: 14,
-                        resize: "none",
-                        outline: "none",
-                        fontFamily: "inherit",
-                    }}
+                    onKeyDown={e => { if (e.key === "Enter") { send(); } }}
+                    placeholder="Enter Multilingual Query..."
+                    disabled={loading}
+                    className="w-full h-14 pl-6 pr-14 rounded-2xl bg-black/5 dark:bg-white/[0.03] border border-black/5 dark:border-white/10 focus:ring-4 ring-primary/10 outline-none font-medium text-sm transition-all placeholder:text-muted-foreground/20 shadow-inner group-hover:border-primary/20"
                 />
                 <button
                     onClick={send}
                     disabled={loading || !input.trim()}
-                    style={{
-                        background: loading || !input.trim() ? "rgba(139,92,246,0.2)" : "linear-gradient(135deg, #7c3aed, #5b21b6)",
-                        border: "none",
-                        borderRadius: 12,
-                        color: loading || !input.trim() ? "#6d7a8f" : "white",
-                        padding: "0 18px",
-                        cursor: loading || !input.trim() ? "not-allowed" : "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 6,
-                        fontSize: 13,
-                        fontWeight: 600,
-                        boxShadow: loading || !input.trim() ? "none" : "0 4px 16px rgba(124,58,237,0.4)",
-                    }}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-primary text-white rounded-lg shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all disabled:opacity-30 disabled:grayscale disabled:scale-100"
                 >
-                    {loading ? <Icons.Loader /> : <Icons.Send />}
+                    {loading ? <Icons.Loader className="w-4 h-4" /> : <Icons.Send className="w-3.5 h-3.5" />}
                 </button>
             </div>
         </div>
@@ -560,11 +496,11 @@ function STTTab({ apiKey }: { apiKey: string }) {
     };
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {/* Model selector */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="flex flex-col gap-8">
+            {/* STT Configuration Protocol */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Select
-                    label="Model"
+                    label="Intelligence Core"
                     value={sttModel}
                     onChange={v => { setSttModel(v); if (v === "saarika:v2.5") setMode("transcribe"); setResult(null); }}
                     options={[
@@ -573,58 +509,76 @@ function STTTab({ apiKey }: { apiKey: string }) {
                     ]}
                 />
                 <Select
-                    label="Language"
+                    label="Signal Source Language"
                     value={langCode}
                     onChange={setLangCode}
                     options={LANG_OPTIONS_WITH_AUTO}
                 />
             </div>
 
-            {/* Output Mode — disabled for saarika */}
+            {/* Analysis Mode selector — disabled for saarika */}
             <Select
-                label={isSaarika ? "Output Mode (Saaras v3 only)" : "Output Mode"}
+                label={isSaarika ? "Output Mode Protocol (Saaras v3 exclusive)" : "Analysis Mode Protocol"}
                 value={mode}
                 onChange={setMode}
                 disabled={isSaarika}
                 options={STT_MODE_OPTIONS}
             />
 
-            <div
-                onClick={() => inputRef.current?.click()}
-                onDragOver={e => e.preventDefault()}
-                onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) setFile(f); }}
-                style={{
-                    border: `2px dashed ${file ? "rgba(139,92,246,0.6)" : "rgba(139,92,246,0.25)"}`,
-                    borderRadius: 14,
-                    padding: "32px 20px",
-                    textAlign: "center",
-                    cursor: "pointer",
-                    transition: "all 0.2s",
-                    background: file ? "rgba(139,92,246,0.08)" : "transparent",
-                }}
-            >
-                <input ref={inputRef} type="file" accept="audio/*" style={{ display: "none" }} onChange={e => { const f = e.target.files?.[0]; if (f) setFile(f); }} />
-                <div style={{ color: file ? "#c4b5fd" : "#6d7a8f" }}>
-                    <Icons.Upload />
-                    <div style={{ marginTop: 10, fontSize: 14 }}>{file ? file.name : "Drop audio file here or click to upload"}</div>
-                    <div style={{ fontSize: 12, color: "#4a5568", marginTop: 4 }}>WAV, MP3, OGG, FLAC supported</div>
+            {/* File Ingestion Protocol */}
+            <div className="space-y-4">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/40 pl-1">
+                    Signal Capture Protocol
+                </p>
+                <div
+                    onClick={() => inputRef.current?.click()}
+                    onDragOver={e => e.preventDefault()}
+                    onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) setFile(f); }}
+                    className={cn(
+                        "relative group cursor-pointer border-2 border-dashed rounded-[2rem] p-10 transition-all duration-500 flex flex-col items-center justify-center gap-4 text-center overflow-hidden",
+                        file
+                            ? "bg-primary/5 border-primary/30 shadow-lg shadow-primary/5"
+                            : "bg-black/5 dark:bg-white/[0.02] border-black/10 dark:border-white/5 hover:border-primary/30 hover:bg-primary/[0.02]"
+                    )}
+                >
+                    <input ref={inputRef} type="file" accept="audio/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) setFile(f); }} />
+
+                    <div className={cn(
+                        "w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500",
+                        file ? "bg-primary text-white scale-110 rotate-12" : "bg-black/5 dark:bg-white/5 text-muted-foreground/30 group-hover:scale-110"
+                    )}>
+                        {file ? <Icons.Chat className="w-8 h-8" /> : <Icons.Upload className="w-8 h-8" />}
+                    </div>
+
+                    <div className="space-y-1">
+                        <p className="text-sm font-bold text-foreground">
+                            {file ? file.name : "Inject Audio Stream"}
+                        </p>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/40">
+                            {file ? `${(file.size / (1024 * 1024)).toFixed(2)} MB · Detected Signal` : "wav · mp3 · flac · m4a"}
+                        </p>
+                    </div>
+
+                    {/* Background Glow */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                 </div>
             </div>
 
-            <div style={{ background: "rgba(139,92,246,0.06)", borderRadius: 10, padding: "10px 14px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                    <span style={{ fontSize: 11, color: "#8b5cf6", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                        {isSaarika ? "Saarika v2.5 — Legacy" : "Mode Info"}
+            {/* Mode Meta Protocol */}
+            <div className="bg-black/5 dark:bg-white/[0.02] border border-black/5 dark:border-white/5 rounded-2xl p-5 shadow-inner">
+                <div className="flex justify-between items-center mb-3">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-primary">
+                        {isSaarika ? "Legacy System Info" : "Protocol Intelligence"}
                     </span>
-                    <span style={{ fontSize: 11, color: "#4a5568" }}>
-                        {isSaarika ? "11 langs" : "23 langs"}
+                    <span className="text-[10px] font-bold text-muted-foreground/40">
+                        {isSaarika ? "11 Language Vectors" : "23 Language Vectors"}
                     </span>
                 </div>
-                <div style={{ fontSize: 13, color: "#94a3b8" }}>
+                <p className="text-xs text-muted-foreground leading-relaxed">
                     {isSaarika
-                        ? "Transcribes in the same language spoken. Good for telephony & code-mixed speech."
+                        ? "Transcribes in the same language spoken. Optimized for telephony and code-mixed speech."
                         : STT_MODES.find(m => m.value === mode)?.desc}
-                </div>
+                </p>
             </div>
 
             {error && <ErrorBanner msg={error} />}
@@ -632,50 +586,32 @@ function STTTab({ apiKey }: { apiKey: string }) {
             <button
                 onClick={transcribe}
                 disabled={!file || loading}
-                style={{
-                    background: !file || loading ? "rgba(139,92,246,0.2)" : "linear-gradient(135deg, #7c3aed, #5b21b6)",
-                    border: "none",
-                    borderRadius: 12,
-                    color: !file || loading ? "#6d7a8f" : "white",
-                    padding: "13px",
-                    cursor: !file || loading ? "not-allowed" : "pointer",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 8,
-                    boxShadow: !file || loading ? "none" : "0 4px 16px rgba(124,58,237,0.4)",
-                }}
+                className="w-full h-16 rounded-[1.25rem] bg-primary text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-20 disabled:grayscale disabled:scale-100 flex items-center justify-center gap-3"
             >
-                {loading ? (
-                    <><Icons.Loader /> Processing...</>
-                ) : (
-                    <>
-                        <Icons.Mic />
-                        {isSaarika ? "Transcribe Audio" : (BTN_LABELS[mode] ?? "Process Audio")}
-                    </>
-                )}
+                {loading ? <Icons.Loader className="w-5 h-5" /> : <Icons.Mic className="w-5 h-5" />}
+                {loading ? "Processing Stream..." : (isSaarika ? "Transcribe Audio" : (BTN_LABELS[mode] ?? "Process Audio"))}
             </button>
 
             {result && (
-                <div style={{ background: "rgba(16,21,40,0.8)", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 14, padding: 18 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-                        <span style={{ fontSize: 12, color: "#8b5cf6", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em" }}>Transcript</span>
-                        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                <div className="mt-4 p-8 bg-black/5 dark:bg-white/[0.02] border border-black/5 dark:border-white/10 rounded-[2.5rem] animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    <div className="flex justify-between items-center mb-6">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-primary">Signal Extraction</span>
+                        <div className="flex gap-4 items-center">
                             {result.language_code && (
-                                <span style={{ fontSize: 12, color: "#c4b5fd", background: "rgba(139,92,246,0.15)", padding: "3px 8px", borderRadius: 20 }}>
+                                <span className="text-[10px] font-black uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full">
                                     {result.language_code}
                                 </span>
                             )}
                             {result.language_probability && (
-                                <span style={{ fontSize: 12, color: "#94a3b8" }}>
-                                    {(result.language_probability * 100).toFixed(0)}% confidence
+                                <span className="text-[10px] font-medium text-muted-foreground/40">
+                                    {(result.language_probability * 100).toFixed(0)}% Certainty
                                 </span>
                             )}
                         </div>
                     </div>
-                    <p style={{ margin: 0, fontSize: 15, color: "#e2e8f0", lineHeight: 1.7, whiteSpace: "pre-wrap" }}>{result.transcript}</p>
+                    <div className="bg-white/5 dark:bg-black/20 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-inner">
+                        <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap font-medium">{result.transcript}</p>
+                    </div>
                 </div>
             )}
         </div>
@@ -693,14 +629,12 @@ function TTSTab({ apiKey }: { apiKey: string }) {
     const [audioUrl, setAudioUrl] = useState<string | null>(null);
     const [error, setError] = useState("");
 
-    // bulbul:v1 has fewer speakers
     const isV1 = ttsModel === "bulbul:v1";
     const speakerOpts = isV1
         ? [{ value: "meera", label: "Meera" }, { value: "pavithra", label: "Pavithra" }, { value: "maitreyi", label: "Maitreyi" },
         { value: "arvind", label: "Arvind" }, { value: "amol", label: "Amol" }, { value: "amartya", label: "Amartya" }]
         : TTS_SPEAKER_OPTIONS;
 
-    // v3 REST supports up to 48kHz; v1/v2 cap at 22050
     const sampleRateOpts = ttsModel === "bulbul:v3"
         ? [
             { value: 8000, label: "8 kHz (Telephony)" },
@@ -717,7 +651,6 @@ function TTSTab({ apiKey }: { apiKey: string }) {
     const handleModelChange = (m: string) => {
         setTtsModel(m);
         setSpeaker("Shubh");
-        // Cap sample rate if downgrading model
         if (m !== "bulbul:v3" && sampleRate > 22050) setSampleRate(22050);
         setAudioUrl(null);
     };
@@ -743,95 +676,78 @@ function TTSTab({ apiKey }: { apiKey: string }) {
     };
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-
-            {/* Model + Language row */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="flex flex-col gap-8">
+            {/* TTS Intelligence Configuration */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Select
-                    label="Model"
+                    label="Voice Engine"
                     value={ttsModel}
                     onChange={handleModelChange}
                     options={[
-                        { value: "bulbul:v3", label: "Bulbul v3 (Latest)" },
+                        { value: "bulbul:v3", label: "Bulbul v3 (Premium)" },
                         { value: "bulbul:v2", label: "Bulbul v2" },
-                        { value: "bulbul:v1", label: "Bulbul v1" },
+                        { value: "bulbul:v1", label: "Bulbul v1 (Legacy)" },
                     ]}
                 />
                 <Select
-                    label="Language"
+                    label="Vocal Language"
                     value={langCode}
                     onChange={setLangCode}
                     options={TTS_LANG_OPTIONS}
                 />
             </div>
 
-            {/* Speaker + Sample Rate row */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Select
-                    label="Speaker Voice"
+                    label="Neural Speaker"
                     value={speaker}
                     onChange={setSpeaker}
                     options={speakerOpts}
                 />
                 <Select
-                    label="Sample Rate"
-                    value={String(sampleRate)}
-                    onChange={v => setSampleRate(Number(v))}
-                    options={sampleRateOpts.map(o => ({ value: String(o.value), label: o.label }))}
+                    label="Signal Fidelity (Sample Rate)"
+                    value={sampleRate.toString()}
+                    onChange={v => setSampleRate(parseInt(v))}
+                    options={sampleRateOpts.map(o => ({ value: o.value.toString(), label: o.label }))}
                 />
             </div>
 
             {/* Model capability badge */}
-            <div style={{
-                background: "rgba(139,92,246,0.06)",
-                border: "1px solid rgba(139,92,246,0.15)",
-                borderRadius: 10,
-                padding: "10px 14px",
-                fontSize: 12,
-                color: "#94a3b8",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-            }}>
-                <span>
-                    {ttsModel === "bulbul:v3" && <><strong style={{ color: "#c4b5fd" }}>Bulbul v3</strong> — 30+ voices · 2500 chars · natural prosody</>}
-                    {ttsModel === "bulbul:v2" && <><strong style={{ color: "#c4b5fd" }}>Bulbul v2</strong> — Stable · 2500 chars · all 11 languages</>}
-                    {ttsModel === "bulbul:v1" && <><strong style={{ color: "#c4b5fd" }}>Bulbul v1</strong> — Legacy · 500 chars · 6 speakers</>}
-                </span>
-                <span style={{
-                    fontSize: 11,
-                    color: ttsModel === "bulbul:v3" ? "#86efac" : "#a78bfa",
-                    background: ttsModel === "bulbul:v3" ? "rgba(134,239,172,0.1)" : "rgba(139,92,246,0.12)",
-                    padding: "2px 8px",
-                    borderRadius: 20,
-                }}>
-                    {ttsModel === "bulbul:v3" ? "Latest" : ttsModel === "bulbul:v2" ? "Stable" : "Legacy"}
-                </span>
+            <div className="bg-primary/5 border border-primary/20 rounded-2xl p-5 flex justify-between items-center shadow-inner">
+                <div className="flex flex-col gap-1">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-primary">
+                        {ttsModel.split(":")[1]?.toUpperCase().replace("V", "Version ")} Operational
+                    </span>
+                    <p className="text-xs text-muted-foreground font-medium italic">
+                        {ttsModel === "bulbul:v3" && "30+ Neural Voices · High Fidelity Synthesis"}
+                        {ttsModel === "bulbul:v2" && "Optimized Stability · Multi-regional Vocals"}
+                        {ttsModel === "bulbul:v1" && "Legacy Synthesis · Efficiency Mode"}
+                    </p>
+                </div>
+                <div className={cn(
+                    "px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm",
+                    ttsModel === "bulbul:v3" ? "bg-primary text-white" : "bg-black/10 dark:bg-white/10 text-muted-foreground"
+                )}>
+                    {ttsModel === "bulbul:v3" ? "Premium" : ttsModel === "bulbul:v2" ? "Standard" : "Legacy"}
+                </div>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <label style={{ fontSize: 11, fontWeight: 600, color: "#a78bfa", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                    Text Input <span style={{ color: "#6d7a8f", textTransform: "none", fontWeight: 400 }}>
-                        ({text.length}/{isV1 ? 500 : 2500})
+            {/* Voice Synthesis Protocol */}
+            <div className="space-y-4">
+                <div className="flex justify-between items-end px-1">
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/40">
+                        Intelligence Input Protocol
+                    </p>
+                    <span className="text-[10px] font-bold text-muted-foreground/30">
+                        {text.length} / {isV1 ? 500 : 2500} Vectors
                     </span>
-                </label>
+                </div>
                 <textarea
                     value={text}
                     onChange={e => setText(e.target.value.slice(0, isV1 ? 500 : 2500))}
-                    placeholder="Enter text to convert to speech..."
+                    placeholder="Enter Multilingual Text for Vocal Synthesis..."
                     rows={5}
-                    style={{
-                        background: "rgba(139,92,246,0.06)",
-                        border: "1px solid rgba(139,92,246,0.25)",
-                        borderRadius: 12,
-                        color: "#e2e8f0",
-                        padding: "14px 16px",
-                        fontSize: 14,
-                        resize: "vertical",
-                        outline: "none",
-                        fontFamily: "inherit",
-                        lineHeight: 1.6,
-                    }}
+                    className="w-full bg-black/5 dark:bg-black/40 border border-black/10 dark:border-white/5 rounded-[2rem] p-6 text-sm text-foreground focus:ring-4 ring-primary/10 outline-none transition-all resize-none placeholder:text-muted-foreground/20 font-medium shadow-inner"
                 />
             </div>
 
@@ -840,42 +756,27 @@ function TTSTab({ apiKey }: { apiKey: string }) {
             <button
                 onClick={convert}
                 disabled={!text.trim() || loading}
-                style={{
-                    background: !text.trim() || loading ? "rgba(139,92,246,0.2)" : "linear-gradient(135deg, #7c3aed, #5b21b6)",
-                    border: "none",
-                    borderRadius: 12,
-                    color: !text.trim() || loading ? "#6d7a8f" : "white",
-                    padding: "13px",
-                    cursor: !text.trim() || loading ? "not-allowed" : "pointer",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 8,
-                    boxShadow: !text.trim() || loading ? "none" : "0 4px 16px rgba(124,58,237,0.4)",
-                }}
+                className="w-full h-16 rounded-[1.25rem] bg-primary text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-20 disabled:grayscale disabled:scale-100 flex items-center justify-center gap-3"
             >
-                {loading ? <><Icons.Loader /> Synthesizing...</> : <><Icons.Speaker /> Convert to Speech</>}
+                {loading ? <Icons.Loader className="w-5 h-5 shadow-inner animate-spin" /> : <Icons.Speaker className="w-5 h-5" />}
+                {loading ? "Synthesizing Neural Signal..." : "Synthesize Voice Protocol"}
             </button>
 
             {audioUrl && (
-                <div style={{ background: "rgba(16,21,40,0.8)", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 14, padding: 18 }}>
-                    <div style={{ fontSize: 12, color: "#8b5cf6", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 12 }}>
-                        Audio Output — {speaker} · {ttsModel} · {sampleRate >= 1000 ? `${sampleRate / 1000} kHz` : `${sampleRate} Hz`}
+                <div className="mt-4 p-8 bg-black/5 dark:bg-white/[0.02] border border-black/5 dark:border-white/10 rounded-[2.5rem] animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    <div className="flex justify-between items-center mb-6">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-primary">Synthesized Vocal Stream</span>
+                        <a
+                            href={audioUrl}
+                            download={`sarvam_tts_${ttsModel.replace(":", "_")}.wav`}
+                            className="text-[10px] font-black uppercase tracking-widest text-primary/60 hover:text-primary transition-colors flex items-center gap-2"
+                        >
+                            Download WAV Protocol ↓
+                        </a>
                     </div>
-                    <audio controls src={audioUrl} style={{ width: "100%", borderRadius: 8 }} />
-                    <a href={audioUrl} download={`sarvam_tts_${ttsModel.replace(":", "_")}.wav`} style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 6,
-                        marginTop: 10,
-                        color: "#c4b5fd",
-                        fontSize: 13,
-                        textDecoration: "none",
-                    }}>
-                        ↓ Download WAV
-                    </a>
+                    <div className="bg-white/5 dark:bg-black/20 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-inner flex items-center justify-center">
+                        <audio src={audioUrl} controls className="w-full h-10 accent-primary" />
+                    </div>
                 </div>
             )}
         </div>
@@ -950,20 +851,20 @@ function TranslateTab({ apiKey }: { apiKey: string }) {
     };
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {/* Model & Mode */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="flex flex-col gap-8">
+            {/* Translation Protocol Configuration */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Select
-                    label="Translation Model"
+                    label="Neural Linguistics Engine"
                     value={model}
                     onChange={handleModelChange}
                     options={[
-                        { value: "mayura:v1", label: "Mayura v1 (11 langs)" },
-                        { value: "sarvam-translate:v1", label: "Sarvam Translate (22 langs)" },
+                        { value: "mayura:v1", label: "Mayura v1 (11 Protocols)" },
+                        { value: "sarvam-translate:v1", label: "Sarvam Translate (22 Protocols)" },
                     ]}
                 />
                 <Select
-                    label="Style"
+                    label="Linguistic Style"
                     value={mode}
                     onChange={setMode}
                     disabled={model === "sarvam-translate:v1"}
@@ -971,51 +872,36 @@ function TranslateTab({ apiKey }: { apiKey: string }) {
                 />
             </div>
 
-            {/* Language selectors with swap */}
-            <div style={{ display: "flex", alignItems: "flex-end", gap: 8 }}>
-                <div style={{ flex: 1 }}>
-                    <Select label="Source" value={srcLang} onChange={setSrcLang}
-                        options={srcOptions} />
+            {/* Language Vector Synthesis */}
+            <div className="flex items-center gap-4 relative">
+                <div className="flex-1">
+                    <Select label="Source Vector" value={srcLang} onChange={setSrcLang} options={srcOptions} />
                 </div>
+
                 <button
                     onClick={swapLangs}
-                    style={{
-                        background: "rgba(139,92,246,0.15)",
-                        border: "1px solid rgba(139,92,246,0.3)",
-                        borderRadius: 8,
-                        color: "#c4b5fd",
-                        padding: "8px 12px",
-                        cursor: "pointer",
-                        marginBottom: 1,
-                    }}
-                    title="Swap languages"
+                    className="mt-6 w-10 h-10 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300 shadow-sm group active:rotate-180"
+                    title="Transpose Vectors"
                 >
-                    ⇄
+                    <Icons.Translate className="w-4 h-4" />
                 </button>
-                <div style={{ flex: 1 }}>
-                    <Select label="Target" value={tgtLang} onChange={setTgtLang}
-                        options={tgtOptions} />
+
+                <div className="flex-1">
+                    <Select label="Target Vector" value={tgtLang} onChange={setTgtLang} options={tgtOptions} />
                 </div>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <label style={{ fontSize: 11, fontWeight: 600, color: "#a78bfa", textTransform: "uppercase", letterSpacing: "0.08em" }}>Input Text</label>
+            {/* Data Ingestion Protocol */}
+            <div className="space-y-4">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/40 pl-1">
+                    Transmission Input
+                </p>
                 <textarea
                     value={input}
                     onChange={e => setInput(e.target.value)}
-                    placeholder="Enter text to translate..."
-                    rows={4}
-                    style={{
-                        background: "rgba(139,92,246,0.06)",
-                        border: "1px solid rgba(139,92,246,0.25)",
-                        borderRadius: 12,
-                        color: "#e2e8f0",
-                        padding: "14px 16px",
-                        fontSize: 14,
-                        resize: "vertical",
-                        outline: "none",
-                        fontFamily: "inherit",
-                    }}
+                    placeholder="Enter Multilingual Source Material for Translation..."
+                    rows={5}
+                    className="w-full bg-black/5 dark:bg-black/40 border border-black/10 dark:border-white/5 rounded-[2rem] p-6 text-sm text-foreground focus:ring-4 ring-primary/10 outline-none transition-all resize-none placeholder:text-muted-foreground/20 font-medium shadow-inner"
                 />
             </div>
 
@@ -1024,47 +910,34 @@ function TranslateTab({ apiKey }: { apiKey: string }) {
             <button
                 onClick={translate}
                 disabled={!input.trim() || loading}
-                style={{
-                    background: !input.trim() || loading ? "rgba(139,92,246,0.2)" : "linear-gradient(135deg, #7c3aed, #5b21b6)",
-                    border: "none",
-                    borderRadius: 12,
-                    color: !input.trim() || loading ? "#6d7a8f" : "white",
-                    padding: "13px",
-                    cursor: !input.trim() || loading ? "not-allowed" : "pointer",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 8,
-                    boxShadow: !input.trim() || loading ? "none" : "0 4px 16px rgba(124,58,237,0.4)",
-                }}
+                className="w-full h-16 rounded-[1.25rem] bg-primary text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-20 disabled:grayscale disabled:scale-100 flex items-center justify-center gap-3"
             >
-                {loading ? <><Icons.Loader /> Translating...</> : <><Icons.Translate /> Translate</>}
+                {loading ? <Icons.Loader className="w-5 h-5 animate-spin" /> : <Icons.Translate className="w-5 h-5" />}
+                {loading ? "Synthesizing Translation..." : "Execute Linguistic Transposition"}
             </button>
 
             {result && (
-                <div style={{ background: "rgba(16,21,40,0.8)", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 14, padding: 18 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-                        <span style={{ fontSize: 12, color: "#8b5cf6", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em" }}>Translation</span>
-                        <button onClick={copy} style={{
-                            background: "rgba(139,92,246,0.15)",
-                            border: "1px solid rgba(139,92,246,0.3)",
-                            borderRadius: 6,
-                            color: copied ? "#86efac" : "#c4b5fd",
-                            padding: "4px 10px",
-                            cursor: "pointer",
-                            fontSize: 12,
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 4,
-                        }}>
-                            <Icons.Copy /> {copied ? "Copied!" : "Copy"}
+                <div className="mt-4 p-8 bg-black/5 dark:bg-white/[0.02] border border-black/5 dark:border-white/10 rounded-[2.5rem] animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    <div className="flex justify-between items-center mb-6">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-primary">Target Vector Output</span>
+                        <button
+                            onClick={copy}
+                            className={cn(
+                                "text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 px-4 py-2 rounded-xl border",
+                                copied
+                                    ? "bg-green-500 text-white border-green-500 shadow-lg shadow-green-500/20"
+                                    : "bg-black/5 dark:bg-white/5 text-primary border-transparent hover:border-primary/20"
+                            )}
+                        >
+                            {copied ? "Vector Copied" : "Extract Material"}
+                            {copied ? "✓" : <Icons.Copy className="w-3 h-3" />}
                         </button>
                     </div>
-                    <p style={{ margin: 0, fontSize: 15, color: "#e2e8f0", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>
-                        {result.translated_text}
-                    </p>
+                    <div className="bg-white/5 dark:bg-black/20 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-inner">
+                        <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap font-medium">
+                            {result.translated_text}
+                        </p>
+                    </div>
                 </div>
             )}
         </div>
@@ -1193,46 +1066,39 @@ function VisionTab({ apiKey }: { apiKey: string }) {
     };
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-
-            {/* Header info */}
-            <div style={{
-                background: "linear-gradient(135deg, rgba(139,92,246,0.08), rgba(91,33,182,0.05))",
-                border: "1px solid rgba(139,92,246,0.2)",
-                borderRadius: 12, padding: "14px 16px",
-                display: "flex", alignItems: "flex-start", gap: 12,
-            }}>
-                <span style={{ fontSize: 28, lineHeight: 1 }}>🔬</span>
-                <div>
-                    <div style={{ fontSize: 14, fontWeight: 700, color: "#c4b5fd", marginBottom: 4 }}>
-                        Sarvam Vision — Document Intelligence
-                    </div>
-                    <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.6 }}>
-                        3B parameter VLM for high-accuracy OCR across 23 languages. Extracts text, tables, and structure
-                        from PDFs and scanned images. Output delivered as a ZIP containing HTML or Markdown files.
-                    </div>
+        <div className="flex flex-col gap-8">
+            {/* Intel Header Protocol */}
+            <div className="bg-primary/5 border border-primary/20 rounded-[2rem] p-8 flex flex-col md:flex-row items-center gap-8 shadow-inner overflow-hidden relative group">
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-500">
+                    🔬
                 </div>
+                <div className="flex-1 space-y-2 text-center md:text-left">
+                    <h3 className="text-sm font-black uppercase tracking-[0.2em] text-primary">
+                        Sarvam Vision — Neural Document Intelligence
+                    </h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed font-medium">
+                        3B parameter VLM optimized for high-fidelity extraction across 23 Indian languages.
+                        Processes PDFs and optical signals into structured Markdown or HTML protocols.
+                    </p>
+                </div>
+                {/* Decorative Pattern */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
             </div>
 
-            {/* CORS warning */}
+            {/* CORS Restriction Protocol */}
             {corsBlocked && (
-                <div style={{
-                    background: "rgba(251,191,36,0.08)",
-                    border: "1px solid rgba(251,191,36,0.35)",
-                    borderRadius: 12, padding: "14px 16px",
-                    fontSize: 13, color: "#fbbf24", lineHeight: 1.7,
-                }}>
-                    <div style={{ fontWeight: 700, marginBottom: 6 }}>⚠️ CORS policy blocked this request</div>
-                    <div style={{ color: "#94a3b8" }}>
-                        The <code style={{ color: "#c4b5fd" }}>/document-intelligence</code> endpoint does not allow
-                        direct browser requests. To use Sarvam Vision you need to call the API from a backend
-                        (Node.js, Python, etc.) and proxy it to your frontend. The SDK call looks like:
+                <div className="bg-amber-500/5 border border-amber-500/20 rounded-2xl p-6 space-y-4 animate-in fade-in slide-in-from-top-4 duration-500">
+                    <div className="flex items-center gap-3 text-amber-500">
+                        <span className="text-lg">⚠</span>
+                        <h4 className="text-[10px] font-black uppercase tracking-widest text-amber-600/80">Security Protocol Violation: CORS Restriction</h4>
                     </div>
-                    <pre style={{
-                        marginTop: 10, background: "rgba(0,0,0,0.4)", borderRadius: 8,
-                        padding: "10px 14px", fontSize: 11, color: "#e2e8f0",
-                        overflowX: "auto", whiteSpace: "pre",
-                    }}>{`from sarvamai import SarvamAI
+                    <p className="text-xs text-muted-foreground/80 leading-relaxed font-medium">
+                        The <code className="text-primary font-mono bg-black/5 dark:bg-white/5 px-1 rounded">/document-intelligence</code> portal enforces server-to-server communication exclusively.
+                        Direct client-side ingestion is prohibited by security policy. SDK or backend proxy required.
+                    </p>
+                    <div className="relative group/code">
+                        <pre className="p-4 bg-black/40 rounded-xl overflow-x-auto text-[10px] font-mono text-foreground/70 border border-white/5">
+                            {`from sarvamai import SarvamAI
 client = SarvamAI(api_subscription_key="YOUR_KEY")
 job = client.document_intelligence.create_job(
     language="${language}", output_format="${outputFormat}"
@@ -1240,111 +1106,115 @@ job = client.document_intelligence.create_job(
 job.upload_file("document.pdf")
 job.start()
 job.wait_until_complete()
-job.download_output("./output.zip")`}</pre>
+job.download_output("./output.zip")`}
+                        </pre>
+                        <button
+                            className="absolute top-3 right-3 opacity-0 group-hover/code:opacity-100 transition-opacity bg-white/5 hover:bg-white/10 p-2 rounded-lg"
+                            onClick={() => navigator.clipboard.writeText(`from sarvamai import SarvamAI\nclient = SarvamAI(api_subscription_key="YOUR_KEY")\njob = client.document_intelligence.create_job(language="${language}", output_format="${outputFormat}")\njob.upload_file("document.pdf")\njob.start()\njob.wait_until_complete()\njob.download_output("./output.zip")`)}
+                        >
+                            <Icons.Copy className="w-3 h-3" />
+                        </button>
+                    </div>
                 </div>
             )}
 
-            {/* Config row */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                <Select label="Document Language" value={language} onChange={setLanguage}
-                    options={VISION_LANGUAGES} />
-                <Select label="Output Format" value={outputFormat} onChange={setOutputFormat}
+            {/* Extraction Configuration */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Select label="Source Signal Language" value={language} onChange={setLanguage} options={VISION_LANGUAGES} />
+                <Select label="Output Protocol Format" value={outputFormat} onChange={setOutputFormat}
                     options={[
                         { value: "md", label: "Markdown (.md)" },
                         { value: "html", label: "HTML (.html)" },
                     ]} />
             </div>
 
-            {/* File drop zone */}
-            <div
-                onClick={() => inputRef.current?.click()}
-                onDragOver={e => e.preventDefault()}
-                onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) setFile(f); }}
-                style={{
-                    border: `2px dashed ${file ? "rgba(139,92,246,0.6)" : "rgba(139,92,246,0.25)"}`,
-                    borderRadius: 14, padding: "32px 20px", textAlign: "center", cursor: "pointer",
-                    background: file ? "rgba(139,92,246,0.08)" : "transparent",
-                    transition: "all 0.2s",
-                }}
-            >
-                <input ref={inputRef} type="file" accept=".pdf,.png,.jpg,.jpeg,.zip"
-                    style={{ display: "none" }}
-                    onChange={e => { const f = e.target.files?.[0]; if (f) setFile(f); }} />
-                <div style={{ color: file ? "#c4b5fd" : "#6d7a8f" }}>
-                    <Icons.Upload />
-                    <div style={{ marginTop: 10, fontSize: 14, fontWeight: file ? 600 : 400 }}>
-                        {file ? file.name : "Drop document here or click to upload"}
+            {/* Document Ingestion Protocol */}
+            <div className="space-y-4">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/40 pl-1">
+                    Synthetic Document Capture
+                </p>
+                <div
+                    onClick={() => inputRef.current?.click()}
+                    onDragOver={e => e.preventDefault()}
+                    onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) setFile(f); }}
+                    className={cn(
+                        "relative group cursor-pointer border-2 border-dashed rounded-[2rem] p-12 transition-all duration-500 flex flex-col items-center justify-center gap-4 text-center overflow-hidden",
+                        file
+                            ? "bg-primary/5 border-primary/30 shadow-lg shadow-primary/5"
+                            : "bg-black/5 dark:bg-white/[0.02] border-black/10 dark:border-white/5 hover:border-primary/30 hover:bg-primary/[0.02]"
+                    )}
+                >
+                    <input ref={inputRef} type="file" accept=".pdf,.png,.jpg,.jpeg,.zip" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) setFile(f); }} />
+
+                    <div className={cn(
+                        "w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500",
+                        file ? "bg-primary text-white scale-110 rotate-6" : "bg-black/5 dark:bg-white/5 text-muted-foreground/30 group-hover:scale-110"
+                    )}>
+                        {file ? <Icons.Chat className="w-8 h-8" /> : <Icons.Upload className="w-8 h-8" />}
                     </div>
-                    <div style={{ fontSize: 12, color: "#4a5568", marginTop: 4 }}>
-                        PDF · PNG · JPG · ZIP (flat archive of pages)
+
+                    <div className="space-y-1">
+                        <p className="text-sm font-bold text-foreground">
+                            {file ? file.name : "Inject Document Intelligence Signal"}
+                        </p>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/40">
+                            {file ? `${(file.size / (1024 * 1024)).toFixed(2)} MB · Analysis Ready` : "pdf · png · jpg · zip"}
+                        </p>
                     </div>
+
+                    {/* Background Glow */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                 </div>
             </div>
 
-            {/* Status indicator */}
             {statusMsg && (
-                <div style={{ display: "flex", alignItems: "center", gap: 8, color: "#a78bfa", fontSize: 13 }}>
-                    <Icons.Loader /> {statusMsg}
+                <div className="flex items-center justify-center gap-3 py-4 animate-pulse">
+                    <Icons.Loader className="w-4 h-4 text-primary animate-spin" />
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">{statusMsg}</span>
                 </div>
             )}
 
             {error && <ErrorBanner msg={error} />}
 
-            {/* Action button */}
             <button
                 onClick={processDocument}
                 disabled={!file || loading}
-                style={{
-                    background: !file || loading ? "rgba(139,92,246,0.2)" : "linear-gradient(135deg, #7c3aed, #5b21b6)",
-                    border: "none", borderRadius: 12,
-                    color: !file || loading ? "#6d7a8f" : "white",
-                    padding: "13px", cursor: !file || loading ? "not-allowed" : "pointer",
-                    fontSize: 14, fontWeight: 700,
-                    display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                    boxShadow: !file || loading ? "none" : "0 4px 16px rgba(124,58,237,0.4)",
-                    transition: "all 0.2s",
-                }}
+                className="w-full h-16 rounded-[1.25rem] bg-primary text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-20 disabled:grayscale disabled:scale-100 flex items-center justify-center gap-3"
             >
-                {loading
-                    ? <><Icons.Loader /> {statusMsg || "Processing…"}</>
-                    : <><Icons.Vision /> Process with Sarvam Vision</>}
+                {loading ? <Icons.Loader className="w-5 h-5 animate-spin" /> : <Icons.Brain className="w-5 h-5" />}
+                {loading ? (statusMsg || "Processing Signal...") : "Execute Visual Intelligence"}
             </button>
 
-            {/* Job ID badge */}
-            {jobId && (
-                <div style={{ fontSize: 11, color: "#6d7a8f" }}>
-                    Job ID: <span style={{ color: "#8b5cf6", fontFamily: "monospace" }}>{jobId}</span>
+            {jobId && !downloadUrl && (
+                <div className="text-center">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/20">
+                        Active Job Parameter: <span className="font-mono text-primary/40 underline decoration-dotted">{jobId}</span>
+                    </span>
                 </div>
             )}
 
-            {/* Download result */}
             {downloadUrl && (
-                <div style={{
-                    background: "rgba(134,239,172,0.06)",
-                    border: "1px solid rgba(134,239,172,0.25)",
-                    borderRadius: 14, padding: 18,
-                }}>
-                    <div style={{ fontSize: 12, color: "#86efac", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 12 }}>
-                        ✓ Processing Complete
+                <div className="mt-4 p-8 bg-black/5 dark:bg-white/[0.02] border border-black/5 dark:border-white/10 rounded-[2.5rem] animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    <div className="flex justify-between items-center mb-6">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-primary">Extracted Intelligence Asset</span>
                     </div>
-                    <p style={{ margin: "0 0 14px", fontSize: 13, color: "#94a3b8" }}>
-                        Your document has been processed. The ZIP contains one{" "}
-                        <strong style={{ color: "#e2e8f0" }}>.{outputFormat}</strong> file per page with
-                        extracted text, tables, and structure preserved.
-                    </p>
                     <a
                         href={downloadUrl}
-                        download={`sarvam_vision_${outputFormat}_output.zip`}
-                        style={{
-                            display: "inline-flex", alignItems: "center", gap: 8,
-                            color: "white",
-                            background: "linear-gradient(135deg, #059669, #065f46)",
-                            padding: "11px 20px", borderRadius: 10,
-                            fontSize: 13, fontWeight: 700, textDecoration: "none",
-                            boxShadow: "0 4px 14px rgba(5,150,105,0.35)",
-                        }}
+                        download={`sarvam_vision_asset_${jobId || "extraction"}.zip`}
+                        className="flex items-center justify-between p-6 bg-primary/10 border border-primary/20 rounded-2xl hover:bg-primary/20 transition-all group"
                     >
-                        ↓ Download ZIP ({outputFormat.toUpperCase()} output)
+                        <div className="flex items-center gap-4">
+                            <div className="bg-primary text-white p-3 rounded-xl shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
+                                ↓
+                            </div>
+                            <div className="text-left">
+                                <p className="text-sm font-bold text-primary">Download Intelligence ZIP</p>
+                                <p className="text-[10px] font-medium text-primary/60 italic">Processed across 23 language vectors</p>
+                            </div>
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-primary animate-pulse">
+                            Ready
+                        </span>
                     </a>
                 </div>
             )}
@@ -1427,87 +1297,69 @@ function TextToolsTab({ apiKey }: { apiKey: string }) {
     );
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {/* Tool Switcher */}
-            <div style={{ display: "flex", gap: 8 }}>
+        <div className="flex flex-col gap-8">
+            {/* Tool Selector Protocol */}
+            <div className="flex p-1 bg-black/5 dark:bg-white/[0.03] border border-black/10 dark:border-white/5 rounded-2xl">
                 {([
-                    { id: "translit", label: "Transliterate", icon: "🔤" },
-                    { id: "detect", label: "Detect Language", icon: "🔍" },
+                    { id: "translit", label: "Transliterate", icon: <Icons.Translate className="w-4 h-4" /> },
+                    { id: "detect", label: "Detect Language", icon: <Icons.Brain className="w-4 h-4" /> },
                 ] as const).map(t => (
                     <button
                         key={t.id}
                         onClick={() => setTool(t.id)}
-                        style={{
-                            flex: 1,
-                            background: tool === t.id
-                                ? "linear-gradient(135deg, rgba(124,58,237,0.35), rgba(91,33,182,0.25))"
-                                : "rgba(16,21,40,0.6)",
-                            border: `1px solid ${tool === t.id ? "rgba(139,92,246,0.5)" : "rgba(139,92,246,0.15)"}`,
-                            borderRadius: 10,
-                            color: tool === t.id ? "#e9e5ff" : "#6d7a8f",
-                            padding: "10px 14px",
-                            cursor: "pointer",
-                            fontSize: 13,
-                            fontWeight: tool === t.id ? 700 : 500,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: 6,
-                        }}
+                        className={cn(
+                            "flex-1 flex items-center justify-center gap-3 py-3 rounded-xl transition-all duration-300 text-[10px] font-black uppercase tracking-widest",
+                            tool === t.id
+                                ? "bg-primary text-white shadow-lg shadow-primary/20"
+                                : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/5"
+                        )}
                     >
-                        {t.icon} {t.label}
+                        {t.icon}
+                        {t.label}
                     </button>
                 ))}
             </div>
 
             {/* ── Transliterate ── */}
             {tool === "translit" && (
-                <>
-                    <div style={{
-                        background: "rgba(139,92,246,0.06)",
-                        border: "1px solid rgba(139,92,246,0.15)",
-                        borderRadius: 10,
-                        padding: "10px 14px",
-                        fontSize: 12,
-                        color: "#94a3b8",
-                    }}>
-                        Converts text between scripts while keeping the same pronunciation. E.g. <em style={{ color: "#c4b5fd" }}>नमस्ते</em> → <em style={{ color: "#c4b5fd" }}>namaste</em>. Works between English and any Indic script.
+                <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
+                    <div className="bg-primary/5 border border-primary/20 rounded-2xl p-5 flex items-start gap-4 shadow-inner">
+                        <div className="bg-primary/10 p-2 rounded-xl text-primary flex-shrink-0">🔤</div>
+                        <p className="text-xs text-muted-foreground leading-relaxed font-medium">
+                            <span className="text-primary font-bold">Vector Transposition:</span> Converts text between scripts while maintaining phonetic fidelity.
+                            Ideal for English ↔ Indic script mapping (e.g., <span className="italic">नमस्ते</span> ↔ <span className="italic">namaste</span>).
+                        </p>
                     </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: 8, alignItems: "flex-end" }}>
-                        <Select label="Source Script" value={translitSrc} onChange={setTranslitSrc} options={TRANSLIT_LANGS} />
-                        <div style={{ paddingBottom: 2, color: "#6d7a8f", fontSize: 18 }}>→</div>
-                        <Select label="Target Script" value={translitTgt} onChange={setTranslitTgt} options={TRANSLIT_LANGS} />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="flex items-center gap-4">
+                            <div className="flex-1">
+                                <Select label="Source Vector" value={translitSrc} onChange={setTranslitSrc} options={TRANSLIT_LANGS} />
+                            </div>
+                            <div className="mt-6 text-primary flex items-center justify-center">→</div>
+                            <div className="flex-1">
+                                <Select label="Target Vector" value={translitTgt} onChange={setTranslitTgt} options={TRANSLIT_LANGS} />
+                            </div>
+                        </div>
+                        <Select
+                            label="Numeral Synthesis"
+                            value={translitNumerals}
+                            onChange={setTranslitNumerals}
+                            options={[
+                                { value: "international", label: "International Protocol (0–9)" },
+                                { value: "native", label: "Native Script Protocol" },
+                            ]}
+                        />
                     </div>
 
-                    <Select
-                        label="Numeral Format"
-                        value={translitNumerals}
-                        onChange={setTranslitNumerals}
-                        options={[
-                            { value: "international", label: "International (0–9)" },
-                            { value: "native", label: "Native script numerals" },
-                        ]}
-                    />
-
-                    <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                        <label style={{ fontSize: 11, fontWeight: 600, color: "#a78bfa", textTransform: "uppercase", letterSpacing: "0.08em" }}>Input Text</label>
+                    <div className="space-y-4">
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/40 pl-1">Input Signal Material</p>
                         <textarea
                             value={translitInput}
                             onChange={e => setTranslitInput(e.target.value)}
-                            placeholder="Enter text to transliterate..."
+                            placeholder="Enter text to transliterate across vectors..."
                             rows={3}
-                            style={{
-                                background: "rgba(139,92,246,0.06)",
-                                border: "1px solid rgba(139,92,246,0.25)",
-                                borderRadius: 12,
-                                color: "#e2e8f0",
-                                padding: "12px 14px",
-                                fontSize: 14,
-                                resize: "vertical",
-                                outline: "none",
-                                fontFamily: "inherit",
-                            }}
+                            className="w-full bg-black/5 dark:bg-black/40 border border-black/10 dark:border-white/5 rounded-[2rem] p-6 text-sm text-foreground focus:ring-4 ring-primary/10 outline-none transition-all resize-none placeholder:text-muted-foreground/20 font-medium shadow-inner"
                         />
                     </div>
 
@@ -1516,70 +1368,58 @@ function TextToolsTab({ apiKey }: { apiKey: string }) {
                     <button
                         onClick={runTranslit}
                         disabled={!translitInput.trim() || translitLoading}
-                        style={{
-                            background: !translitInput.trim() || translitLoading ? "rgba(139,92,246,0.2)" : "linear-gradient(135deg, #7c3aed, #5b21b6)",
-                            border: "none", borderRadius: 12,
-                            color: !translitInput.trim() || translitLoading ? "#6d7a8f" : "white",
-                            padding: "13px", cursor: !translitInput.trim() || translitLoading ? "not-allowed" : "pointer",
-                            fontSize: 14, fontWeight: 700,
-                            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                            boxShadow: !translitInput.trim() || translitLoading ? "none" : "0 4px 16px rgba(124,58,237,0.4)",
-                        }}
+                        className="w-full h-16 rounded-[1.25rem] bg-primary text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-20 disabled:grayscale disabled:scale-100 flex items-center justify-center gap-3"
                     >
-                        {translitLoading ? <><Icons.Loader /> Transliterating...</> : <>🔤 Transliterate</>}
+                        {translitLoading ? <Icons.Loader className="w-5 h-5 animate-spin" /> : <Icons.Translate className="w-5 h-5" />}
+                        {translitLoading ? "Transposing Vectors..." : "Execute Transliteration Protocol"}
                     </button>
 
                     {translitResult && (
-                        <div style={{ background: "rgba(16,21,40,0.8)", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 14, padding: 18 }}>
-                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                                <span style={{ fontSize: 12, color: "#8b5cf6", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                                    Result — {LANG_NAMES[translitSrc] || translitSrc} → {LANG_NAMES[translitTgt] || translitTgt}
+                        <div className="mt-4 p-8 bg-black/5 dark:bg-white/[0.02] border border-black/5 dark:border-white/10 rounded-[2.5rem] animate-in fade-in slide-in-from-bottom-4 duration-500">
+                            <div className="flex justify-between items-center mb-6">
+                                <span className="text-[10px] font-black uppercase tracking-widest text-primary">
+                                    Transposed Output — {LANG_NAMES[translitSrc]} → {LANG_NAMES[translitTgt]}
                                 </span>
                                 <button
                                     onClick={() => { navigator.clipboard.writeText(translitResult); setTranslitCopied(true); setTimeout(() => setTranslitCopied(false), 1500); }}
-                                    style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 6, color: translitCopied ? "#86efac" : "#c4b5fd", padding: "4px 10px", cursor: "pointer", fontSize: 12, display: "flex", alignItems: "center", gap: 4 }}
+                                    className={cn(
+                                        "text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 px-4 py-2 rounded-xl border",
+                                        translitCopied
+                                            ? "bg-green-500 text-white border-green-500 shadow-lg shadow-green-500/20"
+                                            : "bg-black/5 dark:bg-white/5 text-primary border-transparent hover:border-primary/20"
+                                    )}
                                 >
-                                    <Icons.Copy /> {translitCopied ? "Copied!" : "Copy"}
+                                    {translitCopied ? "Vector Extracted" : "Extract Output"}
+                                    {translitCopied ? "✓" : <Icons.Copy className="w-3 h-3" />}
                                 </button>
                             </div>
-                            <p style={{ margin: 0, fontSize: 16, color: "#e2e8f0", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>{translitResult}</p>
+                            <div className="bg-white/5 dark:bg-black/20 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-inner">
+                                <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap font-medium">{translitResult}</p>
+                            </div>
                         </div>
                     )}
-                </>
+                </div>
             )}
 
             {/* ── Detect Language ── */}
             {tool === "detect" && (
-                <>
-                    <div style={{
-                        background: "rgba(139,92,246,0.06)",
-                        border: "1px solid rgba(139,92,246,0.15)",
-                        borderRadius: 10,
-                        padding: "10px 14px",
-                        fontSize: 12,
-                        color: "#94a3b8",
-                    }}>
-                        Automatically identifies the language and script of any text. Supports all 22 official Indian languages + English.
+                <div className="space-y-8 animate-in fade-in slide-in-from-left-4 duration-500">
+                    <div className="bg-primary/5 border border-primary/20 rounded-2xl p-5 flex items-start gap-4 shadow-inner">
+                        <div className="bg-primary/10 p-2 rounded-xl text-primary flex-shrink-0">🔍</div>
+                        <p className="text-xs text-muted-foreground leading-relaxed font-medium">
+                            <span className="text-primary font-bold">Linguistic Identification:</span> Automatically detects the language and script vector of any target text.
+                            Coverage: All 22 official Indian languages + English.
+                        </p>
                     </div>
 
-                    <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                        <label style={{ fontSize: 11, fontWeight: 600, color: "#a78bfa", textTransform: "uppercase", letterSpacing: "0.08em" }}>Input Text</label>
+                    <div className="space-y-4">
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/40 pl-1">Signal Monitoring Input</p>
                         <textarea
                             value={detectInput}
                             onChange={e => setDetectInput(e.target.value)}
-                            placeholder="Paste text in any Indian language..."
-                            rows={4}
-                            style={{
-                                background: "rgba(139,92,246,0.06)",
-                                border: "1px solid rgba(139,92,246,0.25)",
-                                borderRadius: 12,
-                                color: "#e2e8f0",
-                                padding: "12px 14px",
-                                fontSize: 14,
-                                resize: "vertical",
-                                outline: "none",
-                                fontFamily: "inherit",
-                            }}
+                            placeholder="Paste linguistic material for vector identification..."
+                            rows={5}
+                            className="w-full bg-black/5 dark:bg-black/40 border border-black/10 dark:border-white/5 rounded-[2rem] p-6 text-sm text-foreground focus:ring-4 ring-primary/10 outline-none transition-all resize-none placeholder:text-muted-foreground/20 font-medium shadow-inner"
                         />
                     </div>
 
@@ -1588,50 +1428,34 @@ function TextToolsTab({ apiKey }: { apiKey: string }) {
                     <button
                         onClick={runDetect}
                         disabled={!detectInput.trim() || detectLoading}
-                        style={{
-                            background: !detectInput.trim() || detectLoading ? "rgba(139,92,246,0.2)" : "linear-gradient(135deg, #7c3aed, #5b21b6)",
-                            border: "none", borderRadius: 12,
-                            color: !detectInput.trim() || detectLoading ? "#6d7a8f" : "white",
-                            padding: "13px", cursor: !detectInput.trim() || detectLoading ? "not-allowed" : "pointer",
-                            fontSize: 14, fontWeight: 700,
-                            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                            boxShadow: !detectInput.trim() || detectLoading ? "none" : "0 4px 16px rgba(124,58,237,0.4)",
-                        }}
+                        className="w-full h-16 rounded-[1.25rem] bg-primary text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-20 disabled:grayscale disabled:scale-100 flex items-center justify-center gap-3"
                     >
-                        {detectLoading ? <><Icons.Loader /> Detecting...</> : <>🔍 Detect Language</>}
+                        {detectLoading ? <Icons.Loader className="w-5 h-5 animate-spin" /> : <Icons.Brain className="w-5 h-5" />}
+                        {detectLoading ? "Analyzing Signal..." : "Execute Identification Protocol"}
                     </button>
 
                     {detectResult && (
-                        <div style={{ background: "rgba(16,21,40,0.8)", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 14, padding: 20 }}>
-                            <div style={{ fontSize: 12, color: "#8b5cf6", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>
-                                Detection Result
+                        <div className="mt-4 p-8 bg-black/5 dark:bg-white/[0.02] border border-black/5 dark:border-white/10 rounded-[2.5rem] animate-in fade-in slide-in-from-bottom-4 duration-500">
+                            <div className="mb-6">
+                                <span className="text-[10px] font-black uppercase tracking-widest text-primary">Identification Results</span>
                             </div>
-                            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
-                                {[
-                                    { label: "Language", value: LANG_NAMES[detectResult.language_code] || detectResult.language_code },
-                                    { label: "BCP-47 Code", value: detectResult.language_code },
-                                    { label: "Confidence", value: `${(detectResult.confidence_score * 100).toFixed(1)}%` },
-                                ].map(item => (
-                                    <div key={item.label} style={{
-                                        background: "rgba(139,92,246,0.08)",
-                                        border: "1px solid rgba(139,92,246,0.2)",
-                                        borderRadius: 10,
-                                        padding: "12px 14px",
-                                        textAlign: "center",
-                                    }}>
-                                        <div style={{ fontSize: 11, color: "#6d7a8f", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 6 }}>{item.label}</div>
-                                        <div style={{ fontSize: 16, fontWeight: 700, color: "#c4b5fd" }}>{item.value}</div>
-                                    </div>
-                                ))}
-                            </div>
-                            {detectResult.script_code && (
-                                <div style={{ marginTop: 12, fontSize: 13, color: "#94a3b8" }}>
-                                    Script: <span style={{ color: "#e2e8f0" }}>{detectResult.script_code}</span>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div className="bg-white/5 dark:bg-black/20 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-inner text-center space-y-2">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/40">Language Vector</p>
+                                    <p className="text-xl font-black text-primary">{LANG_NAMES[detectResult.language_code] || detectResult.language_code}</p>
                                 </div>
-                            )}
+                                <div className="bg-white/5 dark:bg-black/20 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-inner text-center space-y-2">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/40">Script Protocol</p>
+                                    <p className="text-xl font-black text-primary font-mono">{detectResult.script_code || "Neural"}</p>
+                                </div>
+                                <div className="bg-white/5 dark:bg-black/20 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-inner text-center space-y-2">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/40">Confidence Score</p>
+                                    <p className="text-xl font-black text-primary">{(detectResult.confidence_score * 100).toFixed(1)}%</p>
+                                </div>
+                            </div>
                         </div>
                     )}
-                </>
+                </div>
             )}
         </div>
     );
@@ -1653,7 +1477,7 @@ export default function Sarvam() {
         }
     }, [keyInput]);
 
-    const TABS: { id: Tab; label: string; icon: () => JSX.Element; desc: string }[] = [
+    const TABS: { id: Tab; label: string; icon: (props: any) => JSX.Element; desc: string }[] = [
         { id: "chat", label: "Chat", icon: Icons.Chat, desc: "Sarvam-M LLM" },
         { id: "stt", label: "Speech→Text", icon: Icons.Mic, desc: "Saaras v3" },
         { id: "tts", label: "Text→Speech", icon: Icons.Speaker, desc: "Bulbul v3" },
@@ -1662,218 +1486,90 @@ export default function Sarvam() {
         { id: "vision", label: "Text Tools", icon: Icons.Brain, desc: "Transliterate · Detect Language" },
     ];
 
-    // Theme-aware colors
-    const isDark = theme === "dark" || theme === "system";
+    // Theme-aware colors derived from Global Protocol
+    const isDark = theme === "dark";
     const colors = {
-        bg: isDark ? "#0a0a1a" : "#f8f9fa",
-        cardBg: isDark ? "rgba(16, 21, 40, 0.9)" : "rgba(255, 255, 255, 0.95)",
-        text: isDark ? "#e2e8f0" : "#1a202c",
-        textMuted: isDark ? "#6d7a8f" : "#718096",
-        border: isDark ? "rgba(139,92,246,0.25)" : "rgba(139,92,246,0.3)",
-        borderActive: isDark ? "rgba(139,92,246,0.5)" : "rgba(139,92,246,0.6)",
-        primary: isDark ? "#8b5cf6" : "#7c3aed",
-        primaryLight: isDark ? "#c4b5fd" : "#a78bfa",
-        success: isDark ? "#86efac" : "#10b981",
-        successBorder: isDark ? "rgba(134,239,172,0.3)" : "rgba(16,185,129,0.4)",
+        bg: "transparent",
+        cardBg: "rgba(var(--card), 0.5)",
+        text: "hsl(var(--foreground))",
+        textMuted: "hsl(var(--muted-foreground))",
+        border: "hsla(var(--primary), 0.1)",
+        borderActive: "hsla(var(--primary), 0.4)",
+        primary: "hsl(var(--primary))",
+        primaryLight: "hsla(var(--primary), 0.8)",
+        success: "#10b981",
+        successBorder: "rgba(16,185,129,0.2)",
     };
 
     return (
-        <div style={{
-            minHeight: "100vh",
-            background: isDark
-                ? "linear-gradient(135deg, #0a0a1a 0%, #1a0b2e 50%, #0a0a1a 100%)"
-                : "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #f8f9fa 100%)",
-            fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif",
-            color: colors.text,
-            padding: "20px 16px",
-            transition: "background 0.3s ease, color 0.3s ease",
-        }}>
+        <div className="w-full font-sans text-foreground">
             <style>{`
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        @keyframes slideIn { from { transform: translateX(-10px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: ${isDark ? "rgba(139,92,246,0.05)" : "rgba(139,92,246,0.1)"}; }
-        ::-webkit-scrollbar-thumb { background: ${isDark ? "rgba(139,92,246,0.3)" : "rgba(139,92,246,0.4)"}; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: ${isDark ? "rgba(139,92,246,0.5)" : "rgba(139,92,246,0.6)"}; }
-        * { box-sizing: border-box; }
-        select option { background: ${isDark ? "#1e1b4b" : "#ffffff"}; color: ${colors.text}; }
-      `}</style>
+                @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+                @keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+                .fadeIn { animation: fadeIn 0.4s ease forwards; }
+                input::placeholder { color: hsla(var(--foreground), 0.3); }
+                * { box-sizing: border-box; }
+                select option { background: ${isDark ? "#000" : "#fff"}; color: ${colors.text}; }
+            `}</style>
 
-            <div style={{ maxWidth: 720, margin: "0 auto" }}>
-                {/* Header */}
-                <div style={{ textAlign: "center", marginBottom: 28, animation: "fadeIn 0.5s ease" }}>
-                    <div style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 10,
-                        background: isDark
-                            ? "linear-gradient(135deg, rgba(124,58,237,0.2), rgba(91,33,182,0.15))"
-                            : "linear-gradient(135deg, rgba(124,58,237,0.15), rgba(91,33,182,0.1))",
-                        border: `1px solid ${colors.border}`,
-                        borderRadius: 50,
-                        padding: "6px 18px",
-                        marginBottom: 16,
-                        boxShadow: isDark
-                            ? "0 4px 20px rgba(124,58,237,0.2)"
-                            : "0 4px 20px rgba(124,58,237,0.15)",
-                        transition: "all 0.3s ease",
-                    }}>
-                        <span style={{ fontSize: 18 }}>🇮🇳</span>
-                        <span style={{ fontSize: 12, fontWeight: 700, color: colors.primaryLight, letterSpacing: "0.1em", textTransform: "uppercase" }}>
-                            Sarvam AI
-                        </span>
-                    </div>
-                    <h1 style={{
-                        margin: 0,
-                        fontSize: 34,
-                        fontWeight: 800,
-                        background: isDark
-                            ? "linear-gradient(135deg, #c4b5fd, #a78bfa, #7c3aed)"
-                            : "linear-gradient(135deg, #7c3aed, #6d28d9, #5b21b6)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        letterSpacing: "-0.02em",
-                        textShadow: isDark ? "none" : "0 2px 10px rgba(124,58,237,0.1)",
-                    }}>
-                        Indic Language Intelligence
-                    </h1>
-                    <p style={{ margin: "10px 0 0", fontSize: 14, color: colors.textMuted }}>
-                        Chat · Speech · Translation · Document AI — across 22+ Indian languages
-                    </p>
-                </div>
+            <div className="max-w-4xl mx-auto">
 
-                {/* API Key Section */}
-                <div style={{
-                    background: colors.cardBg,
-                    border: `1px solid ${keySet ? colors.successBorder : colors.border}`,
-                    borderRadius: 16,
-                    padding: "18px 20px",
-                    marginBottom: 20,
-                    animation: "fadeIn 0.5s ease 0.1s both",
-                    boxShadow: isDark
-                        ? "0 8px 32px rgba(0,0,0,0.3)"
-                        : "0 8px 32px rgba(0,0,0,0.08)",
-                    transition: "all 0.3s ease",
-                }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-                        <Icons.Key />
-                        <span style={{ fontSize: 13, fontWeight: 700, color: keySet ? colors.success : colors.primaryLight }}>
-                            {keySet ? "✓ API Key Set" : "Enter Your Sarvam API Key"}
+                <div className="bg-white/60 dark:bg-white/[0.01] backdrop-blur-3xl border border-black/5 dark:border-white/5 rounded-[2rem] p-6 mb-8 shadow-2xl transition-all duration-500">
+                    <div className="flex items-center gap-3 mb-4">
+                        <Icons.Key className="w-4 h-4 text-primary" />
+                        <span className="text-xs font-black uppercase tracking-widest text-primary">
+                            {keySet ? "Intelligence Protocol Active" : "Authentication Required"}
                         </span>
                         {keySet && (
                             <button
                                 onClick={() => { setKeySet(false); setApiKey(""); setKeyInput(""); }}
-                                style={{
-                                    marginLeft: "auto",
-                                    background: "transparent",
-                                    border: "none",
-                                    color: "#f87171",
-                                    fontSize: 12,
-                                    cursor: "pointer",
-                                    transition: "opacity 0.2s ease",
-                                }}
-                                onMouseEnter={(e) => e.currentTarget.style.opacity = "0.7"}
-                                onMouseLeave={(e) => e.currentTarget.style.opacity = "1"}
+                                className="ml-auto text-[10px] font-black uppercase tracking-widest text-red-500/60 hover:text-red-500 transition-colors"
                             >
-                                Change
+                                Decommission Key
                             </button>
                         )}
                     </div>
+
                     {!keySet ? (
-                        <>
-                            <div style={{ fontSize: 12, color: colors.textMuted, marginBottom: 12 }}>
-                                Get your key at{" "}
-                                <a href="https://dashboard.sarvam.ai" target="_blank" rel="noopener noreferrer" style={{ color: colors.primary, textDecoration: "none", fontWeight: 600 }}>
-                                    dashboard.sarvam.ai
-                                </a>
-                                {" "}— stored only in memory, never sent anywhere else.
-                            </div>
-                            <div style={{ display: "flex", gap: 8 }}>
-                                <div style={{ flex: 1, position: "relative" }}>
+                        <div className="space-y-4">
+                            <p className="text-xs text-muted-foreground/60 px-1 font-medium">
+                                Secure your access via <a href="https://dashboard.sarvam.ai" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-bold">dashboard.sarvam.ai</a>.
+                                Credentials persist in memory only.
+                            </p>
+                            <div className="flex flex-col md:flex-row gap-4">
+                                <div className="relative flex-grow group">
                                     <input
                                         type={showKey ? "text" : "password"}
                                         value={keyInput}
                                         onChange={e => setKeyInput(e.target.value)}
                                         onKeyDown={e => e.key === "Enter" && handleSetKey()}
-                                        placeholder="sarvam-xxxxxxxxxxxx"
-                                        style={{
-                                            width: "100%",
-                                            background: isDark ? "rgba(139,92,246,0.08)" : "rgba(139,92,246,0.05)",
-                                            border: `1px solid ${colors.border}`,
-                                            borderRadius: 10,
-                                            color: colors.text,
-                                            padding: "11px 40px 11px 14px",
-                                            fontSize: 14,
-                                            outline: "none",
-                                            fontFamily: "monospace",
-                                            transition: "all 0.2s ease",
-                                        }}
+                                        placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                                        className="w-full h-14 pl-6 pr-14 rounded-2xl bg-black/5 dark:bg-white/[0.03] border border-black/5 dark:border-white/10 focus:ring-4 ring-primary/10 outline-none font-mono text-sm transition-all placeholder:text-muted-foreground/30 shadow-inner"
                                     />
                                     <button
-                                        onClick={() => setShowKey(s => !s)}
-                                        style={{
-                                            position: "absolute",
-                                            right: 10,
-                                            top: "50%",
-                                            transform: "translateY(-50%)",
-                                            background: "transparent",
-                                            border: "none",
-                                            color: colors.textMuted,
-                                            cursor: "pointer",
-                                            padding: 0,
-                                            transition: "color 0.2s ease",
-                                        }}
-                                        onMouseEnter={(e) => e.currentTarget.style.color = colors.primary}
-                                        onMouseLeave={(e) => e.currentTarget.style.color = colors.textMuted}
+                                        onClick={() => setShowKey(!showKey)}
+                                        className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground/50 hover:text-primary transition-colors"
                                     >
-                                        {showKey ? <Icons.EyeOff /> : <Icons.Eye />}
+                                        {showKey ? <Icons.EyeOff size={18} /> : <Icons.Eye size={18} />}
                                     </button>
                                 </div>
                                 <button
                                     onClick={handleSetKey}
-                                    disabled={!keyInput.trim()}
-                                    style={{
-                                        background: keyInput.trim()
-                                            ? "linear-gradient(135deg, #7c3aed, #5b21b6)"
-                                            : isDark ? "rgba(139,92,246,0.2)" : "rgba(139,92,246,0.15)",
-                                        border: "none",
-                                        borderRadius: 10,
-                                        color: keyInput.trim() ? "white" : colors.textMuted,
-                                        padding: "11px 20px",
-                                        cursor: keyInput.trim() ? "pointer" : "not-allowed",
-                                        fontSize: 14,
-                                        fontWeight: 700,
-                                        whiteSpace: "nowrap",
-                                        boxShadow: keyInput.trim()
-                                            ? "0 4px 16px rgba(124,58,237,0.3)"
-                                            : "none",
-                                        transition: "all 0.2s ease",
-                                    }}
+                                    className="h-14 px-10 bg-primary text-white font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl shadow-xl hover:scale-[1.02] active:scale-95 transition-all hover:shadow-primary/20 shrink-0"
                                 >
-                                    Set Key
+                                    Initialize Suite
                                 </button>
                             </div>
-                        </>
+                        </div>
                     ) : (
-                        <div style={{ fontSize: 13, color: colors.textMuted }}>
-                            Key ending in <code style={{ background: isDark ? "rgba(139,92,246,0.15)" : "rgba(139,92,246,0.1)", padding: "1px 6px", borderRadius: 4, color: colors.primaryLight }}>
-                                ...{apiKey.slice(-8)}
-                            </code> — ready to use all Sarvam APIs below.
+                        <div className="text-xs text-muted-foreground/60 px-1 flex items-center gap-2 font-medium">
+                            <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                            <span>Authorization verified. Master Key: <code className="font-mono text-primary/80">...{apiKey.slice(-8)}</code></span>
                         </div>
                     )}
                 </div>
 
-                {/* Tab Navigation */}
-                <div style={{
-                    display: "flex",
-                    gap: 6,
-                    marginBottom: 16,
-                    overflowX: "auto",
-                    paddingBottom: 4,
-                    animation: "fadeIn 0.5s ease 0.2s both",
-                }}>
+                <div className="flex gap-2 mb-8 overflow-x-auto pb-4 scrollbar-hide no-scrollbar">
                     {TABS.map(tab => {
                         const Icon = tab.icon;
                         const active = activeTab === tab.id;
@@ -1881,116 +1577,51 @@ export default function Sarvam() {
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
-                                style={{
-                                    background: active
-                                        ? isDark
-                                            ? "linear-gradient(135deg, rgba(124,58,237,0.35), rgba(91,33,182,0.25))"
-                                            : "linear-gradient(135deg, rgba(124,58,237,0.2), rgba(91,33,182,0.15))"
-                                        : isDark
-                                            ? "rgba(16,21,40,0.6)"
-                                            : "rgba(255,255,255,0.5)",
-                                    border: active
-                                        ? `1px solid ${colors.borderActive}`
-                                        : `1px solid ${colors.border}`,
-                                    borderRadius: 12,
-                                    color: active ? (isDark ? "#e9e5ff" : "#5b21b6") : colors.textMuted,
-                                    padding: "10px 16px",
-                                    cursor: "pointer",
-                                    fontSize: 13,
-                                    fontWeight: active ? 700 : 500,
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: 7,
-                                    whiteSpace: "nowrap",
-                                    transition: "all 0.2s ease",
-                                    boxShadow: active
-                                        ? isDark
-                                            ? "0 2px 12px rgba(124,58,237,0.3)"
-                                            : "0 2px 12px rgba(124,58,237,0.2)"
-                                        : "none",
-                                }}
-                                onMouseEnter={(e) => {
-                                    if (!active) {
-                                        e.currentTarget.style.background = isDark
-                                            ? "rgba(16,21,40,0.8)"
-                                            : "rgba(255,255,255,0.8)";
-                                        e.currentTarget.style.borderColor = colors.borderActive;
-                                    }
-                                }}
-                                onMouseLeave={(e) => {
-                                    if (!active) {
-                                        e.currentTarget.style.background = isDark
-                                            ? "rgba(16,21,40,0.6)"
-                                            : "rgba(255,255,255,0.5)";
-                                        e.currentTarget.style.borderColor = colors.border;
-                                    }
-                                }}
+                                className={cn(
+                                    "flex items-center gap-3 px-6 py-4 rounded-2xl whitespace-nowrap transition-all duration-300 font-bold text-xs tracking-tight shadow-sm border",
+                                    active
+                                        ? "bg-primary text-white border-primary shadow-lg shadow-primary/20 scale-[1.02]"
+                                        : "bg-white/50 dark:bg-white/[0.02] text-muted-foreground border-black/5 dark:border-white/5 hover:bg-white dark:hover:bg-white/[0.05]"
+                                )}
                             >
-                                <Icon /> {tab.label}
+                                <Icon className="w-4 h-4" />
+                                {tab.label}
                             </button>
                         );
                     })}
                 </div>
 
-                {/* Tab Description */}
-                <div style={{
-                    fontSize: 12,
-                    color: colors.textMuted,
-                    marginBottom: 14,
-                    paddingLeft: 4,
-                }}>
+                {/* Tab Description Protocol */}
+                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/40 mb-4 px-2">
                     {TABS.find(t => t.id === activeTab)?.desc}
-                    {!keySet && (
-                        <span style={{ color: "#f87171", marginLeft: 8 }}>
-                            ← Set your API key above to use this feature
-                        </span>
-                    )}
                 </div>
 
-                {/* Tab Content */}
-                <div style={{
-                    background: colors.cardBg,
-                    border: `1px solid ${colors.border}`,
-                    borderRadius: 18,
-                    padding: "22px 24px",
-                    animation: "fadeIn 0.3s ease",
-                    backdropFilter: "blur(10px)",
-                    boxShadow: isDark
-                        ? "0 8px 32px rgba(0,0,0,0.4)"
-                        : "0 8px 32px rgba(0,0,0,0.1)",
-                    opacity: keySet ? 1 : 0.5,
-                    pointerEvents: keySet ? "auto" : "none",
-                    transition: "all 0.3s ease",
-                }}>
-                    {activeTab === "chat" && <ChatTab apiKey={apiKey} />}
-                    {activeTab === "stt" && <STTTab apiKey={apiKey} />}
-                    {activeTab === "tts" && <TTSTab apiKey={apiKey} />}
-                    {activeTab === "translate" && <TranslateTab apiKey={apiKey} />}
-                    {activeTab === "doc" && <VisionTab apiKey={apiKey} />}
-                    {activeTab === "vision" && <TextToolsTab apiKey={apiKey} />}
+                <div className={cn(
+                    "bg-white/80 dark:bg-black/20 backdrop-blur-3xl border border-black/5 dark:border-white/10 rounded-[2.5rem] p-8 md:p-12 shadow-2xl transition-all duration-500",
+                    !keySet && "opacity-40 grayscale pointer-events-none"
+                )}>
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={activeTab}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            {activeTab === "chat" && <ChatTab apiKey={apiKey} />}
+                            {activeTab === "stt" && <STTTab apiKey={apiKey} />}
+                            {activeTab === "tts" && <TTSTab apiKey={apiKey} />}
+                            {activeTab === "translate" && <TranslateTab apiKey={apiKey} />}
+                            {activeTab === "doc" && <VisionTab apiKey={apiKey} />}
+                            {activeTab === "vision" && <TextToolsTab apiKey={apiKey} />}
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
 
-                {/* Models footer */}
-                <div style={{
-                    marginTop: 20,
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: 8,
-                    justifyContent: "center",
-                    animation: "fadeIn 0.5s ease 0.4s both",
-                }}>
+                {/* Models Technical Protocol Footer */}
+                <div className="mt-12 flex flex-wrap gap-2 justify-center fadeIn" style={{ animationDelay: '0.4s' }}>
                     {["Sarvam-M", "Saaras v3", "Saarika v2.5", "Bulbul v3", "Bulbul v2", "Bulbul v1", "Mayura", "Sarvam Translate", "Sarvam Vision"].map(m => (
-                        <span key={m} style={{
-                            fontSize: 11,
-                            color: isDark ? "#4a5568" : "#64748b",
-                            background: isDark
-                                ? "rgba(139,92,246,0.06)"
-                                : "rgba(139,92,246,0.08)",
-                            border: `1px solid ${isDark ? "rgba(139,92,246,0.1)" : "rgba(139,92,246,0.15)"}`,
-                            borderRadius: 20,
-                            padding: "4px 10px",
-                            transition: "all 0.2s ease",
-                        }}>
+                        <span key={m} className="px-3 py-1 bg-primary/5 border border-primary/10 rounded-full text-[9px] font-black uppercase tracking-widest text-primary/60 hover:text-primary hover:border-primary/30 transition-all cursor-default">
                             {m}
                         </span>
                     ))}

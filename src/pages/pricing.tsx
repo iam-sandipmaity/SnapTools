@@ -2,7 +2,9 @@ import React from "react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
+import { Check, Sparkles, Command, ShieldCheck, Zap, ArrowRight, ArrowUpRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 const PricingTier = ({
   title,
@@ -11,6 +13,7 @@ const PricingTier = ({
   features,
   buttonText,
   highlighted = false,
+  delay = "0s"
 }: {
   title: string;
   price: string;
@@ -18,33 +21,59 @@ const PricingTier = ({
   features: string[];
   buttonText: string;
   highlighted?: boolean;
+  delay?: string;
 }) => (
   <div
-    className={`rounded-2xl p-6 ${
+    className={cn(
+      "group relative rounded-[3rem] p-10 transition-all duration-500 animate-fade-in-up flex flex-col h-full",
       highlighted
-        ? "bg-primary text-primary-foreground shadow-lg border-primary"
-        : "bg-card border"
-    }`}
+        ? "bg-black dark:bg-white text-white dark:text-black shadow-2xl scale-105 z-10"
+        : "bg-white/50 dark:bg-white/[0.02] border border-black/5 dark:border-white/5 backdrop-blur-xl hover:bg-white dark:hover:bg-white/[0.04]"
+    )}
+    style={{ animationDelay: delay }}
   >
-    <h3 className="text-2xl font-bold">{title}</h3>
-    <p className="mt-2 text-sm opacity-90">{description}</p>
-    <div className="mt-4 flex items-baseline">
-      <span className="text-4xl font-bold">{price}</span>
-      {price !== "Free" && <span className="ml-1 text-sm">/month</span>}
+    {highlighted && (
+      <div className="absolute top-8 right-8">
+        <div className="bg-primary px-4 py-1.5 rounded-full flex items-center gap-2">
+          <Sparkles className="w-3 h-3 text-white" />
+          <span className="text-[10px] font-black uppercase tracking-widest text-white">Most Popular</span>
+        </div>
+      </div>
+    )}
+
+    <div className="mb-10">
+      <h3 className="text-2xl font-serif font-black tracking-tight mb-2">{title}</h3>
+      <p className={cn("text-sm opacity-60 leading-relaxed", highlighted ? "" : "")}>{description}</p>
     </div>
-    <ul className="mt-6 space-y-4">
+
+    <div className="mb-12">
+      <div className="flex items-baseline gap-1">
+        <span className="text-6xl font-serif font-black tracking-tighter">{price}</span>
+        {price !== "Free" && <span className="text-xs font-black uppercase tracking-widest opacity-40">/ Month</span>}
+      </div>
+    </div>
+
+    <ul className="space-y-5 mb-12 flex-grow">
       {features.map((feature) => (
-        <li key={feature} className="flex items-start">
-          <Check className="h-5 w-5 shrink-0" />
-          <span className="ml-3 text-sm">{feature}</span>
+        <li key={feature} className="flex items-start gap-3 group/item">
+          <div className={cn("mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0", highlighted ? "bg-white/20 dark:bg-black/10" : "bg-primary/10")}>
+            <Check className={cn("h-3 w-3", highlighted ? "text-white dark:text-black" : "text-primary")} />
+          </div>
+          <span className="text-sm font-medium opacity-80 group-hover/item:opacity-100 transition-all cursor-default">{feature}</span>
         </li>
       ))}
     </ul>
+
     <Button
-      className={`mt-8 w-full ${highlighted ? "bg-background text-primary hover:bg-background/90" : ""}`}
-      variant={highlighted ? "secondary" : "default"}
+      className={cn(
+        "h-16 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all",
+        highlighted
+          ? "bg-primary text-white hover:bg-primary/90 hover:scale-[1.02]"
+          : "bg-black dark:bg-white text-white dark:text-black hover:scale-[1.02]"
+      )}
     >
       {buttonText}
+      {highlighted ? <ArrowRight className="ml-2 w-4 h-4" /> : <ArrowUpRight className="ml-2 w-4 h-4" />}
     </Button>
   </div>
 );
@@ -52,75 +81,119 @@ const PricingTier = ({
 const Pricing = () => {
   const tiers = [
     {
-      title: "Free",
+      title: "Discovery",
       price: "Free",
-      description: "Perfect for trying out our tools",
+      description: "Experiment with our ecosystem core and standard modules.",
       features: [
-        "Access to basic tools",
-        "Limited conversions per day",
-        "Standard support",
-        "Basic analytics",
+        "100+ standard browser tools",
+        "Limited cloud processing bits",
+        "Standard latency guarantees",
+        "Public node community access",
+        "Basic technical docs"
       ],
-      buttonText: "Get Started",
+      buttonText: "Start Experimenting",
+      delay: "0.1s"
     },
     {
-      title: "Pro",
+      title: "Professional",
       price: "$9.99",
-      description: "Best for professionals and small teams",
+      description: "Engineered for solo architects and technical leads.",
       features: [
-        "All free features",
-        "Unlimited conversions",
-        "Priority support",
-        "Advanced analytics",
-        "API access",
+        "All Discovery features",
+        "Unlimited client-side processing",
+        "Priority edge-network routing",
+        "Early access to beta modules",
+        "Advanced technical support",
+        "Hardware-accelerated logic"
       ],
-      buttonText: "Start Pro Trial",
+      buttonText: "Authorize Access",
       highlighted: true,
+      delay: "0.2s"
     },
     {
       title: "Enterprise",
       price: "$29.99",
-      description: "For large organizations with custom needs",
+      description: "Customized infrastructure for resilient organizations.",
       features: [
-        "All pro features",
-        "Custom integrations",
-        "24/7 dedicated support",
-        "Advanced security features",
-        "Custom branding",
-        "Team management",
+        "All Professional features",
+        "Multi-region deployment control",
+        "Dedicated infrastructure node",
+        "Custom module development",
+        "SLA-managed 24/7 support",
+        "White-labeled instance options"
       ],
-      buttonText: "Contact Sales",
+      buttonText: "Secure Integration",
+      delay: "0.3s"
     },
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background selection:bg-primary/10">
       <Header />
-      <main className="flex-grow container py-16">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">Simple, Transparent Pricing</h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Choose the perfect plan for your needs. All plans include access to our core features.
-          </p>
-        </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {tiers.map((tier) => (
-            <PricingTier key={tier.title} {...tier} />
-          ))}
-        </div>
+      <main className="flex-grow pt-32 pb-40 relative overflow-hidden">
+        {/* Ambient Gradients */}
+        <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-primary/5 blur-[140px] rounded-full -translate-y-1/2 pointer-events-none -z-10" />
+        <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full translate-y-1/2 pointer-events-none -z-10" />
 
-        <div className="mt-16 text-center">
-          <h2 className="text-2xl font-bold mb-4">Need something different?</h2>
-          <p className="text-muted-foreground mb-6">
-            Contact us for custom pricing options tailored to your specific requirements.
-          </p>
-          <Button variant="outline" size="lg">
-            Contact Sales
-          </Button>
+        <div className="container max-w-7xl mx-auto px-6 relative z-10">
+
+          {/* HEADER */}
+          <header className="max-w-4xl mx-auto text-center mb-24 animate-fade-in-up">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary font-black text-[10px] uppercase tracking-widest mb-8">
+              <ShieldCheck className="w-3 h-3" />
+              Scale Securely
+            </div>
+            <h1 className="text-6xl md:text-8xl font-serif font-black tracking-tighter mb-8 leading-[0.9]">
+              Elite <br />
+              <em className="italic font-light text-primary">Infrastucture</em>
+            </h1>
+            <p className="text-xl text-muted-foreground/80 leading-relaxed max-w-2xl mx-auto">
+              Select the plan that aligns with your operational requirements. From standard experiments to enterprise-grade execution.
+            </p>
+          </header>
+
+          {/* TIERS GRID */}
+          <div className="grid md:grid-cols-3 gap-8 mb-40 items-stretch">
+            {tiers.map((tier) => (
+              <PricingTier key={tier.title} {...tier} />
+            ))}
+          </div>
+
+          {/* FOOTER CTA */}
+          <section className="text-center animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+            <div className="inline-flex items-center gap-4 p-8 rounded-[3rem] bg-muted/30 dark:bg-white/[0.01] border border-black/5 dark:border-white/10 backdrop-blur-3xl shadow-lg">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <Command size={24} />
+              </div>
+              <div className="text-left py-2">
+                <h4 className="text-xl font-bold tracking-tight mb-1">Require a bespoke architecture?</h4>
+                <p className="text-sm text-muted-foreground">Our engineering leads are available for custom orchestration discussions.</p>
+              </div>
+              <div className="ml-8">
+                <Link to="/contact">
+                  <Button variant="outline" className="h-14 px-8 rounded-xl font-black text-[10px] uppercase tracking-widest border-primary/20 hover:bg-primary hover:text-white transition-all">
+                    Contact Protocols
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </section>
+
         </div>
       </main>
+
       <Footer />
+
+      <style>{`
+        @keyframes fade-in-up {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+          animation: fade-in-up 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+      `}</style>
     </div>
   );
 };

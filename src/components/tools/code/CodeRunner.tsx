@@ -11,7 +11,7 @@ const CodeRunner: React.FC = () => {
   };
 
   return (
-    <Card 
+    <Card
       className="p-8 text-center bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -27,9 +27,9 @@ const CodeRunner: React.FC = () => {
       <p className="mb-8 text-muted-foreground text-lg">
         Execute your code instantly in our dedicated cloud environment for optimal performance and security
       </p>
-      <Button 
-        onClick={handleRedirect} 
-        size="lg" 
+      <Button
+        onClick={handleRedirect}
+        size="lg"
         className={`group transition-all duration-300 ${isHovered ? 'scale-105' : ''}`}
       >
         <span>Launch Code Runner</span>

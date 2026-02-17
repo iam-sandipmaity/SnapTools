@@ -23,15 +23,15 @@ const ToolsSearchBar = ({
   };
 
   return (
-    <div className={cn("relative flex w-full max-w-lg items-center", className)}>
+    <div className={cn("relative flex w-full items-center", className)}>
       <div className="relative w-full">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-5 w-5" />
+        <Search className="absolute left-0 top-1/2 -translate-y-1/2 text-muted-foreground/40 h-5 w-5" />
         <Input
           type="text"
           value={query}
           onChange={handleChange}
           placeholder={placeholder}
-          className="pl-10 h-12 rounded-full bg-background border-input shadow-sm"
+          className="pl-8 h-12 rounded-none bg-transparent border-none shadow-none text-lg font-medium focus-visible:ring-0 focus:outline-none placeholder:text-muted-foreground/30"
         />
       </div>
     </div>

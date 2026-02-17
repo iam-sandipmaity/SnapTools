@@ -1,13 +1,25 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import FeatureCard from "@/components/feature-card";
-import { Heart, CreditCard, Coffee, Gift, AlertTriangle } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
+import {
+  Heart,
+  CreditCard,
+  Coffee,
+  Gift,
+  AlertTriangle,
+  Command,
+  ChevronRight,
+  ShieldCheck,
+  Zap,
+  Globe,
+  ArrowRight,
+  Smile,
+  ShieldQuestion
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-
 
 declare const Razorpay: any;
 
@@ -46,83 +58,6 @@ const DonationPage = () => {
     return "";
   };
 
-
-  
-  const initializeRazorpay = (amount: number) => {
-    const options = {
-      key: "rzp_live_TovZnWYZRmxQm9",
-      // key: import.meta.env.RAZORPAY_KEY_ID,
-      amount: amount * 100, // Razorpay expects amount in paise
-      currency: "INR",
-      name: "SnapTools",
-      description: message ? `${message}` : "Donation to SnapTools",
-      handler: function(response: any) {
-        console.log("Payment successful", response);
-        const paymentDetails = {
-          razorpay_payment_id: response.razorpay_payment_id,
-          amount: amount.toString(),
-          currency: "INR",
-          status: "Successful",
-          timestamp: new Date().toLocaleString(),
-          name: name,
-          email: email,
-          mobile: mobile,
-          message: message
-        };
-        navigate('/payment-success', { state: { paymentDetails } });
-      },
-      prefill: isAnonymous ? {} : {
-        name,
-        email,
-        contact: mobile
-      },
-      theme: {
-        color: "#6366f1"
-      },
-      modal: {
-        confirm_close: true,
-        escape: true,
-        handleback: true
-      },
-      retry: {
-        enabled: true,
-        max_count: 3
-      },
-      timeout: 300,
-      config: {
-        display: {
-          blocks: {
-            utib: {
-              name: "Pay using AXIS Bank",
-              instruments: [{
-                method: "card",
-                issuers: ["UTIB"]
-              }, {
-                method: "netbanking",
-                banks: ["UTIB"]
-              }]
-            }
-          },
-          sequence: ["block.utib"],
-          preferences: {
-            show_default_blocks: true
-          }
-        }
-      }
-    };
-
-    const rzp = new Razorpay(options);
-    rzp.on('payment.failed', function (response: any){
-      console.error('Payment failed:', response.error);
-      toast({
-        title: "Payment Failed",
-        description: "Please try again or use a different payment method.",
-        variant: "destructive"
-      });
-    });
-    rzp.open();
-  };
-
   const generateRandomMobile = () => {
     return '+919999999999';
   };
@@ -134,33 +69,31 @@ const DonationPage = () => {
         email: email ? "" : "Email is required",
         mobile: mobile ? "" : "Mobile number is required"
       });
+      toast({
+        title: "Information Required",
+        description: "Please fill in your details to proceed with the donation.",
+        variant: "destructive"
+      });
       return;
     }
-    
+
     if (isAnonymous && !confirmAnonymous) {
-      setError("Please confirm that you understand this is an anonymous donation without a receipt");
+      setError("Please confirm the anonymous donation terms");
       return;
     }
 
     let currentMobile = mobile;
     if (isAnonymous && useRandomMobile) {
       currentMobile = generateRandomMobile();
-      setMobile(currentMobile);
     }
+
     try {
-      // Update mobile state before initializing payment
-      if (isAnonymous && useRandomMobile) {
-        currentMobile = generateRandomMobile();
-        setMobile(currentMobile);
-      }
-      
-      // Initialize payment with updated mobile number
       const options = {
         key: "rzp_live_TovZnWYZRmxQm9",
         amount: amount * 100,
         currency: "INR",
         name: "SnapTools",
-        description: message ? `${message}` : "Donation to SnapTools",
+        description: message ? `${message}` : "Support SnapTools Innovation",
         prefill: isAnonymous ? {
           contact: useRandomMobile ? currentMobile : undefined
         } : {
@@ -168,8 +101,7 @@ const DonationPage = () => {
           email,
           contact: mobile
         },
-        handler: function(response) {
-          console.log("Payment successful", response);
+        handler: function (response: any) {
           const paymentDetails = {
             razorpay_payment_id: response.razorpay_payment_id,
             amount: amount.toString(),
@@ -184,33 +116,26 @@ const DonationPage = () => {
           navigate('/payment-success', { state: { paymentDetails } });
         },
         theme: {
-          color: "#6366f1"
+          color: "#000000"
         },
         modal: {
           confirm_close: true,
           escape: true,
           handleback: true
-        },
-        retry: {
-          enabled: true,
-          max_count: 3
-        },
-        timeout: 300
+        }
       };
 
       const rzp = new Razorpay(options);
-      rzp.on('payment.failed', function (response){
-        console.error('Payment failed:', response.error);
+      rzp.on('payment.failed', function (response: any) {
         toast({
-          title: "Payment Failed",
-          description: "Please try again or use a different payment method.",
+          title: "Transaction Refused",
+          description: "Your payment could not be processed. Please try another method.",
           variant: "destructive"
         });
       });
       rzp.open();
     } catch (error) {
-      setError("Failed to initialize payment. Please try again.");
-      console.error("Razorpay initialization error:", error);
+      setError("Gateway Error: Could not initialize secure payment.");
     }
   };
 
@@ -223,15 +148,15 @@ const DonationPage = () => {
     }
     const amount = parseFloat(value);
     if (isNaN(amount)) {
-      setError("Please enter a valid number");
+      setError("Numeric values only");
       return;
     }
     if (amount > 1000) {
-      setError("Amount cannot exceed ₹1,000");
+      setError("Maximum donation cap: ₹1,000");
       return;
     }
     if (amount <= 0) {
-      setError("Amount must be greater than 0");
+      setError("Minimum contribution: ₹1");
       return;
     }
     setCustomAmount(value);
@@ -239,212 +164,267 @@ const DonationPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background selection:bg-primary/10">
       <Header />
-      <div className="container mx-auto py-20 px-4 flex-grow ">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">Support SnapTools</h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Your donations help us maintain and improve SnapTools, keeping it free and accessible for everyone.
-        </p>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-        <FeatureCard
-          icon={Heart}
-          title="Community Support"
-          description="Your donation helps maintain our servers and infrastructure."
-        />
-        <FeatureCard
-          icon={Coffee}
-          title="Buy Us Coffee"
-          description="Support our developers who work hard to bring you new features."
-        />
-        <FeatureCard
-          icon={Gift}
-          title="Enable Innovation"
-          description="Help us develop new tools and improve existing ones."
-        />
-      </div>
+      <main className="flex-grow pt-32 pb-40 relative overflow-hidden">
+        {/* Decorative Background Elements */}
+        <div className="absolute top-0 right-0 w-1/3 h-[800px] bg-primary/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-1/4 h-[600px] bg-primary/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
-      <div className="max-w-2xl mx-auto bg-card rounded-lg p-8 shadow-lg">
-        <div className="flex justify-center gap-4 mb-8">
-          <Button
-            variant={isAnonymous ? "default" : "outline"}
-            onClick={() => {
-              setIsAnonymous(true);
-              setError("");
-              setFormErrors({ name: "", email: "", mobile: "" });
-            }}
-          >
-            Anonymous Donation
-          </Button>
-          <Button
-            variant={!isAnonymous ? "default" : "outline"}
-            onClick={() => {
-              setIsAnonymous(false);
-              setError("");
-              setConfirmAnonymous(false);
-            }}
-          >
-            Regular Donation
-          </Button>
-        </div>
+        <div className="container max-w-7xl mx-auto px-6 relative z-10">
 
-        {!isAnonymous && (
-          <>
-            <h2 className="text-2xl font-semibold mb-6 text-center">Donor Information</h2>
-        <div className="space-y-4 mb-8">
-          <div>
-            <Input
-              type="text"
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-                setFormErrors(prev => ({ ...prev, name: e.target.value ? "" : "Name is required" }));
-              }}
-              placeholder="Your Name"
-              className="w-full"
-            />
-            {formErrors.name && <p className="text-destructive text-sm mt-1">{formErrors.name}</p>}
-          </div>
-          <div>
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setFormErrors(prev => ({ ...prev, email: validateEmail(e.target.value) }));
-              }}
-              placeholder="Your Email"
-              className="w-full"
-            />
-            {formErrors.email && <p className="text-destructive text-sm mt-1">{formErrors.email}</p>}
-          </div>
-          <div>
-            <Input
-              type="tel"
-              value={mobile}
-              onChange={(e) => {
-                setMobile(e.target.value);
-                setFormErrors(prev => ({ ...prev, mobile: e.target.value ? "" : "Mobile number is required" }));
-              }}
-              placeholder="<countrycode>number (e.g. +919999999999)"
-              className="w-full"
-            />
-            {formErrors.mobile && <p className="text-destructive text-sm mt-1">{formErrors.mobile}</p>}
-          </div>
-          <div>
-            <Input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Add a special message (optional)"
-              className="w-full"
-            />
-          </div>
-        </div>
-        </>)}
-
-        {isAnonymous && (
-          <div className="mb-8">
-            <h2 className="text-2xl font-semibold mb-6 text-center">Anonymous Donation</h2>
-            <div className="flex items-center gap-2 mb-4">
-              <input
-                type="checkbox"
-                id="anonymous-confirm"
-                checked={confirmAnonymous}
-                onChange={(e) => {
-                  setConfirmAnonymous(e.target.checked);
-                  setError("");
-                }}
-                className="mt-1 w-5 h-5 cursor-pointer"
-              />
-              <label htmlFor="anonymous-confirm" className="text-sm text-muted-foreground cursor-pointer">
-                I understand this is an anonymous donation. And Donation slip will be anonymous too. 
-              </label>
+          {/* HERO SECTION */}
+          <header className="max-w-3xl mx-auto text-center mb-24 animate-fade-in-up">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary font-black text-[10px] uppercase tracking-widest mb-8">
+              <Heart className="w-3 h-3 fill-current" />
+              Empower Innovation
             </div>
-            <div className="flex items-start gap-2 mb-4">
-              <input
-                type="checkbox"
-                id="random-mobile"
-                checked={useRandomMobile}
-                onChange={(e) => setUseRandomMobile(e.target.checked)}
-                className="mt-1 w-5 h-5 cursor-pointer"
-              />
-              <label htmlFor="random-mobile" className="text-sm font-semibold text-yellow-500 dark:text-yellow-400 flex items-center gap-2">
-                <AlertTriangle className="h-4 w-4" />
-                Use a random mobile number for payment (Recommended for enhanced privacy)
-              </label>
-            </div>
-            {error && <p className="text-destructive text-sm mb-4">{error}</p>}
-          </div>
-        )}
+            <h1 className="text-6xl md:text-8xl font-serif font-black tracking-tighter mb-8 leading-[0.9]">
+              Support the <br />
+              <em className="italic font-light text-primary">Mission</em>
+            </h1>
+            <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+              SnapTools is fueled by community support. Your contribution keeps our high-performance infrastructure alive and free for everyone.
+            </p>
+          </header>
 
-        <h2 className="text-2xl font-semibold mb-6 text-center">Choose Amount</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          {[5, 10, 25, 50].map((amount) => (
-            <Button
-              key={amount}
-              variant="outline"
-              className="h-16 text-lg"
-              onClick={() => handleDonate(amount)}
-            >
-              ₹{amount}
-            </Button>
-          ))}
-        </div>
-        <div className="flex justify-center">
-          <Button
-            size="lg"
-            className="w-full md:w-auto px-8"
-            onClick={() => setShowCustomAmount(true)}
-          >
-            <CreditCard className="mr-2 h-4 w-4" />
-            Custom Amount
-          </Button>
-        </div>
+          <div className="grid lg:grid-cols-12 gap-16 items-start">
 
-        {showCustomAmount && (
-          <div className="mt-6">
-            <div className="relative max-w-xs mx-auto">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                ₹
-              </span>
-              <Input
-                type="number"
-                value={customAmount}
-                onChange={handleCustomAmountChange}
-                className="pl-7"
-                placeholder="Enter amount"
-                step="0.01"
-              />
+            {/* LEFT COLUMN: IMPACT & CARDS */}
+            <div className="lg:col-span-12 grid md:grid-cols-3 gap-8 mb-16 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+              {[
+                { icon: Globe, title: "Global Edge", desc: "Help us maintain our worldwide CDN for millisecond tool latency." },
+                { icon: ShieldCheck, title: "Zero Privacy", desc: "Support developers who prioritize your data security over profit." },
+                { icon: Zap, title: "Fast Dev", desc: "Accelerate the development of and release of specialized technical tools." }
+              ].map((item, i) => (
+                <div key={i} className="group p-8 rounded-[2rem] border border-black/5 dark:border-white/5 bg-white/50 dark:bg-white/[0.02] backdrop-blur-xl hover:bg-white dark:hover:bg-white/[0.04] transition-all duration-500 shadow-sm">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-6 transition-transform group-hover:scale-110">
+                    <item.icon className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 tracking-tight">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
             </div>
-            {error && (
-              <p className="text-destructive text-sm mt-2 text-center">{error}</p>
-            )}
-            <Button
-              className="mt-4 mx-auto block"
-              onClick={() => handleDonate(parseFloat(customAmount))}
-              disabled={!!error || !customAmount}
-            >
-              Proceed to Payment
-            </Button>
+
+            {/* DONATION INTERFACE AREA */}
+            <div className="lg:col-span-7 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+              <div className="bg-white dark:bg-black/20 border border-black/5 dark:border-white/5 rounded-[3rem] p-8 md:p-12 shadow-2xl">
+
+                {/* Mode Selector */}
+                <div className="flex p-1.5 bg-muted/50 dark:bg-white/[0.03] rounded-2xl mb-12">
+                  <button
+                    onClick={() => setIsAnonymous(false)}
+                    className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${!isAnonymous ? "bg-white dark:bg-black shadow-lg text-primary" : "text-muted-foreground hover:text-foreground"}`}
+                  >
+                    Regular Donation
+                  </button>
+                  <button
+                    onClick={() => setIsAnonymous(true)}
+                    className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${isAnonymous ? "bg-white dark:bg-black shadow-lg text-primary" : "text-muted-foreground hover:text-foreground"}`}
+                  >
+                    Anonymous Contribution
+                  </button>
+                </div>
+
+                <div className="space-y-10">
+                  {/* FORM FIELDS */}
+                  {!isAnonymous && (
+                    <div className="space-y-6">
+                      <h3 className="text-2xl font-serif font-black tracking-tight">Donor Profile</h3>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <label className="text-[10px] uppercase font-black tracking-widest text-muted-foreground ml-2">Display Name</label>
+                          <Input
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="Alex Newman"
+                            className="bg-muted/30 dark:bg-white/[0.01] border-border/50 h-14 rounded-2xl px-6 focus:ring-primary/20"
+                          />
+                          {formErrors.name && <p className="text-[10px] text-destructive font-bold uppercase ml-2">{formErrors.name}</p>}
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] uppercase font-black tracking-widest text-muted-foreground ml-2">Secure Email</label>
+                          <Input
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="alex@example.com"
+                            className="bg-muted/30 dark:bg-white/[0.01] border-border/50 h-14 rounded-2xl px-6 focus:ring-primary/20"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] uppercase font-black tracking-widest text-muted-foreground ml-2">Contact Protocol (For updates)</label>
+                        <Input
+                          value={mobile}
+                          onChange={(e) => setMobile(e.target.value)}
+                          placeholder="+91 0000 0000 00"
+                          className="bg-muted/30 dark:bg-white/[0.01] border-border/50 h-14 rounded-2xl px-6 focus:ring-primary/20"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {isAnonymous && (
+                    <div className="space-y-8 p-8 rounded-3xl bg-primary/5 border border-primary/10">
+                      <div className="flex items-start gap-4">
+                        <ShieldCheck className="w-6 h-6 text-primary shrink-0 mt-1" />
+                        <div>
+                          <h4 className="font-bold mb-2">Privacy Shield Active</h4>
+                          <p className="text-sm text-muted-foreground leading-relaxed">Your identity will be scrubbed from our public supporter records. No receipt will be generated for your email.</p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <label className="flex items-center gap-3 cursor-pointer group">
+                          <div className="relative">
+                            <input
+                              type="checkbox"
+                              className="peer sr-only"
+                              checked={confirmAnonymous}
+                              onChange={(e) => setConfirmAnonymous(e.target.checked)}
+                            />
+                            <div className="w-6 h-6 rounded-lg border-2 border-border peer-checked:bg-primary peer-checked:border-primary transition-all" />
+                            <ChevronRight className="absolute inset-0 w-4 h-4 m-auto text-white opacity-0 peer-checked:opacity-100 transition-opacity" />
+                          </div>
+                          <span className="text-sm font-medium">I understand the anonymous protocol</span>
+                        </label>
+
+                        <label className="flex items-center gap-3 cursor-pointer group">
+                          <input
+                            type="checkbox"
+                            className="peer sr-only"
+                            checked={useRandomMobile}
+                            onChange={(e) => setUseRandomMobile(e.target.checked)}
+                          />
+                          <div className="w-6 h-6 rounded-lg border-2 border-border peer-checked:bg-amber-500 peer-checked:border-amber-500 transition-all" />
+                          <AlertTriangle className="absolute inset-x-8 w-4 h-4 text-white opacity-0 peer-checked:opacity-100 transition-opacity" />
+                          <span className="text-sm font-medium text-amber-600 dark:text-amber-400">Randomize payment identifier</span>
+                        </label>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="space-y-6">
+                    <div className="flex justify-between items-end">
+                      <h3 className="text-2xl font-serif font-black tracking-tight">Select Amount</h3>
+                      {!showCustomAmount ? (
+                        <button
+                          onClick={() => setShowCustomAmount(true)}
+                          className="text-[10px] font-black uppercase tracking-[0.2em] text-primary hover:underline"
+                        >
+                          Different Amount?
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => { setShowCustomAmount(false); setCustomAmount(""); }}
+                          className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground"
+                        >
+                          Back toPresets
+                        </button>
+                      )}
+                    </div>
+
+                    {!showCustomAmount ? (
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        {[5, 10, 25, 50].map((amt) => (
+                          <button
+                            key={amt}
+                            onClick={() => handleDonate(amt)}
+                            className="h-20 rounded-2xl border border-black/5 dark:border-white/5 bg-muted/30 dark:bg-white/[0.02] hover:bg-primary hover:text-white transition-all duration-300 font-serif font-black text-2xl group relative overflow-hidden"
+                          >
+                            <span className="relative z-10 transition-transform group-hover:scale-110 block">₹{amt}</span>
+                            <div className="absolute inset-0 bg-primary/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="relative group">
+                        <div className="absolute left-6 top-1/2 -translate-y-1/2 text-2xl font-serif font-black text-primary">₹</div>
+                        <Input
+                          type="number"
+                          value={customAmount}
+                          onChange={handleCustomAmountChange}
+                          placeholder="0.00"
+                          className="h-24 pl-14 pr-40 text-4xl font-serif font-black bg-muted/30 dark:bg-white/[0.01] border-primary/20 rounded-3xl focus:ring-primary/20 text-foreground"
+                        />
+                        <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                          <Button
+                            onClick={() => handleDonate(parseFloat(customAmount))}
+                            disabled={!!error || !customAmount}
+                            className="h-16 px-8 rounded-2xl font-black text-[10px] uppercase tracking-widest"
+                          >
+                            Contribute <ArrowRight className="w-4 h-4 ml-2" />
+                          </Button>
+                        </div>
+                        {error && <p className="text-[10px] text-destructive font-bold uppercase mt-2 ml-4">{error}</p>}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="pt-8 border-t border-border">
+                    <p className="text-[10px] text-center text-muted-foreground uppercase font-black tracking-widest leading-relaxed">
+                      Securely processed by Razorpay Engine. <br />
+                      SnapTools is a community-owned platform. No personal data is harvested.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN: ADDITIONAL CONTEXT */}
+            <div className="lg:col-span-5 space-y-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+
+              <div className="bg-primary/5 dark:bg-primary/[0.02] border border-primary/10 rounded-[3rem] p-10 relative overflow-hidden">
+                <Smile className="absolute -right-10 -bottom-10 w-48 h-48 text-primary opacity-[0.05]" />
+                <h3 className="text-2xl font-serif font-black mb-6 tracking-tight">The Impact</h3>
+                <ul className="space-y-6">
+                  {[
+                    "Keep SnapTools free of intrusive corporate ads.",
+                    "Fund development of the Pro suite of design validators.",
+                    "Expand our engineering team for 24/7 technical support."
+                  ].map((text, i) => (
+                    <li key={i} className="flex gap-4 group">
+                      <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                        <ChevronRight className="w-3 h-3" />
+                      </div>
+                      <span className="text-sm font-medium text-foreground/80 leading-relaxed">{text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="p-10 rounded-[3rem] border border-border bg-white/50 dark:bg-white/[0.01] backdrop-blur-3xl">
+                <ShieldQuestion className="w-10 h-10 text-primary mb-6" />
+                <h3 className="text-2xl font-serif font-black mb-4 tracking-tight">Questions?</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-10">
+                  Encountering an issue with the payment gateway or want to discuss a corporate sponsorship? Our engineers are ready to assist.
+                </p>
+                <Link to="/contact">
+                  <Button variant="outline" className="w-full h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest border-primary/20 hover:bg-primary hover:text-white transition-all">
+                    Technical Support Panel
+                  </Button>
+                </Link>
+              </div>
+
+            </div>
+
           </div>
-        )}
-      <div className="flex justify-center gap-4 mt-6">
-        <Button
-          variant="outline"
-          size="lg"
-          className="w-full md:w-auto px-8"
-          onClick={() => navigate('/contact')}
-        >
-          Having problems?
-        </Button>
-      </div>
-      </div>
-      </div>
+        </div>
+      </main>
+
       <Footer />
+
+      <style>{`
+        @keyframes fade-in-up {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+          animation: fade-in-up 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+      `}</style>
     </div>
   );
 };
