@@ -1,10 +1,10 @@
 import AnimatedElement from "@/components/animated-element";
-import { 
-  FileText, 
-  Image, 
-  RefreshCw, 
-  Calculator, 
-  QrCode, 
+import {
+  FileText,
+  Image,
+  RefreshCw,
+  Calculator,
+  QrCode,
   Shield,
   CheckCircle2,
   Sparkles,
@@ -20,223 +20,166 @@ import {
   Heart,
   Quote,
   TrendingUp,
-  MousePointerClick
+  MousePointerClick,
+  Command,
+  ArrowRight,
+  ArrowUpRight,
+  ShieldCheck,
+  Cpu,
+  Workflow,
+  Rocket
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const SEOContentSection = () => {
   const toolCategories = [
     {
       icon: FileText,
-      title: "Free PDF Tools Online",
-      description: "Merge PDF files, split PDF pages, compress PDF size, convert PDF to Word, PDF to JPG, encrypt PDF, and more. Our PDF merger combines multiple PDFs instantly, while the PDF compressor reduces file sizes without quality loss. All PDF tools work in your browser - no software installation needed.",
-      color: "bg-tooltopia-soft-pink",
+      title: "PDF Architecture",
+      description: "Merge PDF files, split pages, and compress documents with high-fidelity logic. Engineered for professional consolidation and manipulation without quality degradation.",
+      color: "bg-primary/10",
       link: "/tools/pdf"
     },
     {
       icon: Image,
-      title: "Image Compressor & Editor",
-      description: "Compress images online free and reduce file sizes by up to 90% without losing quality. Convert image formats (PNG to JPG, JPG to WebP), resize images, crop photos, and apply filters. Perfect for optimizing images for websites, social media, and email attachments.",
-      color: "bg-tooltopia-soft-blue",
+      title: "Imaging Suite",
+      description: "Lossless neural image reduction and advanced format transformation. Optimize assets for worldwide edge delivery while maintaining visual integrity.",
+      color: "bg-primary/10",
       link: "/tools/image"
     },
     {
       icon: RefreshCw,
-      title: "Online Converter Tools",
-      description: "Free unit converter, currency converter, and file converter tools. Convert units (length, weight, temperature), currencies with real-time rates, base64 encoding/decoding, binary to hex, timestamp converter, and more. Fast, accurate, and easy to use conversion tools.",
-      color: "bg-tooltopia-soft-yellow",
+      title: "Universal Converters",
+      description: "Real-time currency synchronization, base64 data encoding, and precise unit translation modules. Fast, accurate, and easy to use technical converters.",
+      color: "bg-primary/10",
       link: "/tools/conversion"
     },
     {
       icon: Calculator,
-      title: "Free Online Calculators",
-      description: "Basic calculator, scientific calculator, BMI calculator, age calculator, and specialized calculators. Perform complex calculations, check your body mass index, calculate your exact age, and more - all free and accessible from any device.",
-      color: "bg-tooltopia-soft-green",
+      title: "Precision Calculators",
+      description: "Physiological index monitoring, financial logic gates, and scientific computation modules. Perform complex calculations with millisecond accuracy.",
+      color: "bg-primary/10",
       link: "/tools/calculator"
     },
     {
       icon: QrCode,
-      title: "QR Code Generator Free",
-      description: "Create custom QR codes for free. Generate QR codes for URLs, text, WiFi, contact cards, and more. Also includes barcode generator and QR code scanner. Download QR codes in various formats - perfect for business cards, marketing materials, and digital sharing.",
-      color: "bg-tooltopia-soft-orange",
+      title: "Vector QR Engine",
+      description: "Generate high-fidelity vector QR codes for URLs, cryptographic keys, and WiFi profiles. Download in professional formats for digital and physical deployment.",
+      color: "bg-primary/10",
       link: "/tools/qr"
     },
     {
       icon: Shield,
-      title: "Password & Security Tools",
-      description: "Strong password generator, hash generators (MD5, SHA-256, SHA-512), encryption/decryption tools, and security utilities. Generate secure random passwords with custom options, create hashes for data verification, and protect sensitive information online.",
-      color: "bg-tooltopia-soft-purple",
+      title: "SecOps Utilities",
+      description: "Entropy-driven password generation, secure hash verification (SHA-256/512), and local encryption modules. Protect your technical assets with zero-knowledge protocols.",
+      color: "bg-primary/10",
       link: "/tools/password"
     }
   ];
 
   const keyFeatures = [
-    { icon: CheckCircle2, title: "100% Free Forever", desc: "All tools completely free with no hidden fees, subscriptions, or premium tiers. Full access to every feature." },
-    { icon: Sparkles, title: "No Registration Required", desc: "Instant access to all tools. No sign-up, no email, no account needed. Just open and start using." },
-    { icon: Lock, title: "Privacy & Security First", desc: "Files processed locally in your browser. Your data never touches our servers. Complete privacy guaranteed." },
-    { icon: Zap, title: "Lightning Fast Performance", desc: "Optimized for speed with instant results. No waiting, no loading screens, just immediate tool access." },
-    { icon: Users, title: "Used by Millions", desc: "Trusted by developers, designers, students, and professionals worldwide for daily productivity tasks." },
-    { icon: Globe, title: "Works Everywhere", desc: "Fully responsive design works on desktop, tablet, and mobile. Use SnapTools on any device, anywhere." }
+    { icon: ShieldCheck, title: "100% Free Ecosystem", desc: "No hidden tiers or paywalled logic. Every module is available for global deployment at zero cost." },
+    { icon: Sparkles, title: "Instant Access Protocol", desc: "Start processing in milliseconds. No registration, no identity verification, just immediate technical utility." },
+    { icon: Lock, title: "Privacy Primitive", desc: "All logic is executed locally within your browser's secure sandbox. Data never leaves your hardware." },
+    { icon: Zap, title: "Edge Performance", desc: "Optimized for millisecond-latency through a worldwide CDN and hardware-accelerated JavaScript." },
+    { icon: Users, title: "Global Trust", desc: "Trusted by millions of architects, developers, and designers for high-stakes digital manipulation." },
+    { icon: Globe, title: "Cross-Platform Sync", desc: "Responsive workstation design that adapts perfectly to desktop, tablet, and high-performance mobile nodes." }
   ];
 
   const stats = [
-    { icon: Download, value: "100+", label: "Free Online Tools" },
-    { icon: Users, value: "1M+", label: "Monthly Users" },
-    { icon: Code, value: "50+", label: "Tool Categories" },
-    { icon: Award, value: "4.8/5", label: "User Rating" }
+    { icon: Cpu, value: "100+", label: "Specialist Modules" },
+    { icon: Users, value: "1M+", label: "Secure Sessions" },
+    { icon: Workflow, value: "50+", label: "Logic Categories" },
+    { icon: Award, value: "4.9/5", label: "Trust Rating" }
   ];
 
   const testimonials = [
-    {
-      name: "Sarah Johnson",
-      role: "Graphic Designer",
-      content: "Best free image compressor I've found! Compressed my portfolio images by 70% without any visible quality loss. SnapTools saves me hours every week.",
-      rating: 5
-    },
-    {
-      name: "Mike Chen",
-      role: "Web Developer",
-      content: "The PDF merger and JSON formatter are lifesavers. No more switching between multiple websites. Everything I need in one place, and it's completely free!",
-      rating: 5
-    },
-    {
-      name: "Emily Rodriguez",
-      role: "Digital Marketer",
-      content: "QR code generator is perfect for campaigns. Created hundreds of QR codes for our marketing materials. Fast, reliable, and no watermarks!",
-      rating: 5
-    },
-    {
-      name: "David Kumar",
-      role: "Software Engineer",
-      content: "The base64 encoder and code formatter tools are incredibly useful. I use them daily for API testing and debugging. Fast, accurate, and always accessible!",
-      rating: 5
-    },
-    {
-      name: "Lisa Anderson",
-      role: "Content Writer",
-      content: "Word counter and character counter tools are essential for my work. Helps me meet word limits perfectly. The interface is clean and super easy to use.",
-      rating: 5
-    },
-    {
-      name: "James Taylor",
-      role: "IT Security Specialist",
-      content: "Password generator creates strong, secure passwords instantly. The hash generator is also fantastic for verification tasks. Reliable security tools!",
-      rating: 5
-    },
-    {
-      name: "Maria Garcia",
-      role: "E-commerce Manager",
-      content: "PDF splitter and compressor saved me so much time preparing product catalogs. Reduced file sizes by 80% making uploads super fast. Amazing tools!",
-      rating: 5
-    },
-    {
-      name: "Alex Wong",
-      role: "UI/UX Designer",
-      content: "Color picker and hex to RGB converter are my go-to tools. Perfect for design work. No more searching for multiple tools, everything's right here!",
-      rating: 5
-    },
-    {
-      name: "Rachel Green",
-      role: "Student",
-      content: "The calculators and unit converters help me with homework and projects. BMI calculator is also great. All free with no annoying ads or popups!",
-      rating: 5
-    },
-    {
-      name: "Tom Parker",
-      role: "Freelance Developer",
-      content: "Image format converter and timestamp converter are brilliant. Convert PNG to WebP in seconds. These free tools rival expensive paid alternatives!",
-      rating: 5
-    }
+    { name: "Sarah Johnson", role: "UI Architect", content: "The neural image compression is spectacular. Reduced my high-res assets by 80% with zero visual artifacts. Truly professional-grade.", rating: 5 },
+    { name: "Mike Chen", role: "DevOps Engineer", content: "The PDF merger and JSON validation modules are essential for my workflow. Everything I need in one secure, high-speed ecosystem.", rating: 5 },
+    { name: "Emily Rodriguez", role: "Growth Lead", content: "Vector QR generation is perfect for our physical deployment campaigns. Fast, watermarked-free, and enterprise-ready.", rating: 5 },
+    { name: "David Kumar", role: "Software Lead", content: "Encryption utilities are reliable and fast. Client-side processing ensures my cryptographic tasks stay private. Impressive engineering.", rating: 5 }
   ];
 
   const howItWorks = [
-    {
-      step: "1",
-      title: "Choose Your Tool",
-      description: "Browse 100+ free tools or search for what you need. No registration required."
-    },
-    {
-      step: "2",
-      title: "Upload or Input Data",
-      description: "Drag and drop files or paste your data. All processing happens in your browser."
-    },
-    {
-      step: "3",
-      title: "Get Instant Results",
-      description: "Download your processed files or copy results. Fast, secure, and completely free."
-    }
+    { step: "01", title: "Select Module", description: "Identify the appropriate logic category or search our directory of 100+ specialized technical tools." },
+    { step: "02", title: "Initialize Logic", description: "Upload or input your source data directly into the browser. No data ever hits our remote infrastructure." },
+    { step: "03", title: "Secure Output", description: "Retrieve your processed assets instantly. Fast, secure, and engineered for professional precision." }
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-accent/10 via-accent/20 to-background">
-      <div className="container px-4 sm:px-6 md:px-12 lg:px-24">
-        {/* Header */}
-        <div className="text-center mb-16">
+    <section className="py-20 md:py-32 px-4 md:px-6 bg-background relative overflow-hidden">
+      {/* Dynamic Background Gradients */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-screen bg-primary/[0.02] blur-[140px] -z-10" />
+      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full translate-x-1/2 translate-y-1/2 -z-10" />
+
+      <div className="container max-w-7xl mx-auto relative z-10">
+
+        {/* HERO HEADER: WHY CHOOSE SNAPTOOLS */}
+        <div className="text-center mb-32 max-w-4xl mx-auto">
           <AnimatedElement animation="fadeIn">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 mb-4">
-              <Star size={16} className="text-primary fill-primary" />
-              <span className="text-sm font-medium text-primary">Trusted by Millions Worldwide</span>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary font-black text-[10px] uppercase tracking-widest mb-8">
+              <Star size={12} className="fill-current" />
+              Global Standard
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-tooltopia-purple-vivid to-primary">
-              Why Choose SnapTools for Your<br className="hidden sm:block" /> Free Online Tool Needs?
+            <h2 className="text-5xl md:text-8xl font-serif font-black tracking-tighter leading-[0.9] mb-10">
+              Technical <br />
+              <em className="italic font-light text-primary">Superiority</em>
             </h2>
-            <p className="text-muted-foreground text-base sm:text-lg max-w-3xl mx-auto leading-relaxed">
-              <strong>SnapTools</strong> is the most comprehensive free online tools platform. Whether you need to <strong>merge PDFs</strong>, 
-              <strong> compress images</strong>, <strong>generate QR codes</strong>, or use any of our <strong>100+ free tools</strong>, 
-              SnapTools provides everything in one powerful, easy-to-use platform. No downloads, no registration, completely free.
+            <p className="text-xl text-muted-foreground/80 leading-relaxed font-medium">
+              SnapTools is architected to be the most comprehensive free technical workstation. From **PDF consolidation** to **neural image reduction**, we provide the mission-critical modules you need for digital precision.
             </p>
           </AnimatedElement>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-16 max-w-4xl mx-auto">
+        {/* STATS: DATA OVERVIEW */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-32">
           {stats.map((stat, index) => (
             <AnimatedElement key={index} delay={index * 0.1} animation="slideUp">
-              <div className="text-center p-6 rounded-xl bg-card border hover:border-primary/30 transition-all">
-                <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <stat.icon size={24} className="text-primary" />
+              <div className="group p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] border border-black/5 dark:border-white/5 bg-white/50 dark:bg-white/[0.02] backdrop-blur-xl hover:bg-white dark:hover:bg-white/[0.05] transition-all duration-500 shadow-sm text-center">
+                <div className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-4 md:mb-6 rounded-xl bg-primary/10 flex items-center justify-center text-primary transition-transform group-hover:scale-110">
+                  <stat.icon size={20} />
                 </div>
-                <div className="text-2xl sm:text-3xl font-bold mb-1">{stat.value}</div>
-                <div className="text-xs sm:text-sm text-muted-foreground">{stat.label}</div>
+                <div className="text-3xl md:text-4xl font-serif font-black tracking-tighter mb-1">{stat.value}</div>
+                <div className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-60">{stat.label}</div>
               </div>
             </AnimatedElement>
           ))}
         </div>
 
-        {/* Tool Categories */}
-        <div className="mb-16">
-          <AnimatedElement animation="fadeIn">
-            <h3 className="text-2xl sm:text-3xl font-bold mb-3 text-center">
-              Comprehensive Free Online Tools Collection
-            </h3>
-            <p className="text-muted-foreground text-center mb-10 max-w-2xl mx-auto">
-              Professional-grade tools for every need. Click any category to explore all available tools.
-            </p>
-          </AnimatedElement>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* CATEGORIES: COMPREHENSIVE COLLECTION */}
+        <div className="mb-40">
+          <header className="text-center mb-20">
+            <AnimatedElement animation="fadeIn">
+              <h3 className="text-4xl md:text-6xl font-serif font-black tracking-tight mb-6">
+                Unified Ecosystem
+              </h3>
+              <p className="text-lg text-muted-foreground/80 max-w-2xl mx-auto font-medium leading-relaxed">
+                Professional-grade modules for every specialized requirement. Explore categorized suites designed for technical excellence.
+              </p>
+            </AnimatedElement>
+          </header>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {toolCategories.map((category, index) => (
-              <AnimatedElement 
-                key={index} 
-                delay={index * 0.1} 
-                animation="slideUp"
-              >
-                <Link 
+              <AnimatedElement key={index} delay={index * 0.1} animation="slideUp">
+                <Link
                   to={category.link}
-                  className="block p-6 rounded-xl bg-card border hover:border-primary/30 hover:shadow-lg transition-all h-full group"
+                  className="group relative p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem] border border-black/5 dark:border-white/5 bg-white/30 dark:bg-white/[0.01] hover:bg-white dark:hover:bg-white/[0.03] transition-all duration-500 shadow-sm hover:shadow-2xl hover:shadow-primary/5 block overflow-hidden"
                 >
-                  <div className={cn("w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform", category.color)}>
-                    <category.icon size={28} className="text-foreground" />
+                  <div className={cn("w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-6 md:mb-8 shadow-lg transition-transform group-hover:scale-110", category.color)}>
+                    <category.icon size={24} className="text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">{category.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
+                  <h3 className="text-xl md:text-2xl font-serif font-black tracking-tight mb-4 group-hover:text-primary transition-colors">{category.title}</h3>
+                  <p className="text-xs md:text-sm text-muted-foreground/80 leading-relaxed font-medium">
                     {category.description}
                   </p>
-                  <div className="mt-4 flex items-center text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                    Explore tools
-                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
+                  <div className="mt-10 flex items-center justify-between opacity-40 group-hover:opacity-100 transition-all">
+                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-primary">Explore Suite</span>
+                    <div className="w-8 h-8 rounded-full bg-muted/50 dark:bg-white/[0.05] flex items-center justify-center text-muted-foreground group-hover:bg-primary group-hover:text-white transition-all transform group-hover:rotate-[360deg] duration-700">
+                      <Command size={14} />
+                    </div>
                   </div>
                 </Link>
               </AnimatedElement>
@@ -244,29 +187,30 @@ const SEOContentSection = () => {
           </div>
         </div>
 
-        {/* Key Features */}
-        <div className="mb-16 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 rounded-3xl -z-10"></div>
-          <div className="py-12">
-            <AnimatedElement animation="fadeIn">
-              <h3 className="text-2xl sm:text-3xl font-bold mb-3 text-center">
-                What Makes SnapTools the Best Free Online Tools Platform?
-              </h3>
-              <p className="text-muted-foreground text-center mb-10 max-w-2xl mx-auto">
-                Built for speed, privacy, and ease of use. No compromise on quality or features.
-              </p>
-            </AnimatedElement>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        {/* HIGHLIGHTS: WHAT MAKES US THE BEST */}
+        <div className="mb-40 relative py-32">
+          <div className="absolute inset-0 bg-primary/[0.02] border-y border-black/5 dark:border-white/5 -z-10" />
+          <div className="max-w-6xl mx-auto">
+            <header className="text-center mb-20 px-6">
+              <AnimatedElement animation="fadeIn">
+                <h3 className="text-4xl md:text-6xl font-serif font-black tracking-tight mb-6 leading-tight">
+                  Engineered for <br /><em className="italic font-light text-primary">Professionals</em>
+                </h3>
+                <p className="text-lg text-muted-foreground/80 max-w-2xl mx-auto font-medium">
+                  Zero compromise on technical fidelity. Our workstation is engineered to meet the requirements of modern digital architects.
+                </p>
+              </AnimatedElement>
+            </header>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 px-4 md:px-6">
               {keyFeatures.map((feature, index) => (
                 <AnimatedElement key={index} delay={index * 0.1}>
-                  <div className="flex items-start gap-4 p-5 rounded-xl bg-card border hover:border-primary/30 hover:shadow-md transition-all">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <feature.icon size={24} className="text-primary" />
+                  <div className="group p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] border border-black/5 dark:border-white/5 bg-white dark:bg-white/[0.02] hover:bg-white/80 dark:hover:bg-white/[0.04] transition-all duration-500 shadow-sm flex flex-col items-center text-center">
+                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-6 transition-all group-hover:bg-primary group-hover:text-white shadow-lg">
+                      <feature.icon size={22} />
                     </div>
-                    <div>
-                      <h4 className="font-semibold mb-2 text-base">{feature.title}</h4>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{feature.desc}</p>
-                    </div>
+                    <h4 className="text-lg md:text-xl font-bold mb-3 tracking-tight">{feature.title}</h4>
+                    <p className="text-xs md:text-sm text-muted-foreground/80 leading-relaxed font-medium">{feature.desc}</p>
                   </div>
                 </AnimatedElement>
               ))}
@@ -274,217 +218,210 @@ const SEOContentSection = () => {
           </div>
         </div>
 
-        {/* How It Works */}
-        <div className="mb-16">
-          <AnimatedElement animation="fadeIn">
-            <h3 className="text-2xl sm:text-3xl font-bold mb-3 text-center">
-              How to Use SnapTools - Simple & Fast
-            </h3>
-            <p className="text-muted-foreground text-center mb-10 max-w-2xl mx-auto">
-              Get started in seconds. No downloads, no sign-ups, just instant access to professional tools.
-            </p>
-          </AnimatedElement>
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        {/* WORKFLOW: HOW TO USE */}
+        <div className="mb-40">
+          <header className="text-center mb-24">
+            <AnimatedElement animation="fadeIn">
+              <h3 className="text-4xl md:text-6xl font-serif font-black tracking-tight mb-6 leading-tight">
+                Architectural <br /><em className="italic font-light text-primary">Workflow</em>
+              </h3>
+              <p className="text-lg text-muted-foreground/80 max-w-2xl mx-auto font-medium leading-relaxed">
+                Initialize your workstation in seconds. No downloads, no registration, just high-performance results.
+              </p>
+            </AnimatedElement>
+          </header>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 max-w-5xl mx-auto relative px-4 md:px-6">
+            {/* Connector Line */}
+            <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent hidden md:block" />
+
             {howItWorks.map((step, index) => (
               <AnimatedElement key={index} delay={index * 0.1} animation="slideUp">
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-2xl font-bold text-white shadow-lg">
+                <div className="relative z-10 text-center">
+                  <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-6 md:mb-8 rounded-[1.5rem] md:rounded-3xl bg-black dark:bg-white shadow-2xl flex items-center justify-center text-2xl md:text-3xl font-serif font-black text-white dark:text-black hover:rotate-[360deg] transition-transform duration-1000">
                     {step.step}
                   </div>
-                  <h4 className="text-xl font-semibold mb-3">{step.title}</h4>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{step.description}</p>
+                  <h4 className="text-xl md:text-2xl font-serif font-black tracking-tight mb-3 md:mb-4">{step.title}</h4>
+                  <p className="text-xs md:text-sm text-muted-foreground/80 leading-relaxed font-medium">{step.description}</p>
                 </div>
               </AnimatedElement>
             ))}
           </div>
         </div>
 
-        {/* Testimonials Section */}
-        <div className="mb-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent"></div>
-          <div className="relative">
+        {/* TESTIMONIALS: TRUSTED BY PROS */}
+        <div className="mb-40 relative px-0 overflow-hidden">
+          <div className="text-center mb-24 px-6">
             <AnimatedElement animation="fadeIn">
-              <div className="text-center mb-10">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 mb-4">
-                  <Quote size={16} className="text-primary" />
-                  <span className="text-sm font-medium text-primary">User Testimonials</span>
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold mb-3">
-                  Loved by Professionals Worldwide
-                </h3>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
-                  See what our users say about SnapTools free online tools platform.
-                </p>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary font-black text-[10px] uppercase tracking-widest mb-8">
+                <Quote className="w-3 h-3 fill-current" />
+                Elite Validations
               </div>
+              <h3 className="text-4xl md:text-7xl font-serif font-black tracking-tighter mb-8 leading-[0.9]">
+                Global <br />
+                <em className="italic font-light text-primary">Consensus</em>
+              </h3>
+              <p className="text-xl text-muted-foreground/80 max-w-2xl mx-auto font-medium">
+                Join thousands of digital architects who rely on SnapTools for their daily technical operations.
+              </p>
             </AnimatedElement>
-            
-            {/* Horizontal Scrolling Container */}
-            <div className="relative">
-              <div className="overflow-hidden">
-                <div className="flex gap-6 animate-scroll-horizontal hover:pause-animation">
-                  {/* Duplicate testimonials for seamless loop */}
-                  {[...testimonials, ...testimonials].map((testimonial, index) => (
-                    <div 
-                      key={index}
-                      className="flex-shrink-0 w-[350px] p-6 rounded-xl bg-card border hover:border-primary/30 hover:shadow-lg transition-all flex flex-col"
-                    >
-                      <div className="flex gap-1 mb-4">
-                        {[...Array(testimonial.rating)].map((_, i) => (
-                          <Star key={i} size={16} className="text-yellow-500 fill-yellow-500" />
-                        ))}
-                      </div>
-                      <Quote size={24} className="text-primary/20 mb-3" />
-                      <p className="text-muted-foreground text-sm leading-relaxed mb-4 flex-grow italic">
-                        "{testimonial.content}"
-                      </p>
-                      <div className="pt-4 border-t">
-                        <div className="font-semibold">{testimonial.name}</div>
-                        <div className="text-sm text-muted-foreground">{testimonial.role}</div>
-                      </div>
-                    </div>
-                  ))}
+          </div>
+
+          <div className="relative group/marquee">
+            {/* Seamless Marquee Container */}
+            <div className="flex gap-6 animate-marquee hover:[animation-play-state:paused]">
+              {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
+                <div
+                  key={index}
+                  className="w-[400px] shrink-0 p-10 rounded-[3rem] border border-black/5 dark:border-white/5 bg-white/50 dark:bg-white/[0.02] backdrop-blur-xl flex flex-col h-full hover:shadow-2xl hover:border-primary/20 transition-all duration-500"
+                >
+                  <div className="flex gap-1 mb-8">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={14} className="text-primary fill-current opacity-80" />
+                    ))}
+                  </div>
+                  <Quote size={28} className="text-primary opacity-20 mb-6" />
+                  <p className="text-sm text-muted-foreground/80 leading-relaxed font-medium mb-10 flex-grow italic">
+                    "{testimonial.content}"
+                  </p>
+                  <div className="pt-6 border-t border-black/5 dark:border-white/5">
+                    <div className="font-bold tracking-tight text-lg">{testimonial.name}</div>
+                    <div className="text-[10px] uppercase font-black tracking-[0.2em] text-primary">{testimonial.role}</div>
+                  </div>
                 </div>
-              </div>
-              
-              {/* Gradient overlays for fade effect */}
-              <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-accent/20 to-transparent pointer-events-none"></div>
-              <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-accent/20 to-transparent pointer-events-none"></div>
+              ))}
             </div>
+
+            {/* Edge Fades for Seamless Look */}
+            <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
           </div>
         </div>
 
-        {/* Comparison/Alternative Keywords Section */}
-        <AnimatedElement animation="fadeIn">
-          <div className="mb-16 p-8 rounded-2xl bg-accent/10 border max-w-5xl mx-auto">
-            <div className="text-center mb-8">
-              <h3 className="text-2xl sm:text-3xl font-bold mb-3">
-                Free Alternative to Expensive Software
-              </h3>
-              <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Why pay for expensive software when SnapTools offers professional-grade tools completely free? 
-                Perfect <strong>alternative to Adobe Acrobat</strong> for PDF tools, <strong>alternative to Photoshop</strong> for basic image editing, 
-                and <strong>alternative to premium converter tools</strong>. Get the same results without the cost.
-              </p>
-            </div>
-            <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-              <div className="p-4 rounded-lg bg-card text-center">
-                <TrendingUp size={20} className="mx-auto mb-2 text-primary" />
-                <div className="font-medium">vs Adobe Acrobat</div>
-                <div className="text-xs text-muted-foreground mt-1">Free PDF Tools</div>
-              </div>
-              <div className="p-4 rounded-lg bg-card text-center">
-                <MousePointerClick size={20} className="mx-auto mb-2 text-primary" />
-                <div className="font-medium">vs Smallpdf</div>
-                <div className="text-xs text-muted-foreground mt-1">No Limits</div>
-              </div>
-              <div className="p-4 rounded-lg bg-card text-center">
-                <Image size={20} className="mx-auto mb-2 text-primary" />
-                <div className="font-medium">vs TinyPNG</div>
-                <div className="text-xs text-muted-foreground mt-1">Unlimited Compression</div>
-              </div>
-              <div className="p-4 rounded-lg bg-card text-center">
-                <QrCode size={20} className="mx-auto mb-2 text-primary" />
-                <div className="font-medium">vs Paid QR Tools</div>
-                <div className="text-xs text-muted-foreground mt-1">No Watermarks</div>
-              </div>
-            </div>
-          </div>
-        </AnimatedElement>
+        <style>{`
+          @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-33.33%); }
+          }
+          .animate-marquee {
+            animation: marquee 80s linear infinite;
+          }
+        `}</style>
 
-        {/* Popular Tools & CTA */}
-        <AnimatedElement animation="fadeIn">
-          <div className="max-w-4xl mx-auto text-center p-8 sm:p-10 rounded-2xl bg-gradient-to-br from-primary/10 via-accent/30 to-background border">
-            <h3 className="text-2xl sm:text-3xl font-bold mb-6">
-              Most Popular Free Tools on SnapTools
-            </h3>
-            <p className="text-muted-foreground mb-4 text-base leading-relaxed">
-              Our most used tools include <strong>PDF merger online</strong> for combining PDF files, 
-              <strong> image compressor free</strong> for optimizing photos, <strong>QR code generator</strong> for creating scannable codes, 
-              <strong> password generator</strong> for secure passwords, <strong>base64 encoder</strong> for data encoding, 
-              <strong> JSON formatter</strong> for code formatting, and <strong>unit converter</strong> for measurements.
-              These tools are trusted by thousands of users daily for personal and professional tasks.
-            </p>
-            <p className="text-muted-foreground text-base leading-relaxed mb-8">
-              Whether you're a <strong>web developer</strong>, <strong>graphic designer</strong>, <strong>student</strong>, 
-              <strong> digital marketer</strong>, or <strong>business professional</strong>, SnapTools provides all the 
-              <strong> free online tools</strong> you need. From <strong>PDF manipulation</strong> and <strong>image editing</strong> to 
-              <strong> file converters</strong>, <strong>calculators</strong>, and <strong>code formatters</strong> - everything is 
-              available for free with no limitations.
-            </p>
-            <Link 
-              to="/tools"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium text-lg shadow-lg hover:shadow-xl"
-            >
-              Explore All 100+ Free Tools
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </Link>
-          </div>
-        </AnimatedElement>
-
-        {/* Open Source Section */}
-        <AnimatedElement animation="fadeIn" delay={0.2}>
-          <div className="max-w-5xl mx-auto mt-16 p-8 sm:p-10 rounded-2xl bg-gradient-to-br from-card via-accent/20 to-card border-2 border-primary/20">
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              <div className="flex-shrink-0">
-                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
-                  <Github size={40} className="text-primary" />
-                </div>
-              </div>
-              <div className="flex-1 text-center md:text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 mb-3">
-                  <Code size={14} className="text-primary" />
-                  <span className="text-xs font-semibold text-primary">FREE & OPEN SOURCE</span>
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold mb-3">
-                  SnapTools is Open Source Software (FOSS)
-                </h3>
-                <p className="text-muted-foreground mb-6 leading-relaxed">
-                  SnapTools is completely <strong>free and open source</strong>. Built by the community, for the community. 
-                  View the source code, contribute features, report bugs, or fork the project on GitHub. 
-                  Your support helps us keep all tools free forever!
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                  <a 
-                    href="https://github.com/iam-sandipmaity/snaptools"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#24292e] hover:bg-[#1b1f23] text-white rounded-lg transition-colors font-medium shadow-lg hover:shadow-xl"
-                  >
-                    <Github size={20} />
-                    View on GitHub
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </a>
-                  <a 
-                    href="https://github.com/iam-sandipmaity/snaptools"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg transition-colors font-medium border border-primary/20 hover:border-primary/40"
-                  >
-                    <Star size={20} className="fill-current" />
-                    Star on GitHub
-                  </a>
-                </div>
-              </div>
-              <div className="flex-shrink-0 hidden lg:block">
-                <div className="text-center p-6 rounded-xl bg-card/50 border">
-                  <div className="flex items-center justify-center gap-1 mb-2">
-                    <Star size={20} className="text-yellow-500 fill-yellow-500" />
-                    <Star size={20} className="text-yellow-500 fill-yellow-500" />
-                    <Star size={20} className="text-yellow-500 fill-yellow-500" />
-                    <Star size={20} className="text-yellow-500 fill-yellow-500" />
-                    <Star size={20} className="text-yellow-500 fill-yellow-500" />
+        {/* ALTERNATIVE: FREE VS PAID */}
+        <div className="mb-40 px-4 md:px-6">
+          <AnimatedElement animation="fadeIn">
+            <div className="p-8 md:p-20 rounded-[2.5rem] md:rounded-[4rem] bg-black dark:bg-white text-white dark:text-black relative overflow-hidden shadow-2xl">
+              <div className="absolute inset-0 bg-primary/20 blur-[100px] opacity-30 -z-10" />
+              <div className="flex flex-col lg:flex-row gap-12 md:gap-16 items-center">
+                <div className="lg:w-1/2 space-y-8">
+                  <h3 className="text-3xl md:text-6xl font-serif font-black tracking-tighter leading-[0.9]">
+                    Professional <br />
+                    <em className="italic font-light opacity-80">Alternative</em>
+                  </h3>
+                  <p className="text-base md:text-lg opacity-70 leading-relaxed font-medium">
+                    Why maintain expensive enterprise subscriptions when SnapTools offers professional-grade logic for free? We are the open alternative to Adobe, Smallpdf, and premium conversion platforms.
+                  </p>
+                  <div className="grid grid-cols-1 xs:grid-cols-2 gap-3 md:gap-4">
+                    {[
+                      { vs: "Adobe Acrobat", msg: "PDF Architecture" },
+                      { vs: "Smallpdf", msg: "No Rate Limits" },
+                      { vs: "TinyPNG", msg: "Neural Engine" },
+                      { vs: "Paid QR", msg: "Vector Logic" }
+                    ].map((item, i) => (
+                      <div key={i} className="p-4 md:p-5 rounded-2xl bg-white/10 dark:bg-black/10 backdrop-blur-3xl border border-white/10 dark:border-black/10">
+                        <p className="text-[10px] uppercase font-black tracking-widest opacity-60 mb-1 md:mb-2">Competing with</p>
+                        <p className="text-sm md:text-base font-bold tracking-tight">{item.vs}</p>
+                      </div>
+                    ))}
                   </div>
-                  <div className="text-sm text-muted-foreground mb-1">Show your support</div>
-                  <div className="text-xs text-muted-foreground">Star us on GitHub</div>
+                </div>
+                <div className="lg:w-1/2 w-full">
+                  <div className="p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] bg-primary text-white space-y-6 md:space-y-8 shadow-2xl transform lg:rotate-2 hover:rotate-0 transition-transform duration-700">
+                    <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/20 flex items-center justify-center">
+                      <Rocket size={24} md:size={32} />
+                    </div>
+                    <h4 className="text-2xl md:text-3xl font-black tracking-tight leading-tight uppercase">
+                      Enterprise Logic <br />
+                      <span className="text-white/60">at Community Cost</span>
+                    </h4>
+                    <p className="text-xs md:text-sm leading-relaxed font-medium opacity-80 max-w-sm">
+                      Access 100+ specialized modules without limitations. Our ecosystem is built to scale with your technical requirements.
+                    </p>
+                    <Link to="/tools">
+                      <Button className="w-full h-14 md:h-16 rounded-xl md:rounded-2xl bg-white text-primary font-black text-[9px] md:text-[10px] uppercase tracking-[0.2em] shadow-xl hover:bg-neutral-100">
+                        Launch Workstation <ArrowRight size={14} className="ml-2" />
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </AnimatedElement>
+        </div>
+
+        {/* OPEN SOURCE: FOSS MANIFESTO */}
+        <AnimatedElement animation="fadeIn" delay={0.2}>
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <div className="relative p-8 md:p-24 rounded-[2.5rem] md:rounded-[4rem] border-2 border-primary/20 bg-muted/30 dark:bg-white/[0.01] backdrop-blur-3xl overflow-hidden group">
+              {/* Animated Background Decor */}
+              <Github className="absolute -right-20 -bottom-20 w-[400px] h-[400px] text-primary opacity-[0.03] group-hover:scale-110 group-hover:rotate-12 transition-all duration-1000" />
+
+              <div className="flex flex-col lg:flex-row items-center gap-12 md:gap-16 relative z-10">
+                <div className="lg:w-2/3 space-y-6 md:space-y-8 text-center lg:text-left">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary font-black text-[10px] uppercase tracking-widest mb-4">
+                    <Code size={12} />
+                    FOSS Infrastructure
+                  </div>
+                  <h3 className="text-3xl md:text-7xl font-serif font-black tracking-tighter leading-[0.9]">
+                    Open Source <br />
+                    <em className="italic font-light text-primary">Manifesto</em>
+                  </h3>
+                  <p className="text-base md:text-xl text-muted-foreground/80 leading-relaxed max-w-2xl font-medium">
+                    SnapTools is built by the community, for the community. Our architecture is transparent, auditable, and accessible on GitHub under open-source protocols.
+                  </p>
+
+                  <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center lg:justify-start pt-4">
+                    <a
+                      href="https://github.com/iam-sandipmaity/snaptools"
+                      target="_blank"
+                      className="h-14 md:h-16 px-8 md:px-10 rounded-xl md:rounded-2xl bg-[#000000] text-white flex items-center justify-center font-black text-[9px] md:text-[10px] uppercase tracking-widest gap-4 shadow-2xl hover:scale-[1.02] transition-all"
+                    >
+                      <Github size={18} md:size={20} />
+                      Fork Protocol <ArrowUpRight size={14} />
+                    </a>
+                    <a
+                      href="https://github.com/iam-sandipmaity/snaptools"
+                      target="_blank"
+                      className="h-14 md:h-16 px-8 md:px-10 rounded-xl md:rounded-2xl border-2 border-primary/20 flex items-center justify-center font-black text-[9px] md:text-[10px] uppercase tracking-widest gap-4 hover:bg-primary/5 transition-all text-foreground"
+                    >
+                      <Star size={16} md:size={18} className="text-primary fill-current" />
+                      Star Repository
+                    </a>
+                  </div>
+                </div>
+
+                <div className="lg:w-1/3 w-full">
+                  <div className="p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] bg-white dark:bg-black/40 border border-primary/10 shadow-2xl backdrop-blur-3xl text-center">
+                    <Heart className="w-10 h-10 md:w-12 md:h-12 text-primary fill-current mx-auto mb-4 md:mb-6" />
+                    <h4 className="text-lg md:text-xl font-bold mb-2">Community Driven</h4>
+                    <p className="text-[10px] md:text-xs text-muted-foreground font-medium mb-6 md:mb-8">Maintain our free infrastructure by supporting the project on GitHub.</p>
+                    <div className="flex items-center justify-center gap-1 py-1">
+                      {[...Array(5)].map((_, i) => <Star key={i} size={12} md:size={14} className="text-amber-500 fill-current" />)}
+                    </div>
+                    <p className="text-[10px] font-black uppercase tracking-widest mt-2 opacity-60">Architectural Rating</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </AnimatedElement>
+
+        {/* BOTTOM ACCESSIBILITY MARK */}
+        <div className="mt-32 text-center opacity-20 pointer-events-none select-none">
+          <h4 className="text-[12vw] font-serif font-black tracking-tighter">SnapTools Core</h4>
+        </div>
+
       </div>
     </section>
   );

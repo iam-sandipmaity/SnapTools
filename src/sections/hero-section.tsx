@@ -1,5 +1,4 @@
-
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, Zap, ShieldCheck, Rocket, ChevronRight } from "lucide-react";
 import SearchBar from "@/components/search-bar";
 import { Button } from "@/components/ui/button";
 import AnimatedElement from "@/components/animated-element";
@@ -12,10 +11,8 @@ const HeroSection = () => {
   const [toolCategoriesLoaded, setToolCategoriesLoaded] = useState(false);
   const [toolCategories, setToolCategories] = useState<any[]>([]);
 
-  // Lazy load tool categories only when search is used
   const loadToolCategories = useCallback(async () => {
     if (toolCategoriesLoaded) return toolCategories;
-
     const { toolCategories: categories } = await import("@/data/tools");
     setToolCategories(categories);
     setToolCategoriesLoaded(true);
@@ -24,15 +21,11 @@ const HeroSection = () => {
 
   const handleSearch = async (query: string) => {
     if (!query.trim()) return;
-
     if (query.startsWith('/tools/')) {
       navigate(query);
       return;
     }
-
-    // Load tool categories only when search is actually used
     const categories = await loadToolCategories();
-
     const searchQuery = query.toLowerCase();
     for (const category of categories) {
       const subTools = category.subTools || [];
@@ -40,13 +33,13 @@ const HeroSection = () => {
         tool.title.toLowerCase().includes(searchQuery) ||
         tool.description?.toLowerCase().includes(searchQuery)
       );
-
       if (matchingTool) {
         navigate(`/tools/${category.id}/${matchingTool.id}`);
         return;
       }
     }
   };
+
   const scrollToTools = () => {
     const toolsSection = document.getElementById("tools");
     if (toolsSection) {
@@ -55,72 +48,89 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative pt-20 pb-24 overflow-hidden bg-gradient-to-b from-background to-accent/30" aria-label="Hero section">
-      <div className="container relative z-10 text-center">
-        <AnimatedElement animation="fadeIn">
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-tooltopia-purple-vivid to-primary">
-            Free Online Tools for PDF, Images & More
-          </h1>
-        </AnimatedElement>
+    <section className="relative pt-32 lg:pt-48 pb-32 overflow-hidden bg-background" aria-label="Hero section">
+      {/* Dynamic Background Gradients */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[140px] -z-10 translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] -z-10 -translate-x-1/2 translate-y-1/2" />
 
-        <AnimatedElement delay={0.1} animation="fadeIn">
-          <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-4xl mx-auto leading-relaxed">
-            100+ Free Tools: <strong className="text-foreground font-medium">PDF Merger</strong>, <strong className="text-foreground font-medium">PDF Compressor</strong>, <strong className="text-foreground font-medium">Image Compressor</strong>, <strong className="text-foreground font-medium">QR Code Generator</strong>, Converters, Calculators & More
-          </p>
+      <div className="container relative z-10 px-6">
+        <div className="max-w-5xl mx-auto text-center">
 
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mb-10 max-w-3xl mx-auto text-sm sm:text-base">
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 backdrop-blur-sm">
-              <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              <span className="text-foreground font-medium">No Registration</span>
+          {/* Elite Badge */}
+          <AnimatedElement animation="fadeIn">
+            <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-white dark:bg-white/[0.03] border border-black/5 dark:border-white/10 shadow-xl backdrop-blur-xl mb-12">
+              <div className="flex -space-x-1">
+                <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              </div>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/80">
+                Architected for Precision • 100% Client-Side Secure
+              </span>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 backdrop-blur-sm">
-              <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-              <span className="text-foreground font-medium">Fast & Secure</span>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 backdrop-blur-sm">
-              <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-              <span className="text-foreground font-medium">Privacy-Focused</span>
-            </div>
-          </div>
-        </AnimatedElement>
+          </AnimatedElement>
 
-        <AnimatedElement delay={0.2} animation="fadeIn">
-          <div className="flex flex-col items-center space-y-8">
-            <SearchBar className="w-full max-w-lg" onSearch={handleSearch} />
+          {/* Luxury Typography Header */}
+          <AnimatedElement delay={0.1} animation="fadeIn">
+            <h1 className="text-5xl sm:text-7xl lg:text-9xl font-serif font-black tracking-tighter mb-10 leading-[0.85] text-foreground">
+              Master your <br />
+              <em className="italic font-light text-primary">Technical</em> Workflow
+            </h1>
+          </AnimatedElement>
 
-            <div className="flex items-center gap-4 mt-4">
+          {/* Subheading with refined measure */}
+          <AnimatedElement delay={0.2} animation="fadeIn">
+            <p className="text-xl sm:text-2xl text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed mb-16 font-medium">
+              A high-performance workstation for digital creators. Professional PDF, image, and data utilities running at the speed of thought.
+            </p>
+          </AnimatedElement>
+
+          {/* Premium Search Integration */}
+          <AnimatedElement delay={0.3} animation="fadeIn">
+            <div className="max-w-2xl mx-auto mb-16 p-2 bg-white dark:bg-[#0A0A0A]/80 backdrop-blur-3xl border border-black/5 dark:border-white/10 rounded-[2.5rem] shadow-2xl focus-within:ring-4 ring-primary/10 transition-all duration-500 z-20 relative">
+              <SearchBar onSearch={handleSearch} />
+            </div>
+          </AnimatedElement>
+
+          {/* Action Hub */}
+          <AnimatedElement delay={0.4} animation="fadeIn">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <Button
                 size="lg"
                 onClick={() => navigate('/tools')}
-                className="bg-primary text-primary-foreground hover:bg-primary/90"
+                className="h-16 px-10 rounded-2xl bg-black dark:bg-white text-white dark:text-black font-black text-[10px] uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-2xl"
               >
-                Get Started
+                Explore Modules
+                <Rocket className="w-4 h-4 ml-3" />
               </Button>
-              <motion.div
-                whileHover={{ y: [0, -5, 0], transition: { repeat: Infinity, duration: 1.5 } }}
-              >
-                <Button
-                  variant="ghost"
-                  onClick={scrollToTools}
-                  className="flex items-center gap-2"
-                >
-                  Explore Tools <ArrowDown size={16} />
-                </Button>
-              </motion.div>
-            </div>
-          </div>
-        </AnimatedElement>
-      </div>
 
-      {/* Background decoration */}
-      <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary/20 rounded-full blur-3xl opacity-50"></div>
-      <div className="absolute -bottom-36 -left-36 w-96 h-96 bg-tooltopia-purple-vivid/20 rounded-full blur-3xl opacity-50"></div>
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={scrollToTools}
+                className="h-16 px-10 rounded-2xl border-black/10 dark:border-white/10 font-black text-[10px] uppercase tracking-widest hover:bg-muted/50 transition-all"
+              >
+                Infrastructure Overview
+                <ArrowDown size={14} className="ml-3 animate-bounce" />
+              </Button>
+            </div>
+          </AnimatedElement>
+
+          {/* Trust Indicators */}
+          <AnimatedElement delay={0.5} animation="fadeIn">
+            <div className="mt-24 flex flex-wrap items-center justify-center gap-12 opacity-40 grayscale group hover:grayscale-0 transition-all duration-700">
+              <div className="flex items-center gap-3 text-xs font-black uppercase tracking-widest">
+                <ShieldCheck className="w-4 h-4 text-primary" /> Private
+              </div>
+              <div className="flex items-center gap-3 text-xs font-black uppercase tracking-widest">
+                <Zap className="w-4 h-4 text-primary" /> Edge Network
+              </div>
+              <div className="flex items-center gap-3 text-xs font-black uppercase tracking-widest">
+                <ChevronRight className="w-4 h-4 text-primary" /> Open Source
+              </div>
+            </div>
+          </AnimatedElement>
+
+        </div>
+      </div>
     </section>
   );
 };
