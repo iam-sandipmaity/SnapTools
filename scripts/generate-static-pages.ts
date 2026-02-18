@@ -21,7 +21,7 @@ function getMetaTagsForRoute(pathname: string): MetaTags {
     let metaTags: MetaTags = {
         title: 'SnapTools - Free Online PDF, Image & Converter Tools | 100+ Free Tools',
         description: 'Free online tools for PDF (merge, split, compress), image processing (compress, convert, edit), converters, calculators, QR codes & more. No registration required. Fast, secure & privacy-focused. Try SnapTools now!',
-        image: `${BASE_URL}/og-image.png`,
+        image: `${BASE_URL}/og-image.jpg`,
         url: BASE_URL,
     };
 
@@ -88,56 +88,56 @@ function generateHTML(metaTags: MetaTags, originalHTML: string): string {
 
     // Replace title
     html = html.replace(
-        /<title>.*?<\/title>/,
+        /<title>([\s\S]*?)<\/title>/i,
         `<title>${title}</title>`
     );
 
     // Replace meta description
     html = html.replace(
-        /<meta name="description"\s+content="[^"]*"\s*\/>/,
+        /<meta\s+name="description"\s+content="[^"]*"\s*\/?>/is,
         `<meta name="description" content="${description}" />`
     );
 
     // Replace canonical URL
     html = html.replace(
-        /<link rel="canonical" href="[^"]*"\s*\/>/,
+        /<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i,
         `<link rel="canonical" href="${url}" />`
     );
 
     // Replace Open Graph tags
     html = html.replace(
-        /<meta property="og:title" content="[^"]*"\s*\/>/,
+        /<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/is,
         `<meta property="og:title" content="${title}" />`
     );
 
     html = html.replace(
-        /<meta property="og:description" content="[^"]*"\s*\/>/,
+        /<meta\s+property="og:description"[\s\S]*?content="[^"]*"\s*\/?>/is,
         `<meta property="og:description" content="${description}" />`
     );
 
     html = html.replace(
-        /<meta property="og:url" content="[^"]*"\s*\/>/,
+        /<meta\s+property="og:url"\s+content="[^"]*"\s*\/?>/is,
         `<meta property="og:url" content="${url}" />`
     );
 
     html = html.replace(
-        /<meta property="og:image" content="[^"]*"\s*\/>/,
+        /<meta\s+property="og:image"\s+content="[^"]*"\s*\/?>/is,
         `<meta property="og:image" content="${image}" />`
     );
 
     // Replace Twitter Card tags
     html = html.replace(
-        /<meta name="twitter:title" content="[^"]*"\s*\/>/,
+        /<meta\s+name="twitter:title"\s+content="[^"]*"\s*\/?>/is,
         `<meta name="twitter:title" content="${title}" />`
     );
 
     html = html.replace(
-        /<meta name="twitter:description" content="[^"]*"\s*\/>/,
+        /<meta\s+name="twitter:description"\s+content="[^"]*"\s*\/?>/is,
         `<meta name="twitter:description" content="${description}" />`
     );
 
     html = html.replace(
-        /<meta name="twitter:image" content="[^"]*"\s*\/>/,
+        /<meta\s+name="twitter:image"\s+content="[^"]*"\s*\/?>/is,
         `<meta name="twitter:image" content="${image}" />`
     );
 
