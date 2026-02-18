@@ -48,6 +48,18 @@ export default async function handler(req: Request) {
             return new Response('ok', { status: 200, headers: { 'Content-Type': 'text/plain' } });
         }
 
+        // Debug import check: ?debug=2 will attempt to import core OG libs and report results
+        if (searchParams.get('debug') === '2') {
+            try {
+                await import('@vercel/og');
+                await import('satori');
+                await import('@resvg/resvg-js');
+                return new Response('imports ok', { status: 200, headers: { 'Content-Type': 'text/plain' } });
+            } catch (e: any) {
+                return new Response(`import error:\n${e.stack || e}`, { status: 500, headers: { 'Content-Type': 'text/plain' } });
+            }
+        }
+
         const title       = searchParams.get('title')       || 'SnapTools';
         const description = searchParams.get('description') || 'Free Online Professional Tools Collection';
         const categoryId  = searchParams.get('category')    || 'miscellaneous';
