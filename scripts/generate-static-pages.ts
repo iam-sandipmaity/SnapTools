@@ -125,6 +125,20 @@ function generateHTML(metaTags: MetaTags, originalHTML: string): string {
         `<meta property="og:image" content="${image}" />`
     );
 
+    // Update image type and alt based on source
+    const isDynamicImage = image.includes('/api/og');
+    const imageType = isDynamicImage ? 'image/png' : 'image/jpeg';
+
+    html = html.replace(
+        /<meta\s+property="og:image:type"\s+content="[^"]*"\s*\/?>/is,
+        `<meta property="og:image:type" content="${imageType}" />`
+    );
+
+    html = html.replace(
+        /<meta\s+property="og:image:alt"\s+content="[^"]*"\s*\/?>/is,
+        `<meta property="og:image:alt" content="${escapeHtml(metaTags.title)}" />`
+    );
+
     // Replace Twitter Card tags
     html = html.replace(
         /<meta\s+name="twitter:title"\s+content="[^"]*"\s*\/?>/is,
