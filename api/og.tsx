@@ -43,6 +43,11 @@ export default async function handler(req: Request) {
 
         const { searchParams } = new URL(req.url);
 
+        // Quick debug: if called with ?debug=1 return plain text to verify function runs
+        if (searchParams.get('debug') === '1') {
+            return new Response('ok', { status: 200, headers: { 'Content-Type': 'text/plain' } });
+        }
+
         const title       = searchParams.get('title')       || 'SnapTools';
         const description = searchParams.get('description') || 'Free Online Professional Tools Collection';
         const categoryId  = searchParams.get('category')    || 'miscellaneous';
