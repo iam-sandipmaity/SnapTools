@@ -123,6 +123,8 @@
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@eslint/js": "^9.9.0",
+    "@fontsource/inter": "^5.2.8",
+    "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/typography": "^0.5.15",
     "@types/node": "^20.11.30",
     "@types/react": "^18.2.67",

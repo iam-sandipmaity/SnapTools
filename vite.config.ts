@@ -5,6 +5,7 @@ import wasm from 'vite-plugin-wasm'
 import topLevelAwait from 'vite-plugin-top-level-await'
 import markdown from './vite-plugin-markdown'
 import { visualizer } from 'rollup-plugin-visualizer'
+import ogPlugin from './vite-plugin-og'
 
 export default defineConfig({
   plugins: [
@@ -12,6 +13,7 @@ export default defineConfig({
     wasm(),
     topLevelAwait(),
     markdown(),
+    ogPlugin(),
     visualizer({
       open: false, // Set to true to open bundle analysis in browser
       gzipSize: true,
