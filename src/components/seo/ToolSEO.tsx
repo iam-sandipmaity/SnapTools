@@ -309,8 +309,16 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
     return [...new Set(keywords)].join(', ');
   };
 
-  // Generate canonical URL
+  // Base URL: production domain in prod, current origin in dev
+  const BASE_URL = import.meta.env.PROD
+    ? 'https://snaptools.xyz'
+    : (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5173');
+
+  // Generate canonical URL (always canonical production URL for SEO)
   const canonicalUrl = `https://snaptools.xyz/tools/${tool.category.toLowerCase().replace(/\s+/g, '-')}/${tool.id}`;
+
+  // OG image base should use current origin so local dev links resolve correctly
+  const ogBase = BASE_URL;
 
   // AUTO-GENERATE International SEO - Multi-language support
   const supportedLanguages = [
@@ -605,7 +613,7 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={`https://snaptools.xyz/api/og?title=${encodeURIComponent(tool.name)}&description=${encodeURIComponent(tool.description)}&category=${tool.category.toLowerCase().replace(/\s+/g, '-')}`} />
+      <meta property="og:image" content={`${ogBase}/api/og?title=${encodeURIComponent(tool.name)}&description=${encodeURIComponent(tool.description)}&category=${tool.category.toLowerCase().replace(/\s+/g, '-')}`} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:image:type" content="image/png" />
@@ -617,7 +625,7 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
       <meta property="twitter:url" content={canonicalUrl} />
       <meta property="twitter:title" content={title} />
       <meta property="twitter:description" content={description} />
-      <meta property="twitter:image" content={`https://snaptools.xyz/api/og?title=${encodeURIComponent(tool.name)}&description=${encodeURIComponent(tool.description)}&category=${tool.category.toLowerCase().replace(/\s+/g, '-')}`} />
+      <meta property="twitter:image" content={`${ogBase}/api/og?title=${encodeURIComponent(tool.name)}&description=${encodeURIComponent(tool.description)}&category=${tool.category.toLowerCase().replace(/\s+/g, '-')}`} />
       <meta name="twitter:creator" content="@snaptools" />
       <meta name="twitter:site" content="@snaptools" />
 
@@ -645,7 +653,7 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
       <link rel="dns-prefetch" href="//www.google-analytics.com" />
       <link rel="preconnect" href="https://snaptools.xyz" />
       <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
-      <link rel="preload" as="image" href={`https://snaptools.xyz/api/og?title=${encodeURIComponent(tool.name)}&category=${tool.category.toLowerCase().replace(/\s+/g, '-')}`} />
+      <link rel="preload" as="image" href={`${ogBase}/api/og?title=${encodeURIComponent(tool.name)}&category=${tool.category.toLowerCase().replace(/\s+/g, '-')}`} />
       <meta httpEquiv="x-dns-prefetch-control" content="on" />
       <meta name="theme-color" content="#000000" />
       <meta name="msapplication-TileColor" content="#000000" />
