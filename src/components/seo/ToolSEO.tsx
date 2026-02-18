@@ -605,9 +605,10 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={`https://snaptools.xyz/api/og?title=${encodeURIComponent(tool.name)}&description=${encodeURIComponent(tool.description)}&category=${tool.category.toLowerCase().replace(/\s+/g, '-')}&icon=${toolCategories.find(c => c.id === tool.category.toLowerCase().replace(/\s+/g, '-') || c.title.toLowerCase() === tool.category.toLowerCase())?.iconName || 'wrench'}`} />
+      <meta property="og:image" content={`https://snaptools.xyz/api/og?title=${encodeURIComponent(tool.name)}&description=${encodeURIComponent(tool.description)}&category=${tool.category.toLowerCase().replace(/\s+/g, '-')}`} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
+      <meta property="og:image:type" content="image/png" />
       <meta property="og:site_name" content="SnapTools" />
       <meta property="og:locale" content="en_US" />
 
@@ -616,7 +617,7 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
       <meta property="twitter:url" content={canonicalUrl} />
       <meta property="twitter:title" content={title} />
       <meta property="twitter:description" content={description} />
-      <meta property="twitter:image" content={`https://snaptools.xyz/api/og?title=${encodeURIComponent(tool.name)}&description=${encodeURIComponent(tool.description)}&category=${tool.category.toLowerCase().replace(/\s+/g, '-')}&icon=${toolCategories.find(c => c.id === tool.category.toLowerCase().replace(/\s+/g, '-') || c.title.toLowerCase() === tool.category.toLowerCase())?.iconName || 'wrench'}`} />
+      <meta property="twitter:image" content={`https://snaptools.xyz/api/og?title=${encodeURIComponent(tool.name)}&description=${encodeURIComponent(tool.description)}&category=${tool.category.toLowerCase().replace(/\s+/g, '-')}`} />
       <meta name="twitter:creator" content="@snaptools" />
       <meta name="twitter:site" content="@snaptools" />
 
@@ -644,7 +645,7 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
       <link rel="dns-prefetch" href="//www.google-analytics.com" />
       <link rel="preconnect" href="https://snaptools.xyz" />
       <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
-      <link rel="preload" as="image" href="https://snaptools.xyz/og-image.jpg" />
+      <link rel="preload" as="image" href={`https://snaptools.xyz/api/og?title=${encodeURIComponent(tool.name)}&category=${tool.category.toLowerCase().replace(/\s+/g, '-')}`} />
       <meta httpEquiv="x-dns-prefetch-control" content="on" />
       <meta name="theme-color" content="#000000" />
       <meta name="msapplication-TileColor" content="#000000" />
