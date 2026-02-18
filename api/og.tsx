@@ -1,5 +1,3 @@
-import { ImageResponse } from '@vercel/og';
-
 export const config = {
     runtime: 'nodejs',
 };
@@ -40,6 +38,9 @@ const categoryGradients: Record<string, { from: string; to: string }> = {
 
 export default async function handler(req: Request) {
     try {
+        // Dynamic import to avoid ESM/CommonJS loader issues on some Node runtimes
+        const { ImageResponse } = await import('@vercel/og');
+
         const { searchParams } = new URL(req.url);
 
         const title       = searchParams.get('title')       || 'SnapTools';
