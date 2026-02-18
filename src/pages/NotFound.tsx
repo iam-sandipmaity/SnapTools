@@ -9,8 +9,14 @@ const NotFound = () => {
 
   useEffect(() => {
     // Set proper HTTP status for server-side rendering
+    // Guard against paths that look like a different origin (e.g. /api/og → http://api)
     if (typeof window !== 'undefined' && window.history) {
-      window.history.replaceState({}, '', location.pathname);
+      try {
+        const safePath = '/' + location.pathname.replace(/^\/+/, '');
+        window.history.replaceState({}, '', safePath);
+      } catch {
+        // replaceState can throw a SecurityError in some edge cases — safe to ignore
+      }
     }
     
     console.error(

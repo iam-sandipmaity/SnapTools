@@ -121,7 +121,7 @@ const SEO = ({ title, description, categoryId, toolId, type, imageUrl, canonical
       <meta property="og:image" content={defaultImage} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
-      <meta property="og:image:type" content="image/jpeg" />
+      <meta property="og:image:type" content="image/png" />
       <meta property="og:locale" content="en_US" />
 
       {/* Twitter Card tags */}
