@@ -54,12 +54,12 @@ const Header = () => {
         <Logo />
 
         {!isMobile && (
-          <nav className="flex items-center gap-6">
+          <nav className="flex items-center gap-8">
             {navItems.map((item) => (
               <Link
                 key={item.label}
                 to={item.href}
-                className="text-sm font-medium transition-colors hover:text-primary"
+                className="text-base md:text-lg font-serif font-medium tracking-tight transition-colors hover:text-primary"
                 onClick={(e) => {
                   if (item.href.startsWith('#')) {
                     e.preventDefault();
@@ -80,7 +80,7 @@ const Header = () => {
             <Button
               variant="default"
               onClick={() => window.location.href = '/tools'}
-              className="gradient-primary text-white hover:opacity-90 transition-opacity font-semibold"
+              className="gradient-primary text-white hover:opacity-90 transition-opacity font-serif font-semibold"
             >
               Get Started
             </Button>
@@ -107,7 +107,7 @@ const Header = () => {
       {/* Mobile Menu Overlay — Outside container to avoid overflow constraints */}
       {isMobile && (
         <div
-          className={`fixed inset-0 z-[100] w-screen h-screen bg-white dark:bg-black transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${mobileMenuOpen
+          className={`fixed inset-0 z-[100] w-screen h-screen bg-white dark:bg-black transition-all duration-500 ease-&lsqb;cubic-bezier(0.4,0,0.2,1)&rsqb; ${mobileMenuOpen
               ? "opacity-100 pointer-events-auto visible"
               : "opacity-0 pointer-events-none invisible"
             }`}
