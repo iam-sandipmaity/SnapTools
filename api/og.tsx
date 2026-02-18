@@ -42,10 +42,15 @@ export default async function (req: Request) {
         let iconDataUrl = '';
 
         if (iconSvgResponse.ok) {
-            let iconSvg = await iconSvgResponse.text();
-            // Replace stroke color with white
-            iconSvg = iconSvg.replace(/stroke="currentColor"/g, 'stroke="white"');
-            iconDataUrl = `data:image/svg+xml;base64,${btoa(iconSvg)}`;
+            try {
+                let iconSvg = await iconSvgResponse.text();
+                // Replace stroke color with white
+                iconSvg = iconSvg.replace(/stroke="currentColor"/g, 'stroke="white"');
+                // Support UTF-8 in btoa
+                iconDataUrl = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(iconSvg)))}`;
+            } catch (e) {
+                console.error('Error processing icon SVG:', e);
+            }
         }
 
         // Using object-based structure instead of JSX to avoid build/flag issues on Edge
