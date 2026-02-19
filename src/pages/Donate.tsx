@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Heart,
-  CreditCard,
   Coffee,
   Gift,
   AlertTriangle,
@@ -13,7 +12,10 @@ import {
   Globe,
   ArrowRight,
   Smile,
-  ShieldQuestion
+  ShieldQuestion,
+  Copy,
+  QrCode,
+  X
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/header";
@@ -41,6 +43,7 @@ const DonationPage = () => {
   });
   const [confirmAnonymous, setConfirmAnonymous] = useState(false);
   const [useRandomMobile, setUseRandomMobile] = useState(false);
+  const [showUpiQr, setShowUpiQr] = useState(false);
 
   const validEmailDomains = [
     "gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "aol.com",
@@ -163,19 +166,33 @@ const DonationPage = () => {
     setError("");
   };
 
+  // Support methods (UPI / BMC / BTC)
+  const upiId = "mrsandipmaity113@naviaxis"; 
+  const buyMeCoffeeUrl = "https://www.buymeacoffee.com/sandipmaity"; 
+  const btcAddress = "bc1qexampledummyaddress0000000000000000000"; // dummy
+
+  const copyToClipboard = async (value: string, label: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      toast({ title: `${label} Copied`, description: `You can paste it into your payment app.`, variant: 'default' });
+    } catch (e) {
+      toast({ title: `Copy Failed`, description: `Could not copy ${label}.`, variant: 'destructive' });
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background selection:bg-primary/10">
       <Header />
 
-      <main className="flex-grow pt-32 pb-40 relative overflow-hidden">
+      <main className="flex-grow pt-20 md:pt-32 pb-20 md:pb-40 relative overflow-hidden">
         {/* Decorative Background Elements */}
         <div className="absolute top-0 right-0 w-1/3 h-[800px] bg-primary/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-1/4 h-[600px] bg-primary/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
-        <div className="container max-w-7xl mx-auto px-6 relative z-10">
+        <div className="container max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10 donate-wrapper">
 
           {/* HERO SECTION */}
-          <header className="max-w-3xl mx-auto text-center mb-24 animate-fade-in-up">
+          <header className="max-w-3xl mx-auto text-center mb-20 sm:mb-24 px-4 sm:px-0 animate-fade-in-up">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary font-black text-[10px] uppercase tracking-widest mb-8">
               <Heart className="w-3 h-3 fill-current" />
               Empower Innovation
@@ -192,13 +209,13 @@ const DonationPage = () => {
           <div className="grid lg:grid-cols-12 gap-16 items-start">
 
             {/* LEFT COLUMN: IMPACT & CARDS */}
-            <div className="lg:col-span-12 grid md:grid-cols-3 gap-8 mb-16 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+            <div className="lg:col-span-12 grid md:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               {[
                 { icon: Globe, title: "Global Edge", desc: "Help us maintain our worldwide CDN for millisecond tool latency." },
                 { icon: ShieldCheck, title: "Zero Privacy", desc: "Support developers who prioritize your data security over profit." },
                 { icon: Zap, title: "Fast Dev", desc: "Accelerate the development of and release of specialized technical tools." }
               ].map((item, i) => (
-                <div key={i} className="group p-8 rounded-[2rem] border border-black/5 dark:border-white/5 bg-white/50 dark:bg-white/[0.02] backdrop-blur-xl hover:bg-white dark:hover:bg-white/[0.04] transition-all duration-500 shadow-sm">
+                <div key={i} className="group p-6 md:p-8 rounded-[2rem] border border-black/5 dark:border-white/5 bg-white/50 dark:bg-white/[0.02] backdrop-blur-xl hover:bg-white dark:hover:bg-white/[0.04] transition-all duration-500 shadow-sm">
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-6 transition-transform group-hover:scale-110">
                     <item.icon className="w-6 h-6" />
                   </div>
@@ -210,7 +227,7 @@ const DonationPage = () => {
 
             {/* DONATION INTERFACE AREA */}
             <div className="lg:col-span-7 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-              <div className="bg-white dark:bg-black/20 border border-black/5 dark:border-white/5 rounded-[3rem] p-8 md:p-12 shadow-2xl">
+              <div className="bg-white dark:bg-black/20 border border-black/5 dark:border-white/5 rounded-[3rem] p-6 sm:p-8 md:p-12 shadow-2xl">
 
                 {/* Mode Selector */}
                 <div className="flex p-1.5 bg-muted/50 dark:bg-white/[0.03] rounded-2xl mb-12">
@@ -267,7 +284,7 @@ const DonationPage = () => {
                   )}
 
                   {isAnonymous && (
-                    <div className="space-y-8 p-8 rounded-3xl bg-primary/5 border border-primary/10">
+                    <div className="space-y-8 p-6 sm:p-8 rounded-3xl bg-primary/5 border border-primary/10">
                       <div className="flex items-start gap-4">
                         <ShieldCheck className="w-6 h-6 text-primary shrink-0 mt-1" />
                         <div>
@@ -321,7 +338,7 @@ const DonationPage = () => {
                           onClick={() => { setShowCustomAmount(false); setCustomAmount(""); }}
                           className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground"
                         >
-                          Back toPresets
+                          Back to Presets
                         </button>
                       )}
                     </div>
@@ -376,7 +393,102 @@ const DonationPage = () => {
             {/* RIGHT COLUMN: ADDITIONAL CONTEXT */}
             <div className="lg:col-span-5 space-y-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
 
-              <div className="bg-primary/5 dark:bg-primary/[0.02] border border-primary/10 rounded-[3rem] p-10 relative overflow-hidden">
+              {/* OTHER WAYS TO SUPPORT */}
+              <div className="p-6 sm:p-8 rounded-[2rem] border border-border bg-white/50 dark:bg-white/[0.01] backdrop-blur-3xl">
+                <h3 className="text-2xl font-serif font-black mb-4 tracking-tight">Other Ways to Support</h3>
+                <p className="text-sm text-muted-foreground mb-6">Prefer an alternate method? Copy the details below and pay using your preferred wallet or platform.</p>
+
+                <div className="grid gap-4">
+                  {/* UPI Card */}
+                  <div className="rounded-xl border border-black/5 dark:border-white/5 bg-muted/30 overflow-hidden">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4">
+                      <div className="flex items-center gap-4 min-w-0 flex-1">
+                        <div className="w-12 h-12 shrink-0 rounded-lg bg-white dark:bg-white flex items-center justify-center p-1.5 border border-black/10">
+                          <svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+                            <polygon points="0,70 28,10 38,10 10,70" fill="#F37021"/>
+                            <polygon points="22,70 50,10 60,10 32,70" fill="#8CC63F"/>
+                            <path d="M80 12 L80 42 Q80 56 94 56 Q108 56 108 42 L108 12" stroke="#097FDB" strokeWidth="7" fill="none" strokeLinecap="round"/>
+                            <path d="M120 12 L120 56 M120 12 Q148 12 148 30 Q148 48 120 48" stroke="#097FDB" strokeWidth="7" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                            <line x1="162" y1="12" x2="162" y2="56" stroke="#097FDB" strokeWidth="7" strokeLinecap="round"/>
+                          </svg>
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-sm font-bold">UPI ID</div>
+                          <div className="text-xs text-muted-foreground">Pay instantly from any UPI app</div>
+                          <div className="text-sm font-mono text-foreground/90 mt-1 break-all">{upiId}</div>
+                        </div>
+                      </div>
+                      <div className="flex gap-2 shrink-0 self-start sm:self-center">
+                        <Button
+                          variant="outline"
+                          onClick={() => setShowUpiQr(!showUpiQr)}
+                          className="h-10 px-3"
+                        >
+                          {showUpiQr ? <X className="w-4 h-4" /> : <QrCode className="w-4 h-4" />}
+                          <span className="ml-2 text-xs">{showUpiQr ? "Hide" : "QR"}</span>
+                        </Button>
+                        <Button variant="outline" onClick={() => copyToClipboard(upiId, 'UPI ID')} className="h-10 px-3">
+                          <Copy className="w-4 h-4 mr-2" /> Copy
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* QR Code Panel */}
+                    {showUpiQr && (
+                      <div className="border-t border-black/5 dark:border-white/5 px-4 py-6 flex flex-col items-center gap-3 bg-white/60 dark:bg-white/[0.02]">
+                        <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground">Scan to Pay via UPI</p>
+                        <div className="p-3 bg-white rounded-2xl shadow-md">
+                          <img
+                            src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent('upi://pay?pa=' + upiId + '&pn=SnapTools&cu=INR')}`}
+                            alt="UPI QR Code"
+                            width={180}
+                            height={180}
+                            className="rounded-lg"
+                          />
+                        </div>
+                        <p className="text-xs text-muted-foreground text-center max-w-[220px] leading-relaxed">
+                          Open GPay, PhonePe, Paytm or any UPI app and scan this code to pay directly.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Buy Me a Coffee */}
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-xl border border-black/5 dark:border-white/5 bg-muted/30">
+                    <div className="flex items-center gap-4 min-w-0 flex-1">
+                      <div className="w-12 h-12 shrink-0 rounded-lg bg-amber-200/20 flex items-center justify-center text-amber-500">
+                        <Coffee className="w-6 h-6" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-sm font-bold">Buy Me a Coffee</div>
+                        <div className="text-xs text-muted-foreground">Small one-time support via BuyMeACoffee</div>
+                      </div>
+                    </div>
+                    <a href={buyMeCoffeeUrl} target="_blank" rel="noreferrer" className="shrink-0 self-start sm:self-center">
+                      <Button className="h-10 px-4">Support ☕</Button>
+                    </a>
+                  </div>
+
+                  {/* BTC Wallet */}
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-xl border border-black/5 dark:border-white/5 bg-muted/30">
+                    <div className="flex items-center gap-4 min-w-0 flex-1">
+                      <div className="w-12 h-12 shrink-0 rounded-lg bg-yellow-100/10 flex items-center justify-center text-yellow-400">
+                        <Gift className="w-6 h-6" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-sm font-bold">BTC Wallet</div>
+                        <div className="text-xs text-muted-foreground">Send BTC to support long-term infrastructure</div>
+                        <div className="text-xs font-mono text-foreground/90 mt-1 break-all">{btcAddress}</div>
+                      </div>
+                    </div>
+                    <Button variant="outline" onClick={() => copyToClipboard(btcAddress, 'BTC Address')} className="h-10 px-3 shrink-0 self-start sm:self-center">
+                      <Copy className="w-4 h-4 mr-2" /> Copy
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-primary/5 dark:bg-primary/[0.02] border border-primary/10 rounded-[3rem] p-6 sm:p-10 relative overflow-hidden">
                 <Smile className="absolute -right-10 -bottom-10 w-48 h-48 text-primary opacity-[0.05]" />
                 <h3 className="text-2xl font-serif font-black mb-6 tracking-tight">The Impact</h3>
                 <ul className="space-y-6">
@@ -395,7 +507,7 @@ const DonationPage = () => {
                 </ul>
               </div>
 
-              <div className="p-10 rounded-[3rem] border border-border bg-white/50 dark:bg-white/[0.01] backdrop-blur-3xl">
+              <div className="p-6 sm:p-8 rounded-[3rem] border border-border bg-white/50 dark:bg-white/[0.01] backdrop-blur-3xl">
                 <ShieldQuestion className="w-10 h-10 text-primary mb-6" />
                 <h3 className="text-2xl font-serif font-black mb-4 tracking-tight">Questions?</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-10">
