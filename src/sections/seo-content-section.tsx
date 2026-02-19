@@ -305,8 +305,18 @@ const SEOContentSection = () => {
             0% { transform: translateX(0); }
             100% { transform: translateX(-33.33%); }
           }
+          /* Faster marquee with configurable CSS variable. Default: 28s */
           .animate-marquee {
-            animation: marquee 80s linear infinite;
+            --marquee-duration: 28s;
+            animation: marquee var(--marquee-duration) linear infinite;
+          }
+          /* Mobile: speed up the marquee for smaller viewports */
+          @media (max-width: 640px) {
+            .animate-marquee { --marquee-duration: 18s; }
+          }
+          /* Slightly slower on very large screens to avoid too-fast motion */
+          @media (min-width: 1600px) {
+            .animate-marquee { --marquee-duration: 36s; }
           }
         `}</style>
 
