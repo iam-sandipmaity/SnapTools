@@ -54,6 +54,7 @@
     "@types/qrcode.react": "^1.0.5",
     "@vercel/analytics": "^1.5.0",
     "@vercel/og": "^0.8.6",
+    "@resvg/resvg-js": "^2.6.2",
     "ajv": "^8.17.1",
     "axios": "^1.8.4",
     "bcryptjs": "^3.0.2",
@@ -124,7 +125,7 @@
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@eslint/js": "^9.9.0",
     "@fontsource/inter": "^5.2.8",
-    "@resvg/resvg-js": "^2.6.2",
+    
     "@tailwindcss/typography": "^0.5.15",
     "@types/node": "^20.11.30",
     "@types/react": "^18.2.67",
