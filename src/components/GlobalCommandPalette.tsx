@@ -28,6 +28,15 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRecentlyUsedTools } from "@/hooks/use-recently-used-tools";
+import { useTheme } from "next-themes";
+import { useFocusMode } from "@/hooks/use-focus-mode";
+import {
+    Moon,
+    Maximize2,
+    Minimize2,
+    Keyboard
+} from "lucide-react";
+import { playWorkstationSound } from "@/lib/sounds";
 
 const Highlight = ({ text, query }: { text: string; query: string }) => {
     if (!query.trim()) return <span>{text}</span>;
@@ -50,6 +59,8 @@ export function GlobalCommandPalette() {
     const [search, setSearch] = useState("");
     const navigate = useNavigate();
     const { recentTools } = useRecentlyUsedTools();
+    const { theme, setTheme } = useTheme();
+    const { isFocusMode, toggleFocusMode } = useFocusMode();
 
     useEffect(() => {
         const down = (e: KeyboardEvent) => {
@@ -134,6 +145,33 @@ export function GlobalCommandPalette() {
                                 ))}
                             </CommandGroup>
                         )}
+
+                        <CommandGroup heading="Workspace Actions">
+                            <CommandItem onSelect={() => runCommand(() => { playWorkstationSound('click'); setTheme(theme === 'dark' ? 'light' : 'dark'); })} className="group">
+                                <div className="mr-4 flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500/10 text-orange-500 group-data-[selected=true]:bg-white/20 group-data-[selected=true]:text-white transition-colors">
+                                    <Moon size={18} />
+                                </div>
+                                <span className="font-bold tracking-tight">Cycle Theme Node</span>
+                                <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                                    <span className="text-xs">⇧</span>T
+                                </kbd>
+                            </CommandItem>
+                            <CommandItem onSelect={() => runCommand(() => { toggleFocusMode(); })} className="group">
+                                <div className="mr-4 flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-500 group-data-[selected=true]:bg-white/20 group-data-[selected=true]:text-white transition-colors">
+                                    {isFocusMode ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+                                </div>
+                                <span className="font-bold tracking-tight">{isFocusMode ? "Disable Focus Mode" : "Initialize Focus Mode"}</span>
+                                <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                                    <span className="text-xs">⇧</span>F
+                                </kbd>
+                            </CommandItem>
+                            <CommandItem onSelect={() => runCommand(() => navigate("/workstation"))} className="group">
+                                <div className="mr-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary group-data-[selected=true]:bg-white/20 group-data-[selected=true]:text-white transition-colors">
+                                    <Keyboard size={18} />
+                                </div>
+                                <span className="font-bold tracking-tight">View Shortcut Directory</span>
+                            </CommandItem>
+                        </CommandGroup>
 
                         <CommandGroup heading="Quick Navigation">
                             <CommandItem onSelect={() => runCommand(() => navigate("/tools"))} className="group">

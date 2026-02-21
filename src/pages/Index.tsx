@@ -11,6 +11,7 @@ import Footer from "@/components/footer";
 import SEO from "@/components/seo";
 import { lazy, Suspense, useState, useEffect } from "react";
 import { SystemDiagnosticLoader } from "@/components/SystemDiagnosticLoader";
+import { InteractiveGrid } from "@/components/InteractiveGrid";
 
 // Lazy load ToolsSection to prevent loading 40KB of tool metadata on initial load
 const ToolsSection = lazy(() => import("@/sections/tools-section"));
@@ -28,7 +29,8 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col relative overflow-hidden">
+      <InteractiveGrid />
       {showLoader && <SystemDiagnosticLoader />}
       <SEO
         title="SnapTools - 100+ Free Online PDF, Image & Converter Tools"

@@ -14,17 +14,22 @@ import {
     Command as CommandIcon,
     ChevronRight,
     ShieldCheck,
-    Activity
+    Activity,
+    Maximize2,
+    Minimize2
 } from "lucide-react";
 import AnimatedElement from "@/components/animated-element";
+import { InteractiveGrid } from "@/components/InteractiveGrid";
+import { useFocusMode } from "@/hooks/use-focus-mode";
 
 const ShortcutCard = ({ keys, label, description, icon: Icon, delay }: { keys: string[], label: string, description: string, icon: any, delay: number }) => (
     <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay }}
-        className="group p-8 rounded-[2.5rem] bg-white/50 dark:bg-white/[0.02] border border-black/5 dark:border-white/10 hover:border-primary/30 transition-all duration-500 shadow-sm hover:shadow-xl"
+        className="group p-8 rounded-[2.5rem] bg-white/50 dark:bg-white/[0.02] border border-black/5 dark:border-white/10 hover:border-primary/30 transition-all duration-500 shadow-sm hover:shadow-xl relative overflow-hidden"
     >
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-right from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
         <div className="flex items-start justify-between mb-8">
             <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                 <Icon size={24} />
@@ -46,6 +51,8 @@ const ShortcutCard = ({ keys, label, description, icon: Icon, delay }: { keys: s
 );
 
 const WorkstationPage = () => {
+    const { isFocusMode, toggleFocusMode } = useFocusMode();
+
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <SEO
@@ -55,29 +62,47 @@ const WorkstationPage = () => {
             <Header />
 
             <main className="flex-grow pt-32 pb-24 relative overflow-hidden">
+                <InteractiveGrid />
+
                 {/* Background Decorative Rings */}
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
                 <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
-                <div className="container max-w-6xl">
+                <div className="container max-w-6xl relative z-10">
                     <header className="mb-20">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary font-black text-[9px] uppercase tracking-widest mb-6">
-                            <Terminal className="w-3 h-3" />
-                            Operator Console v2.0
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary font-black text-[9px] uppercase tracking-widest mb-6">
+                                    <Terminal className="w-3 h-3" />
+                                    Operator Console v2.0
+                                </div>
+                                <h1 className="text-6xl md:text-8xl font-serif font-black tracking-tighter mb-8 leading-[0.9]">
+                                    Workstation <br />
+                                    <em className="italic font-light text-primary">Shortcuts</em>
+                                </h1>
+                                <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">
+                                    SnapTools is designed for high-performance operators. Use these professional sequences to navigate the ecosystem at command-line speed.
+                                </p>
+                            </div>
+
+                            <button
+                                onClick={toggleFocusMode}
+                                title={isFocusMode ? "Exit Focus Mode" : "Enter Focus Mode"}
+                                className="p-4 rounded-2xl bg-white/50 dark:bg-white/[0.02] border border-black/5 dark:border-white/10 hover:border-primary/30 transition-all group"
+                            >
+                                {isFocusMode ? (
+                                    <Minimize2 className="text-primary group-hover:scale-110 transition-transform" />
+                                ) : (
+                                    <Maximize2 className="text-primary group-hover:scale-110 transition-transform" />
+                                )}
+                            </button>
                         </div>
-                        <h1 className="text-6xl md:text-8xl font-serif font-black tracking-tighter mb-8 leading-[0.9]">
-                            Workstation <br />
-                            <em className="italic font-light text-primary">Shortcuts</em>
-                        </h1>
-                        <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">
-                            SnapTools is designed for high-performance operators. Use these professional sequences to navigate the ecosystem at command-line speed.
-                        </p>
                     </header>
 
                     {/* Primary Commands */}
                     <section className="mb-24">
                         <div className="flex items-center gap-4 mb-10">
-                            <h2 className="text-2xl font-serif font-black tracking-tight">Core System Commands</h2>
+                            <h2 className="text-2xl font-serif font-black tracking-tight uppercase tracking-widest text-[10px] text-primary/60">Core System Commands</h2>
                             <div className="flex-1 h-px bg-black/5 dark:bg-white/5" />
                         </div>
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -91,7 +116,7 @@ const WorkstationPage = () => {
                             <ShortcutCard
                                 delay={0.2}
                                 icon={Keyboard}
-                                label="Quick Help"
+                                label="Toggle Quick Help"
                                 description="Toggle the shortcuts overview overlay from anywhere in the workstation."
                                 keys={["?"]}
                             />
@@ -101,6 +126,13 @@ const WorkstationPage = () => {
                                 label="Cycle Theme Node"
                                 description="Transition the interface between Light and Dark operation modes."
                                 keys={["Shift", "T"]}
+                            />
+                            <ShortcutCard
+                                delay={0.35}
+                                icon={Maximize2}
+                                label="Toggle Focus Mode"
+                                description="Hide all UI chrome for distraction-free technical operation."
+                                keys={["Shift", "F"]}
                             />
                             <ShortcutCard
                                 delay={0.4}
@@ -115,7 +147,7 @@ const WorkstationPage = () => {
                     {/* Navigation Sequences */}
                     <section>
                         <div className="flex items-center gap-4 mb-10">
-                            <h2 className="text-2xl font-serif font-black tracking-tight">Navigation Sequences</h2>
+                            <h2 className="text-2xl font-serif font-black tracking-tight uppercase tracking-widest text-[10px] text-primary/60">Navigation Sequences</h2>
                             <div className="flex-1 h-px bg-black/5 dark:bg-white/5" />
                         </div>
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -147,7 +179,7 @@ const WorkstationPage = () => {
                     <motion.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
-                        className="mt-24 p-8 rounded-[3rem] bg-primary/5 border border-primary/10 flex flex-col md:flex-row items-center gap-8"
+                        className="mt-24 p-8 rounded-[3rem] bg-primary/5 border border-primary/10 flex flex-col md:flex-row items-center gap-8 shadow-inner"
                     >
                         <div className="w-16 h-16 rounded-3xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
                             <Cpu size={32} />
@@ -163,6 +195,17 @@ const WorkstationPage = () => {
             </main>
 
             <Footer />
+
+            {/* Ambient Focus Toggle for Power Users */}
+            {isFocusMode && (
+                <button
+                    onClick={toggleFocusMode}
+                    className="focus-mode-toggle-btn animate-bounce"
+                    title="Exit Focus Mode (Shift+F)"
+                >
+                    <Minimize2 size={20} />
+                </button>
+            )}
         </div>
     );
 };

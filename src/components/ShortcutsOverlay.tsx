@@ -22,6 +22,7 @@ import {
     Cpu
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { playWorkstationSound } from "@/lib/sounds";
 
 export function ShortcutsOverlay() {
     const [open, setOpen] = useState(false);
@@ -42,11 +43,15 @@ export function ShortcutsOverlay() {
 
             // 1. ? key (Shift + /)
             if (e.key === "?" && !e.metaKey && !e.ctrlKey) {
-                setOpen((prev) => !prev);
+                setOpen((prev) => {
+                    playWorkstationSound('click');
+                    return !prev;
+                });
             }
 
             // 2. Shift + T (Theme cycle)
             if (e.key === "T" && e.shiftKey) {
+                playWorkstationSound('click');
                 setTheme(theme === "dark" ? "light" : "dark");
             }
 
@@ -55,9 +60,9 @@ export function ShortcutsOverlay() {
             setKeys(newKeys);
 
             if (newKeys[0] === "g") {
-                if (newKeys[1] === "h") navigate("/");
-                if (newKeys[1] === "t") navigate("/tools");
-                if (newKeys[1] === "d") navigate("/documentation");
+                if (newKeys[1] === "h") { playWorkstationSound('success'); navigate("/"); }
+                if (newKeys[1] === "t") { playWorkstationSound('success'); navigate("/tools"); }
+                if (newKeys[1] === "d") { playWorkstationSound('success'); navigate("/workstation"); }
             }
         };
 
@@ -106,6 +111,7 @@ export function ShortcutsOverlay() {
                         <ShortcutRow icon={SearchIcon} label="Ecosystem Discovery" keys={["Cmd", "K"]} />
                         <ShortcutRow icon={Keyboard} label="Shortcut Documentation" keys={["?"]} />
                         <ShortcutRow icon={Moon} label="Cycle Theme Node" keys={["Shift", "T"]} />
+                        <ShortcutRow icon={Monitor} label="Toggle Focus Mode" keys={["Shift", "F"]} />
                         <ShortcutRow icon={X} label="Close Active Module" keys={["ESC"]} />
                     </div>
 
