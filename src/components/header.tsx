@@ -57,7 +57,18 @@ const Header = () => {
         Skip to content
       </a>
       <div className="container flex h-16 items-center justify-between">
-        <Logo />
+        <div className="flex items-center gap-6">
+          <Logo />
+          {!isMobile && (
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/5 border border-green-500/10 transition-all hover:bg-green-500/10 group">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              </span>
+              <span className="text-[9px] font-black uppercase tracking-widest text-green-600/60 group-hover:text-green-600 transition-colors">System Operational</span>
+            </div>
+          )}
+        </div>
 
         {!isMobile && (
           <nav className="flex items-center gap-8">
