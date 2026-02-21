@@ -17,13 +17,28 @@ import {
   ArrowRight
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import Breadcrumbs from "@/components/ui/breadcrumbs";
 
 const DocumentationPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSection, setActiveSection] = useState('getting-started');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expandedToolId, setExpandedToolId] = useState<string | null>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalScroll = document.documentElement.scrollTop;
+      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scroll = `${totalScroll / windowHeight}`;
+      setScrollProgress(parseFloat(scroll));
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -79,9 +94,26 @@ const DocumentationPage = () => {
     <div className="min-h-screen flex flex-col bg-background selection:bg-primary/10">
       <Header />
 
+      {/* Reading Progress Bar */}
+      <div className="fixed top-16 left-0 w-full h-1 z-[60] pointer-events-none">
+        <motion.div
+          className="h-full bg-primary"
+          style={{ scaleX: scrollProgress, transformOrigin: "0%" }}
+        />
+      </div>
+
       <div className="flex-grow pt-24 md:pt-32 relative">
         {/* Background Decorative Gradient */}
         <div className="absolute top-0 right-0 w-1/2 h-screen bg-gradient-to-l from-primary/5 to-transparent pointer-events-none -z-10" />
+
+        <div className="container max-w-7xl mx-auto px-6">
+          <Breadcrumbs
+            items={[
+              { label: "Documentation" }
+            ]}
+            className="mb-8"
+          />
+        </div>
 
         <div className="container max-w-7xl mx-auto px-6 flex flex-col md:flex-row gap-12 pb-32">
 
