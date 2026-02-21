@@ -88,8 +88,8 @@ export function ShortcutsOverlay() {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            {/* Centered DialogContent */}
-            <DialogContent className="max-w-xl p-0 overflow-hidden rounded-[3rem] border-black/5 dark:border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] bg-white/95 dark:bg-black/95 backdrop-blur-3xl">
+            {/* Centered DialogContent - Adjusted slightly lower for better balance */}
+            <DialogContent className="max-w-xl p-0 overflow-hidden rounded-[3rem] border-black/5 dark:border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] bg-white/95 dark:bg-black/95 backdrop-blur-3xl sm:top-[55%]">
                 <div className="p-8 border-b border-black/5 dark:border-white/5 bg-primary/[0.02]">
                     <DialogTitle className="flex items-center gap-3 text-3xl font-serif font-black tracking-tighter mb-2">
                         <Cpu className="text-primary w-8 h-8" />
