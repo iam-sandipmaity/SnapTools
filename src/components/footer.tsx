@@ -4,7 +4,6 @@ import {
   Instagram,
   Github,
   Linkedin,
-  Facebook,
   Rss,
   ArrowUpRight,
   Mail,
@@ -18,7 +17,6 @@ const socialLinks = [
   { icon: Instagram, href: "https://instagram.com/iam_sandipmaity", label: "Instagram" },
   { icon: Github, href: "https://github.com/iam-sandipmaity/", label: "GitHub" },
   { icon: Linkedin, href: "https://linkedin.com/in/iam-sandipmaity", label: "LinkedIn" },
-  { icon: Facebook, href: "#", label: "Facebook" },
   { icon: Rss, href: "/rss.xml", label: "RSS" },
 ];
 
