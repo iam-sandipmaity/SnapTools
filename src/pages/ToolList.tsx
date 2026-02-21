@@ -17,9 +17,12 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useRecentlyUsedTools } from "@/hooks/use-recently-used-tools";
+import { History } from "lucide-react";
 
 const ToolList = () => {
   const navigate = useNavigate();
+  const { recentTools } = useRecentlyUsedTools();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [filteredCategories, setFilteredCategories] = useState(toolCategories);
@@ -123,6 +126,31 @@ const ToolList = () => {
               </Popover>
             </div>
           </header>
+
+          {/* RECENTLY USED */}
+          {recentTools.length > 0 && !searchQuery && !selectedCategory && (
+            <div className="mb-32">
+              <div className="flex items-center gap-3 text-muted-foreground/60 font-black text-[10px] uppercase tracking-[0.3em] mb-8">
+                <History className="w-3 h-3" />
+                Recently Initialized Modules
+              </div>
+              <div className="flex flex-wrap gap-4">
+                {recentTools.map((tool) => (
+                  <Link
+                    key={tool.id}
+                    to={`/tools/${tool.categoryId}/${tool.id}`}
+                    className="group px-6 py-4 rounded-2xl bg-white/50 dark:bg-white/[0.02] border border-black/5 dark:border-white/5 hover:border-primary/20 hover:bg-primary/5 transition-all flex items-center gap-4 shadow-sm"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                      <Zap size={14} />
+                    </div>
+                    <span className="text-sm font-bold tracking-tight">{tool.title}</span>
+                    <ArrowRight size={12} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* TOOLS GRID */}
           <div className="space-y-32">
