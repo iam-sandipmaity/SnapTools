@@ -7,12 +7,14 @@ import ToolContentSection from "@/components/seo/ToolContentSection";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toolCategories, ToolCategory } from "@/data/tools";
-import { ArrowLeft, Wrench, Zap, Command, ShieldCheck, Share2, Info } from "lucide-react";
+import { ArrowLeft, Wrench, Zap, Command, ShieldCheck, Share2, Info, ArrowRight, ChevronRight, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import AnimatedElement from "@/components/animated-element";
 import { toast } from "sonner";
+import Breadcrumbs from "@/components/ui/breadcrumbs";
+import { useRecentlyUsedTools } from "@/hooks/use-recently-used-tools";
 
 
 // Premium Tool Loader
@@ -80,6 +82,7 @@ const ToolPage = () => {
   const [subTool, setSubTool] = useState<{ id: string; title: string; description?: string } | null>(null);
   const [ToolComponent, setToolComponent] = useState<React.ComponentType | null>(null);
   const [error, setError] = useState<boolean>(false);
+  const { addTool } = useRecentlyUsedTools();
 
   useEffect(() => {
     if (toolId && !categoryId) {
@@ -88,6 +91,7 @@ const ToolPage = () => {
         if (foundTool) {
           setCategory(cat);
           setSubTool(foundTool);
+          addTool({ id: foundTool.id, categoryId: cat.id, title: foundTool.title });
           return;
         }
       }
@@ -102,10 +106,13 @@ const ToolPage = () => {
     if (foundCategory && toolId) {
       const foundTool = foundCategory.subTools?.find((tool) => tool.id === toolId);
       setSubTool(foundTool || null);
+      if (foundTool) {
+        addTool({ id: foundTool.id, categoryId: foundCategory.id, title: foundTool.title });
+      }
     } else if (foundCategory) {
       setSubTool(null);
     }
-  }, [categoryId, toolId]);
+  }, [categoryId, toolId, addTool]);
 
   useEffect(() => {
     let isMounted = true;
@@ -174,6 +181,15 @@ const ToolPage = () => {
         <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full translate-x-1/2 -z-10" />
 
         <div className="container max-w-7xl mx-auto px-6 pt-32 pb-40">
+
+          {/* BREADCRUMBS */}
+          <Breadcrumbs
+            items={[
+              { label: "Tools", href: "/tools" },
+              { label: category.title, href: `/tools/${category.id}` },
+              { label: subTool?.title || "Tool" }
+            ]}
+          />
 
           {/* TOOL HEADER ARCHITECTURE */}
           <div className="mb-20">
@@ -320,6 +336,71 @@ const ToolPage = () => {
                 >
                   <div className="bg-white/80 dark:bg-black/40 backdrop-blur-3xl border border-black/5 dark:border-white/10 rounded-[4rem] p-8 md:p-16 shadow-2xl ring-1 ring-black/5">
                     <ToolComponent />
+                  </div>
+
+                  {/* INFINITY FLOW & FEEDBACK */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-32 mb-40">
+                    {/* Next Tool Card */}
+                    <div className="md:col-span-2">
+                      {(() => {
+                        const currentIndex = category.subTools?.findIndex(t => t.id === toolId) ?? -1;
+                        const nextTool = category.subTools?.[(currentIndex + 1) % (category.subTools?.length ?? 1)];
+
+                        if (!nextTool || nextTool.id === toolId) return null;
+
+                        return (
+                          <Link
+                            to={`/tools/${category.id}/${nextTool.id}`}
+                            className="group relative block p-10 rounded-[3rem] bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 overflow-hidden hover:scale-[1.02] transition-all duration-500 shadow-xl"
+                          >
+                            <Zap className="absolute -right-8 -bottom-8 w-40 h-40 text-primary opacity-[0.03] rotate-12 group-hover:rotate-0 transition-transform duration-700" />
+                            <div className="relative z-10">
+                              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary font-black text-[9px] uppercase tracking-widest mb-6">
+                                <ArrowRight className="w-3 h-3" />
+                                Sequence Optimization
+                              </div>
+                              <h3 className="text-3xl font-serif font-black mb-4 group-hover:text-primary transition-colors">Continue to {nextTool.title}</h3>
+                              <p className="text-muted-foreground text-sm max-w-md leading-relaxed">
+                                {nextTool.description}
+                              </p>
+                              <div className="mt-8 flex items-center gap-2 font-black text-[10px] uppercase tracking-widest text-primary">
+                                Initialize Module <ChevronRight size={14} />
+                              </div>
+                            </div>
+                          </Link>
+                        );
+                      })()}
+                    </div>
+
+                    {/* Feedback Widget */}
+                    <div className="p-10 rounded-[3rem] bg-white/50 dark:bg-white/[0.02] border border-black/5 dark:border-white/5 backdrop-blur-3xl flex flex-col justify-between shadow-lg">
+                      <div>
+                        <div className="flex items-center gap-2 text-primary font-black text-[10px] uppercase tracking-widest mb-6">
+                          <MessageCircle className="w-3 h-3" />
+                          Node Validation
+                        </div>
+                        <h4 className="text-xl font-bold mb-4 tracking-tight">Perform as expected?</h4>
+                        <p className="text-xs text-muted-foreground leading-relaxed mb-8">
+                          Your telemetry helps us stabilize and optimize this specific processing module.
+                        </p>
+                      </div>
+                      <div className="flex gap-3">
+                        <Button
+                          variant="outline"
+                          className="flex-1 rounded-2xl h-12 border-black/5 dark:border-white/10 hover:bg-green-500/10 hover:text-green-600 hover:border-green-500/20 active:scale-95 transition-all"
+                          onClick={() => toast.success("Feedback received. Telemetry updated.")}
+                        >
+                          Positive
+                        </Button>
+                        <Button
+                          variant="outline"
+                          className="flex-1 rounded-2xl h-12 border-black/5 dark:border-white/10 hover:bg-red-500/10 hover:text-red-600 hover:border-red-500/20 active:scale-95 transition-all"
+                          onClick={() => toast.success("Issue noted. Development node notified.")}
+                        >
+                          Critical
+                        </Button>
+                      </div>
+                    </div>
                   </div>
 
                   {/* SEO & DOCUMENTATION SECTION */}

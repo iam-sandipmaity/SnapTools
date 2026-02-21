@@ -20,6 +20,7 @@ const navItems: NavItem[] = [
   // { label: "Pricing", href: "/pricing" },
   { label: "Donate", href: "/donate" },
   { label: "Blog", href: "/blog" },
+  { label: "Workstation", href: "/workstation" },
   { label: "Code Runner (Runr)", href: "https://runr.vercel.app/" },
 ];
 
@@ -50,8 +51,25 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 z-50 w-full bg-background/95 backdrop-blur-sm border-b border-border">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:shadow-xl focus:font-bold focus:outline-none focus:ring-4 focus:ring-primary/20 transition-all font-serif"
+      >
+        Skip to content
+      </a>
       <div className="container flex h-16 items-center justify-between">
-        <Logo />
+        <div className="flex items-center gap-6">
+          <Logo />
+          {!isMobile && (
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/5 border border-green-500/10 transition-all hover:bg-green-500/10 group">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              </span>
+              <span className="text-[9px] font-black uppercase tracking-widest text-green-600/60 group-hover:text-green-600 transition-colors">System Operational</span>
+            </div>
+          )}
+        </div>
 
         {!isMobile && (
           <nav className="flex items-center gap-8">
@@ -108,8 +126,8 @@ const Header = () => {
       {isMobile && (
         <div
           className={`fixed inset-0 z-[100] w-screen h-screen bg-white dark:bg-black transition-all duration-500 ease-&lsqb;cubic-bezier(0.4,0,0.2,1)&rsqb; ${mobileMenuOpen
-              ? "opacity-100 pointer-events-auto visible"
-              : "opacity-0 pointer-events-none invisible"
+            ? "opacity-100 pointer-events-auto visible"
+            : "opacity-0 pointer-events-none invisible"
             }`}
         >
           {/* Header Mirror inside Menu */}

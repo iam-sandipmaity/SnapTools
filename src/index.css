@@ -10,6 +10,7 @@ body {
   overflow-x: hidden;
   width: 100%;
   scroll-behavior: smooth;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #root {
@@ -248,7 +249,43 @@ body {
 }
 
 
-/* Clean focus defaults */
+/* Better focus handling */
 *:focus {
   outline: none;
+}
+
+*:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+}
+
+@layer utilities {
+  .site-container {
+    @apply container max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10;
+  }
+
+  .focus-visible-outline {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ring-offset-background transition-all;
+  }
+
+  .tap-target-min {
+    @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
+  }
+}
+
+/* WORKSTATION FOCUS MODE */
+.focus-mode header,
+.focus-mode footer,
+.focus-mode .scroll-to-top,
+.focus-mode .live-telemetry-bar {
+  display: none !important;
+  pointer-events: none;
+}
+
+.focus-mode main {
+  padding-top: 2rem !important;
+  padding-bottom: 2rem !important;
+}
+
+.focus-mode-toggle-btn {
+  @apply fixed bottom-8 right-8 z-[100] w-12 h-12 rounded-full bg-primary/20 backdrop-blur-xl border border-primary/30 flex items-center justify-center text-primary hover:scale-110 active:scale-95 transition-all shadow-lg;
 }

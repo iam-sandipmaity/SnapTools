@@ -15,6 +15,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
 import AnimatedElement from "@/components/animated-element";
 import { toast } from "sonner";
+import Breadcrumbs from "@/components/ui/breadcrumbs";
 
 
 const ToolCategoryPage = () => {
@@ -73,6 +74,14 @@ const ToolCategoryPage = () => {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-primary/[0.02] blur-[120px] -z-10" />
 
         <div className="container max-w-7xl mx-auto px-6 pt-32 pb-40">
+
+          {/* BREADCRUMBS */}
+          <Breadcrumbs
+            items={[
+              { label: "Tools", href: "/tools" },
+              { label: category.title }
+            ]}
+          />
 
           {/* HEADER SECTION */}
           <div className="mb-20">
