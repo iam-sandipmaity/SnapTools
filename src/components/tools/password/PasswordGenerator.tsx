@@ -8,13 +8,14 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/components/ui/sonner";
 import AnimatedElement from "@/components/animated-element";
+import { useWorkspacePreference } from "@/hooks/use-workspace-preference";
 
 const PasswordGenerator = () => {
-  const [passwordLength, setPasswordLength] = useState(12);
-  const [includeUppercase, setIncludeUppercase] = useState(true);
-  const [includeLowercase, setIncludeLowercase] = useState(true);
-  const [includeNumbers, setIncludeNumbers] = useState(true);
-  const [includeSymbols, setIncludeSymbols] = useState(true);
+  const [passwordLength, setPasswordLength] = useWorkspacePreference("pwd_length", 12);
+  const [includeUppercase, setIncludeUppercase] = useWorkspacePreference("pwd_upper", true);
+  const [includeLowercase, setIncludeLowercase] = useWorkspacePreference("pwd_lower", true);
+  const [includeNumbers, setIncludeNumbers] = useWorkspacePreference("pwd_num", true);
+  const [includeSymbols, setIncludeSymbols] = useWorkspacePreference("pwd_sym", true);
   const [password, setPassword] = useState("");
   const [passwordStrength, setPasswordStrength] = useState(0);
 
@@ -61,19 +62,19 @@ const PasswordGenerator = () => {
         Math.floor(Math.random() * uppercaseChars.length)
       );
     }
-    
+
     if (includeLowercase) {
       generatedPassword += lowercaseChars.charAt(
         Math.floor(Math.random() * lowercaseChars.length)
       );
     }
-    
+
     if (includeNumbers) {
       generatedPassword += numberChars.charAt(
         Math.floor(Math.random() * numberChars.length)
       );
     }
-    
+
     if (includeSymbols) {
       generatedPassword += symbolChars.charAt(
         Math.floor(Math.random() * symbolChars.length)
@@ -95,13 +96,13 @@ const PasswordGenerator = () => {
       .join("");
 
     setPassword(generatedPassword);
-    
+
     // Calculate strength based on length and character types
     let lengthStrength = 0;
     if (passwordLength > 8) lengthStrength = 1;
     if (passwordLength > 12) lengthStrength = 2;
     if (passwordLength >= 16) lengthStrength = 3;
-    
+
     setPasswordStrength(strength + lengthStrength);
     toast.success("Password generated successfully!");
   };
@@ -111,7 +112,7 @@ const PasswordGenerator = () => {
       toast.error("Generate a password first");
       return;
     }
-    
+
     navigator.clipboard.writeText(password)
       .then(() => {
         toast.success("Password copied to clipboard!");
