@@ -1,6 +1,17 @@
 export const playWorkstationSound = (type: 'click' | 'success' | 'focus' = 'click') => {
     if (typeof window === 'undefined') return;
 
+    // Fast check for settings preference
+    const savedSettings = localStorage.getItem('snaptools_ws_settings');
+    if (savedSettings) {
+        try {
+            const settings = JSON.parse(savedSettings);
+            if (!settings.soundEnabled) return;
+        } catch (e) {
+            // fallback to playing if parse fails
+        }
+    }
+
     try {
         const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
         const oscillator = audioCtx.createOscillator();
