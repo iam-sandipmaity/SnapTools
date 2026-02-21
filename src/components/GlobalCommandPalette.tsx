@@ -127,7 +127,7 @@ export function GlobalCommandPalette() {
                             <CommandGroup heading="Recent Modules">
                                 {recentTools.map((tool) => (
                                     <CommandItem
-                                        key={`recent-${tool.id}`}
+                                        key={`recent-${tool.categoryId}-${tool.id}`}
                                         onSelect={() => runCommand(() => navigate(`/tools/${tool.categoryId}/${tool.id}`))}
                                         className="group"
                                     >
@@ -201,7 +201,7 @@ export function GlobalCommandPalette() {
                     <CommandGroup heading="Search Results">
                         {searchResults?.map((tool) => (
                             <CommandItem
-                                key={tool.id}
+                                key={`${tool.categoryId}-${tool.id}`}
                                 onSelect={() => runCommand(() => navigate(`/tools/${tool.categoryId}/${tool.id}`))}
                                 className="group"
                             >
