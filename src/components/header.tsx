@@ -50,6 +50,12 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 z-50 w-full bg-background/95 backdrop-blur-sm border-b border-border">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:shadow-xl focus:font-bold focus:outline-none focus:ring-4 focus:ring-primary/20 transition-all font-serif"
+      >
+        Skip to content
+      </a>
       <div className="container flex h-16 items-center justify-between">
         <Logo />
 
@@ -108,8 +114,8 @@ const Header = () => {
       {isMobile && (
         <div
           className={`fixed inset-0 z-[100] w-screen h-screen bg-white dark:bg-black transition-all duration-500 ease-&lsqb;cubic-bezier(0.4,0,0.2,1)&rsqb; ${mobileMenuOpen
-              ? "opacity-100 pointer-events-auto visible"
-              : "opacity-0 pointer-events-none invisible"
+            ? "opacity-100 pointer-events-auto visible"
+            : "opacity-0 pointer-events-none invisible"
             }`}
         >
           {/* Header Mirror inside Menu */}

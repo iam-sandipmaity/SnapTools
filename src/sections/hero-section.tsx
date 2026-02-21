@@ -53,7 +53,7 @@ const HeroSection = () => {
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[140px] -z-10 translate-x-1/2 -translate-y-1/2" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] -z-10 -translate-x-1/2 translate-y-1/2" />
 
-      <div className="container relative z-10 px-6">
+      <div className="site-container">
         <div className="max-w-5xl mx-auto text-center">
 
           {/* Elite Badge */}

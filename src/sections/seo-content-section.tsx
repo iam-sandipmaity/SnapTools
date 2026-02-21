@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import AnimatedElement from "@/components/animated-element";
 import {
   FileText,
@@ -27,13 +29,18 @@ import {
   ShieldCheck,
   Cpu,
   Workflow,
-  Rocket
+  Rocket,
+  Play,
+  Pause
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const SEOContentSection = () => {
+  const [isPaused, setIsPaused] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+
   const toolCategories = [
     {
       icon: FileText,
@@ -114,7 +121,7 @@ const SEOContentSection = () => {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-screen bg-primary/[0.02] blur-[140px] -z-10" />
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full translate-x-1/2 translate-y-1/2 -z-10" />
 
-      <div className="container max-w-7xl mx-auto relative z-10">
+      <div className="site-container">
 
         {/* HERO HEADER: WHY CHOOSE SNAPTOOLS */}
         <div className="text-center mb-32 max-w-4xl mx-auto">
@@ -271,32 +278,86 @@ const SEOContentSection = () => {
 
           <div className="relative group/marquee">
             {/* Seamless Marquee Container */}
-            <div className="flex gap-6 animate-marquee hover:[animation-play-state:paused]">
-              {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
-                <div
-                  key={index}
-                  className="w-[400px] shrink-0 p-10 rounded-[3rem] border border-black/5 dark:border-white/5 bg-white/50 dark:bg-white/[0.02] backdrop-blur-xl flex flex-col h-full hover:shadow-2xl hover:border-primary/20 transition-all duration-500"
+            {!shouldReduceMotion ? (
+              <div
+                className={cn(
+                  "flex gap-6 animate-marquee",
+                  isPaused && "[animation-play-state:paused]"
+                )}
+                style={{
+                  animationPlayState: isPaused ? 'paused' : 'running'
+                }}
+              >
+                {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
+                  <div
+                    key={index}
+                    className="w-[400px] shrink-0 p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem] border border-black/5 dark:border-white/5 bg-white/50 dark:bg-white/[0.02] backdrop-blur-xl flex flex-col h-full hover:shadow-2xl hover:border-primary/20 transition-all duration-500"
+                    onMouseEnter={() => setIsPaused(true)}
+                    onMouseLeave={() => setIsPaused(false)}
+                  >
+                    <div className="flex gap-1 mb-6 md:mb-8">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} size={14} className="text-primary fill-current opacity-80" />
+                      ))}
+                    </div>
+                    <Quote size={28} className="text-primary opacity-20 mb-6" />
+                    <p className="text-sm text-muted-foreground/80 leading-relaxed font-medium mb-8 md:mb-10 flex-grow italic">
+                      "{testimonial.content}"
+                    </p>
+                    <div className="pt-6 border-t border-black/5 dark:border-white/5">
+                      <div className="font-bold tracking-tight text-lg">{testimonial.name}</div>
+                      <div className="text-[10px] uppercase font-black tracking-[0.2em] text-primary">{testimonial.role}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4 md:px-6">
+                {testimonials.map((testimonial, index) => (
+                  <div
+                    key={index}
+                    className="p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem] border border-black/5 dark:border-white/5 bg-white/50 dark:bg-white/[0.02] backdrop-blur-xl flex flex-col h-full"
+                  >
+                    <div className="flex gap-1 mb-8">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} size={14} className="text-primary fill-current opacity-80" />
+                      ))}
+                    </div>
+                    <Quote size={24} className="text-primary opacity-20 mb-6" />
+                    <p className="text-sm text-muted-foreground/80 leading-relaxed font-medium mb-10 flex-grow italic">
+                      "{testimonial.content}"
+                    </p>
+                    <div className="pt-6 border-t border-black/5 dark:border-white/5">
+                      <div className="font-bold tracking-tight text-lg">{testimonial.name}</div>
+                      <div className="text-[10px] uppercase font-black tracking-[0.2em] text-primary">{testimonial.role}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Controls Overlay */}
+            {!shouldReduceMotion && (
+              <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-4 z-20">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setIsPaused(!isPaused)}
+                  className="rounded-full w-12 h-12 border-primary/20 bg-background/50 backdrop-blur-md hover:bg-primary hover:text-white transition-all shadow-lg"
+                  aria-label={isPaused ? "Resume Animation" : "Pause Animation"}
                 >
-                  <div className="flex gap-1 mb-8">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={14} className="text-primary fill-current opacity-80" />
-                    ))}
-                  </div>
-                  <Quote size={28} className="text-primary opacity-20 mb-6" />
-                  <p className="text-sm text-muted-foreground/80 leading-relaxed font-medium mb-10 flex-grow italic">
-                    "{testimonial.content}"
-                  </p>
-                  <div className="pt-6 border-t border-black/5 dark:border-white/5">
-                    <div className="font-bold tracking-tight text-lg">{testimonial.name}</div>
-                    <div className="text-[10px] uppercase font-black tracking-[0.2em] text-primary">{testimonial.role}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
+                  {isPaused ? <Play size={18} fill="currentColor" /> : <Pause size={18} fill="currentColor" />}
+                </Button>
+              </div>
+            )}
 
             {/* Edge Fades for Seamless Look */}
-            <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-            <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+            {!shouldReduceMotion && (
+              <>
+                <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+                <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+              </>
+            )}
           </div>
         </div>
 

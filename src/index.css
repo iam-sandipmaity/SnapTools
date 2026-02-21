@@ -248,7 +248,25 @@ body {
 }
 
 
-/* Clean focus defaults */
+/* Better focus handling */
 *:focus {
   outline: none;
+}
+
+*:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+}
+
+@layer utilities {
+  .site-container {
+    @apply container max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10;
+  }
+
+  .focus-visible-outline {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ring-offset-background transition-all;
+  }
+
+  .tap-target-min {
+    @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
+  }
 }

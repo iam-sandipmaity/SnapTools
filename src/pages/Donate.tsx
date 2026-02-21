@@ -15,13 +15,24 @@ import {
   ShieldQuestion,
   Copy,
   QrCode,
-  X
+  X,
+  CheckCircle2,
+  Download,
+  Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 declare const Razorpay: any;
 
@@ -44,6 +55,8 @@ const DonationPage = () => {
   const [confirmAnonymous, setConfirmAnonymous] = useState(false);
   const [useRandomMobile, setUseRandomMobile] = useState(false);
   const [showUpiQr, setShowUpiQr] = useState(false);
+  const [copiedStates, setCopiedStates] = useState<Record<string, boolean>>({});
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const validEmailDomains = [
     "gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "aol.com",
@@ -85,6 +98,8 @@ const DonationPage = () => {
       return;
     }
 
+    setIsProcessing(true);
+
     let currentMobile = mobile;
     if (isAnonymous && useRandomMobile) {
       currentMobile = generateRandomMobile();
@@ -105,6 +120,7 @@ const DonationPage = () => {
           contact: mobile
         },
         handler: function (response: any) {
+          setIsProcessing(false);
           const paymentDetails = {
             razorpay_payment_id: response.razorpay_payment_id,
             amount: amount.toString(),
@@ -124,12 +140,16 @@ const DonationPage = () => {
         modal: {
           confirm_close: true,
           escape: true,
-          handleback: true
+          handleback: true,
+          ondismiss: function () {
+            setIsProcessing(false);
+          }
         }
       };
 
       const rzp = new Razorpay(options);
       rzp.on('payment.failed', function (response: any) {
+        setIsProcessing(false);
         toast({
           title: "Transaction Refused",
           description: "Your payment could not be processed. Please try another method.",
@@ -138,6 +158,7 @@ const DonationPage = () => {
       });
       rzp.open();
     } catch (error) {
+      setIsProcessing(false);
       setError("Gateway Error: Could not initialize secure payment.");
     }
   };
@@ -167,13 +188,17 @@ const DonationPage = () => {
   };
 
   // Support methods (UPI / BMC / BTC)
-  const upiId = "mrsandipmaity113@naviaxis"; 
-  const buyMeCoffeeUrl = "https://www.buymeacoffee.com/sandipmaity"; 
+  const upiId = "mrsandipmaity113@naviaxis";
+  const buyMeCoffeeUrl = "https://www.buymeacoffee.com/sandipmaity";
   const btcAddress = "bc1qexampledummyaddress0000000000000000000"; // dummy
 
-  const copyToClipboard = async (value: string, label: string) => {
+  const copyToClipboard = async (value: string, label: string, key: string) => {
     try {
       await navigator.clipboard.writeText(value);
+      setCopiedStates(prev => ({ ...prev, [key]: true }));
+      setTimeout(() => {
+        setCopiedStates(prev => ({ ...prev, [key]: false }));
+      }, 2500);
       toast({ title: `${label} Copied`, description: `You can paste it into your payment app.`, variant: 'default' });
     } catch (e) {
       toast({ title: `Copy Failed`, description: `Could not copy ${label}.`, variant: 'destructive' });
@@ -184,12 +209,12 @@ const DonationPage = () => {
     <div className="min-h-screen flex flex-col bg-background selection:bg-primary/10">
       <Header />
 
-      <main className="flex-grow pt-20 md:pt-32 pb-20 md:pb-40 relative overflow-hidden">
+      <main id="main-content" className="flex-grow pt-20 md:pt-32 pb-20 md:pb-40 relative overflow-hidden">
         {/* Decorative Background Elements */}
         <div className="absolute top-0 right-0 w-1/3 h-[800px] bg-primary/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-1/4 h-[600px] bg-primary/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10 donate-wrapper">
+        <div className="site-container donate-wrapper">
 
           {/* HERO SECTION */}
           <header className="max-w-3xl mx-auto text-center mb-20 sm:mb-24 px-4 sm:px-0 animate-fade-in-up">
@@ -226,8 +251,9 @@ const DonationPage = () => {
             </div>
 
             {/* DONATION INTERFACE AREA */}
-            <div className="lg:col-span-7 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-              <div className="bg-white dark:bg-black/20 border border-black/5 dark:border-white/5 rounded-[3rem] p-6 sm:p-8 md:p-12 shadow-2xl">
+            <div className="lg:col-span-12 xl:col-span-7 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+              <div className="bg-white dark:bg-black/20 border border-black/5 dark:border-white/5 rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-12 shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/20 via-primary to-primary/20" />
 
                 {/* Mode Selector */}
                 <div className="flex p-1.5 bg-muted/50 dark:bg-white/[0.03] rounded-2xl mb-12">
@@ -349,7 +375,8 @@ const DonationPage = () => {
                           <button
                             key={amt}
                             onClick={() => handleDonate(amt)}
-                            className="h-20 rounded-2xl border border-black/5 dark:border-white/5 bg-muted/30 dark:bg-white/[0.02] hover:bg-primary hover:text-white transition-all duration-300 font-serif font-black text-2xl group relative overflow-hidden"
+                            disabled={isProcessing}
+                            className="h-20 rounded-2xl border border-black/5 dark:border-white/5 bg-muted/30 dark:bg-white/[0.02] hover:bg-primary hover:text-white transition-all duration-300 font-serif font-black text-2xl group relative overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             <span className="relative z-10 transition-transform group-hover:scale-110 block">₹{amt}</span>
                             <div className="absolute inset-0 bg-primary/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
@@ -369,10 +396,11 @@ const DonationPage = () => {
                         <div className="absolute right-4 top-1/2 -translate-y-1/2">
                           <Button
                             onClick={() => handleDonate(parseFloat(customAmount))}
-                            disabled={!!error || !customAmount}
+                            disabled={!!error || !customAmount || isProcessing}
                             className="h-16 px-8 rounded-2xl font-black text-[10px] uppercase tracking-widest"
                           >
-                            Contribute <ArrowRight className="w-4 h-4 ml-2" />
+                            {isProcessing ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                            {isProcessing ? "Processing..." : <>Contribute <ArrowRight className="w-4 h-4 ml-2" /></>}
                           </Button>
                         </div>
                         {error && <p className="text-[10px] text-destructive font-bold uppercase mt-2 ml-4">{error}</p>}
@@ -405,11 +433,11 @@ const DonationPage = () => {
                       <div className="flex items-center gap-4 min-w-0 flex-1">
                         <div className="w-12 h-12 shrink-0 rounded-lg bg-white dark:bg-white flex items-center justify-center p-1.5 border border-black/10">
                           <svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-                            <polygon points="0,70 28,10 38,10 10,70" fill="#F37021"/>
-                            <polygon points="22,70 50,10 60,10 32,70" fill="#8CC63F"/>
-                            <path d="M80 12 L80 42 Q80 56 94 56 Q108 56 108 42 L108 12" stroke="#097FDB" strokeWidth="7" fill="none" strokeLinecap="round"/>
-                            <path d="M120 12 L120 56 M120 12 Q148 12 148 30 Q148 48 120 48" stroke="#097FDB" strokeWidth="7" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-                            <line x1="162" y1="12" x2="162" y2="56" stroke="#097FDB" strokeWidth="7" strokeLinecap="round"/>
+                            <polygon points="0,70 28,10 38,10 10,70" fill="#F37021" />
+                            <polygon points="22,70 50,10 60,10 32,70" fill="#8CC63F" />
+                            <path d="M80 12 L80 42 Q80 56 94 56 Q108 56 108 42 L108 12" stroke="#097FDB" strokeWidth="7" fill="none" strokeLinecap="round" />
+                            <path d="M120 12 L120 56 M120 12 Q148 12 148 30 Q148 48 120 48" stroke="#097FDB" strokeWidth="7" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                            <line x1="162" y1="12" x2="162" y2="56" stroke="#097FDB" strokeWidth="7" strokeLinecap="round" />
                           </svg>
                         </div>
                         <div className="min-w-0">
@@ -419,38 +447,89 @@ const DonationPage = () => {
                         </div>
                       </div>
                       <div className="flex gap-2 shrink-0 self-start sm:self-center">
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              className="h-10 px-3 tap-target-min"
+                            >
+                              <QrCode className="w-4 h-4" />
+                              <span className="ml-2 text-xs">QR</span>
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-md rounded-[2.5rem]">
+                            <DialogHeader>
+                              <DialogTitle className="text-2xl font-serif font-black">Scan to Support</DialogTitle>
+                              <DialogDescription>
+                                Open any UPI app (GPay, PhonePe, Paytm) to complete the transaction.
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="flex flex-col items-center gap-6 py-6">
+                              <div className="p-4 bg-white rounded-3xl shadow-xl border border-black/5">
+                                <img
+                                  src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent('upi://pay?pa=' + upiId + '&pn=SnapTools&cu=INR')}`}
+                                  alt="UPI QR Code"
+                                  width={200}
+                                  height={200}
+                                  className="rounded-lg"
+                                />
+                              </div>
+                              <div className="flex flex-col w-full gap-3">
+                                <a
+                                  href={`upi://pay?pa=${upiId}&pn=SnapTools&cu=INR`}
+                                  className="w-full"
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  <Button className="w-full h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest gap-2">
+                                    <Zap className="w-4 h-4" />
+                                    Open in UPI App
+                                  </Button>
+                                </a>
+                                <Button
+                                  variant="outline"
+                                  onClick={() => {
+                                    const link = document.createElement('a');
+                                    link.href = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent('upi://pay?pa=' + upiId + '&pn=SnapTools&cu=INR')}`;
+                                    link.download = 'snaptools-upi-qr.png';
+                                    document.body.appendChild(link);
+                                    link.click();
+                                    document.body.removeChild(link);
+                                  }}
+                                  className="h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest gap-2"
+                                >
+                                  <Download className="w-4 h-4" />
+                                  Download QR
+                                </Button>
+                              </div>
+                            </div>
+                            <div className="pt-4 border-t border-border flex items-center justify-between">
+                              <code className="text-[10px] font-mono bg-muted px-2 py-1 rounded-md">{upiId}</code>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => copyToClipboard(upiId, 'UPI ID', 'upi')}
+                                className="h-8 text-[10px] font-black uppercase tracking-widest"
+                              >
+                                {copiedStates['upi'] ? "Copied!" : "Copy ID"}
+                              </Button>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
                         <Button
                           variant="outline"
-                          onClick={() => setShowUpiQr(!showUpiQr)}
-                          className="h-10 px-3"
+                          onClick={() => copyToClipboard(upiId, 'UPI ID', 'upi')}
+                          className="h-10 px-3 min-w-[100px] tap-target-min transition-all"
                         >
-                          {showUpiQr ? <X className="w-4 h-4" /> : <QrCode className="w-4 h-4" />}
-                          <span className="ml-2 text-xs">{showUpiQr ? "Hide" : "QR"}</span>
-                        </Button>
-                        <Button variant="outline" onClick={() => copyToClipboard(upiId, 'UPI ID')} className="h-10 px-3">
-                          <Copy className="w-4 h-4 mr-2" /> Copy
+                          {copiedStates['upi'] ? (
+                            <CheckCircle2 className="w-4 h-4 mr-2 text-green-500" />
+                          ) : (
+                            <Copy className="w-4 h-4 mr-2" />
+                          )}
+                          <span className="text-xs">{copiedStates['upi'] ? "Copied" : "Copy"}</span>
                         </Button>
                       </div>
                     </div>
-
-                    {/* QR Code Panel */}
-                    {showUpiQr && (
-                      <div className="border-t border-black/5 dark:border-white/5 px-4 py-6 flex flex-col items-center gap-3 bg-white/60 dark:bg-white/[0.02]">
-                        <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground">Scan to Pay via UPI</p>
-                        <div className="p-3 bg-white rounded-2xl shadow-md">
-                          <img
-                            src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent('upi://pay?pa=' + upiId + '&pn=SnapTools&cu=INR')}`}
-                            alt="UPI QR Code"
-                            width={180}
-                            height={180}
-                            className="rounded-lg"
-                          />
-                        </div>
-                        <p className="text-xs text-muted-foreground text-center max-w-[220px] leading-relaxed">
-                          Open GPay, PhonePe, Paytm or any UPI app and scan this code to pay directly.
-                        </p>
-                      </div>
-                    )}
                   </div>
 
                   {/* Buy Me a Coffee */}
@@ -465,7 +544,7 @@ const DonationPage = () => {
                       </div>
                     </div>
                     <a href={buyMeCoffeeUrl} target="_blank" rel="noreferrer" className="shrink-0 self-start sm:self-center">
-                      <Button className="h-10 px-4">Support ☕</Button>
+                      <Button className="h-10 px-4 tap-target-min">Support ☕</Button>
                     </a>
                   </div>
 
@@ -481,8 +560,17 @@ const DonationPage = () => {
                         <div className="text-xs font-mono text-foreground/90 mt-1 break-all">{btcAddress}</div>
                       </div>
                     </div>
-                    <Button variant="outline" onClick={() => copyToClipboard(btcAddress, 'BTC Address')} className="h-10 px-3 shrink-0 self-start sm:self-center">
-                      <Copy className="w-4 h-4 mr-2" /> Copy
+                    <Button
+                      variant="outline"
+                      onClick={() => copyToClipboard(btcAddress, 'BTC Address', 'btc')}
+                      className="h-10 px-3 shrink-0 self-start sm:self-center min-w-[100px] tap-target-min transition-all"
+                    >
+                      {copiedStates['btc'] ? (
+                        <CheckCircle2 className="w-4 h-4 mr-2 text-green-500" />
+                      ) : (
+                        <Copy className="w-4 h-4 mr-2" />
+                      )}
+                      <span className="text-xs">{copiedStates['btc'] ? "Copied" : "Copy"}</span>
                     </Button>
                   </div>
                 </div>
