@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import ScrollToTop from "./ui/scroll-to-top";
+import { LiveTelemetry } from "./LiveTelemetry";
 
 const socialLinks = [
   { icon: Twitter, href: "https://x.com/iam_sandipmaity", label: "Twitter" },
@@ -26,6 +27,7 @@ const exploreLinks = [
   { label: "Our Story", to: "/about" },
   { label: "Get Help", to: "/contact" },
   { label: "Pricing", to: "/pricing" },
+  { label: "Workstation", to: "/workstation" },
   { label: "Changelog", to: "/changelog" },
 ];
 
@@ -82,9 +84,9 @@ const Footer = () => (
                 <span className="w-8 h-8 rounded-full border border-black/10 dark:border-white/10 flex items-center justify-center group-hover:border-black/30 dark:group-hover:border-white/30 transition-all">
                   <Mail className="w-3.5 h-3.5" />
                 </span>
-                example@email.com
+                hello@snaptools.com
               </a>
-              <a href="tel:+15551234567" className="group flex items-center gap-3 text-sm text-black/60 dark:text-white/50 hover:text-black dark:hover:text-white transition-colors">
+              <a href="tel:+919999999999" className="group flex items-center gap-3 text-sm text-black/60 dark:text-white/50 hover:text-black dark:hover:text-white transition-colors">
                 <span className="w-8 h-8 rounded-full border border-black/10 dark:border-white/10 flex items-center justify-center group-hover:border-black/30 dark:group-hover:border-white/30 transition-all">
                   <Phone className="w-3.5 h-3.5" />
                 </span>
@@ -139,41 +141,49 @@ const Footer = () => (
     {/* ── Bottom container ── */}
     <div className="max-w-7xl mx-auto px-6 lg:px-8">
       {/* ── BOTTOM BAR ── */}
-      <div className="border-t border-black/5 dark:border-white/5 py-12 flex flex-col md:flex-row items-center justify-between gap-10">
-        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
-          <Logo className="h-6 opacity-25 dark:opacity-30 grayscale hover:opacity-100 hover:grayscale-0 transition-all cursor-pointer" />
-          <div className="flex flex-col gap-1.5 text-center md:text-left">
-            <p className="text-[9px] font-bold tracking-[0.3em] uppercase text-black/30 dark:text-white/20">
-              ©2025 - {new Date().getFullYear()} SNAPTOOLS. ALL RIGHTS RESERVED.
-            </p>
-            <p className="text-[10px] font-medium text-black/40 dark:text-white/30 tracking-tight">
-              Designed & Crafted by{" "}
-              <a
-                href="https://sandipmaity.me"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white underline decoration-black/10 dark:decoration-white/10 underline-offset-4 transition-all"
-              >
-                Sandip Maity
-              </a>
-            </p>
-          </div>
+      <div className="border-t border-black/5 dark:border-white/5 py-12 flex flex-col items-center gap-10">
+
+        {/* Live Telemetry Bar */}
+        <div className="w-full flex justify-center">
+          <LiveTelemetry />
         </div>
 
-        <div className="flex items-center gap-8 md:gap-10">
-          {[
-            { label: "Privacy", to: "/privacy" },
-            { label: "Terms", to: "/terms" },
-            { label: "Support", to: "/contact" },
-          ].map((item) => (
-            <Link
-              key={item.label}
-              to={item.to}
-              className="text-[10px] font-bold tracking-[0.25em] uppercase text-black/40 dark:text-white/30 hover:text-black dark:hover:text-white transition-colors"
-            >
-              {item.label}
-            </Link>
-          ))}
+        <div className="w-full flex flex-col md:flex-row items-center justify-between gap-10 pt-4">
+          <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
+            <Logo className="h-6 opacity-25 dark:opacity-30 grayscale hover:opacity-100 hover:grayscale-0 transition-all cursor-pointer" />
+            <div className="flex flex-col gap-1.5 text-center md:text-left">
+              <p className="text-[9px] font-bold tracking-[0.3em] uppercase text-black/30 dark:text-white/20 uppercase tracking-widest">
+                ©2025 - {new Date().getFullYear()} SNAPTOOLS_NODE_CORE. ALL RIGHTS RESERVED.
+              </p>
+              <p className="text-[10px] font-medium text-black/40 dark:text-white/30 tracking-tight">
+                Designed & Crafted by{" "}
+                <a
+                  href="https://sandipmaity.me"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white underline decoration-black/10 dark:decoration-white/10 underline-offset-4 transition-all"
+                >
+                  Sandip Maity
+                </a>
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-8 md:gap-10">
+            {[
+              { label: "Privacy", to: "/privacy" },
+              { label: "Terms", to: "/terms" },
+              { label: "Support", to: "/contact" },
+            ].map((item) => (
+              <Link
+                key={item.label}
+                to={item.to}
+                className="text-[10px] font-bold tracking-[0.25em] uppercase text-black/40 dark:text-white/30 hover:text-black dark:hover:text-white transition-colors"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </div>
