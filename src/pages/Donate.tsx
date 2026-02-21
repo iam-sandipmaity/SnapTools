@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { motion } from "framer-motion"; // trigger re-lint
+import { trackEvent } from "@/lib/analytics";
+import { QRCodeCanvas } from "qrcode.react";
+import { motion } from "framer-motion";
 import {
   Heart,
   Coffee,
@@ -133,6 +135,12 @@ const DonationPage = () => {
             mobile: isAnonymous ? (useRandomMobile ? currentMobile : undefined) : mobile,
             message: message
           };
+          trackEvent({
+            type: 'donation:success',
+            amount: amount.toString(),
+            currency: 'INR',
+            payment_id: response.razorpay_payment_id
+          });
           navigate('/payment-success', { state: { paymentDetails } });
         },
         theme: {
@@ -186,6 +194,9 @@ const DonationPage = () => {
     }
     setCustomAmount(value);
     setError("");
+    if (!isNaN(amount) && amount > 0) {
+      trackEvent({ type: 'donation:custom_amount_submitted', amount });
+    }
   };
 
   // Support methods (UPI / BMC / BTC)
@@ -200,6 +211,7 @@ const DonationPage = () => {
       setTimeout(() => {
         setCopiedStates(prev => ({ ...prev, [key]: false }));
       }, 2500);
+      trackEvent({ type: 'donation:copy', item: key as any });
       toast({ title: `${label} Copied`, description: `You can paste it into your payment app.`, variant: 'default' });
     } catch (e) {
       toast({ title: `Copy Failed`, description: `Could not copy ${label}.`, variant: 'destructive' });
@@ -410,7 +422,10 @@ const DonationPage = () => {
                         {[5, 10, 25, 50].map((amt) => (
                           <button
                             key={amt}
-                            onClick={() => handleDonate(amt)}
+                            onClick={() => {
+                              trackEvent({ type: 'donation:amount_selected', amount: amt });
+                              handleDonate(amt);
+                            }}
                             disabled={isProcessing}
                             className="h-20 rounded-2xl border border-black/5 dark:border-white/5 bg-muted/30 dark:bg-white/[0.02] hover:bg-primary hover:text-white transition-all duration-300 font-serif font-black text-2xl group relative overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
                           >
@@ -502,12 +517,12 @@ const DonationPage = () => {
                             </DialogHeader>
                             <div className="flex flex-col items-center gap-6 py-6">
                               <div className="p-4 bg-white rounded-3xl shadow-xl border border-black/5">
-                                <img
-                                  src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent('upi://pay?pa=' + upiId + '&pn=SnapTools&cu=INR')}`}
-                                  alt="UPI QR Code"
-                                  width={200}
-                                  height={200}
-                                  className="rounded-lg"
+                                <QRCodeCanvas
+                                  id="upi-qr-code"
+                                  value={`upi://pay?pa=${upiId}&pn=SnapTools&cu=INR`}
+                                  size={200}
+                                  level="H"
+                                  includeMargin={true}
                                 />
                               </div>
                               <div className="flex flex-col w-full gap-3">
@@ -525,12 +540,17 @@ const DonationPage = () => {
                                 <Button
                                   variant="outline"
                                   onClick={() => {
-                                    const link = document.createElement('a');
-                                    link.href = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent('upi://pay?pa=' + upiId + '&pn=SnapTools&cu=INR')}`;
-                                    link.download = 'snaptools-upi-qr.png';
-                                    document.body.appendChild(link);
-                                    link.click();
-                                    document.body.removeChild(link);
+                                    const canvas = document.getElementById('upi-qr-code') as HTMLCanvasElement;
+                                    if (canvas) {
+                                      const pngUrl = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+                                      let downloadLink = document.createElement("a");
+                                      downloadLink.href = pngUrl;
+                                      downloadLink.download = "snaptools-upi-qr.png";
+                                      document.body.appendChild(downloadLink);
+                                      downloadLink.click();
+                                      document.body.removeChild(downloadLink);
+                                      trackEvent({ type: 'donation:copy', item: 'receipt' }); // Mocked for download
+                                    }
                                   }}
                                   className="h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest gap-2"
                                 >

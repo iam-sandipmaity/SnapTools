@@ -339,15 +339,38 @@ const SEOContentSection = () => {
             {/* Controls Overlay */}
             {!shouldReduceMotion && (
               <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-4 z-20">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => setIsPaused(!isPaused)}
-                  className="rounded-full w-12 h-12 border-primary/20 bg-background/50 backdrop-blur-md hover:bg-primary hover:text-white transition-all shadow-lg"
-                  aria-label={isPaused ? "Resume Animation" : "Pause Animation"}
-                >
-                  {isPaused ? <Play size={18} fill="currentColor" /> : <Pause size={18} fill="currentColor" />}
-                </Button>
+                <div className="flex items-center gap-2 p-1 bg-background/50 backdrop-blur-md rounded-full border border-primary/20 shadow-lg">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setIsPaused(!isPaused)}
+                    className="rounded-full w-10 h-10 hover:bg-primary hover:text-white transition-all"
+                    aria-label={isPaused ? "Resume Animation" : "Pause Animation"}
+                  >
+                    {isPaused ? <Play size={16} fill="currentColor" /> : <Pause size={16} fill="currentColor" />}
+                  </Button>
+
+                  <div className="h-4 w-px bg-primary/20 mx-1" />
+
+                  {[
+                    { label: 'Slow', value: '45s' },
+                    { label: 'Normal', value: '28s' },
+                    { label: 'Fast', value: '15s' }
+                  ].map((speed) => (
+                    <Button
+                      key={speed.label}
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        const root = document.querySelector('.animate-marquee') as HTMLElement;
+                        if (root) root.style.setProperty('--marquee-duration', speed.value);
+                      }}
+                      className="rounded-full px-3 h-8 text-[9px] font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all"
+                    >
+                      {speed.label}
+                    </Button>
+                  ))}
+                </div>
               </div>
             )}
 
