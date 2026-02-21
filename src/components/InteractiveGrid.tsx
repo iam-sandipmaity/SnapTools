@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useWorkstationSettings } from "@/hooks/use-workstation-settings";
 
 export function InteractiveGrid() {
+    const { settings } = useWorkstationSettings();
     const containerRef = useRef<HTMLDivElement>(null);
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
@@ -22,6 +24,8 @@ export function InteractiveGrid() {
         window.addEventListener("mousemove", handleMouseMove);
         return () => window.removeEventListener("mousemove", handleMouseMove);
     }, [mouseX, mouseY]);
+
+    if (!settings.gridEnabled) return null;
 
     return (
         <div
