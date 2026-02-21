@@ -13,6 +13,8 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import AnimatedElement from "@/components/animated-element";
 import { toast } from "sonner";
+import Breadcrumbs from "@/components/ui/breadcrumbs";
+import { useRecentlyUsedTools } from "@/hooks/use-recently-used-tools";
 
 
 // Premium Tool Loader
@@ -80,6 +82,7 @@ const ToolPage = () => {
   const [subTool, setSubTool] = useState<{ id: string; title: string; description?: string } | null>(null);
   const [ToolComponent, setToolComponent] = useState<React.ComponentType | null>(null);
   const [error, setError] = useState<boolean>(false);
+  const { addTool } = useRecentlyUsedTools();
 
   useEffect(() => {
     if (toolId && !categoryId) {
@@ -88,6 +91,7 @@ const ToolPage = () => {
         if (foundTool) {
           setCategory(cat);
           setSubTool(foundTool);
+          addTool({ id: foundTool.id, categoryId: cat.id, title: foundTool.title });
           return;
         }
       }
@@ -102,10 +106,13 @@ const ToolPage = () => {
     if (foundCategory && toolId) {
       const foundTool = foundCategory.subTools?.find((tool) => tool.id === toolId);
       setSubTool(foundTool || null);
+      if (foundTool) {
+        addTool({ id: foundTool.id, categoryId: foundCategory.id, title: foundTool.title });
+      }
     } else if (foundCategory) {
       setSubTool(null);
     }
-  }, [categoryId, toolId]);
+  }, [categoryId, toolId, addTool]);
 
   useEffect(() => {
     let isMounted = true;
@@ -174,6 +181,15 @@ const ToolPage = () => {
         <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full translate-x-1/2 -z-10" />
 
         <div className="container max-w-7xl mx-auto px-6 pt-32 pb-40">
+
+          {/* BREADCRUMBS */}
+          <Breadcrumbs
+            items={[
+              { label: "Tools", href: "/tools" },
+              { label: category.title, href: `/tools/${category.id}` },
+              { label: subTool?.title || "Tool" }
+            ]}
+          />
 
           {/* TOOL HEADER ARCHITECTURE */}
           <div className="mb-20">
