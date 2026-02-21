@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { motion } from "framer-motion"; // trigger re-lint
 import {
   Heart,
   Coffee,
@@ -234,7 +235,7 @@ const DonationPage = () => {
           <div className="grid lg:grid-cols-12 gap-16 items-start">
 
             {/* LEFT COLUMN: IMPACT & CARDS */}
-            <div className="lg:col-span-12 grid md:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+            <div className="lg:col-span-12 grid md:grid-cols-3 gap-6 md:gap-8 mb-12 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               {[
                 { icon: Globe, title: "Global Edge", desc: "Help us maintain our worldwide CDN for millisecond tool latency." },
                 { icon: ShieldCheck, title: "Zero Privacy", desc: "Support developers who prioritize your data security over profit." },
@@ -248,6 +249,41 @@ const DonationPage = () => {
                   <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                 </div>
               ))}
+            </div>
+
+            {/* TECHNICAL SPONSORSHIP TIERS */}
+            <div className="lg:col-span-12 mb-24 animate-fade-in-up" style={{ animationDelay: '0.25s' }}>
+              <div className="flex flex-col items-center mb-12">
+                <h2 className="text-3xl md:text-5xl font-serif font-black tracking-tighter mb-4 text-center">Technical <em className="italic font-light text-primary">Sponsorships</em></h2>
+                <div className="w-20 h-1 bg-primary/20 rounded-full" />
+              </div>
+
+              <div className="grid md:grid-cols-4 gap-4 sm:gap-6">
+                {[
+                  { tier: "Junior Dev", range: "₹1 - ₹49", features: ["Community Recognition", "Beta Access"] },
+                  { tier: "Module Architect", range: "₹50 - ₹199", features: ["Priority Support", "Discord Role", "Early Features"] },
+                  { tier: "System Guardian", range: "₹200 - ₹499", features: ["Core Contributor Badge", "Technical Newsletter", "Roadmap Voting"] },
+                  { tier: "Enterprise Node", range: "₹500+", features: ["Official Partner Status", "Logo on Repository", "Private Consults"] }
+                ].map((tier, i) => (
+                  <div key={i} className="relative p-8 rounded-[2.5rem] bg-white/40 dark:bg-white/[0.01] border border-black/5 dark:border-white/10 hover:border-primary/30 transition-all duration-500 group">
+                    <div className="absolute top-0 right-0 p-6 opacity-[0.03] group-hover:opacity-10 transition-opacity">
+                      <ShieldCheck className="w-20 h-20" />
+                    </div>
+                    <div className="relative z-10">
+                      <div className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-2">{tier.range}</div>
+                      <h4 className="text-xl font-bold mb-6 tracking-tight">{tier.tier}</h4>
+                      <ul className="space-y-3">
+                        {tier.features.map((f, j) => (
+                          <li key={j} className="flex items-center gap-2 text-xs text-muted-foreground">
+                            <CheckCircle2 className="w-3 h-3 text-primary" />
+                            {f}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* DONATION INTERFACE AREA */}
@@ -610,6 +646,68 @@ const DonationPage = () => {
 
             </div>
 
+            {/* DONOR RECOGNITION CLUSTER */}
+            <div className="lg:col-span-12 mt-32 mb-12 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+              <div className="bg-black/5 dark:bg-white/[0.02] border border-black/5 dark:border-white/5 rounded-[4rem] p-8 md:p-20 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none bg-[radial-gradient(circle_at_center,var(--primary)_0%,transparent_70%)]" />
+
+                <div className="relative z-10 grid lg:grid-cols-2 gap-16 items-center">
+                  <div>
+                    <h2 className="text-4xl md:text-6xl font-serif font-black tracking-tighter mb-8 leading-none">
+                      Ecosystem <br />
+                      <em className="text-primary font-light italic">Supporters</em>
+                    </h2>
+                    <p className="text-lg text-muted-foreground leading-relaxed mb-10">
+                      Our infrastructure is validated by a global network of technical sponsors. Join the cluster of visionaries keeping the workstation online.
+                    </p>
+                    <div className="flex gap-4">
+                      <div className="flex -space-x-4">
+                        {[1, 2, 3, 4, 5].map((i) => (
+                          <div key={i} className="w-12 h-12 rounded-full border-4 border-background bg-muted flex items-center justify-center font-black text-xs overflow-hidden">
+                            <img src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="User" />
+                          </div>
+                        ))}
+                        <div className="w-12 h-12 rounded-full border-4 border-background bg-primary text-white flex items-center justify-center font-black text-xs">
+                          +12k
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="relative h-[400px] flex items-center justify-center">
+                    {/* Glassmorphic Nodes Simulation */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-64 h-64 rounded-full border border-primary/10 animate-[spin_20s_linear_infinite]" />
+                      <div className="w-full h-full absolute inset-0 rounded-full border border-primary/5 animate-[spin_35s_linear_infinite_reverse]" />
+                    </div>
+
+                    {[
+                      { label: "V. Sharma", role: "Guardian", top: "10%", left: "20%" },
+                      { label: "Node_84", role: "Architect", top: "40%", left: "70%" },
+                      { label: "Anon_User", role: "Supporter", top: "75%", left: "15%" },
+                      { label: "Tech_Flow", role: "Sponsor", top: "15%", left: "60%" },
+                      { label: "Dev_Core", role: "Guardian", top: "80%", left: "55%" }
+                    ].map((node, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.6 + (i * 0.1) }}
+                        className="absolute p-4 rounded-2xl bg-white/10 dark:bg-white/[0.05] backdrop-blur-xl border border-white/20 shadow-xl group hover:scale-110 transition-transform cursor-default"
+                        style={{ top: node.top, left: node.left }}
+                      >
+                        <div className="text-[9px] font-black uppercase tracking-widest text-primary mb-1">{node.role}</div>
+                        <div className="text-xs font-bold whitespace-nowrap">{node.label}</div>
+                      </motion.div>
+                    ))}
+
+                    <div className="relative z-10 w-32 h-32 rounded-3xl bg-primary/20 backdrop-blur-3xl border border-primary/30 flex items-center justify-center shadow-[0_0_50px_rgba(var(--primary),0.3)]">
+                      <Command className="w-12 h-12 text-primary animate-pulse" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </main>
