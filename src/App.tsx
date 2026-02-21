@@ -4,6 +4,7 @@ import ScrollToTopButton from "@/components/ui/scroll-to-top";
 import { lazy, Suspense } from "react";
 import PageLoader from "@/components/PageLoader";
 import RouteChangeLoader from "@/components/RouteChangeLoader";
+import { GlobalCommandPalette } from "@/components/GlobalCommandPalette";
 
 // Lazy-load providers for better code splitting
 const Providers = lazy(() => import("@/components/Providers"));
@@ -40,6 +41,7 @@ const App = () => (
         <RouteChangeLoader />
         <ScrollToTop />
         <ScrollToTopButton />
+        <GlobalCommandPalette />
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Index />} />
