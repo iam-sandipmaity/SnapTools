@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/sonner";
 import AnimatedElement from "@/components/animated-element";
 import { fetchCurrencyRates } from "@/lib/api/exchange-rates";
+import { useWorkspacePreference } from "@/hooks/use-workspace-preference";
 
 type Currency = {
   code: string;
@@ -33,10 +34,10 @@ const currencies: Currency[] = [
 ];
 
 const CurrencyConverter = () => {
-  const [exchangeRates, setExchangeRates] = useState<{[key: string]: number}>({});
+  const [exchangeRates, setExchangeRates] = useState<{ [key: string]: number }>({});
   const [amount, setAmount] = useState<string>("1");
-  const [fromCurrency, setFromCurrency] = useState<string>("USD");
-  const [toCurrency, setToCurrency] = useState<string>("INR");
+  const [fromCurrency, setFromCurrency] = useWorkspacePreference("curr_from", "USD");
+  const [toCurrency, setToCurrency] = useWorkspacePreference("curr_to", "INR");
   const [result, setResult] = useState<string>("");
   const [lastUpdated, setLastUpdated] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -56,7 +57,7 @@ const CurrencyConverter = () => {
       return;
     }
     const value = parseFloat(amount);
-    
+
     if (isNaN(value)) {
       setResult("");
       return;
@@ -64,10 +65,10 @@ const CurrencyConverter = () => {
 
     const fromRate = exchangeRates[fromCurrency];
     const toRate = exchangeRates[toCurrency];
-    
+
     if (fromRate && toRate) {
       const convertedAmount = (value / fromRate) * toRate;
-      
+
       const toCurrencyObj = currencies.find(c => c.code === toCurrency);
       setResult(`${toCurrencyObj?.symbol || ''} ${convertedAmount.toLocaleString(undefined, {
         minimumFractionDigits: 2,
@@ -105,10 +106,10 @@ const CurrencyConverter = () => {
             <h3 className="text-lg font-medium">Currency Converter</h3>
             <div className="text-xs text-muted-foreground">
               Rates last updated: {lastUpdated}
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="ml-2 h-6 px-2" 
+              <Button
+                variant="ghost"
+                size="sm"
+                className="ml-2 h-6 px-2"
                 onClick={refreshRates}
                 disabled={isLoading}
               >
@@ -183,14 +184,14 @@ const CurrencyConverter = () => {
               <div className="text-sm text-muted-foreground mt-2">
                 {amount && result
                   ? `${currencies.find(c => c.code === fromCurrency)?.symbol || ''} ${parseFloat(amount).toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })} ${fromCurrency} = ${result} ${toCurrency}`
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })} ${fromCurrency} = ${result} ${toCurrency}`
                   : ""}
               </div>
             </div>
           </div>
-          
+
           <div className="text-xs text-muted-foreground text-center mt-4 p-2 bg-muted/30 rounded-lg">
             <span className="font-medium">💱:</span> Rates are fetched from exchangeratesapi.io and may slightly differ from real-time market values.
           </div>
