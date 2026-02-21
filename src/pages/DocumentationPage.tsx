@@ -88,7 +88,7 @@ const DocumentationPage = () => {
           {/* Mobile Sidebar Toggle */}
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="md:hidden fixed bottom-8 right-6 z-[60] bg-primary text-white p-4 rounded-full shadow-2xl transition-transform active:scale-90"
+            className="md:hidden fixed bottom-8 left-6 z-[60] bg-primary text-white p-4 rounded-full shadow-2xl transition-transform active:scale-90"
           >
             {isSidebarOpen ? <X /> : <Menu />}
           </button>
@@ -217,8 +217,8 @@ const DocumentationPage = () => {
                             <button
                               onClick={() => toggleToolDoc(tool.id)}
                               className={`flex items-center justify-between p-4 rounded-xl border transition-all duration-300 ${expandedToolId === tool.id
-                                  ? "bg-primary/10 border-primary/30 shadow-sm"
-                                  : "bg-background/50 border-border/50 hover:border-primary/20 hover:bg-background"
+                                ? "bg-primary/10 border-primary/30 shadow-sm"
+                                : "bg-background/50 border-border/50 hover:border-primary/20 hover:bg-background"
                                 }`}
                             >
                               <div className="flex items-center gap-3">
