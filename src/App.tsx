@@ -5,6 +5,7 @@ import { lazy, Suspense } from "react";
 import PageLoader from "@/components/PageLoader";
 import RouteChangeLoader from "@/components/RouteChangeLoader";
 import { GlobalCommandPalette } from "@/components/GlobalCommandPalette";
+import { ShortcutsOverlay } from "@/components/ShortcutsOverlay";
 
 // Lazy-load providers for better code splitting
 const Providers = lazy(() => import("@/components/Providers"));
@@ -33,6 +34,7 @@ const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const BlogRouter = lazy(() => import("./blog/router"));
 const ShareFileView = lazy(() => import("./components/tools/file-sharing/ShareFileView"));
 const ShareTextView = lazy(() => import("./components/tools/text-sharing/ShareTextView"));
+const Workstation = lazy(() => import("./pages/Workstation"));
 
 const App = () => (
   <Suspense fallback={<PageLoader />}>
@@ -42,6 +44,7 @@ const App = () => (
         <ScrollToTop />
         <ScrollToTopButton />
         <GlobalCommandPalette />
+        <ShortcutsOverlay />
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Index />} />
@@ -62,6 +65,7 @@ const App = () => (
             <Route path="/s/:peerId" element={<ShareFileView />} />
             <Route path="/t/:peerId" element={<ShareTextView />} />
             <Route path="/blog/*" element={<BlogRouter />} />
+            <Route path="/workstation" element={<Workstation />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
