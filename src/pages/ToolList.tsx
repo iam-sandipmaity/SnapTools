@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { trackEvent } from "@/lib/analytics";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ToolsSearchBar from "@/components/tools-search-bar";
@@ -61,7 +62,7 @@ const ToolList = () => {
         <div className="absolute top-0 right-0 w-1/3 h-[800px] bg-primary/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none -z-10" />
         <div className="absolute bottom-0 left-0 w-1/4 h-[600px] bg-primary/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none -z-10" />
 
-        <div className="container max-w-7xl mx-auto px-6 relative z-10">
+        <div className="site-container relative z-10">
 
           {/* HERO SECTION */}
           <header className="max-w-4xl mx-auto text-center mb-24 animate-fade-in-up">
@@ -139,6 +140,7 @@ const ToolList = () => {
                   <Link
                     key={tool.id}
                     to={`/tools/${tool.categoryId}/${tool.id}`}
+                    onClick={() => trackEvent({ type: 'navigation:module_opened', category: tool.categoryId, tool: tool.id })}
                     className="group px-6 py-4 rounded-2xl bg-white/50 dark:bg-white/[0.02] border border-black/5 dark:border-white/5 hover:border-primary/20 hover:bg-primary/5 transition-all flex items-center gap-4 shadow-sm"
                   >
                     <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
@@ -195,6 +197,7 @@ const ToolList = () => {
                         >
                           <Link
                             to={`/tools/${category.id}/${tool.id}`}
+                            onClick={() => trackEvent({ type: 'navigation:module_opened', category: category.id, tool: tool.id })}
                             className="group relative h-full p-8 rounded-[2rem] border border-black/5 dark:border-white/5 bg-white/70 dark:bg-white/[0.01] hover:bg-white dark:hover:bg-white/[0.03] transition-all duration-500 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)] hover:-translate-y-2 block overflow-hidden"
                           >
                             <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-black/5 dark:via-white/10 to-transparent" />
