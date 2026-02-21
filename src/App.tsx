@@ -6,6 +6,7 @@ import PageLoader from "@/components/PageLoader";
 import RouteChangeLoader from "@/components/RouteChangeLoader";
 import { GlobalCommandPalette } from "@/components/GlobalCommandPalette";
 import { ShortcutsOverlay } from "@/components/ShortcutsOverlay";
+import { OperatorStatus } from "@/components/OperatorStatus";
 
 // Lazy-load providers for better code splitting
 const Providers = lazy(() => import("@/components/Providers"));
@@ -45,6 +46,7 @@ const App = () => (
         <ScrollToTopButton />
         <GlobalCommandPalette />
         <ShortcutsOverlay />
+        <OperatorStatus />
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Index />} />

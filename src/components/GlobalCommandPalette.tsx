@@ -34,7 +34,8 @@ import {
     Moon,
     Maximize2,
     Minimize2,
-    Keyboard
+    Keyboard,
+    FlaskConical as LabIcon
 } from "lucide-react";
 import { playWorkstationSound } from "@/lib/sounds";
 
@@ -170,6 +171,13 @@ export function GlobalCommandPalette() {
                                     <Keyboard size={18} />
                                 </div>
                                 <span className="font-bold tracking-tight">View Shortcut Directory</span>
+                            </CommandItem>
+                            <CommandItem onSelect={() => runCommand(() => window.dispatchEvent(new CustomEvent('snaptools:open-lab')))} className="group">
+                                <div className="mr-4 flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500/10 text-purple-500 group-data-[selected=true]:bg-white/20 group-data-[selected=true]:text-white transition-colors">
+                                    <LabIcon size={18} />
+                                </div>
+                                <span className="font-bold tracking-tight">Initialize System Lab</span>
+                                <span className="ml-auto text-[10px] uppercase font-black tracking-widest text-primary/40 group-data-[selected=true]:text-white/60">Experimental</span>
                             </CommandItem>
                         </CommandGroup>
 
