@@ -9,8 +9,19 @@ type AnalyticsEvent =
     | { type: 'workstation:shortcut_used'; key: string }
     | { type: 'navigation:module_opened'; category: string; tool: string };
 
+const sessionLog: { type: string, timestamp: string }[] = [];
+
+export const getSessionLog = () => sessionLog;
+
 export const trackEvent = (event: AnalyticsEvent) => {
     if (typeof window === 'undefined') return;
+
+    // Track in local session log for the UI console
+    sessionLog.unshift({
+        type: event.type.split(':').pop() || event.type,
+        timestamp: new Date().toLocaleTimeString()
+    });
+    if (sessionLog.length > 20) sessionLog.pop();
 
     // Log to console in development
     if (import.meta.env.DEV) {
@@ -19,8 +30,4 @@ export const trackEvent = (event: AnalyticsEvent) => {
 
     // Dispatch custom event for external trackers (e.g. GTM, PostHog)
     window.dispatchEvent(new CustomEvent('snaptools:event', { detail: event }));
-
-    // Vercel Analytics (if applicable for custom events)
-    // Note: Vercel Web Analytics doesn't support custom events in the free tier easily 
-    // without additional setup, but we'll prepare the structure.
 };
