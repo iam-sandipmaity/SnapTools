@@ -8,6 +8,10 @@ import { Card } from '@/components/ui/card';
 import { Clipboard, Copy } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
+type LegacyMd4Crypto = typeof CryptoJS & {
+  MD4?: (message: string) => { toString(): string };
+};
+
 const MD4Tool = () => {
   const [input, setInput] = useState('');
   const [hash, setHash] = useState('');
@@ -15,7 +19,7 @@ const MD4Tool = () => {
   const [isMatch, setIsMatch] = useState<boolean | null>(null);
   const { toast } = useToast();
 
-  const generateHash = () => {
+  const generateHash = async () => {
     try {
       if (!input.trim()) {
         toast({
@@ -25,7 +29,22 @@ const MD4Tool = () => {
         });
         return;
       }
-      const md4Hash = CryptoJS.MD4(input).toString();
+      let md4 = (CryptoJS as LegacyMd4Crypto).MD4;
+      if (typeof md4 !== 'function') {
+        try {
+          // Load local polyfill (avoid importing non-existent crypto-js submodule)
+          await import('../../../lib/crypto-polyfills/md4');
+          md4 = (CryptoJS as LegacyMd4Crypto).MD4;
+        } catch (e) {
+          toast({
+            variant: 'destructive',
+            title: 'algorithm unavailable',
+            description: 'MD4 is not available in this browser build'
+          });
+          return;
+        }
+      }
+      const md4Hash = md4!(input).toString();
       setHash(md4Hash);
       // Reset verification state
       setIsMatch(null);
@@ -38,7 +57,7 @@ const MD4Tool = () => {
     }
   };
 
-  const verifyMD4 = () => {
+  const verifyMD4 = async () => {
     try {
       if (!input.trim() || !verifyHash.trim()) {
         toast({
@@ -48,7 +67,21 @@ const MD4Tool = () => {
         });
         return;
       }
-      const generatedHash = CryptoJS.MD4(input).toString();
+      let md4 = (CryptoJS as LegacyMd4Crypto).MD4;
+      if (typeof md4 !== 'function') {
+        try {
+          await import('@/lib/crypto-polyfills/md4');
+          md4 = (CryptoJS as LegacyMd4Crypto).MD4;
+        } catch (e) {
+          toast({
+            variant: 'destructive',
+            title: 'algorithm unavailable',
+            description: 'MD4 is not available in this browser build'
+          });
+          return;
+        }
+      }
+      const generatedHash = md4!(input).toString();
       setIsMatch(generatedHash.toLowerCase() === verifyHash.toLowerCase());
     } catch (error) {
       toast({
