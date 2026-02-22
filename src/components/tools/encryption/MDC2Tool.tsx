@@ -8,6 +8,10 @@ import { Card } from '@/components/ui/card';
 import { Copy, Clipboard } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
+type LegacyMdc2Crypto = typeof CryptoJS & {
+  MDC2?: (message: string) => { toString(): string };
+};
+
 const MDC2Tool = () => {
   const [input, setInput] = useState('');
   const [hash, setHash] = useState('');
@@ -15,7 +19,7 @@ const MDC2Tool = () => {
   const [isMatch, setIsMatch] = useState<boolean | null>(null);
   const { toast } = useToast();
 
-  const generateHash = () => {
+  const generateHash = async () => {
     try {
       if (!input.trim()) {
         toast({
@@ -25,7 +29,21 @@ const MDC2Tool = () => {
         });
         return;
       }
-      const mdc2Hash = CryptoJS.MDC2(input).toString();
+      let mdc2 = (CryptoJS as LegacyMdc2Crypto).MDC2;
+      if (typeof mdc2 !== 'function') {
+        try {
+          await import('../../../lib/crypto-polyfills/mdc2');
+          mdc2 = (CryptoJS as LegacyMdc2Crypto).MDC2;
+        } catch (e) {
+          toast({
+            variant: 'destructive',
+            title: 'algorithm unavailable',
+            description: 'MDC2 is not available in this browser build'
+          });
+          return;
+        }
+      }
+      const mdc2Hash = mdc2!(input).toString();
       setHash(mdc2Hash);
       // Reset verification state
       setIsMatch(null);
@@ -38,7 +56,7 @@ const MDC2Tool = () => {
     }
   };
 
-  const verifyMDC2 = () => {
+  const verifyMDC2 = async () => {
     try {
       if (!input.trim() || !verifyHash.trim()) {
         toast({
@@ -48,7 +66,21 @@ const MDC2Tool = () => {
         });
         return;
       }
-      const generatedHash = CryptoJS.MDC2(input).toString();
+      let mdc2 = (CryptoJS as LegacyMdc2Crypto).MDC2;
+      if (typeof mdc2 !== 'function') {
+        try {
+          await import('../../../lib/crypto-polyfills/mdc2');
+          mdc2 = (CryptoJS as LegacyMdc2Crypto).MDC2;
+        } catch (e) {
+          toast({
+            variant: 'destructive',
+            title: 'algorithm unavailable',
+            description: 'MDC2 is not available in this browser build'
+          });
+          return;
+        }
+      }
+      const generatedHash = mdc2!(input).toString();
       setIsMatch(generatedHash.toLowerCase() === verifyHash.toLowerCase());
     } catch (error) {
       toast({
