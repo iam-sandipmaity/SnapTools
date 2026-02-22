@@ -143,7 +143,6 @@ const PdfCompress = () => {
 
       const pdfBytes = await newPdf.save({
         useObjectStreams: true,
-        compress: true,
       });
 
       const blob = new Blob([pdfBytes], { type: "application/pdf" });

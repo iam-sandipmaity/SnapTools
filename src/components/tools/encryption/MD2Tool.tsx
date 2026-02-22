@@ -8,6 +8,10 @@ import { Card } from '@/components/ui/card';
 import { Copy, Clipboard } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
+type LegacyMd2Crypto = typeof CryptoJS & {
+  MD2?: (message: string) => { toString(): string };
+};
+
 const MD2Tool = () => {
   const [input, setInput] = useState('');
   const [hash, setHash] = useState('');
@@ -15,7 +19,7 @@ const MD2Tool = () => {
   const [isMatch, setIsMatch] = useState<boolean | null>(null);
   const { toast } = useToast();
 
-  const generateHash = () => {
+  const generateHash = async () => {
     try {
       if (!input.trim()) {
         toast({
@@ -25,7 +29,21 @@ const MD2Tool = () => {
         });
         return;
       }
-      const md2Hash = CryptoJS.MD2(input).toString();
+      let md2 = (CryptoJS as LegacyMd2Crypto).MD2;
+      if (typeof md2 !== 'function') {
+        try {
+          await import('../../../lib/crypto-polyfills/md2');
+          md2 = (CryptoJS as LegacyMd2Crypto).MD2;
+        } catch (e) {
+          toast({
+            variant: 'destructive',
+            title: 'algorithm unavailable',
+            description: 'MD2 is not available in this browser build'
+          });
+          return;
+        }
+      }
+      const md2Hash = md2!(input).toString();
       setHash(md2Hash);
       // Reset verification state
       setIsMatch(null);
@@ -38,7 +56,7 @@ const MD2Tool = () => {
     }
   };
 
-  const verifyMD2 = () => {
+  const verifyMD2 = async () => {
     try {
       if (!input.trim() || !verifyHash.trim()) {
         toast({
@@ -48,7 +66,21 @@ const MD2Tool = () => {
         });
         return;
       }
-      const generatedHash = CryptoJS.MD2(input).toString();
+      let md2 = (CryptoJS as LegacyMd2Crypto).MD2;
+      if (typeof md2 !== 'function') {
+        try {
+          await import('../../../lib/crypto-polyfills/md2');
+          md2 = (CryptoJS as LegacyMd2Crypto).MD2;
+        } catch (e) {
+          toast({
+            variant: 'destructive',
+            title: 'algorithm unavailable',
+            description: 'MD2 is not available in this browser build'
+          });
+          return;
+        }
+      }
+      const generatedHash = md2!(input).toString();
       setIsMatch(generatedHash.toLowerCase() === verifyHash.toLowerCase());
     } catch (error) {
       toast({
