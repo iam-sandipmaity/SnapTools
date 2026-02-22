@@ -1,3 +1,5 @@
+export * from './XChaCha20';
+export { default } from './XChaCha20';
 import CryptoJS from 'crypto-js';
 
 // ---------------------------------------------------------------------------
