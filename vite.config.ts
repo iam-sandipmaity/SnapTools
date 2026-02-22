@@ -47,6 +47,11 @@ export default defineConfig({
     dedupe: ['react', 'react-dom'],
     alias: {
       '@': path.resolve(__dirname, './src'),
+      // Provide aliases so imports like 'crypto-js/md2' resolve to our polyfills
+      'crypto-js/md2': path.resolve(__dirname, './src/lib/crypto-polyfills/md2.ts'),
+      'crypto-js/md4': path.resolve(__dirname, './src/lib/crypto-polyfills/md4.ts'),
+      'crypto-js/mdc2': path.resolve(__dirname, './src/lib/crypto-polyfills/mdc2.ts'),
+      'crypto-js/cast': path.resolve(__dirname, './src/lib/crypto-polyfills/cast5.ts'),
     },
   },
 
