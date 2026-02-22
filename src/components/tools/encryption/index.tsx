@@ -20,8 +20,6 @@ import URLEncodeTool from './URLEncoderTool';
 import BCryptTool from './BCryptTool';
 import SCryptTool from './SCryptTool';
 import PBKDF2Tool from './PBKDF2Tool';
-import Chacha20Poly1305Tool from './Chacha20Poly1305Tool';
-import XChaCha20Tool from './XChaCha20Tool';
 import AESGCMTool from './AESGCMTool';
 import ECDHTool from './ECDHTool';
 import X25519Tool from './X25519Tool';
@@ -43,20 +41,17 @@ const encryptionTools: EncryptionToolComponentMap = {
   'html': HTMLEncodeTool,
   'md5': MD5Tool,
   'md4': MD4Tool,
-  'md2': MD2Tool, // 'md2': 'MD2'
-  'mdc2': MDC2Tool, //'mdc2': 'MDC2'
+  'md2': MD2Tool,
+  'mdc2': MDC2Tool,
   'ripemd160': RIPEMD160Tool,
   'sha': SHATool,
   'sha3': SHA3Tool,
   'url': URLEncodeTool,
   'bcrypt': BCryptTool,
   'scrypt': SCryptTool,
-
   'pbkdf2': PBKDF2Tool,
 
   // modern placeholders
-  'chacha20_poly1305': Chacha20Poly1305Tool,
-  'xchacha20': XChaCha20Tool,
   'aes_gcm': AESGCMTool,
   'ecdh': ECDHTool,
   'x25519': X25519Tool,
@@ -64,9 +59,7 @@ const encryptionTools: EncryptionToolComponentMap = {
   'ecdsa': ECDSATool,
   'blake2': Blake2Tool,
   'blake3': Blake3Tool,
-  'argon2': Argon2Tool
+  'argon2': Argon2Tool,
 };
-
-
 
 export default encryptionTools;

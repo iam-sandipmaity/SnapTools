@@ -302,8 +302,7 @@ export const toolCategories: ToolCategory[] = [
       { id: "bcrypt", title: "BCrypt Encryption", description: "Password hashing function designed to be slow and resist rainbow table attacks" },
       { id: "scrypt", title: "SCrypt Encryption", description: "Password-based key derivation function designed to be memory-hard" },
       { id: "pbkdf2", title: "PBKDF2 Encryption", description: "Password-Based Key Derivation Function 2 - Applies a pseudorandom function to derive keys" },
-      { id: "chacha20_poly1305", title: "ChaCha20-Poly1305", description: "Authenticated stream cipher and MAC (placeholder)" },
-      { id: "xchacha20", title: "XChaCha20", description: "Extended-nonce ChaCha20 (placeholder)" },
+      
       { id: "aes_gcm", title: "AES-GCM", description: "AES in Galois/Counter Mode (placeholder)" },
       { id: "ecdh", title: "ECDH", description: "Elliptic-curve Diffie–Hellman key agreement (placeholder)" },
       { id: "x25519", title: "X25519", description: "Curve25519 Diffie–Hellman key agreement (placeholder)" },
