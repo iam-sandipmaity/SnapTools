@@ -1,3 +1,5 @@
+export * from './ChaCha20Poly1305';
+export { default } from './ChaCha20Poly1305';
 import CryptoJS from 'crypto-js';
 
 // ---------------------------------------------------------------------------
