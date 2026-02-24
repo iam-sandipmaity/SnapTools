@@ -70,7 +70,7 @@ const HeroSection = () => {
 
           {/* Luxury Typography Header */}
           <AnimatedElement delay={0.1} animation="fadeIn">
-            <h1 className="text-5xl sm:text-7xl lg:text-9xl font-serif font-black tracking-tighter mb-10 leading-[0.85] text-foreground">
+            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-serif font-black tracking-tighter mb-10 leading-tight text-foreground">
               Master your <br />
               <em className="italic font-light text-primary">Technical</em> Workflow
             </h1>
