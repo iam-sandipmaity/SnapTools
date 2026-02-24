@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import ScrollToTop from "./ui/scroll-to-top";
-import { LiveTelemetry } from "./LiveTelemetry";
 
 const socialLinks = [
   { icon: Twitter, href: "https://x.com/iam_sandipmaity", label: "Twitter" },
@@ -132,7 +131,7 @@ const Footer = () => (
     {/* ── GIANT WATERMARK STRIPE (Outside container for full bleed) ── */}
     <div className="relative flex justify-center items-center py-4 pointer-events-none select-none">
       <span
-        className="font-serif font-black text-[22vw] sm:text-[18vw] leading-none tracking-tighter text-black/[0.5] dark:text-neutral-400/[0.5] whitespace-nowrap px-4 text-center"
+        className="footer-watermark font-serif font-black text-[22vw] sm:text-[18vw] leading-none tracking-tighter text-black/[0.5] dark:text-neutral-400/[0.5] whitespace-nowrap px-4 text-center"
       >
         SnapTools
       </span>
@@ -143,10 +142,7 @@ const Footer = () => (
       {/* ── BOTTOM BAR ── */}
       <div className="border-t border-black/5 dark:border-white/5 py-12 flex flex-col items-center gap-10">
 
-        {/* Live Telemetry Bar */}
-        <div className="w-full flex justify-center">
-          <LiveTelemetry />
-        </div>
+        {/* Live Telemetry Bar removed */}
 
         <div className="w-full flex flex-col md:flex-row items-center justify-between gap-10 pt-4">
           <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
