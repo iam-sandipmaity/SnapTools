@@ -13,7 +13,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: "Home", href: "/" },
-  { label: "Explore Tools", href: "/tools" },
+  { label: "Tools", href: "/tools" },
   { label: "Features", href: "/features" },
   // { label: "About", href: "/about" },
   { label: "Documentation", href: "/documentation" },
@@ -21,7 +21,7 @@ const navItems: NavItem[] = [
   { label: "Donate", href: "/donate" },
   { label: "Blog", href: "/blog" },
   { label: "Workstation", href: "/workstation" },
-  { label: "Code Runner (Runr)", href: "https://runr.vercel.app/" },
+  // Code Runner removed per request
 ];
 
 const Header = () => {
