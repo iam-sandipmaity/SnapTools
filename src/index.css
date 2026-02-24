@@ -108,7 +108,7 @@ body {
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Cascadia Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Segoe UI', sans-serif;
     background:
       radial-gradient(circle at 0% 0%, hsl(var(--primary) / 0.03) 0%, transparent 50%),
       radial-gradient(circle at 100% 100%, hsl(var(--accent) / 0.03) 0%, transparent 50%),
@@ -124,6 +124,27 @@ body {
   h6 {
     font-weight: 700;
     line-height: 1.2;
+    font-family: 'Cascadia Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Segoe UI', sans-serif;
+  }
+
+  code,
+  pre,
+  kbd,
+  samp,
+  .mono {
+    font-family: 'Cascadia Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Segoe UI Mono', monospace;
+  }
+
+  /* Force Cascadia Mono everywhere — overrides other font rules */
+  html, body, *, *::before, *::after {
+    font-family: 'Cascadia Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Segoe UI', sans-serif !important;
+  }
+
+  /* Footer watermark: force a high-contrast serif display font (Playfair Display / Betania fallback) */
+  footer .footer-watermark {
+    font-family: 'Playfair Display', 'Betania Patmos', Georgia, 'Times New Roman', serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
