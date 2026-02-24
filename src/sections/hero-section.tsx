@@ -50,8 +50,9 @@ const HeroSection = () => {
   return (
     <section className="relative pt-32 lg:pt-48 pb-32 overflow-hidden bg-background" aria-label="Hero section">
       {/* Dynamic Background Gradients */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[140px] -z-10 translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] -z-10 -translate-x-1/2 translate-y-1/2" />
+      {/* Reduced blur radii for better rendering performance */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[80px] -z-10 translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[60px] -z-10 -translate-x-1/2 translate-y-1/2" />
 
       <div className="site-container">
         <div className="max-w-5xl mx-auto text-center">
@@ -70,7 +71,7 @@ const HeroSection = () => {
 
           {/* Luxury Typography Header */}
           <AnimatedElement delay={0.1} animation="fadeIn">
-            <h1 className="text-5xl sm:text-7xl lg:text-9xl font-serif font-black tracking-tighter mb-10 leading-[0.85] text-foreground">
+            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-serif font-black tracking-tighter mb-10 leading-tight text-foreground">
               Master your <br />
               <em className="italic font-light text-primary">Technical</em> Workflow
             </h1>

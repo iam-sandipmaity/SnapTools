@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import ToolCard from "@/components/tool-card";
-import { toolCategories, ToolCategory } from "@/data/tools";
+import type { ToolCategory } from "@/data/tools";
 import {
   Dialog,
   DialogContent,
@@ -16,6 +16,8 @@ import { cn } from "@/lib/utils";
 
 const ToolsSection = () => {
   const [selectedCategory, setSelectedCategory] = useState<ToolCategory | null>(null);
+  const [toolCategories, setToolCategories] = useState<ToolCategory[]>([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
 
@@ -25,6 +27,24 @@ const ToolsSection = () => {
   useEffect(() => {
     setIsNavigating(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const mod = await import("@/data/tools");
+        if (!mounted) return;
+        setToolCategories(mod.toolCategories || []);
+      } catch (e) {
+        console.error("Failed to load tool categories:", e);
+      } finally {
+        if (mounted) setLoadingCategories(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const handleToolCardClick = (category: ToolCategory) => {
     setSelectedCategory(category);
@@ -64,19 +84,23 @@ const ToolsSection = () => {
 
         {/* Tool Categories Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {toolCategories.map((category, index) => (
-            <AnimatedElement key={category.id} delay={index * 0.05}>
-              <ToolCard
-                icon={category.icon}
-                title={category.title}
-                description={category.description || `Specialized ${category.title.toLowerCase()} utility suite.`}
-                color={category.color}
-                gradient={category.gradient}
-                onClick={() => handleToolCardClick(category)}
-                comingSoon={category.comingSoon}
-              />
-            </AnimatedElement>
-          ))}
+          {loadingCategories ? (
+            <div className="col-span-full text-center py-12">Loading tools...</div>
+          ) : (
+            toolCategories.map((category, index) => (
+              <AnimatedElement key={category.id} delay={index * 0.05}>
+                <ToolCard
+                  icon={category.icon}
+                  title={category.title}
+                  description={category.description || `Specialized ${category.title.toLowerCase()} utility suite.`}
+                  color={category.color}
+                  gradient={category.gradient}
+                  onClick={() => handleToolCardClick(category)}
+                  comingSoon={category.comingSoon}
+                />
+              </AnimatedElement>
+            ))
+          )}
         </div>
       </div>
 

@@ -37,7 +37,7 @@ const Index = () => {
         description="Free online tools for PDF merge/split/compress, image compression, QR codes, calculators & more. No registration. Fast, secure & privacy-focused."
       />
       <Header />
-      <main id="main-content" className="flex-grow pt-16">
+      <main id="main-content" className="flex-grow pt-1">
         <HeroSection />
         <FeaturedToolsSection />
         {/* Lazy load tools section - loads when user scrolls */}
