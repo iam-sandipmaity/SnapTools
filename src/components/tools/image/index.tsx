@@ -16,6 +16,7 @@ const imageTools: ImageToolComponentMap = {
   "image-color-inverter": lazy(() => import('./ImageColorInverter')),
   "image-black-and-white": lazy(() => import('./ImageBlackAndWhite')),
   "image-filter-effects": lazy(() => import('./ImageFilterEffects')),
+  "image-metadata-editor": lazy(() => import('./Imagemetadataeditor')),
 };
 
 export default imageTools;
