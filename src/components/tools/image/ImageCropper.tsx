@@ -97,7 +97,7 @@ export default function ImageCropper() {
     setIsUploading(true);
     const reader = new FileReader();
     reader.onload = (e) => {
-      const src = e.target.result;
+      const src = e.target?.result as string;
       const img = new Image();
       img.onload = () => {
         setImgSize({ w: img.width, h: img.height });
@@ -482,8 +482,8 @@ export default function ImageCropper() {
 
         .cr-app {
           font-family: 'Mulish', sans-serif;
-          background: #f5f0e8;
-          color: #1a1412;
+          background: hsl(var(--background));
+          color: hsl(var(--foreground));
           min-height: 100vh;
           display: flex;
           flex-direction: column;
@@ -491,8 +491,8 @@ export default function ImageCropper() {
 
         /* ── Topbar ── */
         .cr-top {
-          background: #1a1412;
-          color: #f5f0e8;
+          background: hsl(var(--sidebar-background));
+          color: hsl(var(--sidebar-foreground));
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -507,12 +507,12 @@ export default function ImageCropper() {
           font-weight: 800;
           letter-spacing: 0.15em;
           text-transform: uppercase;
-          color: #e8c547;
+          color: hsl(var(--sidebar-primary));
           display: flex;
           align-items: center;
           gap: 8px;
         }
-        .cr-brand svg { color: #e8c547; }
+        .cr-brand svg { color: currentColor; }
         .cr-top-actions { display: flex; align-items: center; gap: 8px; }
 
         /* ── Buttons ── */
@@ -533,31 +533,31 @@ export default function ImageCropper() {
         }
         .btn:disabled { opacity: 0.4; cursor: not-allowed; }
         .btn-dark {
-          background: #f5f0e8;
-          color: #1a1412;
+          background: hsl(var(--card));
+          color: hsl(var(--foreground));
         }
-        .btn-dark:hover:not(:disabled) { background: #e8c547; }
+        .btn-dark:hover:not(:disabled) { background: hsl(var(--sidebar-primary)); }
         .btn-yellow {
-          background: #e8c547;
-          color: #1a1412;
+          background: hsl(var(--sidebar-primary));
+          color: hsl(var(--foreground));
         }
-        .btn-yellow:hover:not(:disabled) { background: #d4b23a; transform: translateY(-1px); }
+        .btn-yellow:hover:not(:disabled) { background: hsl(var(--sidebar-primary) / 0.9); transform: translateY(-1px); }
         .btn-outline {
           background: transparent;
-          color: #1a1412;
-          border: 1.5px solid rgba(26,20,18,0.2);
+          color: hsl(var(--foreground));
+          border: 1.5px solid hsl(var(--foreground) / 0.2);
         }
-        .btn-outline:hover:not(:disabled) { background: rgba(26,20,18,0.06); border-color: rgba(26,20,18,0.4); }
+        .btn-outline:hover:not(:disabled) { background: hsl(var(--foreground) / 0.06); border-color: hsl(var(--foreground) / 0.4); }
         .btn-outline-dark {
           background: transparent;
-          color: #f5f0e8;
-          border: 1.5px solid rgba(245,240,232,0.2);
+          color: hsl(var(--sidebar-foreground));
+          border: 1.5px solid hsl(var(--sidebar-foreground) / 0.2);
         }
-        .btn-outline-dark:hover:not(:disabled) { background: rgba(245,240,232,0.08); }
+        .btn-outline-dark:hover:not(:disabled) { background: hsl(var(--sidebar-foreground) / 0.08); }
         .btn-icon {
           background: transparent;
-          color: #1a1412;
-          border: 1.5px solid rgba(26,20,18,0.15);
+          color: hsl(var(--foreground));
+          border: 1.5px solid hsl(var(--foreground) / 0.15);
           padding: 7px;
           border-radius: 6px;
           cursor: pointer;
@@ -566,10 +566,10 @@ export default function ImageCropper() {
           justify-content: center;
           transition: all 0.15s;
         }
-        .btn-icon:hover:not(:disabled) { background: rgba(26,20,18,0.07); border-color: rgba(26,20,18,0.35); }
+        .btn-icon:hover:not(:disabled) { background: hsl(var(--foreground) / 0.07); border-color: hsl(var(--foreground) / 0.35); }
         .btn-icon:disabled { opacity: 0.3; cursor: not-allowed; }
-        .btn-icon.active { background: #1a1412; color: #e8c547; border-color: #1a1412; }
-        .btn-icon.active-yellow { background: #e8c547; color: #1a1412; border-color: #e8c547; }
+        .btn-icon.active { background: hsl(var(--sidebar-background)); color: hsl(var(--sidebar-primary)); border-color: hsl(var(--sidebar-background)); }
+        .btn-icon.active-yellow { background: hsl(var(--sidebar-primary)); color: hsl(var(--foreground)); border-color: hsl(var(--sidebar-primary)); }
 
         /* ── Main layout ── */
         .cr-main {
@@ -586,7 +586,7 @@ export default function ImageCropper() {
           display: flex;
           flex-direction: column;
           overflow: hidden;
-          background: #2a2220;
+          background: hsl(var(--background));
           position: relative;
         }
         .cr-canvas-toolbar {
@@ -594,7 +594,7 @@ export default function ImageCropper() {
           align-items: center;
           gap: 8px;
           padding: 8px 14px;
-          background: #1a1412;
+          background: hsl(var(--card));
           flex-shrink: 0;
           flex-wrap: wrap;
         }
@@ -610,13 +610,13 @@ export default function ImageCropper() {
         .cr-canvas {
           display: block;
           touch-action: none;
-          border: 2px solid rgba(232,197,71,0.3);
+          border: 2px solid hsl(var(--sidebar-primary) / 0.3);
           box-shadow: 0 8px 40px rgba(0,0,0,0.5);
           max-width: 100%;
           max-height: 100%;
         }
         .cr-drop-zone {
-          border: 2px dashed rgba(232,197,71,0.4);
+          border: 2px dashed hsl(var(--sidebar-primary) / 0.4);
           border-radius: 12px;
           width: 100%;
           height: 100%;
@@ -628,20 +628,20 @@ export default function ImageCropper() {
           cursor: pointer;
           transition: all 0.2s;
           min-height: 240px;
-          color: rgba(245,240,232,0.4);
+          color: hsl(var(--sidebar-foreground) / 0.4);
         }
         .cr-drop-zone:hover, .cr-drop-zone.drag-over {
-          border-color: #e8c547;
-          background: rgba(232,197,71,0.06);
-          color: rgba(245,240,232,0.7);
+          border-color: hsl(var(--sidebar-primary));
+          background: hsl(var(--sidebar-primary) / 0.06);
+          color: hsl(var(--sidebar-foreground) / 0.7);
         }
         .cr-drop-zone h3 { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; }
         .cr-drop-zone p  { font-size: 12px; opacity: 0.6; }
 
         /* ── Sidebar ── */
         .cr-sidebar {
-          background: #f5f0e8;
-          border-left: 1.5px solid rgba(26,20,18,0.1);
+          background: hsl(var(--card));
+          border-left: 1.5px solid hsl(var(--foreground) / 0.1);
           display: flex;
           flex-direction: column;
           overflow: hidden;
@@ -650,7 +650,7 @@ export default function ImageCropper() {
         /* ── Tabs ── */
         .cr-tabs {
           display: flex;
-          border-bottom: 1.5px solid rgba(26,20,18,0.1);
+          border-bottom: 1.5px solid hsl(var(--foreground) / 0.1);
           flex-shrink: 0;
         }
         .cr-tab {
@@ -663,13 +663,13 @@ export default function ImageCropper() {
           cursor: pointer;
           border: none;
           background: none;
-          color: rgba(26,20,18,0.4);
+          color: hsl(var(--foreground) / 0.4);
           border-bottom: 2.5px solid transparent;
           transition: all 0.15s;
           font-family: 'Mulish', sans-serif;
         }
-        .cr-tab:hover { color: rgba(26,20,18,0.7); }
-        .cr-tab.active { color: #1a1412; border-bottom-color: #e8c547; }
+        .cr-tab:hover { color: hsl(var(--foreground) / 0.7); }
+        .cr-tab.active { color: hsl(var(--foreground)); border-bottom-color: hsl(var(--sidebar-primary)); }
 
         /* ── Panel ── */
         .cr-panel {
@@ -677,7 +677,7 @@ export default function ImageCropper() {
           overflow-y: auto;
           padding: 16px;
           scrollbar-width: thin;
-          scrollbar-color: rgba(26,20,18,0.15) transparent;
+          scrollbar-color: hsl(var(--foreground) / 0.15) transparent;
           -webkit-overflow-scrolling: touch;
         }
         .cr-panel::-webkit-scrollbar { width: 4px; }
@@ -690,7 +690,7 @@ export default function ImageCropper() {
           font-weight: 700;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: rgba(26,20,18,0.4);
+          color: hsl(var(--foreground) / 0.4);
           margin-bottom: 10px;
         }
 
@@ -706,34 +706,34 @@ export default function ImageCropper() {
           font-size: 10px;
           font-weight: 700;
           cursor: pointer;
-          border: 1.5px solid rgba(26,20,18,0.12);
+          border: 1.5px solid hsl(var(--foreground) / 0.12);
           background: transparent;
-          color: rgba(26,20,18,0.6);
+          color: hsl(var(--foreground) / 0.6);
           transition: all 0.12s;
           text-align: center;
           font-family: 'Mulish', sans-serif;
           letter-spacing: 0.03em;
         }
-        .cr-aspect-btn:hover { border-color: rgba(26,20,18,0.4); color: #1a1412; }
-        .cr-aspect-btn.active { background: #1a1412; color: #e8c547; border-color: #1a1412; }
+        .cr-aspect-btn:hover { border-color: hsl(var(--foreground) / 0.4); color: hsl(var(--foreground)); }
+        .cr-aspect-btn.active { background: hsl(var(--sidebar-background)); color: hsl(var(--sidebar-primary)); border-color: hsl(var(--sidebar-background)); }
 
         /* ── Grid mode buttons ── */
-        .cr-grid-btns { display: flex; gap: 5px; flex-wrap: wrap; }
+        .cr-grid-btn { display: flex; gap: 5px; flex-wrap: wrap; }
         .cr-grid-btn {
           padding: 6px 10px;
           border-radius: 5px;
           font-size: 10px;
           font-weight: 700;
           cursor: pointer;
-          border: 1.5px solid rgba(26,20,18,0.12);
+          border: 1.5px solid hsl(var(--foreground) / 0.12);
           background: transparent;
-          color: rgba(26,20,18,0.6);
+          color: hsl(var(--foreground) / 0.6);
           transition: all 0.12s;
           font-family: 'Mulish', sans-serif;
           text-transform: capitalize;
         }
-        .cr-grid-btn:hover { border-color: rgba(26,20,18,0.35); color: #1a1412; }
-        .cr-grid-btn.active { background: #1a1412; color: #e8c547; border-color: #1a1412; }
+        .cr-grid-btn:hover { border-color: hsl(var(--foreground) / 0.35); color: hsl(var(--foreground)); }
+        .cr-grid-btn.active { background: hsl(var(--sidebar-background)); color: hsl(var(--sidebar-primary)); border-color: hsl(var(--sidebar-background)); }
 
         /* ── Manual inputs ── */
         .cr-inputs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -750,33 +750,33 @@ export default function ImageCropper() {
           width: 100%;
           padding: 7px 10px;
           border-radius: 5px;
-          border: 1.5px solid rgba(26,20,18,0.15);
-          background: #fff;
+          border: 1.5px solid hsl(var(--foreground) / 0.15);
+          background: hsl(var(--card));
           font-size: 12px;
           font-family: 'Syne', sans-serif;
           font-weight: 600;
-          color: #1a1412;
+          color: hsl(var(--foreground));
           outline: none;
           transition: border-color 0.15s;
         }
-        .cr-input:focus { border-color: #e8c547; }
+        .cr-input:focus { border-color: hsl(var(--sidebar-primary)); }
 
         /* ── Info box ── */
         .cr-info-box {
-          background: rgba(26,20,18,0.05);
+          background: hsl(var(--foreground) / 0.05);
           border-radius: 7px;
           padding: 10px 12px;
           font-size: 11px;
-          color: rgba(26,20,18,0.6);
+          color: hsl(var(--foreground) / 0.6);
           display: flex;
           flex-direction: column;
           gap: 4px;
         }
         .cr-info-row { display: flex; justify-content: space-between; }
-        .cr-info-val { font-family: 'Syne', monospace; font-weight: 700; color: #1a1412; }
+        .cr-info-val { font-family: 'Syne', monospace; font-weight: 700; color: hsl(var(--foreground)); }
 
         /* ── Divider ── */
-        .cr-divider { height: 1px; background: rgba(26,20,18,0.08); margin: 4px 0 16px; }
+        .cr-divider { height: 1px; background: hsl(var(--foreground) / 0.08); margin: 4px 0 16px; }
 
         /* ── Bottom crop button ── */
         .cr-crop-btn {
@@ -788,8 +788,8 @@ export default function ImageCropper() {
           font-family: 'Syne', sans-serif;
           letter-spacing: 0.08em;
           text-transform: uppercase;
-          background: #1a1412;
-          color: #e8c547;
+          background: hsl(var(--sidebar-background));
+          color: hsl(var(--sidebar-primary));
           border: none;
           cursor: pointer;
           transition: all 0.15s;
@@ -799,14 +799,14 @@ export default function ImageCropper() {
           gap: 8px;
           margin-top: 8px;
         }
-        .cr-crop-btn:hover:not(:disabled) { background: #2d2420; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(26,20,18,0.25); }
+        .cr-crop-btn:hover:not(:disabled) { background: hsl(var(--sidebar-background) / 0.95); transform: translateY(-1px); box-shadow: 0 4px 16px hsl(var(--foreground) / 0.25); }
         .cr-crop-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
         /* ── Preview modal ── */
         .cr-modal-bg {
           position: fixed;
           inset: 0;
-          background: rgba(26,20,18,0.85);
+          background: hsl(var(--foreground) / 0.85);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -815,7 +815,7 @@ export default function ImageCropper() {
           backdrop-filter: blur(4px);
         }
         .cr-modal {
-          background: #f5f0e8;
+          background: hsl(var(--card));
           border-radius: 14px;
           overflow: hidden;
           max-width: 700px;
@@ -830,8 +830,8 @@ export default function ImageCropper() {
           align-items: center;
           justify-content: space-between;
           padding: 14px 18px;
-          background: #1a1412;
-          color: #f5f0e8;
+          background: hsl(var(--sidebar-background));
+          color: hsl(var(--sidebar-foreground));
           flex-shrink: 0;
         }
         .cr-modal-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
@@ -860,9 +860,9 @@ export default function ImageCropper() {
         }
         .cr-modal-footer {
           padding: 14px 18px;
-          border-top: 1.5px solid rgba(26,20,18,0.1);
+          border-top: 1.5px solid hsl(var(--foreground) / 0.1);
           font-size: 11px;
-          color: rgba(26,20,18,0.5);
+          color: hsl(var(--foreground) / 0.5);
           text-align: center;
         }
 
@@ -872,14 +872,14 @@ export default function ImageCropper() {
           align-items: center;
           gap: 16px;
           padding: 5px 14px;
-          background: #0e0c0b;
-          color: rgba(245,240,232,0.4);
+          background: hsl(var(--card));
+          color: hsl(var(--foreground) / 0.7);
           font-size: 10px;
           font-family: 'Syne', sans-serif;
           flex-shrink: 0;
         }
-        .cr-statusbar span { color: rgba(245,240,232,0.7); }
-        .cr-sep { color: rgba(245,240,232,0.15); }
+        .cr-statusbar span { color: hsl(var(--foreground) / 0.7); }
+        .cr-sep { color: hsl(var(--foreground) / 0.15); }
 
         /* ── Toggle ── */
         .cr-toggle-row {
@@ -893,14 +893,14 @@ export default function ImageCropper() {
           width: 36px;
           height: 20px;
           border-radius: 10px;
-          background: rgba(26,20,18,0.15);
+          background: hsl(var(--foreground) / 0.15);
           position: relative;
           cursor: pointer;
           border: none;
           transition: background 0.2s;
           flex-shrink: 0;
         }
-        .cr-toggle.on { background: #e8c547; }
+        .cr-toggle.on { background: hsl(var(--sidebar-primary)); }
         .cr-toggle::after {
           content: '';
           position: absolute;
@@ -908,7 +908,7 @@ export default function ImageCropper() {
           left: 2px;
           width: 16px;
           height: 16px;
-          background: #fff;
+          background: hsl(var(--card));
           border-radius: 50%;
           transition: transform 0.2s;
         }

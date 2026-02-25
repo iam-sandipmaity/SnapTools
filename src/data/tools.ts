@@ -74,6 +74,7 @@ export const toolCategories: ToolCategory[] = [
       { id: "image-color-inverter", title: "Image Color Inverter", description: "Invert image colors online. Create negative image effects for free." },
       { id: "image-black-and-white", title: "Image Black And White", description: "Convert images to black and white online. Free grayscale image converter." },
       { id: "image-filter-effects", title: "Image Filter Effects", description: "Apply filters to images online. Add effects, adjust brightness, contrast, and more for free." },
+      { id: "image-metadata-editor", title: "Image Metadata Editor", description: "Inspect and edit image EXIF, IPTC, XMP & GPS metadata directly in the browser." },
     ],
   },
   {
