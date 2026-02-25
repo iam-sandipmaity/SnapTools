@@ -491,8 +491,8 @@ export default function ImageEditor() {
 
         .app {
           font-family: 'DM Sans', sans-serif;
-          background: #0d0d14;
-          color: #e2e2f0;
+          background: hsl(var(--background));
+          color: hsl(var(--foreground));
           height: 100vh;
           max-height: 100vh;
           display: flex;
@@ -508,8 +508,8 @@ export default function ImageEditor() {
           padding: 0 12px;
           height: 48px;
           min-height: 48px;
-          background: #11111c;
-          border-bottom: 1px solid rgba(167,139,250,0.15);
+          background: hsl(var(--sidebar-background));
+          border-bottom: 1px solid hsl(var(--primary) / 0.15);
           flex-shrink: 0;
           gap: 8px;
         }
@@ -517,7 +517,7 @@ export default function ImageEditor() {
           font-family: 'Space Mono', monospace;
           font-size: 13px;
           font-weight: 700;
-          color: #a78bfa;
+          color: hsl(var(--primary));
           letter-spacing: 0.08em;
           white-space: nowrap;
         }
@@ -544,20 +544,20 @@ export default function ImageEditor() {
         .btn:disabled { opacity: 0.4; cursor: not-allowed; }
         .btn-ghost {
           background: transparent;
-          color: #aaa;
-          border: 1px solid rgba(255,255,255,0.08);
+          color: hsl(var(--foreground) / 0.7);
+          border: 1px solid hsl(var(--foreground) / 0.08);
         }
-        .btn-ghost:hover:not(:disabled) { background: rgba(255,255,255,0.06); color: #e2e2f0; }
+        .btn-ghost:hover:not(:disabled) { background: hsl(var(--foreground) / 0.06); color: hsl(var(--foreground)); }
         .btn-primary {
-          background: linear-gradient(135deg, #7c3aed, #a78bfa);
+          background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
           color: #fff;
-          border: 1px solid rgba(167,139,250,0.3);
+          border: 1px solid hsl(var(--primary) / 0.3);
         }
-        .btn-primary:hover:not(:disabled) { background: linear-gradient(135deg, #6d28d9, #8b5cf6); transform: translateY(-1px); }
+        .btn-primary:hover:not(:disabled) { background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent))); transform: translateY(-1px); }
         .btn-icon {
           background: transparent;
-          color: #aaa;
-          border: 1px solid rgba(255,255,255,0.08);
+          color: hsl(var(--foreground) / 0.7);
+          border: 1px solid hsl(var(--foreground) / 0.08);
           padding: 7px;
           border-radius: 7px;
           cursor: pointer;
@@ -567,7 +567,7 @@ export default function ImageEditor() {
           transition: all 0.15s;
           flex-shrink: 0;
         }
-        .btn-icon:hover:not(:disabled) { background: rgba(255,255,255,0.06); color: #e2e2f0; }
+        .btn-icon:hover:not(:disabled) { background: hsl(var(--foreground) / 0.06); color: hsl(var(--foreground)); }
         .btn-icon:disabled { opacity: 0.3; cursor: not-allowed; }
         .btn-apply {
           width: 100%;
@@ -575,7 +575,7 @@ export default function ImageEditor() {
           border-radius: 10px;
           font-size: 14px;
           font-weight: 600;
-          background: linear-gradient(135deg, #7c3aed, #a78bfa);
+          background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
           color: #fff;
           border: none;
           cursor: pointer;
@@ -583,7 +583,7 @@ export default function ImageEditor() {
           margin-top: 16px;
           font-family: 'DM Sans', sans-serif;
         }
-        .btn-apply:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(124,58,237,0.4); }
+        .btn-apply:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 20px hsl(var(--primary) / 0.4); }
         .btn-apply:disabled { opacity: 0.5; cursor: not-allowed; }
 
         /* ── Layout: Desktop side-by-side, Mobile stacked ── */
@@ -598,8 +598,8 @@ export default function ImageEditor() {
         .sidebar {
           width: ${sidebarCollapsed ? '0' : '300px'};
           min-width: ${sidebarCollapsed ? '0' : '300px'};
-          background: #11111c;
-          border-right: 1px solid rgba(167,139,250,0.12);
+          background: hsl(var(--card));
+          border-right: 1px solid hsl(var(--foreground) / 0.12);
           display: flex;
           flex-direction: column;
           overflow: hidden;
@@ -618,7 +618,7 @@ export default function ImageEditor() {
         .tabs-nav {
           display: flex;
           overflow-x: auto;
-          border-bottom: 1px solid rgba(167,139,250,0.12);
+          border-bottom: 1px solid hsl(var(--primary) / 0.12);
           padding: 0 8px;
           flex-shrink: 0;
           scrollbar-width: none;
@@ -633,7 +633,7 @@ export default function ImageEditor() {
           font-size: 10px;
           font-weight: 600;
           letter-spacing: 0.06em;
-          color: #666;
+          color: hsl(var(--foreground) / 0.55);
           cursor: pointer;
           border: none;
           background: none;
@@ -642,8 +642,8 @@ export default function ImageEditor() {
           transition: all 0.15s;
           font-family: 'DM Sans', sans-serif;
         }
-        .tab-btn:hover { color: #aaa; }
-        .tab-btn.active { color: #a78bfa; border-bottom-color: #a78bfa; }
+        .tab-btn:hover { color: hsl(var(--foreground) / 0.7); }
+        .tab-btn.active { color: hsl(var(--primary)); border-bottom-color: hsl(var(--primary)); }
 
         /* ── Panel ── */
         .panel {
@@ -651,7 +651,7 @@ export default function ImageEditor() {
           overflow-y: auto;
           padding: 16px;
           scrollbar-width: thin;
-          scrollbar-color: #2a2a3a transparent;
+          scrollbar-color: hsl(var(--foreground) / 0.15) transparent;
           -webkit-overflow-scrolling: touch;
         }
         .panel::-webkit-scrollbar { width: 4px; }
@@ -690,7 +690,7 @@ export default function ImageEditor() {
           display: flex;
           flex-direction: column;
           overflow: hidden;
-          background: #0a0a12;
+          background: hsl(var(--background));
           min-width: 0;
           min-height: 0;
         }
@@ -699,9 +699,9 @@ export default function ImageEditor() {
           align-items: center;
           gap: 6px;
           padding: 6px 12px;
-          border-bottom: 1px solid rgba(255,255,255,0.05);
+          border-bottom: 1px solid hsl(var(--foreground) / 0.05);
           flex-shrink: 0;
-          background: #0d0d14;
+          background: hsl(var(--card));
           flex-wrap: nowrap;
           overflow: hidden;
         }
@@ -731,7 +731,7 @@ export default function ImageEditor() {
           min-height: 0;
         }
         .drop-zone {
-          border: 2px dashed rgba(167,139,250,0.3);
+          border: 2px dashed hsl(var(--primary) / 0.3);
           border-radius: 16px;
           width: 100%;
           height: 100%;
@@ -745,13 +745,13 @@ export default function ImageEditor() {
           min-height: 160px;
         }
         .drop-zone:hover, .drop-zone.drag-over {
-          border-color: #a78bfa;
-          background: rgba(167,139,250,0.05);
+          border-color: hsl(var(--primary));
+          background: hsl(var(--primary) / 0.05);
         }
-        .drop-zone-icon { color: rgba(167,139,250,0.4); }
-        .drop-zone h3 { font-size: 16px; font-weight: 600; color: #666; text-align: center; }
-        .drop-zone p { font-size: 12px; color: #444; text-align: center; }
-        .drop-zone .formats { font-size: 10px; color: #333; font-family: 'Space Mono', monospace; }
+        .drop-zone-icon { color: hsl(var(--primary) / 0.4); }
+        .drop-zone h3 { font-size: 16px; font-weight: 600; color: hsl(var(--foreground) / 0.55); text-align: center; }
+        .drop-zone p { font-size: 12px; color: hsl(var(--foreground) / 0.45); text-align: center; }
+        .drop-zone .formats { font-size: 10px; color: hsl(var(--foreground) / 0.35); font-family: 'Space Mono', monospace; }
         .preview-img {
           max-width: 100%;
           max-height: 100%;
@@ -786,8 +786,8 @@ export default function ImageEditor() {
           transition: all 0.15s;
           position: relative;
         }
-        .history-item.active { border-color: #a78bfa; }
-        .history-item:hover { border-color: rgba(167,139,250,0.5); }
+        .history-item.active { border-color: hsl(var(--primary)); }
+        .history-item:hover { border-color: hsl(var(--primary) / 0.5); }
         .history-item img { width: 100%; height: 100%; object-fit: cover; }
         .history-item .hist-num {
           position: absolute;
@@ -808,16 +808,16 @@ export default function ImageEditor() {
           border-radius: 10px;
           padding: 12px;
           cursor: pointer;
-          border: 1px solid rgba(255,255,255,0.06);
-          background: rgba(255,255,255,0.02);
+          border: 1px solid hsl(var(--foreground) / 0.06);
+          background: hsl(var(--foreground) / 0.02);
           transition: all 0.15s;
           text-align: center;
           font-size: 13px;
           font-weight: 500;
-          color: #aaa;
+          color: hsl(var(--foreground) / 0.6);
         }
-        .preset-card:hover { border-color: rgba(167,139,250,0.4); background: rgba(167,139,250,0.05); color: #e2e2f0; }
-        .preset-card.active { border-color: #a78bfa; background: rgba(167,139,250,0.1); color: #a78bfa; }
+        .preset-card:hover { border-color: hsl(var(--primary) / 0.4); background: hsl(var(--primary) / 0.05); color: hsl(var(--foreground)); }
+        .preset-card.active { border-color: hsl(var(--primary)); background: hsl(var(--primary) / 0.1); color: hsl(var(--primary)); }
 
         /* ── Effects ── */
         .effects-grid {
@@ -829,24 +829,24 @@ export default function ImageEditor() {
           padding: 10px 8px;
           border-radius: 8px;
           cursor: pointer;
-          border: 1px solid rgba(255,255,255,0.06);
-          background: rgba(255,255,255,0.02);
+          border: 1px solid hsl(var(--foreground) / 0.06);
+          background: hsl(var(--foreground) / 0.02);
           font-size: 12px;
           font-weight: 500;
-          color: #888;
+          color: hsl(var(--foreground) / 0.6);
           transition: all 0.15s;
           text-align: center;
           font-family: 'DM Sans', sans-serif;
         }
-        .effect-btn:hover { border-color: rgba(167,139,250,0.4); color: #e2e2f0; }
-        .effect-btn.active { border-color: #a78bfa; background: rgba(124,58,237,0.15); color: #c4b5fd; }
+        .effect-btn:hover { border-color: hsl(var(--primary) / 0.4); color: hsl(var(--foreground)); }
+        .effect-btn.active { border-color: hsl(var(--primary)); background: hsl(var(--primary) / 0.15); color: hsl(var(--accent) / 0.9); }
 
         /* ── Transform ── */
         .transform-group { margin-bottom: 20px; }
         .transform-group-label {
           font-size: 10px;
           letter-spacing: 0.1em;
-          color: #555;
+          color: hsl(var(--foreground) / 0.6);
           font-weight: 700;
           text-transform: uppercase;
           margin-bottom: 10px;
@@ -861,7 +861,7 @@ export default function ImageEditor() {
         .section-label {
           font-size: 10px;
           letter-spacing: 0.1em;
-          color: #555;
+          color: hsl(var(--foreground) / 0.6);
           font-weight: 700;
           text-transform: uppercase;
           margin-bottom: 10px;
@@ -869,22 +869,22 @@ export default function ImageEditor() {
         }
 
         /* ── Divider ── */
-        .divider { height: 1px; background: rgba(255,255,255,0.05); margin: 14px 0; }
+        .divider { height: 1px; background: hsl(var(--foreground) / 0.05); margin: 14px 0; }
 
         /* ── Info bar ── */
         .info-bar {
           padding: 4px 12px;
-          background: #0d0d14;
-          border-top: 1px solid rgba(255,255,255,0.04);
+          background: hsl(var(--card));
+          border-top: 1px solid hsl(var(--foreground) / 0.04);
           display: flex;
           align-items: center;
           gap: 16px;
           font-size: 10px;
-          color: #444;
+          color: hsl(var(--foreground) / 0.45);
           font-family: 'Space Mono', monospace;
           flex-shrink: 0;
         }
-        .info-bar span { color: #555; }
+        .info-bar span { color: hsl(var(--foreground) / 0.6); }
 
         /* ── Processing overlay ── */
         .processing-badge {
@@ -892,7 +892,7 @@ export default function ImageEditor() {
           top: 12px;
           left: 50%;
           transform: translateX(-50%);
-          background: rgba(124,58,237,0.9);
+          background: hsl(var(--primary) / 0.9);
           color: #fff;
           padding: 6px 14px;
           border-radius: 20px;
@@ -909,9 +909,9 @@ export default function ImageEditor() {
 
         /* ── Comparison toggle ── */
         .compare-btn.active {
-          color: #a78bfa;
-          border-color: rgba(167,139,250,0.5);
-          background: rgba(167,139,250,0.1);
+          color: hsl(var(--primary));
+          border-color: hsl(var(--primary) / 0.5);
+          background: hsl(var(--primary) / 0.1);
         }
 
         /* ── Sidebar toggle (desktop only) ── */
@@ -923,18 +923,18 @@ export default function ImageEditor() {
           z-index: 10;
           width: 18px;
           height: 44px;
-          background: #11111c;
-          border: 1px solid rgba(167,139,250,0.12);
+          background: hsl(var(--card));
+          border: 1px solid hsl(var(--foreground) / 0.12);
           border-left: none;
           border-radius: 0 8px 8px 0;
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          color: #555;
+          color: hsl(var(--foreground) / 0.6);
           transition: all 0.25s;
         }
-        .sidebar-toggle:hover { color: #a78bfa; }
+        .sidebar-toggle:hover { color: hsl(var(--primary)); }
 
         /* ── Download menu ── */
         .download-menu {
@@ -945,8 +945,8 @@ export default function ImageEditor() {
           position: absolute;
           top: calc(100% + 6px);
           right: 0;
-          background: #1a1a28;
-          border: 1px solid rgba(167,139,250,0.15);
+          background: hsl(var(--card));
+          border: 1px solid hsl(var(--foreground) / 0.15);
           border-radius: 10px;
           overflow: hidden;
           z-index: 100;
@@ -956,7 +956,7 @@ export default function ImageEditor() {
         .download-item {
           padding: 10px 16px;
           font-size: 13px;
-          color: #aaa;
+          color: hsl(var(--foreground) / 0.6);
           cursor: pointer;
           transition: background 0.1s;
           border: none;
@@ -965,10 +965,10 @@ export default function ImageEditor() {
           text-align: left;
           font-family: 'DM Sans', sans-serif;
         }
-        .download-item:hover { background: rgba(167,139,250,0.08); color: #e2e2f0; }
+        .download-item:hover { background: hsl(var(--primary) / 0.08); color: hsl(var(--foreground)); }
 
         /* ── Flip buttons ── */
-        .flip-active { color: #a78bfa !important; border-color: rgba(167,139,250,0.5) !important; }
+        .flip-active { color: hsl(var(--primary)) !important; border-color: hsl(var(--primary) / 0.5) !important; }
 
         /* ══════════════════════════════════════
            MOBILE LAYOUT (≤ 640px)
