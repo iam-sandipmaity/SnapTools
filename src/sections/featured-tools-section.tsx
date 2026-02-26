@@ -33,15 +33,15 @@ interface FeaturedTool {
 const featuredTools: FeaturedTool[] = [
   {
     id: "file-share",
-    categoryId: "file",
-    title: "File Share",
-    description: "Secure peer-to-peer file transfer engine",
+    categoryId: "share",
+    title: "P2P Real-time Transfer",
+    description: "Secure P2P real-time transfer engine",
     icon: Share2,
     gradient: { from: "#6366f1", to: "#8b5cf6" }
   },
   {
     id: "text-share",
-    categoryId: "file",
+    categoryId: "share",
     title: "Text Share",
     description: "Instant real-time cryptographic text sharing",
     icon: MessageSquare,
