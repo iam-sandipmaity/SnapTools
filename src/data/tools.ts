@@ -330,8 +330,8 @@ export const toolCategories: ToolCategory[] = [
     ],
   },
   {
-    id: "file",
-    title: "File Share",
+    id: "share",
+    title: "P2P Real-time Transfer",
     icon: FileIcon,
     iconName: "file",
     color: "bg-tooltopia-soft-purple",
