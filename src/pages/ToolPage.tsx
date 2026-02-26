@@ -59,7 +59,7 @@ const toolLoaders: Record<string, () => Promise<any>> = {
   code: () => import("@/components/tools/code"),
   encryption: () => import("@/components/tools/encryption"),
   clock: () => import("@/components/tools/clock"),
-  file: () => import("@/components/tools/file-sharing"),
+  share: () => import("@/components/tools/file-sharing"),
   internet: () => import("@/components/tools/internet"),
   markdown: () => import("@/components/tools/markdown"),
   text: () => import("@/components/tools/text"),
