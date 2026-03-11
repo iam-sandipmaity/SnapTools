@@ -564,10 +564,10 @@ export const toolCategories: ToolCategory[] = [
     icon: Bitcoin,
     iconName: "bitcoin",
     color: "bg-tooltopia-soft-orange",
-    comingSoon: true,
+    comingSoon: false,
     description: "Free online blockchain and Web3 tools. Validate Ethereum addresses, calculate NFT rarity, and explore cryptocurrency utilities.",
     subTools: [
-      { id: "eth-validator", title: "Ethereum Address Validator", description: "Validate Ethereum addresses online free. Check if ETH wallet address is valid.", comingSoon: true },
+      { id: "eth-validator", title: "Ethereum Address Validator", description: "Validate Ethereum addresses online free. Check if ETH wallet address is valid.", comingSoon: false },
       { id: "nft-rarity", title: "NFT Rarity Calculator", description: "Calculate NFT rarity online free. Determine rarity score and rank of NFT traits.", comingSoon: true },
       { id: "wallet-generator", title: "Crypto Wallet Generator", description: "Generate crypto wallets online free. Create new cryptocurrency wallet addresses.", comingSoon: true },
       { id: "gas-calculator", title: "Gas Fee Calculator", description: "Calculate Ethereum gas fees online free. Estimate transaction costs on Ethereum network.", comingSoon: true },

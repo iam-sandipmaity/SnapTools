@@ -73,6 +73,7 @@ const toolLoaders: Record<string, () => Promise<any>> = {
   health: () => import("@/components/tools/health"),
   business: () => import("@/components/tools/business"),
   ai: () => import("@/components/tools/ai"),
+  blockchain: () => import("@/components/tools/blockchain"),
 };
 
 const ToolPage = () => {
