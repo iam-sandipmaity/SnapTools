@@ -200,7 +200,7 @@ const DonationPage = () => {
   };
 
   // Support methods (UPI / BMC / BTC)
-  const upiId = "mrsandipmaity113@naviaxis";
+  const upiId = "sandipmaity@ptyes";
   const buyMeCoffeeUrl = "https://www.buymeacoffee.com/sandipmaity";
   const btcAddress = "bc1qexampledummyaddress0000000000000000000"; // dummy
 
