@@ -470,11 +470,11 @@ const Blake2Tool: React.FC = () => {
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Variant</Label>
-                    <Toggle options={['BLAKE2b', 'BLAKE2s'] as Variant[]} value={variant} onChange={(v) => { setVariant(v); setOutLen(v === 'BLAKE2b' ? 64 : 32); }} />
+                    <Toggle options={['BLAKE2b', 'BLAKE2s'] as Variant[]} value={variant} onChange={(v) => { setVariant(v as Variant); setOutLen(v === 'BLAKE2b' ? 64 : 32); }} />
                   </div>
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Output</Label>
-                    <Toggle options={['hex', 'base64'] as Fmt[]} value={fmt} onChange={setFmt} />
+                    <Toggle options={['hex', 'base64'] as Fmt[]} value={fmt} onChange={(v) => setFmt(v)} />
                   </div>
                 </div>
 
@@ -552,16 +552,15 @@ const Blake2Tool: React.FC = () => {
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Variant</Label>
-                    <Toggle options={['BLAKE2b', 'BLAKE2s'] as Variant[]} value={macVariant}
-                      onChange={(v) => { setMacVariant(v); setMacOutLen(v === 'BLAKE2b' ? 32 : 16); }} />
+                    <Toggle options={['BLAKE2b', 'BLAKE2s'] as Variant[]} value={macVariant} onChange={(v) => { setMacVariant(v); setMacOutLen(v === 'BLAKE2b' ? 32 : 16); }} />
                   </div>
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Key fmt</Label>
-                    <Toggle options={['hex', 'base64'] as Fmt[]} value={macKeyFmt} onChange={setMacKeyFmt} />
+                    <Toggle options={['hex', 'base64'] as Fmt[]} value={macKeyFmt} onChange={(v) => setMacKeyFmt(v)} />
                   </div>
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Output</Label>
-                    <Toggle options={['hex', 'base64'] as Fmt[]} value={macFmt} onChange={setMacFmt} />
+                    <Toggle options={['hex', 'base64'] as Fmt[]} value={macFmt} onChange={(v) => setMacFmt(v)} />
                   </div>
                 </div>
 
@@ -624,8 +623,7 @@ const Blake2Tool: React.FC = () => {
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Variant</Label>
-                    <Toggle options={['BLAKE2b', 'BLAKE2s'] as Variant[]} value={verVariant}
-                      onChange={(v) => { setVerVariant(v); setVerOutLen(v === 'BLAKE2b' ? 64 : 32); setVerStatus('idle'); }} />
+                    <Toggle options={['BLAKE2b', 'BLAKE2s'] as Variant[]} value={verVariant} onChange={(v) => { setVerVariant(v); setVerOutLen(v === 'BLAKE2b' ? 64 : 32); setVerStatus('idle'); }} />
                   </div>
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Expected fmt</Label>
@@ -697,12 +695,11 @@ const Blake2Tool: React.FC = () => {
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Variant</Label>
-                    <Toggle options={['BLAKE2b', 'BLAKE2s'] as Variant[]} value={fileVariant}
-                      onChange={(v) => { setFileVariant(v); setFileOutLen(v === 'BLAKE2b' ? 64 : 32); setFileResult(''); }} />
+                    <Toggle options={['BLAKE2b', 'BLAKE2s'] as Variant[]} value={fileVariant} onChange={(v) => { setFileVariant(v); setFileOutLen(v === 'BLAKE2b' ? 64 : 32); setFileResult(''); }} />
                   </div>
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Output</Label>
-                    <Toggle options={['hex', 'base64'] as Fmt[]} value={fileFmt} onChange={setFileFmt} />
+                    <Toggle options={['hex', 'base64'] as Fmt[]} value={fileFmt} onChange={(v) => setFileFmt(v)} />
                   </div>
                 </div>
 
