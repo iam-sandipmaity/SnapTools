@@ -729,7 +729,7 @@ const Argon2Tool: React.FC = () => {
                 {/* Variant */}
                 <div className="flex items-center gap-3">
                   <Label className={labelCls}>Variant</Label>
-                  <Toggle options={['argon2d', 'argon2i', 'argon2id'] as A2Type[]} value={a2type} onChange={setA2type}
+                  <Toggle options={['argon2d', 'argon2i', 'argon2id'] as A2Type[]} value={a2type} onChange={(v) => setA2type(v)}
                     labels={{ argon2d: 'Argon2d', argon2i: 'Argon2i', argon2id: 'Argon2id ✦' }} />
                 </div>
 
@@ -758,11 +758,11 @@ const Argon2Tool: React.FC = () => {
                 <div className="space-y-2">
                   <div className="flex items-center gap-3">
                     <Label className={labelCls}>Salt</Label>
-                    <Toggle options={['random', 'custom'] as ('random' | 'custom')[]} value={saltMode} onChange={setSaltMode} />
+                    <Toggle options={['random', 'custom'] as ('random' | 'custom')[]} value={saltMode} onChange={(v) => setSaltMode(v)} />
                     {saltMode === 'custom' && (
                       <div className="flex items-center gap-2 ml-2">
                         <Label className={labelCls}>fmt</Label>
-                        <Toggle options={['hex', 'base64'] as Fmt[]} value={saltFmt} onChange={setSaltFmt} />
+                        <Toggle options={['hex', 'base64'] as Fmt[]} value={saltFmt} onChange={(v) => setSaltFmt(v)} />
                       </div>
                     )}
                   </div>
@@ -793,7 +793,7 @@ const Argon2Tool: React.FC = () => {
                 {/* Output format */}
                 <div className="flex items-center gap-3">
                   <Label className={labelCls}>Output format</Label>
-                  <Toggle options={['hex', 'base64'] as Fmt[]} value={outFmt} onChange={setOutFmt} />
+                  <Toggle options={['hex', 'base64'] as Fmt[]} value={outFmt} onChange={(v) => setOutFmt(v)} />
                 </div>
 
                 {hashError && (
