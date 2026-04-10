@@ -418,12 +418,11 @@ const ECDSATool: React.FC = () => {
                 <div className="flex flex-wrap items-center gap-4">
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Curve</Label>
-                    <Toggle options={['P-256', 'P-384', 'P-521'] as Curve[]} value={genCurve}
-                      onChange={(c) => { setGenCurve(c); }} />
+                    <Toggle options={['P-256', 'P-384', 'P-521'] as Curve[]} value={genCurve} onChange={(c) => setGenCurve(c)} />
                   </div>
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Raw pub fmt</Label>
-                    <Toggle options={['hex', 'base64'] as Fmt[]} value={genFmt} onChange={setGenFmt} />
+                    <Toggle options={['hex', 'base64'] as Fmt[]} value={genFmt} onChange={(v) => setGenFmt(v)} />
                   </div>
                 </div>
 
@@ -473,22 +472,21 @@ const ECDSATool: React.FC = () => {
                 <div className="flex flex-wrap gap-3">
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Curve</Label>
-                    <Toggle options={['P-256', 'P-384', 'P-521'] as Curve[]} value={signCurve}
-                      onChange={(c) => { setSignCurve(c); setSignHash(CURVE_DEFAULTS[c]); }} />
+                    <Toggle options={['P-256', 'P-384', 'P-521'] as Curve[]} value={signCurve} onChange={(c) => { setSignCurve(c); setSignHash(CURVE_DEFAULTS[c]); }} />
                   </div>
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Hash</Label>
-                    <Toggle options={['SHA-256', 'SHA-384', 'SHA-512'] as HashAlg[]} value={signHash} onChange={setSignHash} />
+                    <Toggle options={['SHA-256', 'SHA-384', 'SHA-512'] as HashAlg[]} value={signHash} onChange={(v) => setSignHash(v)} />
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-3">
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Sig format</Label>
-                    <Toggle options={['raw', 'DER'] as SigFmt[]} value={signSigFmt} onChange={setSignSigFmt} />
+                    <Toggle options={['raw', 'DER'] as SigFmt[]} value={signSigFmt} onChange={(v) => setSignSigFmt(v)} />
                   </div>
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Encoding</Label>
-                    <Toggle options={['hex', 'base64'] as Fmt[]} value={signFmt} onChange={setSignFmt} />
+                    <Toggle options={['hex', 'base64'] as Fmt[]} value={signFmt} onChange={(v) => setSignFmt(v)} />
                   </div>
                 </div>
 
@@ -549,22 +547,21 @@ const ECDSATool: React.FC = () => {
                 <div className="flex flex-wrap gap-3">
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Curve</Label>
-                    <Toggle options={['P-256', 'P-384', 'P-521'] as Curve[]} value={verCurve}
-                      onChange={(c) => { setVerCurve(c); setVerHash(CURVE_DEFAULTS[c]); }} />
+                    <Toggle options={['P-256', 'P-384', 'P-521'] as Curve[]} value={verCurve} onChange={(c) => { setVerCurve(c); setVerHash(CURVE_DEFAULTS[c]); }} />
                   </div>
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Hash</Label>
-                    <Toggle options={['SHA-256', 'SHA-384', 'SHA-512'] as HashAlg[]} value={verHash} onChange={setVerHash} />
+                    <Toggle options={['SHA-256', 'SHA-384', 'SHA-512'] as HashAlg[]} value={verHash} onChange={(v) => setVerHash(v)} />
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-3">
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Sig format</Label>
-                    <Toggle options={['raw', 'DER'] as SigFmt[]} value={verSigFmt} onChange={setVerSigFmt} />
+                    <Toggle options={['raw', 'DER'] as SigFmt[]} value={verSigFmt} onChange={(v) => setVerSigFmt(v)} />
                   </div>
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Encoding</Label>
-                    <Toggle options={['hex', 'base64'] as Fmt[]} value={verFmt} onChange={setVerFmt} />
+                    <Toggle options={['hex', 'base64'] as Fmt[]} value={verFmt} onChange={(v) => setVerFmt(v)} />
                   </div>
                 </div>
 
@@ -622,11 +619,11 @@ const ECDSATool: React.FC = () => {
                 <div className="flex flex-wrap gap-3">
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Curve</Label>
-                    <Toggle options={['P-256', 'P-384', 'P-521'] as Curve[]} value={inspCurve} onChange={setInspCurve} />
+                    <Toggle options={['P-256', 'P-384', 'P-521'] as Curve[]} value={inspCurve} onChange={(v) => setInspCurve(v)} />
                   </div>
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Encoding</Label>
-                    <Toggle options={['hex', 'base64'] as Fmt[]} value={inspFmt} onChange={setInspFmt} />
+                    <Toggle options={['hex', 'base64'] as Fmt[]} value={inspFmt} onChange={(v) => setInspFmt(v)} />
                   </div>
                 </div>
 
