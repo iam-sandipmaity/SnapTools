@@ -545,7 +545,7 @@ const Blake3Tool: React.FC = () => {
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Encoding</Label>
-                    <Toggle options={['hex', 'base64'] as Fmt[]} value={fmt} onChange={setFmt} />
+                    <Toggle options={['hex', 'base64'] as Fmt[]} value={fmt} onChange={(v) => setFmt(v)} />
                   </div>
                 </div>
 
@@ -606,11 +606,11 @@ const Blake3Tool: React.FC = () => {
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Key format</Label>
-                    <Toggle options={['hex', 'base64'] as Fmt[]} value={keyedKeyFmt} onChange={setKeyedKeyFmt} />
+                    <Toggle options={['hex', 'base64'] as Fmt[]} value={keyedKeyFmt} onChange={(v) => setKeyedKeyFmt(v)} />
                   </div>
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Output</Label>
-                    <Toggle options={['hex', 'base64'] as Fmt[]} value={keyedFmt} onChange={setKeyedFmt} />
+                    <Toggle options={['hex', 'base64'] as Fmt[]} value={keyedFmt} onChange={(v) => setKeyedFmt(v)} />
                   </div>
                 </div>
 
@@ -668,11 +668,11 @@ const Blake3Tool: React.FC = () => {
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Material format</Label>
-                    <Toggle options={['hex', 'base64'] as Fmt[]} value={kdfMatFmt} onChange={setKdfMatFmt} />
+                    <Toggle options={['hex', 'base64'] as Fmt[]} value={kdfMatFmt} onChange={(v) => setKdfMatFmt(v)} />
                   </div>
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Output</Label>
-                    <Toggle options={['hex', 'base64'] as Fmt[]} value={kdfFmt} onChange={setKdfFmt} />
+                    <Toggle options={['hex', 'base64'] as Fmt[]} value={kdfFmt} onChange={(v) => setKdfFmt(v)} />
                   </div>
                 </div>
 
@@ -736,7 +736,7 @@ const Blake3Tool: React.FC = () => {
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Encoding</Label>
-                    <Toggle options={['hex', 'base64'] as Fmt[]} value={xofFmt} onChange={setXofFmt} />
+                    <Toggle options={['hex', 'base64'] as Fmt[]} value={xofFmt} onChange={(v) => setXofFmt(v)} />
                   </div>
                 </div>
 
@@ -793,7 +793,7 @@ const Blake3Tool: React.FC = () => {
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center gap-2">
                     <Label className={labelCls}>Encoding</Label>
-                    <Toggle options={['hex', 'base64'] as Fmt[]} value={fileFmt} onChange={setFileFmt} />
+                    <Toggle options={['hex', 'base64'] as Fmt[]} value={fileFmt} onChange={(v) => setFileFmt(v)} />
                   </div>
                 </div>
 
