@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import {
   Download, Loader2, AlertCircle, CheckCircle2, FileText, Image,
   Film, Music, Archive, File, Wifi, WifiOff, RefreshCw,
-  Shield, Zap, Eye, Send, MessageSquare, X, Package,
+  Shield, Zap, Eye, EyeOff, Send, MessageSquare, X, Package,
   FolderOpen, Layers, Gauge, Clock, CheckCheck, Bell,
   BellOff, ChevronDown, ChevronUp, Filter, ArrowDownToLine,
   Star, BarChart3, User, Info, Lock, Inbox,
