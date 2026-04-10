@@ -319,7 +319,9 @@ const ECDHTool: React.FC = () => {
       const privJwk = await crypto.subtle.exportKey('jwk', rawKP.privateKey);
       setMyPrivKey(JSON.stringify(privJwk, null, 2));
       setDerCurve(curve);
-    } catch {}
+    } catch (err) {
+      console.error('Failed to export private key:', err);
+    }
   }, [rawKP, keypair, curve]);
 
   return (

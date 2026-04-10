@@ -1,13 +1,8 @@
-import CurrencyConverter from "./CurrencyConverter";
-import CryptoConverter from "./CryptoConverter";
+import { lazy } from 'react';
 
-type CurrencyToolComponentMap = {
-  [key: string]: React.ComponentType;
-};
-
-const currencyTools: CurrencyToolComponentMap = {
-  "currency-converter": CurrencyConverter,
-  "crypto-converter": CryptoConverter,
+const currencyTools = {
+  "currency-converter": lazy(() => import("./CurrencyConverter")),
+  "crypto-converter": lazy(() => import("./CryptoConverter")),
 };
 
 export default currencyTools;

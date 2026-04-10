@@ -86,7 +86,9 @@ const Stopwatch: React.FC = () => {
       audioRef.current.currentTime = 0;
       audioRef.current.volume = 1;
       audioUnlockedRef.current = true;
-    } catch {}
+    } catch (err) {
+      console.warn('Audio unlock failed:', err);
+    }
   };
 
   /* ------------------------------------------------------------------ */

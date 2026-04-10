@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import AnimatedElement from '@/components/animated-element';
+import DOMPurify from 'dompurify';
 import {
   Mail,
   Phone,
@@ -1274,12 +1275,12 @@ const EmailSignatureGenerator: React.FC = () => {
                   <TabsContent value={selectedTemplate} className="mt-4">
                     {viewMode === 'preview' ? (
                       <div className="border rounded-lg p-6 bg-white dark:bg-slate-50 min-h-[500px] overflow-auto shadow-inner">
-                        <div dangerouslySetInnerHTML={{ __html: generateSignatureHTML() }} />
+                        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(generateSignatureHTML()) }} />
                       </div>
                     ) : (
                       <div className="border rounded-lg p-4 bg-muted min-h-[500px] overflow-auto shadow-inner">
                         <pre className="text-xs font-mono whitespace-pre-wrap break-words text-muted-foreground">
-                          {generateSignatureHTML()}
+                          {DOMPurify.sanitize(generateSignatureHTML())}
                         </pre>
                       </div>
                     )}

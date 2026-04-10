@@ -1,7 +1,7 @@
-import ShareText from './ShareText';
+import { lazy } from 'react';
 
-const textTools = {
-  "text-share": ShareText,
+const textSharingTools = {
+  "text-share": lazy(() => import('./ShareText')),
 };
 
-export default textTools;
+export default textSharingTools;

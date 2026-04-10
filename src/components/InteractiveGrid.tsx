@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useMemo, useCallback } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export function InteractiveGrid() {
@@ -7,21 +7,39 @@ export function InteractiveGrid() {
     const mouseY = useMotionValue(0);
 
     // Smooth movement for the highlight
-    const springConfig = { damping: 25, stiffness: 150 };
+    const springConfig = useMemo(() => ({ damping: 25, stiffness: 150 }), []);
     const smoothX = useSpring(mouseX, springConfig);
     const smoothY = useSpring(mouseY, springConfig);
 
+    // Throttled mouse move handler for better performance
+    const handleMouseMove = useCallback((e: MouseEvent) => {
+        if (!containerRef.current) return;
+        const { left, top } = containerRef.current.getBoundingClientRect();
+        mouseX.set(e.clientX - left);
+        mouseY.set(e.clientY - top);
+    }, [mouseX, mouseY]);
+
     useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            if (!containerRef.current) return;
-            const { left, top } = containerRef.current.getBoundingClientRect();
-            mouseX.set(e.clientX - left);
-            mouseY.set(e.clientY - top);
+        let rafId: number;
+        let lastTime = 0;
+        const THROTTLE_MS = 16; // ~60fps
+
+        const throttledHandler = (e: MouseEvent) => {
+            const now = Date.now();
+            if (now - lastTime >= THROTTLE_MS) {
+                handleMouseMove(e);
+                lastTime = now;
+            } else {
+                rafId = requestAnimationFrame(() => handleMouseMove(e));
+            }
         };
 
-        window.addEventListener("mousemove", handleMouseMove);
-        return () => window.removeEventListener("mousemove", handleMouseMove);
-    }, [mouseX, mouseY]);
+        window.addEventListener("mousemove", throttledHandler);
+        return () => {
+            window.removeEventListener("mousemove", throttledHandler);
+            if (rafId) cancelAnimationFrame(rafId);
+        };
+    }, [handleMouseMove]);
 
     return (
         <div

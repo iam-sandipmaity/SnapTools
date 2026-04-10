@@ -1,19 +1,13 @@
-import IpLookup from './IpLookup';
-import DnsLookup from './DnsLookup';
-import WhoisLookup from './WhoisLookup';
-import EmailValidator from './EmailValidator';
-import PortChecker from './PortChecker';
-import MacLookup from './MacLookup';
-import PingTool from './PingTool';
+import { lazy } from 'react';
 
 const networktools = {
-  "ip-lookup": IpLookup,
-  "dns-lookup": DnsLookup,
-  "whois-lookup": WhoisLookup,
-  "email-validator": EmailValidator,
-  "port-checker": PortChecker,
-  "mac-lookup": MacLookup,
-  "ping-tool": PingTool,
+  "ip-lookup": lazy(() => import('./IpLookup')),
+  "dns-lookup": lazy(() => import('./DnsLookup')),
+  "whois-lookup": lazy(() => import('./WhoisLookup')),
+  "email-validator": lazy(() => import('./EmailValidator')),
+  "port-checker": lazy(() => import('./PortChecker')),
+  "mac-lookup": lazy(() => import('./MacLookup')),
+  "ping-tool": lazy(() => import('./PingTool')),
 };
 
 export default networktools;

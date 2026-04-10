@@ -40,7 +40,10 @@ async function readExifFallback(file) {
           meta["Format"] = "TIFF";
         }
         resolve(meta);
-      } catch { resolve({}); }
+      } catch (err) {
+        console.warn('EXIF fallback parsing failed:', err);
+        resolve({});
+      }
     };
     reader.readAsArrayBuffer(file);
   });

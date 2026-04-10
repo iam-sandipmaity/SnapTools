@@ -8,6 +8,7 @@ import { Switch } from '@/components/ui/switch';
 import { Download, Heart, MessageCircle, Bookmark, Share2, MoreHorizontal } from 'lucide-react';
 import { toast } from 'sonner';
 import { useMediaQuery } from '@/hooks/use-media-query';
+import { useTheme } from 'next-themes';
 
 interface InstagramPostPreviewProps {
   username: string;
@@ -173,6 +174,14 @@ const InstagramPostGenerator = () => {
   const previewRef = useRef(null);
   const exportContainerRef = useRef(null);
   const isMobile = !useMediaQuery('(min-width: 1024px)');
+  
+  // Get app theme for default
+  const { theme: appTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const [username, setUsername] = useState('');
   const [caption, setCaption] = useState('');
@@ -182,7 +191,8 @@ const InstagramPostGenerator = () => {
   const [likes, setLikes] = useState(0);
   const [comments, setComments] = useState(0);
   const [location, setLocation] = useState('');
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  // Use app theme as default (with fallback to 'light') - only after mount
+  const [theme, setTheme] = useState<'light' | 'dark'>(mounted && appTheme === 'dark' ? 'dark' : 'light');
   const [isExporting, setIsExporting] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);

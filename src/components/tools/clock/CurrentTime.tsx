@@ -96,7 +96,9 @@ const CurrentTime: React.FC = () => {
       audioRef.current.currentTime = 0;
       audioRef.current.volume = 1;
       audioUnlockedRef.current = true;
-    } catch {}
+    } catch (err) {
+      console.warn('Audio unlock failed:', err);
+    }
   };
 
   /* ---------------- NOTIFICATION ---------------- */
@@ -105,7 +107,9 @@ const CurrentTime: React.FC = () => {
     if (Notification.permission === 'default') {
       try {
         await Notification.requestPermission();
-      } catch {}
+      } catch (err) {
+        console.warn('Notification permission denied:', err);
+      }
     }
   };
 

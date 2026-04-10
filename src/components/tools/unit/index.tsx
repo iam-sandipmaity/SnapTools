@@ -1,22 +1,14 @@
-
-import LengthConverter from "./LengthConverter";
-import TemperatureConverter from "./TemperatureConverter";
-import CurrencyConverter from "./CurrencyConverter";
-import WeightConverter from "./WeightConverter";
-import SpeedConverter from "./SpeedConverter";
-import AreaConverter from "./AreaConverter";
-import VolumeConverter from "./VolumeConverter";
-import PressureConverter from "./PressureConverter";
+import { lazy } from 'react';
 
 const unitTools = {
-  "length-converter": LengthConverter,
-  "temperature-converter": TemperatureConverter,
-  "currency-converter": CurrencyConverter,
-  "weight-converter": WeightConverter,
-  "speed-converter": SpeedConverter,
-  "area-converter": AreaConverter,
-  "volume-converter": VolumeConverter,
-  "pressure-converter": PressureConverter,
+  "length-converter": lazy(() => import("./LengthConverter")),
+  "temperature-converter": lazy(() => import("./TemperatureConverter")),
+  "currency-converter": lazy(() => import("./CurrencyConverter")),
+  "weight-converter": lazy(() => import("./WeightConverter")),
+  "speed-converter": lazy(() => import("./SpeedConverter")),
+  "area-converter": lazy(() => import("./AreaConverter")),
+  "volume-converter": lazy(() => import("./VolumeConverter")),
+  "pressure-converter": lazy(() => import("./PressureConverter")),
 };
 
 export default unitTools;

@@ -1,23 +1,15 @@
-import CaseConverter from "./CaseConverter";
-import TextDiff from "./TextDiff";
-import FindReplace from "./FindReplace";
-import DuplicateRemover from "./DuplicateRemover";
-import ReverseText from "./ReverseText";
-import SlugGenerator from "./SlugGenerator";
-import TextSorter from "./TextSorter";
-import TextToSpeech from "./TextToSpeech";
-import SpeechToText from "./SpeechToText";
+import { lazy } from 'react';
 
 const textTools = {
-  "case-converter": CaseConverter,
-  "text-diff": TextDiff,
-  "find-replace": FindReplace,
-  "duplicate-remover": DuplicateRemover,
-  "reverse-text": ReverseText,
-  "slug-generator": SlugGenerator,
-  "text-sorter": TextSorter,
-  "text-to-speech": TextToSpeech,
-  "speech-to-text": SpeechToText,
+  "case-converter": lazy(() => import("./CaseConverter")),
+  "text-diff": lazy(() => import("./TextDiff")),
+  "find-replace": lazy(() => import("./FindReplace")),
+  "duplicate-remover": lazy(() => import("./DuplicateRemover")),
+  "reverse-text": lazy(() => import("./ReverseText")),
+  "slug-generator": lazy(() => import("./SlugGenerator")),
+  "text-sorter": lazy(() => import("./TextSorter")),
+  "text-to-speech": lazy(() => import("./TextToSpeech")),
+  "speech-to-text": lazy(() => import("./SpeechToText")),
 };
 
 export default textTools;

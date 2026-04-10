@@ -1,19 +1,13 @@
-import UuidGenerator from './UuidGenerator';
-import NumberToWords from './NumberToWords';
-import WordsToNumber from './WordsToNumber';
-import FileCorruptor from './FileCorruptor';
-import RandomIpGenerator from './RandomIpGenerator';
-import WebcamTest from './WebcamTest';
-import ASCIIArtGenerator from './ASCIIArtGenerator';
+import { lazy } from 'react';
 
 const miscellaneousTools = {
-  "uuid_generator": UuidGenerator,
-  "number-words": NumberToWords,
-  "words-number": WordsToNumber,
-  "file-corruptor": FileCorruptor,
-  "random-ip-generator": RandomIpGenerator,
-  "webcam-test": WebcamTest,
-  "ascii-art-generator": ASCIIArtGenerator,
+  "uuid_generator": lazy(() => import('./UuidGenerator')),
+  "number-words": lazy(() => import('./NumberToWords')),
+  "words-number": lazy(() => import('./WordsToNumber')),
+  "file-corruptor": lazy(() => import('./FileCorruptor')),
+  "random-ip-generator": lazy(() => import('./RandomIpGenerator')),
+  "webcam-test": lazy(() => import('./WebcamTest')),
+  "ascii-art-generator": lazy(() => import('./ASCIIArtGenerator')),
 };
 
 export default miscellaneousTools;

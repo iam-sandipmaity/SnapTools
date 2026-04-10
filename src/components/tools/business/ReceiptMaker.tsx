@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import AnimatedElement from '@/components/animated-element';
+import DOMPurify from 'dompurify';
 import {
     Download,
     FileText,
@@ -990,7 +991,7 @@ const ReceiptMaker: React.FC = () => {
                                 </div>
 
                                 <div className="border rounded-lg p-4 bg-muted/50 dark:bg-slate-950 overflow-auto max-h-[700px] shadow-inner">
-                                    <div dangerouslySetInnerHTML={{ __html: generateReceiptHTML() }} />
+                                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(generateReceiptHTML()) }} />
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-2">

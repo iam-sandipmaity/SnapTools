@@ -35,7 +35,13 @@ export function WebsiteScreenshotTool() {
       
       // Using APIFlash service for screenshots
       const apiUrl = 'https://api.apiflash.com/v1/urltoimage';
-      const apiKey = 'c1034707d82d4e9f909e1329d5415be9';
+      const apiKey = import.meta.env.VITE_APIFLASH_API_KEY || '';
+      
+      if (!apiKey) {
+        setError('API key not configured. Please set VITE_APIFLASH_API_KEY in your environment variables.');
+        setLoading(false);
+        return;
+      }
 
       const params = new URLSearchParams({
         'access_key': apiKey,

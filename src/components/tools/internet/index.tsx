@@ -1,7 +1,7 @@
-import SpeedTest from './SpeedTest';
+import { lazy } from 'react';
 
 const internetTools = {
-  "speed-test": SpeedTest,
+  "speed-test": lazy(() => import('./SpeedTest')),
 };
 
 export default internetTools;

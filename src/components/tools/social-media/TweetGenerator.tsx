@@ -8,6 +8,7 @@ import { Switch } from '@/components/ui/switch';
 import { Twitter, Download } from 'lucide-react';
 import { toast } from 'sonner';
 import { useMediaQuery } from '@/hooks/use-media-query';
+import { useTheme } from 'next-themes';
 
 interface TweetPreviewProps {
   username: string;
@@ -127,6 +128,14 @@ const TweetGenerator = () => {
   const previewRef = useRef(null);
   const exportContainerRef = useRef(null);
   const isMobile = !useMediaQuery('(min-width: 1024px)');
+  
+  // Get app theme for default
+  const { theme: appTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const [username, setUsername] = useState('');
   const [handle, setHandle] = useState('');
@@ -138,7 +147,8 @@ const TweetGenerator = () => {
   const [retweets, setRetweets] = useState(0);
   const [replies, setReplies] = useState(0);
   const [views, setViews] = useState(0);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  // Use app theme as default (with fallback to 'light') - only after mount
+  const [theme, setTheme] = useState<'light' | 'dark'>(mounted && appTheme === 'dark' ? 'dark' : 'light');
   const [isExporting, setIsExporting] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isReposted, setIsReposted] = useState(false);

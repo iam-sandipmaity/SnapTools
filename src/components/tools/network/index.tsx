@@ -1,15 +1,7 @@
-import UrlEncoderDecoder from './UrlEncoderDecoder';
+import { lazy } from 'react';
 
-export {
-  UrlEncoderDecoder,
+const networkTools = {
+  'url-encoder-decoder': lazy(() => import('./UrlEncoderDecoder')),
 };
 
-export const networkTools = [
-  {
-    name: 'URL Encoder/Decoder',
-    description: 'Encode and decode URLs for safe transmission',
-    icon: '🔗',
-    component: UrlEncoderDecoder,
-    category: 'Network Tools',
-  },
-];
+export default networkTools;

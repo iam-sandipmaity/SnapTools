@@ -1,18 +1,12 @@
-import { Youtube, Twitter, Instagram, Sticker, TrendingUp, Tag } from "lucide-react";
-import YoutubeThumbnailDownloader from "./YoutubeThumbnailDownloader";
-import YoutubeVideoDownloader from "./YoutubeVideoDownloader";
-import TweetGenerator from "./TweetGenerator";
-import InstagramPostGenerator from "./InstagramPostGenerator";
-import YoutubeTrendingVideos from "./YoutubeTrendingVideos";
-import YoutubeTagsExtractor from "./YoutubeTagsExtractor";
+import { lazy } from 'react';
 
 const socialMedia = {
-  "yt-thumbnail": YoutubeThumbnailDownloader,
-  "yt-video": YoutubeVideoDownloader,
-  "tweet-generator": TweetGenerator,
-  "instagram-post": InstagramPostGenerator,
-  "yt-trending": YoutubeTrendingVideos,
-  "yt-tags": YoutubeTagsExtractor,
+  "yt-thumbnail": lazy(() => import("./YoutubeThumbnailDownloader")),
+  "yt-video": lazy(() => import("./YoutubeVideoDownloader")),
+  "tweet-generator": lazy(() => import("./TweetGenerator")),
+  "instagram-post": lazy(() => import("./InstagramPostGenerator")),
+  "yt-trending": lazy(() => import("./YoutubeTrendingVideos")),
+  "yt-tags": lazy(() => import("./YoutubeTagsExtractor")),
 };
 
 export default socialMedia;

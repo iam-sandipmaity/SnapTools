@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -1468,7 +1468,22 @@ export default function Sarvam() {
     const [keyInput, setKeyInput] = useState("");
     const [keySet, setKeySet] = useState(false);
     const [activeTab, setActiveTab] = useState<Tab>("chat");
+    const [mounted, setMounted] = useState(false);
     const { theme } = useTheme();
+
+    // Prevent hydration mismatch
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // Prevent rendering until mounted to avoid hydration mismatch
+    if (!mounted) {
+        return (
+            <div className="flex items-center justify-center min-h-[400px]">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            </div>
+        );
+    }
 
     const handleSetKey = useCallback(() => {
         if (keyInput.trim()) {

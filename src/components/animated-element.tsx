@@ -1,5 +1,4 @@
-
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import { motion } from "framer-motion";
 
 interface AnimatedElementProps {
@@ -9,6 +8,7 @@ interface AnimatedElementProps {
   animation?: "fadeIn" | "slideUp" | "scale" | "none";
 }
 
+// Pre-defined animation configs (memoized to avoid recreation)
 const animations = {
   fadeIn: {
     hidden: { opacity: 0, y: 20 },
@@ -60,11 +60,11 @@ const AnimatedElement = ({
   className = "",
   animation = "fadeIn"
 }: AnimatedElementProps) => {
-  // Use fallback animation if the specified one doesn't exist
-  const selectedAnimation = animations[animation] || animations.none;
+  // Memoize the selected animation
+  const selectedAnimation = useMemo(() => animations[animation] || animations.none, [animation]);
   
-  // Apply delay to the transition
-  const animationWithDelay = {
+  // Apply delay to the transition - memoized
+  const animationWithDelay = useMemo(() => ({
     ...selectedAnimation,
     visible: {
       ...selectedAnimation.visible,
@@ -73,7 +73,7 @@ const AnimatedElement = ({
         delay
       }
     }
-  };
+  }), [selectedAnimation, delay]);
 
   return (
     <motion.div

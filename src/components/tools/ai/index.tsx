@@ -1,7 +1,7 @@
-import Sarvam from './Sarvam';
+import { lazy } from 'react';
 
 const aiTools = {
-    'ai-sarvam': Sarvam,
+    'ai-sarvam': lazy(() => import('./Sarvam')),
 };
 
 export default aiTools;

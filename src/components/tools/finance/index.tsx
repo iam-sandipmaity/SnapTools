@@ -1,21 +1,14 @@
-import PercentageCalculator from "./PercentageCalculator";
-import LoanCalculator from "./LoanCalculator";
-import MortgageCalculator from "./MortgageCalculator";
-import TipCalculator from "./TipCalculator";
-import DiscountCalculator from "./DiscountCalculator";
-import ROICalculator from "./ROICalculator";
-import TaxCalculator from "./TaxCalculator";
-import BillSplitter from "./BillSplitter";
+import { lazy } from 'react';
 
 const financeTools = {
-  "percentage-calculator": PercentageCalculator,
-  "loan-calculator": LoanCalculator,
-  "mortgage-calculator": MortgageCalculator,
-  "tip-calculator": TipCalculator,
-  "discount-calculator": DiscountCalculator,
-  "roi-calculator": ROICalculator,
-  "tax-calculator": TaxCalculator,
-  "bill-splitter": BillSplitter,
+  "percentage-calculator": lazy(() => import("./PercentageCalculator")),
+  "loan-calculator": lazy(() => import("./LoanCalculator")),
+  "mortgage-calculator": lazy(() => import("./MortgageCalculator")),
+  "tip-calculator": lazy(() => import("./TipCalculator")),
+  "discount-calculator": lazy(() => import("./DiscountCalculator")),
+  "roi-calculator": lazy(() => import("./ROICalculator")),
+  "tax-calculator": lazy(() => import("./TaxCalculator")),
+  "bill-splitter": lazy(() => import("./BillSplitter")),
 };
 
 export default financeTools;

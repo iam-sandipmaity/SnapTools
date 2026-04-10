@@ -1,14 +1,10 @@
-
-import PasswordGenerator from "./PasswordGenerator";
-import WordCounter from "./WordCounter";
-import LoremIpsumGenerator from "./LoremIpsumGenerator";
-import CharacterCounter from "./CharacterCounter";
+import { lazy } from 'react';
 
 const passwordTools = {
-  "password-generator": PasswordGenerator,
-  "word-counter": WordCounter,
-  "lorem-ipsum-generator": LoremIpsumGenerator,
-  "character-counter": CharacterCounter,
+  "password-generator": lazy(() => import("./PasswordGenerator")),
+  "word-counter": lazy(() => import("./WordCounter")),
+  "lorem-ipsum-generator": lazy(() => import("./LoremIpsumGenerator")),
+  "character-counter": lazy(() => import("./CharacterCounter")),
 };
 
 export default passwordTools;

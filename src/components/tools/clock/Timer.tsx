@@ -117,7 +117,9 @@ const Timer: React.FC = () => {
     if (Notification.permission === 'default') {
       try {
         await Notification.requestPermission();
-      } catch {}
+      } catch (err) {
+        console.warn('Notification permission denied:', err);
+      }
     }
   };
 

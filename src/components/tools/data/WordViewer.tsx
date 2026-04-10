@@ -17,6 +17,7 @@ import {
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import mammoth from 'mammoth';
+import DOMPurify from 'dompurify';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './WordViewer.css';
@@ -87,7 +88,9 @@ const WordViewer = () => {
                 console.warn('Conversion warnings:', result.messages);
             }
 
-            setContent(result.value);
+            // Sanitize HTML to prevent XSS attacks
+            const sanitizedContent = DOMPurify.sanitize(result.value);
+            setContent(sanitizedContent);
             setHasContent(true);
             setIsEditMode(true);
             toast.success(`Loaded ${file.name} - Ready to edit!`);
@@ -462,7 +465,7 @@ const WordViewer = () => {
                                 <div className="word-preview border border-border rounded-lg p-8 bg-white dark:bg-gray-900 min-h-[600px]">
                                     <div
                                         className="prose prose-slate dark:prose-invert max-w-none"
-                                        dangerouslySetInnerHTML={{ __html: content }}
+                                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }}
                                     />
                                 </div>
                             )}

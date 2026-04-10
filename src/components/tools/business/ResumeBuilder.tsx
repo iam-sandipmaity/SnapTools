@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import AnimatedElement from '@/components/animated-element';
+import DOMPurify from 'dompurify';
 import {
     Download, Plus, Trash2, FileText, Save, Upload, Eye, EyeOff,
     Wand2, Copy, Check, Linkedin, Github, Globe, Mail, Phone,
@@ -1757,7 +1758,7 @@ const EnhancedResumeBuilder: React.FC = () => {
                                     {previewMode && (
                                         <div className="border-2 rounded-lg p-6 bg-slate-50 dark:bg-white min-h-[700px] max-h-[800px] overflow-auto shadow-lg">
                                             <div className="resume-container transform scale-95 origin-top">
-                                                <div dangerouslySetInnerHTML={{ __html: generateResumeHTML() }} />
+                                                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(generateResumeHTML()) }} />
                                             </div>
                                         </div>
                                     )}

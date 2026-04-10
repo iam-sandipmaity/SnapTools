@@ -1,14 +1,10 @@
-
-import BasicCalculator from "./BasicCalculator";
-import ScientificCalculator from "./ScientificCalculator";
-import BMICalculator from "./BMICalculator";
-import AgeCalculator from "./AgeCalculator";
+import { lazy } from 'react';
 
 const calculatorTools = {
-  "basic-calculator": BasicCalculator,
-  "scientific-calculator": ScientificCalculator,
-  "bmi-calculator": BMICalculator,
-  "age-calculator": AgeCalculator,
+  "basic-calculator": lazy(() => import("./BasicCalculator")),
+  "scientific-calculator": lazy(() => import("./ScientificCalculator")),
+  "bmi-calculator": lazy(() => import("./BMICalculator")),
+  "age-calculator": lazy(() => import("./AgeCalculator")),
 };
 
 export default calculatorTools;

@@ -35,8 +35,16 @@ function useDebouncedValue<T>(value: T, delay = 150) {
 
 /* ------------------------------------------------------------------ */
 
-const GEO_URL =
-  'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+/* 
+  World Map with India's correct territorial boundaries.
+  - Uses world-atlas for the base world map
+  - Overlays India's correct boundaries (J&K, Ladakh, Aksai Chin, Arunachal Pradesh)
+  
+  Source: AbhinavSwami28/india-official-geojson (MIT Licensed)
+  This is India's official position as per the Constitution of India.
+*/
+const WORLD_GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+const INDIA_GEO_URL = 'https://raw.githubusercontent.com/AbhinavSwami28/india-official-geojson/main/india-states-simplified.geojson';
 
 const MAX_RESULTS = 1000;
 
@@ -264,25 +272,98 @@ const WorldClock: React.FC = () => {
                   height={400}
                   style={{ width: '100%', height: 'auto' }}
                 >
-                  <Geographies geography={GEO_URL}>
+                  {/* World Base Map */}
+                  <Geographies geography={WORLD_GEO_URL}>
                     {({ geographies }) =>
-                      geographies.map((geo) => (
-                        <Geography
-                          key={geo.rsmKey}
-                          geography={geo}
-                          fill="#10B981"
-                          stroke="#059669"
-                          strokeWidth={1}
-                          style={{
-                            default: { outline: 'none' },
-                            hover: {
-                              outline: 'none',
-                              fill: '#34D399',
-                            },
-                            pressed: { outline: 'none' },
-                          }}
-                        />
-                      ))
+                      geographies.map((geo) => {
+                        // Get country name
+                        const geoName = geo.properties?.name || geo.properties?.NAME || '';
+                        
+                        // Check if this is India (to apply special styling)
+                        const isIndia = 
+                          geoName === 'India' || 
+                          geoName === 'Republic of India';
+                        
+                        return (
+                          <Geography
+                            key={geo.rsmKey}
+                            geography={geo}
+                            fill={isIndia ? "#10B981" : "#E2E8F0"}
+                            stroke={isIndia ? "#059669" : "#CBD5E1"}
+                            strokeWidth={isIndia ? 1 : 0.5}
+                            style={{
+                              default: { outline: 'none' },
+                              hover: {
+                                outline: 'none',
+                                fill: isIndia ? "#34D399" : "#CBD5E1",
+                              },
+                              pressed: { outline: 'none' },
+                            }}
+                          />
+                        );
+                      })
+                    }
+                  </Geographies>
+
+                  {/* Overlay India's correct boundaries (including J&K, Ladakh, Aksai Chin, Arunachal Pradesh) */}
+                  <Geographies geography={INDIA_GEO_URL}>
+                    {({ geographies }) =>
+                      geographies.map((geo) => {
+                        // Get the geographic name to identify Indian territories
+                        const geoName = geo.properties?.name || geo.properties?.NAME_1 || '';
+                        
+                        // Color all Indian territories including J&K, Ladakh, and Arunachal Pradesh
+                        const isIndianTerritory = 
+                          geoName === 'Jammu & Kashmir' ||
+                          geoName === 'Ladakh' ||
+                          geoName === 'Arunachal Pradesh' ||
+                          geoName === 'Himachal Pradesh' ||
+                          geoName === 'Uttarakhand' ||
+                          geoName === 'Punjab' ||
+                          geoName === 'Haryana' ||
+                          geoName === 'Delhi' ||
+                          geoName === 'Rajasthan' ||
+                          geoName === 'Gujarat' ||
+                          geoName === 'Maharashtra' ||
+                          geoName === 'Goa' ||
+                          geoName === 'Karnataka' ||
+                          geoName === 'Kerala' ||
+                          geoName === 'Tamil Nadu' ||
+                          geoName === 'Telangana' ||
+                          geoName === 'Andhra Pradesh' ||
+                          geoName === 'Madhya Pradesh' ||
+                          geoName === 'Chhattisgarh' ||
+                          geoName === 'Odisha' ||
+                          geoName === 'West Bengal' ||
+                          geoName === 'Jharkhand' ||
+                          geoName === 'Bihar' ||
+                          geoName === 'Uttar Pradesh' ||
+                          geoName === 'Assam' ||
+                          geoName === 'Meghalaya' ||
+                          geoName === 'Manipur' ||
+                          geoName === 'Nagaland' ||
+                          geoName === 'Tripura' ||
+                          geoName === 'Mizoram' ||
+                          geoName === 'Sikkim';
+
+                        return (
+                          <Geography
+                            key={geo.rsmKey}
+                            geography={geo}
+                            fill={isIndianTerritory ? "#10B981" : "#10B981"}
+                            stroke={isIndianTerritory ? "#059669" : "#059669"}
+                            strokeWidth={0.5}
+                            style={{
+                              default: { outline: 'none' },
+                              hover: {
+                                outline: 'none',
+                                fill: "#34D399",
+                              },
+                              pressed: { outline: 'none' },
+                            }}
+                          />
+                        );
+                      })
                     }
                   </Geographies>
 

@@ -1,19 +1,13 @@
-import EmailSignatureGenerator from './EmailSignatureGenerator';
-import ResumeBuilder from './ResumeBuilder';
-import InvoiceGenerator from './InvoiceGenerator';
-import ReceiptMaker from './ReceiptMaker';
-import BusinessCardGenerator from './BusinessCardGenerator';
-import LogoMaker from './LogoMaker';
-import MemeGenerator from './MemeGenerator';
+import { lazy } from 'react';
 
 const businessTools = {
-    'email-signature-generator': EmailSignatureGenerator,
-    'resume-builder': ResumeBuilder,
-    'invoice-generator': InvoiceGenerator,
-    'receipt-maker': ReceiptMaker,
-    'business-card-generator': BusinessCardGenerator,
-    'logo-maker': LogoMaker,
-    'meme-generator': MemeGenerator,
+    'email-signature-generator': lazy(() => import('./EmailSignatureGenerator')),
+    'resume-builder': lazy(() => import('./ResumeBuilder')),
+    'invoice-generator': lazy(() => import('./InvoiceGenerator')),
+    'receipt-maker': lazy(() => import('./ReceiptMaker')),
+    'business-card-generator': lazy(() => import('./BusinessCardGenerator')),
+    'logo-maker': lazy(() => import('./LogoMaker')),
+    'meme-generator': lazy(() => import('./MemeGenerator')),
 };
 
 export default businessTools;

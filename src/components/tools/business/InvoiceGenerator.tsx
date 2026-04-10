@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import AnimatedElement from '@/components/animated-element';
+import DOMPurify from 'dompurify';
 import {
     Plus, Trash2, Download, FileText, Save, Upload, Send, Eye, EyeOff,
     DollarSign, Percent, Calendar, Building2, User, Mail, MapPin,
@@ -1636,7 +1637,7 @@ const EnhancedInvoiceGenerator: React.FC = () => {
 
                                             {showPreview && (
                                                 <div className="border-2 rounded-lg p-8 bg-white overflow-auto max-h-[800px]">
-                                                    <div dangerouslySetInnerHTML={{ __html: generateInvoiceHTML() }} />
+                                                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(generateInvoiceHTML()) }} />
                                                 </div>
                                             )}
                                         </Card>

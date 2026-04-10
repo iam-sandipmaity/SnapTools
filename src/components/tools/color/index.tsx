@@ -1,12 +1,9 @@
-
-import ColorPicker from "./ColorPicker";
-import HexRgbConverter from "./components/HexRgbConverter";
-import GradientGenerator from "./GradientGenerator";
+import { lazy } from 'react';
 
 const colorTools = {
-  "color-picker": ColorPicker,
-  "hex-rgb": HexRgbConverter,
-  "gradient-generator": GradientGenerator,
+  "color-picker": lazy(() => import("./ColorPicker")),
+  "hex-rgb": lazy(() => import("./components/HexRgbConverter")),
+  "gradient-generator": lazy(() => import("./GradientGenerator")),
 };
 
 export default colorTools;

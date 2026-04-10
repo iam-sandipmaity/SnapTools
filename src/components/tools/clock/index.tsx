@@ -1,17 +1,10 @@
-import CurrentTime from "./CurrentTime";
-import Stopwatch from "./Stopwatch";
-import Timer from "./Timer";
-import WorldClock from "./WorldClock";
+import { lazy } from 'react';
 
-type ClockToolComponentMap = {
-  [key: string]: React.ComponentType;
-};
-
-const clockTools: ClockToolComponentMap = {
-  "current-time": CurrentTime,
-  "stopwatch": Stopwatch,
-  "timer": Timer,
-  "world-clock": WorldClock,
+const clockTools = {
+  "current-time": lazy(() => import("./CurrentTime")),
+  "stopwatch": lazy(() => import("./Stopwatch")),
+  "timer": lazy(() => import("./Timer")),
+  "world-clock": lazy(() => import("./WorldClock")),
 };
 
 export default clockTools;

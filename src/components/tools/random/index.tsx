@@ -1,18 +1,12 @@
-
-import RandomNumberGenerator from "./RandomNumberGenerator";
-import DiceRoller from "./DiceRoller";
-import CoinFlipper from "./CoinFlipper";
-import YesNoDecisionMaker from "./YesNoDecisionMaker";
-import RandomPicker from "./RandomPicker";
-import ColorGenerator from "./ColorGenerator";
+import { lazy } from 'react';
 
 const randomTools = {
-    "random-number-generator": RandomNumberGenerator,
-    "dice-roller": DiceRoller,
-    "coin-flipper": CoinFlipper,
-    "yes-no-decision-maker": YesNoDecisionMaker,
-    "random-picker": RandomPicker,
-    "random-color-generator": ColorGenerator,
+    "random-number-generator": lazy(() => import("./RandomNumberGenerator")),
+    "dice-roller": lazy(() => import("./DiceRoller")),
+    "coin-flipper": lazy(() => import("./CoinFlipper")),
+    "yes-no-decision-maker": lazy(() => import("./YesNoDecisionMaker")),
+    "random-picker": lazy(() => import("./RandomPicker")),
+    "random-color-generator": lazy(() => import("./ColorGenerator")),
 };
 
 export default randomTools;

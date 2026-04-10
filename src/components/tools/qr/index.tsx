@@ -1,12 +1,9 @@
-
-import QRGenerator from "./QRGenerator";
-import QRScanner from "./QRScanner";
-import BarcodeGenerator from "./BarcodeGenerator";
+import { lazy } from 'react';
 
 const qrTools = {
-  "qr-generator": QRGenerator,
-  "qr-scanner": QRScanner,
-  "barcode-generator": BarcodeGenerator,
+  "qr-generator": lazy(() => import("./QRGenerator")),
+  "qr-scanner": lazy(() => import("./QRScanner")),
+  "barcode-generator": lazy(() => import("./BarcodeGenerator")),
 };
 
 export default qrTools;

@@ -1,23 +1,15 @@
-
-import BinaryConverter from "./BinaryConverter";
-import HexDecimalConverter from "./HexDecimalConverter";
-import Base64Converter from "./Base64Converter";
-import TextAsciiConverter from "./TextAsciiConverter";
-import TimestampConverter from "./TimestampConverter";
-import TimeZoneConverter from "./TimeZoneConverter";
-import MorseCodeConverter from "./MorseCodeConverter";
-import CryptoConverter from "./CryptoConverter";
+import { lazy } from 'react';
 
 const conversionTools = {
-  "binary-decimal": BinaryConverter,
-  "binary-hex": BinaryConverter,
-  "hex-decimal": HexDecimalConverter,
-  "base64": Base64Converter,
-  "text-ascii": TextAsciiConverter,
-  "timestamp-converter": TimestampConverter,
-  "timezone-converter": TimeZoneConverter,
-  "morse-code-converter": MorseCodeConverter,
-  "crypto-converter": CryptoConverter,
+  "binary-decimal": lazy(() => import("./BinaryConverter")),
+  "binary-hex": lazy(() => import("./BinaryConverter")),
+  "hex-decimal": lazy(() => import("./HexDecimalConverter")),
+  "base64": lazy(() => import("./Base64Converter")),
+  "text-ascii": lazy(() => import("./TextAsciiConverter")),
+  "timestamp-converter": lazy(() => import("./TimestampConverter")),
+  "timezone-converter": lazy(() => import("./TimeZoneConverter")),
+  "morse-code-converter": lazy(() => import("./MorseCodeConverter")),
+  "crypto-converter": lazy(() => import("./CryptoConverter")),
 };
 
 export default conversionTools;

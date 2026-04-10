@@ -1,7 +1,7 @@
-import EthAddressValidator from './Ethvalidation';
+import { lazy } from 'react';
 
 const blockchainTools = {
-    'eth-validator': EthAddressValidator,
+    'eth-validator': lazy(() => import('./Ethvalidation')),
 };
 
 export default blockchainTools;
