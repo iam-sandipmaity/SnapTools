@@ -1,4 +1,3 @@
-
 import {
   Image,
   FileText,
@@ -63,18 +62,69 @@ export const toolCategories: ToolCategory[] = [
     icon: Image,
     iconName: "image",
     color: "bg-tooltopia-soft-blue",
-    description: "Free online image tools to compress, convert, edit, and optimize images. Reduce file sizes, change formats, crop, and apply filters - all free.",
+    description:
+      "Free online image tools to compress, convert, edit, and optimize images. Reduce file sizes, change formats, crop, and apply filters - all free.",
     subTools: [
-      { id: "image-compressor", title: "Image Compressor", description: "Compress images online free. Reduce image file size without losing quality. Supports JPG, PNG, WebP." },
-      { id: "image-size-increaser", title: "Image Size Increaser", description: "Increase image size online. Upscale images while maintaining quality." },
-      { id: "image-base64", title: "Image to Base64 / Base64 to Image", description: "Convert images to base64 and base64 to image. Free online base64 image encoder/decoder." },
-      { id: "image-format-converter", title: "Image Format Converter", description: "Convert image formats online. Change between JPG, PNG, WebP, GIF, and more formats for free." },
-      { id: "image-dimension-changer", title: "Image Dimension Changer", description: "Resize images online. Change image dimensions, width, and height easily and free." },
-      { id: "image-cropper", title: "Image Cropper", description: "Crop images online free. Cut and trim images to your desired size." },
-      { id: "image-color-inverter", title: "Image Color Inverter", description: "Invert image colors online. Create negative image effects for free." },
-      { id: "image-black-and-white", title: "Image Black And White", description: "Convert images to black and white online. Free grayscale image converter." },
-      { id: "image-filter-effects", title: "Image Filter Effects", description: "Apply filters to images online. Add effects, adjust brightness, contrast, and more for free." },
-      { id: "image-metadata-editor", title: "Image Metadata Editor", description: "Inspect and edit image EXIF, IPTC, XMP & GPS metadata directly in the browser." },
+      {
+        id: "image-compressor",
+        title: "Image Compressor",
+        description:
+          "Compress images online free. Reduce image file size without losing quality. Supports JPG, PNG, WebP.",
+      },
+      {
+        id: "image-size-increaser",
+        title: "Image Size Increaser",
+        description:
+          "Increase image size online. Upscale images while maintaining quality.",
+      },
+      {
+        id: "image-base64",
+        title: "Image to Base64 / Base64 to Image",
+        description:
+          "Convert images to base64 and base64 to image. Free online base64 image encoder/decoder.",
+      },
+      {
+        id: "image-format-converter",
+        title: "Image Format Converter",
+        description:
+          "Convert image formats online. Change between JPG, PNG, WebP, GIF, and more formats for free.",
+      },
+      {
+        id: "image-dimension-changer",
+        title: "Image Dimension Changer",
+        description:
+          "Resize images online. Change image dimensions, width, and height easily and free.",
+      },
+      {
+        id: "image-cropper",
+        title: "Image Cropper",
+        description:
+          "Crop images online free. Cut and trim images to your desired size.",
+      },
+      {
+        id: "image-color-inverter",
+        title: "Image Color Inverter",
+        description:
+          "Invert image colors online. Create negative image effects for free.",
+      },
+      {
+        id: "image-black-and-white",
+        title: "Image Black And White",
+        description:
+          "Convert images to black and white online. Free grayscale image converter.",
+      },
+      {
+        id: "image-filter-effects",
+        title: "Image Filter Effects",
+        description:
+          "Apply filters to images online. Add effects, adjust brightness, contrast, and more for free.",
+      },
+      {
+        id: "image-metadata-editor",
+        title: "Image Metadata Editor",
+        description:
+          "Inspect and edit image EXIF, IPTC, XMP & GPS metadata directly in the browser.",
+      },
     ],
   },
   {
@@ -83,17 +133,63 @@ export const toolCategories: ToolCategory[] = [
     icon: FileText,
     iconName: "file-text",
     color: "bg-tooltopia-soft-pink",
-    description: "Free online PDF tools to merge, split, compress, convert, and edit PDF files. All PDF tools work in your browser without uploading files.",
+    description:
+      "Free online PDF tools to merge, split, compress, convert, and edit PDF files. All PDF tools work in your browser without uploading files.",
     subTools: [
-      { id: "pdf-merger", title: "PDF Merger", description: "Merge PDF files online free. Combine multiple PDFs into one PDF document quickly and securely." },
-      { id: "pdf-splitter", title: "PDF Splitter", description: "Split PDF online free. Extract pages from PDF and create separate PDF files." },
-      { id: "pdf-organizer", title: "PDF Organizer", description: "Organize PDF pages online. Rearrange, reorder, and sort PDF pages easily and free." },
-      { id: "pdf-word", title: "PDF to Word / Word to PDF", description: "Convert PDF to Word and Word to PDF online free. Fast and accurate PDF converter." },
-      { id: "pdf-jpg", title: "PDF to JPG / JPG to PDF", description: "Convert PDF to JPG and JPG to PDF online free. Export PDF pages as images." },
-      { id: "pdf-compress", title: "Compress PDF", description: "Compress PDF online free. Reduce PDF file size while maintaining quality." },
-      { id: "pdf-encryption", title: "PDF Encryption", description: "Encrypt PDF online free. Password protect your PDF files securely." },
-      { id: "pdf-decryption", title: "PDF Decryption", description: "Decrypt PDF online. Remove password protection from PDF files." },
-      { id: "pdf-viewer", title: "PDF Viewer", description: "View PDF online free. Open and read PDF files in your browser without downloading." },
+      {
+        id: "pdf-merger",
+        title: "PDF Merger",
+        description:
+          "Merge PDF files online free. Combine multiple PDFs into one PDF document quickly and securely.",
+      },
+      {
+        id: "pdf-splitter",
+        title: "PDF Splitter",
+        description:
+          "Split PDF online free. Extract pages from PDF and create separate PDF files.",
+      },
+      {
+        id: "pdf-organizer",
+        title: "PDF Organizer",
+        description:
+          "Organize PDF pages online. Rearrange, reorder, and sort PDF pages easily and free.",
+      },
+      {
+        id: "pdf-word",
+        title: "PDF to Word / Word to PDF",
+        description:
+          "Convert PDF to Word and Word to PDF online free. Fast and accurate PDF converter.",
+      },
+      {
+        id: "pdf-jpg",
+        title: "PDF to JPG / JPG to PDF",
+        description:
+          "Convert PDF to JPG and JPG to PDF online free. Export PDF pages as images.",
+      },
+      {
+        id: "pdf-compress",
+        title: "Compress PDF",
+        description:
+          "Compress PDF online free. Reduce PDF file size while maintaining quality.",
+      },
+      {
+        id: "pdf-encryption",
+        title: "PDF Encryption",
+        description:
+          "Encrypt PDF online free. Password protect your PDF files securely.",
+      },
+      {
+        id: "pdf-decryption",
+        title: "PDF Decryption",
+        description:
+          "Decrypt PDF online. Remove password protection from PDF files.",
+      },
+      {
+        id: "pdf-viewer",
+        title: "PDF Viewer",
+        description:
+          "View PDF online free. Open and read PDF files in your browser without downloading.",
+      },
     ],
   },
   {
@@ -102,12 +198,33 @@ export const toolCategories: ToolCategory[] = [
     icon: Calculator,
     iconName: "calculator",
     color: "bg-tooltopia-soft-green",
-    description: "Free online calculators for basic math, scientific calculations, BMI, age, and more. Fast and accurate calculators.",
+    description:
+      "Free online calculators for basic math, scientific calculations, BMI, age, and more. Fast and accurate calculators.",
     subTools: [
-      { id: "basic-calculator", title: "Basic Calculator", description: "Free online basic calculator. Perform simple math calculations quickly." },
-      { id: "scientific-calculator", title: "Scientific Calculator", description: "Free scientific calculator online. Advanced math functions and calculations." },
-      { id: "bmi-calculator", title: "BMI Calculator", description: "Calculate BMI online free. Check your Body Mass Index with our BMI calculator." },
-      { id: "age-calculator", title: "Age Calculator", description: "Calculate age online free. Find out your exact age in years, months, and days." },
+      {
+        id: "basic-calculator",
+        title: "Basic Calculator",
+        description:
+          "Free online basic calculator. Perform simple math calculations quickly.",
+      },
+      {
+        id: "scientific-calculator",
+        title: "Scientific Calculator",
+        description:
+          "Free scientific calculator online. Advanced math functions and calculations.",
+      },
+      {
+        id: "bmi-calculator",
+        title: "BMI Calculator",
+        description:
+          "Calculate BMI online free. Check your Body Mass Index with our BMI calculator.",
+      },
+      {
+        id: "age-calculator",
+        title: "Age Calculator",
+        description:
+          "Calculate age online free. Find out your exact age in years, months, and days.",
+      },
     ],
   },
   {
@@ -116,16 +233,56 @@ export const toolCategories: ToolCategory[] = [
     icon: Zap,
     iconName: "zap",
     color: "bg-tooltopia-soft-yellow",
-    description: "Free online converter tools for units, currencies, numbers, and more. Fast and accurate conversions.",
+    description:
+      "Free online converter tools for units, currencies, numbers, and more. Fast and accurate conversions.",
     subTools: [
-      { id: "binary-decimal", title: "Binary ⇄ Decimal", description: "Convert binary to decimal and decimal to binary online free. Fast binary converter." },
-      { id: "binary-hex", title: "Binary ⇄ Hex", description: "Convert binary to hexadecimal and hex to binary online free." },
-      { id: "hex-decimal", title: "Hex ⇄ Decimal", description: "Convert hexadecimal to decimal and decimal to hex online free." },
-      { id: "base64", title: "Base64 Encode / Decode", description: "Base64 encoder and decoder online free. Encode and decode base64 strings." },
-      { id: "text-ascii", title: "Text ⇄ ASCII", description: "Convert text to ASCII and ASCII to text online free." },
-      { id: "timestamp-converter", title: "Timestamp Converter", description: "Convert Unix timestamp online free. Convert between timestamps and dates." },
-      { id: "timezone-converter", title: "Time Zone Converter", description: "Convert time zones online free. Check time across different time zones." },
-      { id: "morse-code-converter", title: "Morse Code Converter", description: "Convert text to Morse code and Morse code to text online free." },
+      {
+        id: "binary-decimal",
+        title: "Binary ⇄ Decimal",
+        description:
+          "Convert binary to decimal and decimal to binary online free. Fast binary converter.",
+      },
+      {
+        id: "binary-hex",
+        title: "Binary ⇄ Hex",
+        description:
+          "Convert binary to hexadecimal and hex to binary online free.",
+      },
+      {
+        id: "hex-decimal",
+        title: "Hex ⇄ Decimal",
+        description:
+          "Convert hexadecimal to decimal and decimal to hex online free.",
+      },
+      {
+        id: "base64",
+        title: "Base64 Encode / Decode",
+        description:
+          "Base64 encoder and decoder online free. Encode and decode base64 strings.",
+      },
+      {
+        id: "text-ascii",
+        title: "Text ⇄ ASCII",
+        description: "Convert text to ASCII and ASCII to text online free.",
+      },
+      {
+        id: "timestamp-converter",
+        title: "Timestamp Converter",
+        description:
+          "Convert Unix timestamp online free. Convert between timestamps and dates.",
+      },
+      {
+        id: "timezone-converter",
+        title: "Time Zone Converter",
+        description:
+          "Convert time zones online free. Check time across different time zones.",
+      },
+      {
+        id: "morse-code-converter",
+        title: "Morse Code Converter",
+        description:
+          "Convert text to Morse code and Morse code to text online free.",
+      },
     ],
   },
   {
@@ -134,15 +291,51 @@ export const toolCategories: ToolCategory[] = [
     icon: Code,
     iconName: "code",
     color: "bg-tooltopia-soft-purple",
-    description: "Free online code tools for formatting, validating, and minifying code. JSON formatter, HTML beautifier, CSS minifier, and more.",
+    description:
+      "Free online code tools for formatting, validating, and minifying code. JSON formatter, HTML beautifier, CSS minifier, and more.",
     subTools: [
-      { id: "code-runner", title: "Code Runner", description: "Run code online free. Execute JavaScript, Python, and other programming languages." },
-      { id: "code-formatter", title: "Code Formatter", description: "Format code online free. Beautify and organize your code automatically." },
-      { id: "json-formatter", title: "JSON Formatter / Validator", description: "Format and validate JSON online free. JSON beautifier and validator tool." },
-      { id: "xml-formatter", title: "XML Formatter", description: "Format XML online free. Beautify and validate XML documents." },
-      { id: "html-formatter", title: "HTML Minifier / Beautifier", description: "Minify and beautify HTML online free. Compress HTML code or make it readable." },
-      { id: "css-formatter", title: "CSS Minifier / Beautifier", description: "Minify and beautify CSS online free. Optimize CSS file size or format for readability." },
-      { id: "js-minifier", title: "JavaScript Minifier", description: "Minify JavaScript online free. Compress JS files and reduce file size." },
+      {
+        id: "code-runner",
+        title: "Code Runner",
+        description:
+          "Run code online free. Execute JavaScript, Python, and other programming languages.",
+      },
+      {
+        id: "code-formatter",
+        title: "Code Formatter",
+        description:
+          "Format code online free. Beautify and organize your code automatically.",
+      },
+      {
+        id: "json-formatter",
+        title: "JSON Formatter / Validator",
+        description:
+          "Format and validate JSON online free. JSON beautifier and validator tool.",
+      },
+      {
+        id: "xml-formatter",
+        title: "XML Formatter",
+        description:
+          "Format XML online free. Beautify and validate XML documents.",
+      },
+      {
+        id: "html-formatter",
+        title: "HTML Minifier / Beautifier",
+        description:
+          "Minify and beautify HTML online free. Compress HTML code or make it readable.",
+      },
+      {
+        id: "css-formatter",
+        title: "CSS Minifier / Beautifier",
+        description:
+          "Minify and beautify CSS online free. Optimize CSS file size or format for readability.",
+      },
+      {
+        id: "js-minifier",
+        title: "JavaScript Minifier",
+        description:
+          "Minify JavaScript online free. Compress JS files and reduce file size.",
+      },
     ],
   },
   {
@@ -151,11 +344,27 @@ export const toolCategories: ToolCategory[] = [
     icon: QrCode,
     iconName: "qr-code",
     color: "bg-tooltopia-soft-orange",
-    description: "Free online QR code generator and scanner. Create QR codes, barcodes, and scan QR codes instantly.",
+    description:
+      "Free online QR code generator and scanner. Create QR codes, barcodes, and scan QR codes instantly.",
     subTools: [
-      { id: "qr-generator", title: "QR Code Generator", description: "Generate QR codes online free. Create custom QR codes for URLs, text, WiFi, and more." },
-      { id: "barcode-generator", title: "Barcode Generator", description: "Generate barcodes online free. Create various barcode formats instantly." },
-      { id: "qr-scanner", title: "QR Code Scanner", description: "Scan QR codes online free. Upload or use camera to scan QR codes." },
+      {
+        id: "qr-generator",
+        title: "QR Code Generator",
+        description:
+          "Generate QR codes online free. Create custom QR codes for URLs, text, WiFi, and more.",
+      },
+      {
+        id: "barcode-generator",
+        title: "Barcode Generator",
+        description:
+          "Generate barcodes online free. Create various barcode formats instantly.",
+      },
+      {
+        id: "qr-scanner",
+        title: "QR Code Scanner",
+        description:
+          "Scan QR codes online free. Upload or use camera to scan QR codes.",
+      },
     ],
   },
   {
@@ -164,12 +373,33 @@ export const toolCategories: ToolCategory[] = [
     icon: KeyRound,
     iconName: "key-round",
     color: "bg-tooltopia-soft-peach",
-    description: "Free online password generator and text tools. Create strong passwords, generate Lorem Ipsum, and count words.",
+    description:
+      "Free online password generator and text tools. Create strong passwords, generate Lorem Ipsum, and count words.",
     subTools: [
-      { id: "password-generator", title: "Password Generator", description: "Generate strong passwords online free. Create secure random passwords with custom options." },
-      { id: "lorem-ipsum-generator", title: "Lorem Ipsum Generator", description: "Generate Lorem Ipsum text online free. Create placeholder text for designs and mockups." },
-      { id: "word-counter", title: "Word Counter", description: "Count words online free. Word and character counter for text analysis." },
-      { id: "character-counter", title: "Character Counter", description: "Count characters online free. Character, word, and line counter tool." },
+      {
+        id: "password-generator",
+        title: "Password Generator",
+        description:
+          "Generate strong passwords online free. Create secure random passwords with custom options.",
+      },
+      {
+        id: "lorem-ipsum-generator",
+        title: "Lorem Ipsum Generator",
+        description:
+          "Generate Lorem Ipsum text online free. Create placeholder text for designs and mockups.",
+      },
+      {
+        id: "word-counter",
+        title: "Word Counter",
+        description:
+          "Count words online free. Word and character counter for text analysis.",
+      },
+      {
+        id: "character-counter",
+        title: "Character Counter",
+        description:
+          "Count characters online free. Character, word, and line counter tool.",
+      },
     ],
   },
   {
@@ -178,11 +408,27 @@ export const toolCategories: ToolCategory[] = [
     icon: PaintBucket,
     iconName: "paint-bucket",
     color: "bg-tooltopia-soft-pink",
-    description: "Free online color tools for designers. Color picker, hex to RGB converter, and gradient generator.",
+    description:
+      "Free online color tools for designers. Color picker, hex to RGB converter, and gradient generator.",
     subTools: [
-      { id: "color-picker", title: "Color Picker", description: "Pick colors online free. Color picker tool with hex, RGB, and HSL values." },
-      { id: "hex-rgb", title: "Hex ⇄ RGB Converter", description: "Convert hex to RGB and RGB to hex online free. Fast color code converter." },
-      { id: "gradient-generator", title: "Gradient Generator", description: "Generate CSS gradients online free. Create beautiful gradient backgrounds." },
+      {
+        id: "color-picker",
+        title: "Color Picker",
+        description:
+          "Pick colors online free. Color picker tool with hex, RGB, and HSL values.",
+      },
+      {
+        id: "hex-rgb",
+        title: "Hex ⇄ RGB Converter",
+        description:
+          "Convert hex to RGB and RGB to hex online free. Fast color code converter.",
+      },
+      {
+        id: "gradient-generator",
+        title: "Gradient Generator",
+        description:
+          "Generate CSS gradients online free. Create beautiful gradient backgrounds.",
+      },
     ],
   },
   {
@@ -191,15 +437,51 @@ export const toolCategories: ToolCategory[] = [
     icon: Ruler,
     iconName: "ruler",
     color: "bg-tooltopia-soft-blue",
-    description: "Free online unit converter tools. Convert length, weight, temperature, speed, area, volume, and more.",
+    description:
+      "Free online unit converter tools. Convert length, weight, temperature, speed, area, volume, and more.",
     subTools: [
-      { id: "length-converter", title: "Length", description: "Convert length units online free. Convert meters, feet, inches, kilometers, and more." },
-      { id: "weight-converter", title: "Weight", description: "Convert weight units online free. Convert kilograms, pounds, ounces, and more." },
-      { id: "temperature-converter", title: "Temperature", description: "Convert temperature online free. Convert Celsius, Fahrenheit, and Kelvin." },
-      { id: "speed-converter", title: "Speed", description: "Convert speed units online free. Convert km/h, mph, m/s, and more." },
-      { id: "area-converter", title: "Area", description: "Convert area units online free. Convert square meters, acres, hectares, and more." },
-      { id: "volume-converter", title: "Volume", description: "Convert volume units online free. Convert liters, gallons, cubic meters, and more." },
-      { id: "pressure-converter", title: "Pressure", description: "Convert pressure units online free. Convert PSI, bar, pascal, and more." },
+      {
+        id: "length-converter",
+        title: "Length",
+        description:
+          "Convert length units online free. Convert meters, feet, inches, kilometers, and more.",
+      },
+      {
+        id: "weight-converter",
+        title: "Weight",
+        description:
+          "Convert weight units online free. Convert kilograms, pounds, ounces, and more.",
+      },
+      {
+        id: "temperature-converter",
+        title: "Temperature",
+        description:
+          "Convert temperature online free. Convert Celsius, Fahrenheit, and Kelvin.",
+      },
+      {
+        id: "speed-converter",
+        title: "Speed",
+        description:
+          "Convert speed units online free. Convert km/h, mph, m/s, and more.",
+      },
+      {
+        id: "area-converter",
+        title: "Area",
+        description:
+          "Convert area units online free. Convert square meters, acres, hectares, and more.",
+      },
+      {
+        id: "volume-converter",
+        title: "Volume",
+        description:
+          "Convert volume units online free. Convert liters, gallons, cubic meters, and more.",
+      },
+      {
+        id: "pressure-converter",
+        title: "Pressure",
+        description:
+          "Convert pressure units online free. Convert PSI, bar, pascal, and more.",
+      },
     ],
   },
   {
@@ -208,10 +490,21 @@ export const toolCategories: ToolCategory[] = [
     icon: IndianRupee,
     iconName: "indian-rupee",
     color: "bg-tooltopia-soft-green",
-    description: "Free online currency converter. Convert currencies and cryptocurrencies with real-time exchange rates.",
+    description:
+      "Free online currency converter. Convert currencies and cryptocurrencies with real-time exchange rates.",
     subTools: [
-      { id: "currency-converter", title: "Currency Converter", description: "Convert currency online free. Real-time exchange rates for all major currencies." },
-      { id: "crypto-converter", title: "Cryptocurrency Converter", description: "Convert cryptocurrency online free. Bitcoin, Ethereum, and other crypto conversions." },
+      {
+        id: "currency-converter",
+        title: "Currency Converter",
+        description:
+          "Convert currency online free. Real-time exchange rates for all major currencies.",
+      },
+      {
+        id: "crypto-converter",
+        title: "Cryptocurrency Converter",
+        description:
+          "Convert cryptocurrency online free. Bitcoin, Ethereum, and other crypto conversions.",
+      },
     ],
   },
   {
@@ -233,17 +526,63 @@ export const toolCategories: ToolCategory[] = [
     icon: Youtube,
     iconName: "youtube",
     color: "bg-tooltopia-soft-peach",
-    description: "Free online social media tools. Download YouTube thumbnails and videos, generate tweets, Instagram posts, view YouTube trending videos, tags, and statistics.",
+    description:
+      "Free online social media tools. Download YouTube thumbnails and videos, generate tweets, Instagram posts, view YouTube trending videos, tags, and statistics.",
     subTools: [
-      { id: "yt-thumbnail", title: "YouTube Thumbnail Downloader", description: "Download YouTube thumbnails online free. Save YouTube video thumbnails in high quality." },
-      { id: "yt-video", title: "YouTube Video Downloader", description: "Download YouTube videos online free. Save YouTube videos in various formats and qualities." },
-      { id: "tweet-generator", title: "Tweet Generator", description: "Generate tweets online free. Create engaging Twitter posts with AI assistance." },
-      { id: "instagram-post", title: "Instagram Post Generator", description: "Generate Instagram posts online free. Create captivating Instagram content easily." },
-      { id: "instagram-downloader", title: "Instagram Photo Downloader", description: "Download Instagram photos online free. Save Instagram images in high resolution." },
-      { id: "yt-trending", title: "Youtube Trending", description: "View YouTube trending videos online free. Discover what's popular on YouTube right now." },
-      { id: "yt-tags", title: "Youtube Tags", description: "Generate YouTube tags online free. Find best tags for your YouTube videos." },
-      { id: "yt-most-viewed", title: "Youtube Most Viewed", description: "View most viewed YouTube videos online free. Discover the most popular YouTube content." },
-      { id: "youtube-stats", title: "Youtube Stats", description: "Check YouTube statistics online free. Analyze YouTube channel and video stats." },
+      {
+        id: "yt-thumbnail",
+        title: "YouTube Thumbnail Downloader",
+        description:
+          "Download YouTube thumbnails online free. Save YouTube video thumbnails in high quality.",
+      },
+      {
+        id: "yt-video",
+        title: "YouTube Video Downloader",
+        description:
+          "Download YouTube videos online free. Save YouTube videos in various formats and qualities.",
+      },
+      {
+        id: "tweet-generator",
+        title: "Tweet Generator",
+        description:
+          "Generate tweets online free. Create engaging Twitter posts with AI assistance.",
+      },
+      {
+        id: "instagram-post",
+        title: "Instagram Post Generator",
+        description:
+          "Generate Instagram posts online free. Create captivating Instagram content easily.",
+      },
+      {
+        id: "instagram-downloader",
+        title: "Instagram Photo Downloader",
+        description:
+          "Download Instagram photos online free. Save Instagram images in high resolution.",
+      },
+      {
+        id: "yt-trending",
+        title: "Youtube Trending",
+        description:
+          "View YouTube trending videos online free. Discover what's popular on YouTube right now.",
+      },
+      {
+        id: "yt-tags",
+        title: "Youtube Tags",
+        description:
+          "Generate YouTube tags online free. Find best tags for your YouTube videos.",
+      },
+      {
+        id: "yt-most-viewed",
+        title: "Youtube Most Viewed",
+        description:
+          "View most viewed YouTube videos online free. Discover the most popular YouTube content.",
+      },
+      {
+        id: "youtube-stats",
+        title: "Youtube Stats",
+        description:
+          "Check YouTube statistics online free. Analyze YouTube channel and video stats.",
+      },
     ],
   },
   {
@@ -252,11 +591,27 @@ export const toolCategories: ToolCategory[] = [
     icon: Globe,
     iconName: "globe",
     color: "bg-tooltopia-soft-purple",
-    description: "Free online SEO and web tools. Generate meta tags, preview Open Graph, capture website screenshots, and optimize your website for search engines.",
+    description:
+      "Free online SEO and web tools. Generate meta tags, preview Open Graph, capture website screenshots, and optimize your website for search engines.",
     subTools: [
-      { id: "meta-generator", title: "Meta Tag Generator", description: "Generate meta tags online free. Create SEO-friendly meta tags for your website." },
-      { id: "ogen-preview", title: "Open Graph Preview", description: "Preview Open Graph tags online free. See how your content appears on social media." },
-      { id: "website-screenshot", title: "Website Screenshot Tool", description: "Capture website screenshots online free. Take full-page screenshots of any website." },
+      {
+        id: "meta-generator",
+        title: "Meta Tag Generator",
+        description:
+          "Generate meta tags online free. Create SEO-friendly meta tags for your website.",
+      },
+      {
+        id: "ogen-preview",
+        title: "Open Graph Preview",
+        description:
+          "Preview Open Graph tags online free. See how your content appears on social media.",
+      },
+      {
+        id: "website-screenshot",
+        title: "Website Screenshot Tool",
+        description:
+          "Capture website screenshots online free. Take full-page screenshots of any website.",
+      },
     ],
   },
   {
@@ -265,15 +620,79 @@ export const toolCategories: ToolCategory[] = [
     icon: Wrench,
     iconName: "wrench",
     color: "bg-tooltopia-soft-yellow",
-    description: "Free online miscellaneous tools. Generate UUIDs, convert numbers to words, create random IPs, test webcam, generate ASCII art, and more useful utilities.",
+    description:
+      "Free online miscellaneous tools. Generate UUIDs, convert numbers to words, create random IPs, test webcam, generate ASCII art, and more useful utilities.",
     subTools: [
-      { id: "uuid_generator", title: "UUID Generator", description: "Generate UUID online free. Create unique identifiers for your applications and databases." },
-      { id: "number-words", title: "Number to Words", description: "Convert numbers to words online free. Transform numerical values into written text." },
-      { id: "words-number", title: "Words to Number", description: "Convert words to numbers online free. Transform written numbers into numerical values." },
-      { id: "file-corruptor", title: "File Corruptor", description: "Corrupt files online free. Test error handling by intentionally corrupting files." },
-      { id: "random-ip-generator", title: "Random IP Generator", description: "Generate random IP addresses online free. Create IPv4 and IPv6 addresses for testing." },
-      { id: "webcam-test", title: "Webcam Tester", description: "Test webcam online free. Check if your webcam is working properly in browser." },
-      { id: "ascii-art-generator", title: "ASCII Art Generator", description: "Generate ASCII art online free. Convert text and images into ASCII art characters." },
+      {
+        id: "uuid_generator",
+        title: "UUID Generator",
+        description:
+          "Generate UUID online free. Create unique identifiers for your applications and databases.",
+      },
+      {
+        id: "number-words",
+        title: "Number to Words",
+        description:
+          "Convert numbers to words online free. Transform numerical values into written text.",
+      },
+      {
+        id: "words-number",
+        title: "Words to Number",
+        description:
+          "Convert words to numbers online free. Transform written numbers into numerical values.",
+      },
+      {
+        id: "file-corruptor",
+        title: "File Corruptor",
+        description:
+          "Corrupt files online free. Test error handling by intentionally corrupting files.",
+      },
+      {
+        id: "random-ip-generator",
+        title: "Random IP Generator",
+        description:
+          "Generate random IP addresses online free. Create IPv4 and IPv6 addresses for testing.",
+      },
+      {
+        id: "webcam-test",
+        title: "Webcam Tester",
+        description:
+          "Test webcam online free. Check if your webcam is working properly in browser.",
+      },
+      {
+        id: "ascii-art-generator",
+        title: "ASCII Art Generator",
+        description:
+          "Generate ASCII art online free. Convert text and images into ASCII art characters.",
+      },
+      {
+        id: "regex-tester",
+        title: "Regex Tester",
+        description:
+          "Test regular expressions online free. Validate and debug your regex patterns.",
+        comingSoon: true,
+      },
+      {
+        id: "jwt-decoder",
+        title: "JWT Decoder",
+        description:
+          "Decode JWT tokens online free. View JWT payload and header.",
+        comingSoon: true,
+      },
+      {
+        id: "hash-generator",
+        title: "Hash Generator",
+        description:
+          "Generate hashes online free. Create MD5, SHA-1, SHA-256, SHA-512 hashes.",
+        comingSoon: true,
+      },
+      {
+        id: "cron-builder",
+        title: "Cron Expression Builder",
+        description:
+          "Build cron expressions online free. Create and validate cron schedules.",
+        comingSoon: true,
+      },
     ],
   },
   {
@@ -282,37 +701,164 @@ export const toolCategories: ToolCategory[] = [
     icon: Eye,
     iconName: "eye",
     color: "bg-tooltopia-soft-yellow",
-    description: "Free online encryption and hashing tools. Encrypt/decrypt data with AES, RSA, DES, generate hashes with MD5, SHA, bcrypt, and encode/decode Base64, URL, HTML.",
+    description:
+      "Free online encryption and hashing tools. Encrypt/decrypt data with AES, RSA, DES, generate hashes with MD5, SHA, bcrypt, and encode/decode Base64, URL, HTML.",
     subTools: [
-      { id: "aes", title: "AES Encryption", description: "Advanced Encryption Standard - A symmetric encryption algorithm widely used for secure data transmission" },
-      { id: "base64", title: "Base64 Encryption", description: "Encoding scheme that converts binary data into ASCII text format" },
-      { id: "blowfish", title: "Blowfish Encryption", description: "Symmetric block cipher designed for fast encryption of data" },
-      { id: "cast5", title: "CAST5 Encryption", description: "Symmetric key block cipher using a 128-bit key" },
-      { id: "des", title: "DES Encryption", description: "Data Encryption Standard - Classic symmetric encryption algorithm" },
-      { id: "3des", title: "3DES Encryption", description: "Triple DES - Applies DES cipher algorithm three times to each data block" },
-      { id: "rsa", title: "RSA Encryption", description: "Public-key cryptosystem for secure data transmission" },
-      { id: "sha", title: "SHA Encryption", description: "Secure Hash Algorithm - Creates fixed-size hash value from data" },
-      { id: "sha3", title: "SHA-3 Encryption", description: "SHA-3 - FIPS 202 standard, based on Keccak sponge construction" },
-      { id: "md5", title: "MD5 Encryption", description: "Message-Digest Algorithm - Produces 128-bit hash value" },
-      { id: "md4", title: "MD4 Encryption", description: "Message-Digest Algorithm v4 - Predecessor to MD5" },
-      { id: "md2", title: "MD2 Encryption", description: "Message-Digest Algorithm v2 - Optimized for 8-bit computers" },
-      { id: "mdc2", title: "MDC2 Encryption", description: "Modification Detection Code 2 - Block cipher-based hash function" },
-      { id: "url", title: "URL Encode/ Decode", description: "Converts special characters to URL-safe format" },
-      { id: "html", title: "HTML Encode/ Decode", description: "Converts special characters to HTML entities" },
-      { id: "ripemd160", title: "RIPEMD160 Encryption", description: "RACE Integrity Primitives Evaluation Message Digest - 160-bit cryptographic hash function" },
-      { id: "bcrypt", title: "BCrypt Encryption", description: "Password hashing function designed to be slow and resist rainbow table attacks" },
-      { id: "scrypt", title: "SCrypt Encryption", description: "Password-based key derivation function designed to be memory-hard" },
-      { id: "pbkdf2", title: "PBKDF2 Encryption", description: "Password-Based Key Derivation Function 2 - Applies a pseudorandom function to derive keys" },
-      
-      { id: "aes_gcm", title: "AES-GCM", description: "AES in Galois/Counter Mode (placeholder)" },
-      { id: "ecdh", title: "ECDH", description: "Elliptic-curve Diffie–Hellman key agreement (placeholder)" },
-      { id: "x25519", title: "X25519", description: "Curve25519 Diffie–Hellman key agreement (placeholder)" },
-      { id: "ed25519", title: "Ed25519", description: "Edwards-curve Digital Signature Algorithm (placeholder)" },
-      { id: "ecdsa", title: "ECDSA", description: "Elliptic Curve Digital Signature Algorithm (placeholder)" },
-      { id: "sha3", title: "SHA-3", description: "Keccak / SHA-3 hashing (placeholder)" },
-      { id: "blake2", title: "BLAKE2", description: "BLAKE2 hashing (placeholder)" },
-      { id: "blake3", title: "BLAKE3", description: "BLAKE3 hashing (placeholder)" },
-      { id: "argon2", title: "Argon2", description: "Argon2 KDF (placeholder)" }
+      {
+        id: "aes",
+        title: "AES Encryption",
+        description:
+          "Advanced Encryption Standard - A symmetric encryption algorithm widely used for secure data transmission",
+      },
+      {
+        id: "base64",
+        title: "Base64 Encryption",
+        description:
+          "Encoding scheme that converts binary data into ASCII text format",
+      },
+      {
+        id: "blowfish",
+        title: "Blowfish Encryption",
+        description:
+          "Symmetric block cipher designed for fast encryption of data",
+      },
+      {
+        id: "cast5",
+        title: "CAST5 Encryption",
+        description: "Symmetric key block cipher using a 128-bit key",
+      },
+      {
+        id: "des",
+        title: "DES Encryption",
+        description:
+          "Data Encryption Standard - Classic symmetric encryption algorithm",
+      },
+      {
+        id: "3des",
+        title: "3DES Encryption",
+        description:
+          "Triple DES - Applies DES cipher algorithm three times to each data block",
+      },
+      {
+        id: "rsa",
+        title: "RSA Encryption",
+        description: "Public-key cryptosystem for secure data transmission",
+      },
+      {
+        id: "sha",
+        title: "SHA Encryption",
+        description:
+          "Secure Hash Algorithm - Creates fixed-size hash value from data",
+      },
+      {
+        id: "sha3",
+        title: "SHA-3 Encryption",
+        description:
+          "SHA-3 - FIPS 202 standard, based on Keccak sponge construction",
+      },
+      {
+        id: "md5",
+        title: "MD5 Encryption",
+        description: "Message-Digest Algorithm - Produces 128-bit hash value",
+      },
+      {
+        id: "md4",
+        title: "MD4 Encryption",
+        description: "Message-Digest Algorithm v4 - Predecessor to MD5",
+      },
+      {
+        id: "md2",
+        title: "MD2 Encryption",
+        description:
+          "Message-Digest Algorithm v2 - Optimized for 8-bit computers",
+      },
+      {
+        id: "mdc2",
+        title: "MDC2 Encryption",
+        description:
+          "Modification Detection Code 2 - Block cipher-based hash function",
+      },
+      {
+        id: "url",
+        title: "URL Encode/ Decode",
+        description: "Converts special characters to URL-safe format",
+      },
+      {
+        id: "html",
+        title: "HTML Encode/ Decode",
+        description: "Converts special characters to HTML entities",
+      },
+      {
+        id: "ripemd160",
+        title: "RIPEMD160 Encryption",
+        description:
+          "RACE Integrity Primitives Evaluation Message Digest - 160-bit cryptographic hash function",
+      },
+      {
+        id: "bcrypt",
+        title: "BCrypt Encryption",
+        description:
+          "Password hashing function designed to be slow and resist rainbow table attacks",
+      },
+      {
+        id: "scrypt",
+        title: "SCrypt Encryption",
+        description:
+          "Password-based key derivation function designed to be memory-hard",
+      },
+      {
+        id: "pbkdf2",
+        title: "PBKDF2 Encryption",
+        description:
+          "Password-Based Key Derivation Function 2 - Applies a pseudorandom function to derive keys",
+      },
+
+      {
+        id: "aes_gcm",
+        title: "AES-GCM",
+        description: "AES in Galois/Counter Mode (placeholder)",
+      },
+      {
+        id: "ecdh",
+        title: "ECDH",
+        description:
+          "Elliptic-curve Diffie–Hellman key agreement (placeholder)",
+      },
+      {
+        id: "x25519",
+        title: "X25519",
+        description: "Curve25519 Diffie–Hellman key agreement (placeholder)",
+      },
+      {
+        id: "ed25519",
+        title: "Ed25519",
+        description: "Edwards-curve Digital Signature Algorithm (placeholder)",
+      },
+      {
+        id: "ecdsa",
+        title: "ECDSA",
+        description: "Elliptic Curve Digital Signature Algorithm (placeholder)",
+      },
+      {
+        id: "sha3",
+        title: "SHA-3",
+        description: "Keccak / SHA-3 hashing (placeholder)",
+      },
+      {
+        id: "blake2",
+        title: "BLAKE2",
+        description: "BLAKE2 hashing (placeholder)",
+      },
+      {
+        id: "blake3",
+        title: "BLAKE3",
+        description: "BLAKE3 hashing (placeholder)",
+      },
+      {
+        id: "argon2",
+        title: "Argon2",
+        description: "Argon2 KDF (placeholder)",
+      },
     ],
   },
   {
@@ -321,12 +867,33 @@ export const toolCategories: ToolCategory[] = [
     icon: Clock,
     iconName: "clock",
     color: "bg-tooltopia-soft-purple",
-    description: "Free online clock tools. View current time with seconds, use stopwatch, set timers, and check world clock for different time zones.",
+    description:
+      "Free online clock tools. View current time with seconds, use stopwatch, set timers, and check world clock for different time zones.",
     subTools: [
-      { id: "current-time", title: "Current Time with Seconds", description: "View current time online free. Display current time with seconds in your timezone." },
-      { id: "stopwatch", title: "Stopwatch", description: "Online stopwatch free. Track time precisely with lap timer functionality." },
-      { id: "timer", title: "Timer", description: "Online timer free. Set countdown timers for any duration with alerts." },
-      { id: "world-clock", title: "World Clock", description: "World clock online free. Check current time in multiple time zones worldwide." }
+      {
+        id: "current-time",
+        title: "Current Time with Seconds",
+        description:
+          "View current time online free. Display current time with seconds in your timezone.",
+      },
+      {
+        id: "stopwatch",
+        title: "Stopwatch",
+        description:
+          "Online stopwatch free. Track time precisely with lap timer functionality.",
+      },
+      {
+        id: "timer",
+        title: "Timer",
+        description:
+          "Online timer free. Set countdown timers for any duration with alerts.",
+      },
+      {
+        id: "world-clock",
+        title: "World Clock",
+        description:
+          "World clock online free. Check current time in multiple time zones worldwide.",
+      },
     ],
   },
   {
@@ -335,10 +902,21 @@ export const toolCategories: ToolCategory[] = [
     icon: FileIcon,
     iconName: "file",
     color: "bg-tooltopia-soft-purple",
-    description: "Free online file and text sharing tools. Share files peer-to-peer and share text in real-time with end-to-end encryption. No registration required.",
+    description:
+      "Free online file and text sharing tools. Share files peer-to-peer and share text in real-time with end-to-end encryption. No registration required.",
     subTools: [
-      { id: "file-share", title: "Share files", description: "Share files online free. Peer-to-peer file transfer with end-to-end encryption and no size limits." },
-      { id: "text-share", title: "Share text (Real-time)", description: "Share text online free. Real-time text sharing with instant synchronization and encryption." },
+      {
+        id: "file-share",
+        title: "Share files",
+        description:
+          "Share files online free. Peer-to-peer file transfer with end-to-end encryption and no size limits.",
+      },
+      {
+        id: "text-share",
+        title: "Share text (Real-time)",
+        description:
+          "Share text online free. Real-time text sharing with instant synchronization and encryption.",
+      },
     ],
   },
   {
@@ -347,9 +925,15 @@ export const toolCategories: ToolCategory[] = [
     icon: Wifi,
     iconName: "wifi",
     color: "bg-tooltopia-soft-blue",
-    description: "Free online internet tools. Test your internet speed, check download and upload speeds, ping, and network performance.",
+    description:
+      "Free online internet tools. Test your internet speed, check download and upload speeds, ping, and network performance.",
     subTools: [
-      { id: "speed-test", title: "Internet Speed Test", description: "Test internet speed online free. Check your download speed, upload speed, and ping latency." },
+      {
+        id: "speed-test",
+        title: "Internet Speed Test",
+        description:
+          "Test internet speed online free. Check your download speed, upload speed, and ping latency.",
+      },
     ],
   },
   {
@@ -358,13 +942,34 @@ export const toolCategories: ToolCategory[] = [
     icon: FileDown,
     iconName: "file-down",
     color: "bg-tooltopia-soft-green",
-    description: "Free online markdown tools. Edit markdown with live preview, convert markdown to HTML, HTML to markdown, and generate markdown tables easily.",
+    description:
+      "Free online markdown tools. Edit markdown with live preview, convert markdown to HTML, HTML to markdown, and generate markdown tables easily.",
     subTools: [
-      { id: "markdown-editor", title: "Markdown Editor", description: "Write and preview markdown in real-time" },
-      { id: "markdown-preview", title: "Markdown Preview", description: "Preview markdown content" },
-      { id: "markdown-to-html", title: "Markdown to HTML", description: "Convert markdown to HTML" },
-      { id: "html-to-markdown", title: "HTML to Markdown", description: "Convert HTML to markdown" },
-      { id: "markdown-table-generator", title: "Markdown Table Generator", description: "Generate markdown tables easily" },
+      {
+        id: "markdown-editor",
+        title: "Markdown Editor",
+        description: "Write and preview markdown in real-time",
+      },
+      {
+        id: "markdown-preview",
+        title: "Markdown Preview",
+        description: "Preview markdown content",
+      },
+      {
+        id: "markdown-to-html",
+        title: "Markdown to HTML",
+        description: "Convert markdown to HTML",
+      },
+      {
+        id: "html-to-markdown",
+        title: "HTML to Markdown",
+        description: "Convert HTML to markdown",
+      },
+      {
+        id: "markdown-table-generator",
+        title: "Markdown Table Generator",
+        description: "Generate markdown tables easily",
+      },
     ],
   },
   {
@@ -374,17 +979,63 @@ export const toolCategories: ToolCategory[] = [
     iconName: "type",
     color: "bg-tooltopia-soft-blue",
     comingSoon: false,
-    description: "Free online text tools. Convert text case, compare text, find and replace, reverse text, remove duplicates, generate slugs, and more text utilities.",
+    description:
+      "Free online text tools. Convert text case, compare text, find and replace, reverse text, remove duplicates, generate slugs, and more text utilities.",
     subTools: [
-      { id: "case-converter", title: "Case Converter", description: "Convert text case online free. Transform text to uppercase, lowercase, title case, camelCase, snake_case, and more." },
-      { id: "text-diff", title: "Text Diff/Compare", description: "Compare text online free. Find differences between two text files with line-by-line comparison." },
-      { id: "find-replace", title: "Find & Replace", description: "Find and replace text online free. Search and replace multiple strings in text instantly." },
-      { id: "text-to-speech", title: "Text to Speech", description: "Convert text to speech online free. Generate natural-sounding audio from text." },
-      { id: "speech-to-text", title: "Speech to Text", description: "Convert speech to text online free. Transcribe audio to text using voice recognition." },
-      { id: "duplicate-remover", title: "Duplicate Line Remover", description: "Remove duplicate lines online free. Clean up text by removing duplicate entries." },
-      { id: "reverse-text", title: "Reverse Text", description: "Reverse text online free. Flip text backwards or reverse word order." },
-      { id: "slug-generator", title: "Slug Generator", description: "Generate URL slugs online free. Create SEO-friendly URL slugs from text." },
-      { id: "text-sorter", title: "Text Sorter", description: "Sort text online free. Alphabetically sort lines, words, or numbers in text." },
+      {
+        id: "case-converter",
+        title: "Case Converter",
+        description:
+          "Convert text case online free. Transform text to uppercase, lowercase, title case, camelCase, snake_case, and more.",
+      },
+      {
+        id: "text-diff",
+        title: "Text Diff/Compare",
+        description:
+          "Compare text online free. Find differences between two text files with line-by-line comparison.",
+      },
+      {
+        id: "find-replace",
+        title: "Find & Replace",
+        description:
+          "Find and replace text online free. Search and replace multiple strings in text instantly.",
+      },
+      {
+        id: "text-to-speech",
+        title: "Text to Speech",
+        description:
+          "Convert text to speech online free. Generate natural-sounding audio from text.",
+      },
+      {
+        id: "speech-to-text",
+        title: "Speech to Text",
+        description:
+          "Convert speech to text online free. Transcribe audio to text using voice recognition.",
+      },
+      {
+        id: "duplicate-remover",
+        title: "Duplicate Line Remover",
+        description:
+          "Remove duplicate lines online free. Clean up text by removing duplicate entries.",
+      },
+      {
+        id: "reverse-text",
+        title: "Reverse Text",
+        description:
+          "Reverse text online free. Flip text backwards or reverse word order.",
+      },
+      {
+        id: "slug-generator",
+        title: "Slug Generator",
+        description:
+          "Generate URL slugs online free. Create SEO-friendly URL slugs from text.",
+      },
+      {
+        id: "text-sorter",
+        title: "Text Sorter",
+        description:
+          "Sort text online free. Alphabetically sort lines, words, or numbers in text.",
+      },
     ],
   },
   {
@@ -393,15 +1044,52 @@ export const toolCategories: ToolCategory[] = [
     icon: Network,
     iconName: "network",
     color: "bg-tooltopia-soft-purple",
-    description: "Free online network tools. Lookup IP addresses, check DNS records, WHOIS lookup, validate emails, check ports, and more networking utilities.",
+    description:
+      "Free online network tools. Lookup IP addresses, check DNS records, WHOIS lookup, validate emails, check ports, and more networking utilities.",
     subTools: [
-      { id: "ip-lookup", title: "IP Lookup & Geolocation", description: "Lookup IP address online free. Get IP geolocation, ISP, and network information." },
-      { id: "dns-lookup", title: "DNS Lookup", description: "DNS lookup online free. Check DNS records for any domain including A, MX, TXT, CNAME records." },
-      { id: "whois-lookup", title: "WHOIS Lookup", description: "WHOIS lookup online free. Check domain registration information and ownership details." },
-      { id: "email-validator", title: "Email Validator", description: "Validate email addresses online free. Check email format and verify email addresses." },
-      { id: "port-checker", title: "Port Checker", description: "Check open ports online free. Test if a port is open or closed on any server.", comingSoon: true },
-      { id: "mac-lookup", title: "MAC Address Lookup", description: "MAC address lookup online free. Identify device manufacturer from MAC address." },
-      { id: "ping-tool", title: "Ping Tool", description: "Ping online free. Test network connectivity and measure latency to any server." },
+      {
+        id: "ip-lookup",
+        title: "IP Lookup & Geolocation",
+        description:
+          "Lookup IP address online free. Get IP geolocation, ISP, and network information.",
+      },
+      {
+        id: "dns-lookup",
+        title: "DNS Lookup",
+        description:
+          "DNS lookup online free. Check DNS records for any domain including A, MX, TXT, CNAME records.",
+      },
+      {
+        id: "whois-lookup",
+        title: "WHOIS Lookup",
+        description:
+          "WHOIS lookup online free. Check domain registration information and ownership details.",
+      },
+      {
+        id: "email-validator",
+        title: "Email Validator",
+        description:
+          "Validate email addresses online free. Check email format and verify email addresses.",
+      },
+      {
+        id: "port-checker",
+        title: "Port Checker",
+        description:
+          "Check open ports online free. Test if a port is open or closed on any server.",
+        comingSoon: true,
+      },
+      {
+        id: "mac-lookup",
+        title: "MAC Address Lookup",
+        description:
+          "MAC address lookup online free. Identify device manufacturer from MAC address.",
+      },
+      {
+        id: "ping-tool",
+        title: "Ping Tool",
+        description:
+          "Ping online free. Test network connectivity and measure latency to any server.",
+      },
     ],
   },
   {
@@ -410,16 +1098,57 @@ export const toolCategories: ToolCategory[] = [
     icon: DollarSign,
     iconName: "dollar-sign",
     color: "bg-tooltopia-soft-green",
-    description: "Free online finance calculators. Calculate loans, mortgages, tips, discounts, percentages, ROI, and other financial metrics.",
+    description:
+      "Free online finance calculators. Calculate loans, mortgages, tips, discounts, percentages, ROI, and other financial metrics.",
     subTools: [
-      { id: "percentage-calculator", title: "Percentage Calculator", description: "Calculate percentages online free. Find percentage of numbers, percentage increase, decrease, and more." },
-      { id: "loan-calculator", title: "Loan Calculator", description: "Calculate loan payments online free. Compute monthly payments, interest, and amortization schedules." },
-      { id: "mortgage-calculator", title: "Mortgage Calculator", description: "Calculate mortgage payments online free. Estimate monthly mortgage payments with taxes and insurance." },
-      { id: "tip-calculator", title: "Tip Calculator", description: "Calculate tips online free. Split bills and calculate tip amounts for any percentage." },
-      { id: "discount-calculator", title: "Discount Calculator", description: "Calculate discounts online free. Find final price after discount and savings amount." },
-      { id: "roi-calculator", title: "ROI Calculator", description: "Calculate ROI online free. Measure return on investment and profitability." },
-      { id: "tax-calculator", title: "Tax Calculator", description: "Calculate taxes online free. Estimate income tax and sales tax calculations." },
-      { id: "bill-splitter", title: "Bill Splitter", description: "Split bills with friends online free. Track items, calculate tax, tip, and split costs fairly." },
+      {
+        id: "percentage-calculator",
+        title: "Percentage Calculator",
+        description:
+          "Calculate percentages online free. Find percentage of numbers, percentage increase, decrease, and more.",
+      },
+      {
+        id: "loan-calculator",
+        title: "Loan Calculator",
+        description:
+          "Calculate loan payments online free. Compute monthly payments, interest, and amortization schedules.",
+      },
+      {
+        id: "mortgage-calculator",
+        title: "Mortgage Calculator",
+        description:
+          "Calculate mortgage payments online free. Estimate monthly mortgage payments with taxes and insurance.",
+      },
+      {
+        id: "tip-calculator",
+        title: "Tip Calculator",
+        description:
+          "Calculate tips online free. Split bills and calculate tip amounts for any percentage.",
+      },
+      {
+        id: "discount-calculator",
+        title: "Discount Calculator",
+        description:
+          "Calculate discounts online free. Find final price after discount and savings amount.",
+      },
+      {
+        id: "roi-calculator",
+        title: "ROI Calculator",
+        description:
+          "Calculate ROI online free. Measure return on investment and profitability.",
+      },
+      {
+        id: "tax-calculator",
+        title: "Tax Calculator",
+        description:
+          "Calculate taxes online free. Estimate income tax and sales tax calculations.",
+      },
+      {
+        id: "bill-splitter",
+        title: "Bill Splitter",
+        description:
+          "Split bills with friends online free. Track items, calculate tax, tip, and split costs fairly.",
+      },
     ],
   },
   {
@@ -428,14 +1157,45 @@ export const toolCategories: ToolCategory[] = [
     icon: CalendarDays,
     iconName: "calendar-days",
     color: "bg-tooltopia-soft-orange",
-    description: "Free online date and time tools. Calculate date differences, format dates, count business days, measure time duration, and generate date ranges.",
+    description:
+      "Free online date and time tools. Calculate date differences, format dates, count business days, measure time duration, and generate date ranges.",
     subTools: [
-      { id: "date-difference-calculator", title: "Date Difference Calculator", description: "Calculate date difference online free. Find days, weeks, months, and years between dates." },
-      { id: "date-formatter", title: "Date Formatter", description: "Format dates online free. Convert dates to different formats like ISO 8601, custom patterns." },
-      { id: "business-days-calculator", title: "Business Days Calculator", description: "Calculate business days online free. Count working days between dates excluding weekends." },
-      { id: "time-duration-calculator", title: "Time Duration Calculator", description: "Calculate time duration online free. Add or subtract hours, minutes, and seconds." },
-      { id: "date-range-generator", title: "Date Range Generator", description: "Generate date ranges online free. Create lists of dates for any period." },
-      { id: "week-number-calculator", title: "Week Number Calculator", description: "Find week number online free. Get ISO week number for any date." },
+      {
+        id: "date-difference-calculator",
+        title: "Date Difference Calculator",
+        description:
+          "Calculate date difference online free. Find days, weeks, months, and years between dates.",
+      },
+      {
+        id: "date-formatter",
+        title: "Date Formatter",
+        description:
+          "Format dates online free. Convert dates to different formats like ISO 8601, custom patterns.",
+      },
+      {
+        id: "business-days-calculator",
+        title: "Business Days Calculator",
+        description:
+          "Calculate business days online free. Count working days between dates excluding weekends.",
+      },
+      {
+        id: "time-duration-calculator",
+        title: "Time Duration Calculator",
+        description:
+          "Calculate time duration online free. Add or subtract hours, minutes, and seconds.",
+      },
+      {
+        id: "date-range-generator",
+        title: "Date Range Generator",
+        description:
+          "Generate date ranges online free. Create lists of dates for any period.",
+      },
+      {
+        id: "week-number-calculator",
+        title: "Week Number Calculator",
+        description:
+          "Find week number online free. Get ISO week number for any date.",
+      },
     ],
   },
   {
@@ -445,15 +1205,51 @@ export const toolCategories: ToolCategory[] = [
     iconName: "video",
     color: "bg-tooltopia-soft-pink",
     comingSoon: false,
-    description: "Free online media tools. Compress videos, convert audio formats, create GIFs, trim audio, convert video to audio, and more multimedia utilities.",
+    description:
+      "Free online media tools. Compress videos, convert audio formats, create GIFs, trim audio, convert video to audio, and more multimedia utilities.",
     subTools: [
-      { id: "video-compressor", title: "Video Compressor", description: "Compress videos online free. Reduce video file size while maintaining quality." },
-      { id: "audio-converter", title: "Audio Converter", description: "Convert audio formats online free. Convert between MP3, WAV, OGG, AAC, and more formats." },
-      { id: "gif-maker", title: "GIF Maker", description: "Create GIFs online free. Make animated GIFs from videos or images." },
-      { id: "video-trimmer", title: "Video Trimmer", description: "Trim videos online free. Cut and crop video files to any length." },
-      { id: "audio-trimmer", title: "Audio Trimmer/Cutter", description: "Trim audio online free. Cut and crop audio files to any length." },
-      { id: "video-to-audio", title: "Video to Audio Converter", description: "Extract audio from video online free. Convert video files to MP3, WAV, and other audio formats." },
-      { id: "audio-joiner", title: "Audio Joiner", description: "Merge audio files online free. Combine multiple audio files into one." },
+      {
+        id: "video-compressor",
+        title: "Video Compressor",
+        description:
+          "Compress videos online free. Reduce video file size while maintaining quality.",
+      },
+      {
+        id: "audio-converter",
+        title: "Audio Converter",
+        description:
+          "Convert audio formats online free. Convert between MP3, WAV, OGG, AAC, and more formats.",
+      },
+      {
+        id: "gif-maker",
+        title: "GIF Maker",
+        description:
+          "Create GIFs online free. Make animated GIFs from videos or images.",
+      },
+      {
+        id: "video-trimmer",
+        title: "Video Trimmer",
+        description:
+          "Trim videos online free. Cut and crop video files to any length.",
+      },
+      {
+        id: "audio-trimmer",
+        title: "Audio Trimmer/Cutter",
+        description:
+          "Trim audio online free. Cut and crop audio files to any length.",
+      },
+      {
+        id: "video-to-audio",
+        title: "Video to Audio Converter",
+        description:
+          "Extract audio from video online free. Convert video files to MP3, WAV, and other audio formats.",
+      },
+      {
+        id: "audio-joiner",
+        title: "Audio Joiner",
+        description:
+          "Merge audio files online free. Combine multiple audio files into one.",
+      },
     ],
   },
   {
@@ -463,17 +1259,62 @@ export const toolCategories: ToolCategory[] = [
     iconName: "database",
     color: "bg-tooltopia-soft-blue",
     comingSoon: false,
-    description: "Free online data tools. View Excel files, edit CSV, generate fake data for testing, create random names and addresses.",
+    description:
+      "Free online data tools. View Excel files, edit CSV, generate fake data for testing, create random names and addresses.",
     subTools: [
-      { id: "excel-viewer", title: "Excel Viewer Online", description: "View Excel files online free. Open and read XLSX, XLS files in browser without Excel." },
-      { id: "csv-editor", title: "CSV Editor", description: "Edit CSV files online free. View, edit, and modify CSV data in a table format." },
-      { id: "text-editor", title: "Text Editor & Viewer", description: "Edit and view text files online free. Rich text editor with syntax highlighting and formatting." },
-      { id: "word-viewer", title: "Word Viewer & Editor", description: "View and edit Word documents online free. Open DOCX files in browser without Microsoft Word." },
-      { id: "fake-data-generator", title: "Fake Data Generator", description: "Generate fake data online free. Create test data for development and testing." },
-      { id: "random-name", title: "Random Name Generator", description: "Generate random names online free. Create realistic fake names for testing." },
-      { id: "random-address", title: "Random Address Generator", description: "Generate random addresses online free. Create fake addresses for testing purposes." },
-      { id: "csv-json", title: "CSV to JSON / JSON to CSV", description: "Convert CSV to JSON and JSON to CSV online free. Fast and accurate data converter." },
-      { id: "json-validator", title: "JSON Schema Validator", description: "Validate JSON data against JSON Schema specifications" },
+      {
+        id: "excel-viewer",
+        title: "Excel Viewer Online",
+        description:
+          "View Excel files online free. Open and read XLSX, XLS files in browser without Excel.",
+      },
+      {
+        id: "csv-editor",
+        title: "CSV Editor",
+        description:
+          "Edit CSV files online free. View, edit, and modify CSV data in a table format.",
+      },
+      {
+        id: "text-editor",
+        title: "Text Editor & Viewer",
+        description:
+          "Edit and view text files online free. Rich text editor with syntax highlighting and formatting.",
+      },
+      {
+        id: "word-viewer",
+        title: "Word Viewer & Editor",
+        description:
+          "View and edit Word documents online free. Open DOCX files in browser without Microsoft Word.",
+      },
+      {
+        id: "fake-data-generator",
+        title: "Fake Data Generator",
+        description:
+          "Generate fake data online free. Create test data for development and testing.",
+      },
+      {
+        id: "random-name",
+        title: "Random Name Generator",
+        description:
+          "Generate random names online free. Create realistic fake names for testing.",
+      },
+      {
+        id: "random-address",
+        title: "Random Address Generator",
+        description:
+          "Generate random addresses online free. Create fake addresses for testing purposes.",
+      },
+      {
+        id: "csv-json",
+        title: "CSV to JSON / JSON to CSV",
+        description:
+          "Convert CSV to JSON and JSON to CSV online free. Fast and accurate data converter.",
+      },
+      {
+        id: "json-validator",
+        title: "JSON Schema Validator",
+        description: "Validate JSON data against JSON Schema specifications",
+      },
     ],
   },
   {
@@ -483,12 +1324,37 @@ export const toolCategories: ToolCategory[] = [
     iconName: "link",
     color: "bg-tooltopia-soft-green",
     comingSoon: false,
-    description: "Free online link and URL tools. Shorten URLs, preview links, parse and build URLs with query parameters.",
+    description:
+      "Free online link and URL tools. Shorten URLs, preview links, parse and build URLs with query parameters.",
     subTools: [
-      { id: "url-shortener", title: "URL Shortener", description: "Shorten URLs online free. Create short links for social media and marketing.", comingSoon: false },
-      { id: "link-preview", title: "Link Preview Generator", description: "Preview links online free. Generate link previews with Open Graph metadata.", comingSoon: false },
-      { id: "url-parser", title: "URL Parser & Builder", description: "Parse URLs online free. Extract and build URL components, query parameters, and fragments.", comingSoon: false },
-      { id: "url-to-qr-code", title: "URL to QR Code", description: "Convert URL to QR code online free. Generate scannable QR codes from links.", comingSoon: false },
+      {
+        id: "url-shortener",
+        title: "URL Shortener",
+        description:
+          "Shorten URLs online free. Create short links for social media and marketing.",
+        comingSoon: false,
+      },
+      {
+        id: "link-preview",
+        title: "Link Preview Generator",
+        description:
+          "Preview links online free. Generate link previews with Open Graph metadata.",
+        comingSoon: false,
+      },
+      {
+        id: "url-parser",
+        title: "URL Parser & Builder",
+        description:
+          "Parse URLs online free. Extract and build URL components, query parameters, and fragments.",
+        comingSoon: false,
+      },
+      {
+        id: "url-to-qr-code",
+        title: "URL to QR Code",
+        description:
+          "Convert URL to QR code online free. Generate scannable QR codes from links.",
+        comingSoon: false,
+      },
     ],
   },
   {
@@ -498,14 +1364,45 @@ export const toolCategories: ToolCategory[] = [
     iconName: "dices",
     color: "bg-tooltopia-soft-yellow",
     comingSoon: false,
-    description: "Free online random generators and fun tools. Generate random numbers, roll dice, flip coins, make decisions, and more fun utilities.",
+    description:
+      "Free online random generators and fun tools. Generate random numbers, roll dice, flip coins, make decisions, and more fun utilities.",
     subTools: [
-      { id: "random-number-generator", title: "Random Number Generator", description: "Generate random numbers online free. Create random integers within custom ranges." },
-      { id: "dice-roller", title: "Dice Roller", description: "Roll dice online free. Roll virtual dice with customizable sides for games." },
-      { id: "coin-flipper", title: "Coin Flipper", description: "Flip a coin online free. Virtual coin toss for heads or tails decisions." },
-      { id: "yes-no-decision-maker", title: "Yes/No Decision Maker", description: "Make decisions online free. Get random yes or no answers for quick decisions." },
-      { id: "random-picker", title: "Random Picker", description: "Pick random items online free. Select random choices from a list." },
-      { id: "random-color-generator", title: "Random Color Generator", description: "Generate random colors online free. Create random hex, RGB, and HSL colors." },
+      {
+        id: "random-number-generator",
+        title: "Random Number Generator",
+        description:
+          "Generate random numbers online free. Create random integers within custom ranges.",
+      },
+      {
+        id: "dice-roller",
+        title: "Dice Roller",
+        description:
+          "Roll dice online free. Roll virtual dice with customizable sides for games.",
+      },
+      {
+        id: "coin-flipper",
+        title: "Coin Flipper",
+        description:
+          "Flip a coin online free. Virtual coin toss for heads or tails decisions.",
+      },
+      {
+        id: "yes-no-decision-maker",
+        title: "Yes/No Decision Maker",
+        description:
+          "Make decisions online free. Get random yes or no answers for quick decisions.",
+      },
+      {
+        id: "random-picker",
+        title: "Random Picker",
+        description:
+          "Pick random items online free. Select random choices from a list.",
+      },
+      {
+        id: "random-color-generator",
+        title: "Random Color Generator",
+        description:
+          "Generate random colors online free. Create random hex, RGB, and HSL colors.",
+      },
     ],
   },
   {
@@ -514,14 +1411,45 @@ export const toolCategories: ToolCategory[] = [
     icon: Heart,
     iconName: "heart",
     color: "bg-tooltopia-soft-pink",
-    description: "Free online health and fitness calculators. Calculate calories, macros, water intake, body fat percentage, and other health metrics.",
+    description:
+      "Free online health and fitness calculators. Calculate calories, macros, water intake, body fat percentage, and other health metrics.",
     subTools: [
-      { id: "calorie-calculator", title: "Calorie Calculator", description: "Calculate calories online free. Estimate daily caloric needs based on activity level." },
-      { id: "macro-calculator", title: "Macro Calculator", description: "Calculate macros online free. Find optimal protein, carbs, and fat intake for your goals." },
-      { id: "water-intake", title: "Water Intake Calculator", description: "Calculate water intake online free. Find how much water you should drink daily." },
-      { id: "body-fat", title: "Body Fat Percentage Calculator", description: "Calculate body fat percentage online free. Estimate body fat using various methods." },
-      { id: "ideal-weight", title: "Ideal Weight Calculator", description: "Calculate ideal weight online free. Find healthy weight range based on height and age." },
-      { id: "tdee-calculator", title: "TDEE Calculator", description: "Calculate TDEE online free. Find total daily energy expenditure for weight management." },
+      {
+        id: "calorie-calculator",
+        title: "Calorie Calculator",
+        description:
+          "Calculate calories online free. Estimate daily caloric needs based on activity level.",
+      },
+      {
+        id: "macro-calculator",
+        title: "Macro Calculator",
+        description:
+          "Calculate macros online free. Find optimal protein, carbs, and fat intake for your goals.",
+      },
+      {
+        id: "water-intake",
+        title: "Water Intake Calculator",
+        description:
+          "Calculate water intake online free. Find how much water you should drink daily.",
+      },
+      {
+        id: "body-fat",
+        title: "Body Fat Percentage Calculator",
+        description:
+          "Calculate body fat percentage online free. Estimate body fat using various methods.",
+      },
+      {
+        id: "ideal-weight",
+        title: "Ideal Weight Calculator",
+        description:
+          "Calculate ideal weight online free. Find healthy weight range based on height and age.",
+      },
+      {
+        id: "tdee-calculator",
+        title: "TDEE Calculator",
+        description:
+          "Calculate TDEE online free. Find total daily energy expenditure for weight management.",
+      },
     ],
   },
   {
@@ -531,15 +1459,58 @@ export const toolCategories: ToolCategory[] = [
     iconName: "briefcase",
     color: "bg-tooltopia-soft-purple",
     comingSoon: false,
-    description: "Free online business tools. Generate email signatures, create resumes, invoices, receipts, business cards, logos, and memes.",
+    description:
+      "Free online business tools. Generate email signatures, create resumes, invoices, receipts, business cards, logos, and memes.",
     subTools: [
-      { id: "email-signature-generator", title: "Email Signature Generator", description: "Create email signatures online free. Design professional email signatures with contact info.", comingSoon: false },
-      { id: "resume-builder", title: "Resume Builder", description: "Build resume online free. Create professional resumes with templates.", comingSoon: false },
-      { id: "invoice-generator", title: "Invoice Generator", description: "Generate invoices online free. Create professional invoices for clients.", comingSoon: false },
-      { id: "receipt-maker", title: "Receipt Maker", description: "Create receipts online free. Generate professional receipts for payments.", comingSoon: false },
-      { id: "business-card-generator", title: "Business Card Generator", description: "Design business cards online free. Create professional business card designs.", comingSoon: false },
-      { id: "logo-maker", title: "Logo Maker", description: "Create logos online free. Design simple text-based logos for brands.", comingSoon: false },
-      { id: "meme-generator", title: "Meme Generator", description: "Create memes online free. Generate funny memes with custom text and images.", comingSoon: false },
+      {
+        id: "email-signature-generator",
+        title: "Email Signature Generator",
+        description:
+          "Create email signatures online free. Design professional email signatures with contact info.",
+        comingSoon: false,
+      },
+      {
+        id: "resume-builder",
+        title: "Resume Builder",
+        description:
+          "Build resume online free. Create professional resumes with templates.",
+        comingSoon: false,
+      },
+      {
+        id: "invoice-generator",
+        title: "Invoice Generator",
+        description:
+          "Generate invoices online free. Create professional invoices for clients.",
+        comingSoon: false,
+      },
+      {
+        id: "receipt-maker",
+        title: "Receipt Maker",
+        description:
+          "Create receipts online free. Generate professional receipts for payments.",
+        comingSoon: false,
+      },
+      {
+        id: "business-card-generator",
+        title: "Business Card Generator",
+        description:
+          "Design business cards online free. Create professional business card designs.",
+        comingSoon: false,
+      },
+      {
+        id: "logo-maker",
+        title: "Logo Maker",
+        description:
+          "Create logos online free. Design simple text-based logos for brands.",
+        comingSoon: false,
+      },
+      {
+        id: "meme-generator",
+        title: "Meme Generator",
+        description:
+          "Create memes online free. Generate funny memes with custom text and images.",
+        comingSoon: false,
+      },
     ],
   },
   {
@@ -549,13 +1520,65 @@ export const toolCategories: ToolCategory[] = [
     iconName: "brain",
     color: "bg-tooltopia-soft-blue",
     comingSoon: false,
-    description: "Free online AI-powered tools. Sarvam OCR, Sarvam Text to Speach, Sarvam Speach to Text, Sarvam Translation, Sarvam llm, Summarization, and Content Generation supporting Indic languages via Sarvam AI.",
+    description:
+      "Free online AI-powered tools. Sarvam OCR, Sarvam Text to Speach, Sarvam Speach to Text, Sarvam Translation, Sarvam llm, Summarization, and Content Generation supporting Indic languages via Sarvam AI.",
     subTools: [
-      { id: "ai-sarvam", title: "Sarvam AI", description: "Upload images or PDFs to summarize, transcribe (OCR), and caption in 22+ Indic languages using Sarvam AI.", comingSoon: false },
-      { id: "text-summarizer", title: "AI Text Summarizer", description: "Summarize text with AI online free. Get concise summaries of long articles and documents.", comingSoon: true },
-      { id: "paraphrasing-tool", title: "AI Paraphrasing Tool", description: "Paraphrase text with AI online free. Rewrite content while maintaining meaning.", comingSoon: true },
-      { id: "content-generator", title: "AI Content Generator", description: "Generate content with AI online free. Create articles, blog posts, and marketing copy.", comingSoon: true },
-      { id: "grammar-checker", title: "AI Grammar Checker", description: "Check grammar with AI online free. Fix grammar, spelling, and punctuation errors.", comingSoon: true },
+      {
+        id: "ai-sarvam",
+        title: "Sarvam AI",
+        description:
+          "Upload images or PDFs to summarize, transcribe (OCR), and caption in 22+ Indic languages using Sarvam AI.",
+        comingSoon: false,
+      },
+      {
+        id: "ai-summarizer",
+        title: "AI Text Summarizer",
+        description:
+          "Summarize text with AI online free. Get concise summaries of long articles and documents.",
+        comingSoon: true,
+      },
+      {
+        id: "ai-paraphraser",
+        title: "AI Paraphrasing Tool",
+        description:
+          "Paraphrase text with AI online free. Rewrite content while maintaining meaning.",
+        comingSoon: true,
+      },
+      {
+        id: "ai-content-generator",
+        title: "AI Content Generator",
+        description:
+          "Generate content with AI online free. Create articles, blog posts, and marketing copy.",
+        comingSoon: true,
+      },
+      {
+        id: "ai-grammar-checker",
+        title: "AI Grammar Checker",
+        description:
+          "Check grammar with AI online free. Fix grammar, spelling, and punctuation errors.",
+        comingSoon: true,
+      },
+      {
+        id: "ai-code-explainer",
+        title: "AI Code Explainer",
+        description:
+          "Explain code with AI. Get detailed explanations of any code snippet.",
+        comingSoon: true,
+      },
+      {
+        id: "ai-code-generator",
+        title: "AI Code Generator",
+        description:
+          "Generate code with AI. Create functions, components, and utilities.",
+        comingSoon: true,
+      },
+      {
+        id: "ai-chatbot",
+        title: "AI Chatbot",
+        description:
+          "Chat with AI. Get answers to questions and have conversations.",
+        comingSoon: true,
+      },
     ],
   },
   {
@@ -565,12 +1588,30 @@ export const toolCategories: ToolCategory[] = [
     iconName: "bitcoin",
     color: "bg-tooltopia-soft-orange",
     comingSoon: false,
-    description: "Free online blockchain and Web3 tools. Validate Ethereum addresses, calculate NFT rarity, and explore cryptocurrency utilities.",
+    description:
+      "Free online blockchain and Web3 tools. Validate Ethereum addresses, calculate NFT rarity, and explore cryptocurrency utilities.",
     subTools: [
-      { id: "eth-validator", title: "Ethereum Address Validator", description: "Validate Ethereum addresses online free. Check if ETH wallet address is valid.", comingSoon: false },
-      { id: "nft-rarity", title: "NFT Rarity Calculator", description: "Calculate NFT rarity online free. Determine rarity score and rank of NFT traits.", comingSoon: true },
-      { id: "wallet-generator", title: "Crypto Wallet Generator", description: "Generate crypto wallets online free. Create new cryptocurrency wallet addresses.", comingSoon: true },
-      { id: "gas-calculator", title: "Gas Fee Calculator", description: "Calculate Ethereum gas fees online free. Estimate transaction costs on Ethereum network.", comingSoon: true },
+      {
+        id: "eth-validator",
+        title: "Ethereum Address Validator",
+        description:
+          "Validate Ethereum addresses online free. Check if ETH wallet address is valid.",
+        comingSoon: false,
+      },
+      {
+        id: "nft-rarity",
+        title: "NFT Rarity Calculator",
+        description:
+          "Calculate NFT rarity online free. Determine rarity score and rank of NFT traits.",
+        comingSoon: true,
+      },
+      {
+        id: "wallet-generator",
+        title: "Crypto Wallet Generator",
+        description:
+          "Generate crypto wallets online free. Create new cryptocurrency wallet addresses.",
+        comingSoon: true,
+      },
     ],
   },
   {
@@ -580,13 +1621,43 @@ export const toolCategories: ToolCategory[] = [
     iconName: "shield-check",
     color: "bg-tooltopia-soft-green",
     comingSoon: false,
-    description: "Free online privacy and legal tools. Generate privacy policies, terms and conditions, cookie policies for websites and apps.",
+    description:
+      "Free online privacy and legal tools. Generate privacy policies, terms and conditions, cookie policies for websites and apps.",
     subTools: [
-      { id: "privacy-policy", title: "Privacy Policy Generator", description: "Generate privacy policy online free. Create GDPR-compliant privacy policies for websites.", comingSoon: false },
-      { id: "terms-generator", title: "Terms & Conditions Generator", description: "Generate terms and conditions online free. Create legal terms for websites and apps.", comingSoon: false },
-      { id: "cookie-policy", title: "Cookie Policy Generator", description: "Generate cookie policy online free. Create cookie consent policies for websites.", comingSoon: false },
-      { id: "disclaimer-generator", title: "Disclaimer Generator", description: "Generate website disclaimer online free. Create disclaimers for blogs, apps, and websites.", comingSoon: false },
-      { id: "gdpr-checker", title: "GDPR Compliance Checker", description: "Check GDPR compliance of your website online free.", comingSoon: false },
+      {
+        id: "privacy-policy",
+        title: "Privacy Policy Generator",
+        description:
+          "Generate privacy policy online free. Create GDPR-compliant privacy policies for websites.",
+        comingSoon: false,
+      },
+      {
+        id: "terms-generator",
+        title: "Terms & Conditions Generator",
+        description:
+          "Generate terms and conditions online free. Create legal terms for websites and apps.",
+        comingSoon: false,
+      },
+      {
+        id: "cookie-policy",
+        title: "Cookie Policy Generator",
+        description:
+          "Generate cookie policy online free. Create cookie consent policies for websites.",
+        comingSoon: false,
+      },
+      {
+        id: "disclaimer-generator",
+        title: "Disclaimer Generator",
+        description:
+          "Generate website disclaimer online free. Create disclaimers for blogs, apps, and websites.",
+        comingSoon: false,
+      },
+      {
+        id: "gdpr-checker",
+        title: "GDPR Compliance Checker",
+        description: "Check GDPR compliance of your website online free.",
+        comingSoon: false,
+      },
     ],
   },
 ];
