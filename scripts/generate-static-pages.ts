@@ -46,7 +46,7 @@ function getMetaTagsForRoute(pathname: string): MetaTags {
           const desc =
             tool.description ||
             `Free online ${tool.title} tool by SnapTools. Use our ${tool.title.toLowerCase()} tool online for free. No registration required, fast, secure, and privacy-focused.`;
-          const ogImageUrl = `${BASE_URL}/og/tool-${tool.id}.svg`;
+          const ogImageUrl = `${BASE_URL}/og-image.jpg`;
 
           metaTags = {
             title: `${tool.title} - Free Online Tool | SnapTools`,
@@ -58,7 +58,7 @@ function getMetaTagsForRoute(pathname: string): MetaTags {
       } else {
         // Category page
         const desc = `Explore ${category.title} tools on SnapTools. Free online ${category.title.toLowerCase()} tools with no ads, no registration required. Fast, secure, and privacy-focused.`;
-        const ogImageUrl = `${BASE_URL}/og/cat-${categoryId}.svg`;
+        const ogImageUrl = `${BASE_URL}/og-image.jpg`;
 
         metaTags = {
           title: `${category.title} Tools - Free Online ${category.title} Tools | SnapTools`,
