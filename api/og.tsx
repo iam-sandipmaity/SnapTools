@@ -1,8 +1,39 @@
 import { ImageResponse } from "@vercel/og";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 export const config = {
-  runtime: "edge",
+  runtime: "nodejs",
 };
+
+function getFontData(): ArrayBuffer | null {
+  const fontPaths = [
+    join(
+      process.cwd(),
+      "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff",
+    ),
+    join(
+      process.cwd(),
+      "node_modules/@fontsource/inter/files/inter-latin-700-normal.woff",
+    ),
+    "/var/task/node_modules/@fontsource/inter/files/inter-latin-400-normal.woff",
+    "/var/task/node_modules/@fontsource/inter/files/inter-latin-700-normal.woff",
+  ];
+  for (const fontPath of fontPaths) {
+    try {
+      const buffer = readFileSync(fontPath);
+      return buffer.buffer.slice(
+        buffer.byteOffset,
+        buffer.byteOffset + buffer.byteLength,
+      ) as ArrayBuffer;
+    } catch {
+      continue;
+    }
+  }
+  return null;
+}
+
+const fontData = getFontData();
 
 const categoryGradients: Record<string, { from: string; to: string }> = {
   image: { from: "#06b6d4", to: "#3b82f6" },
@@ -328,6 +359,16 @@ export default async function handler(req: Request) {
       {
         width: 1200,
         height: 630,
+        fonts: fontData
+          ? [
+              {
+                name: "Inter",
+                data: fontData,
+                weight: 400,
+                style: "normal",
+              },
+            ]
+          : [],
       },
     );
   } catch (error) {
