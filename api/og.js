@@ -21,13 +21,7 @@ export default function handler(req) {
             justifyContent: "center",
           }}
         >
-          <div
-            style={{
-              fontSize: 80,
-              color: "white",
-              fontWeight: 900,
-            }}
-          >
+          <div style={{ fontSize: 80, color: "white", fontWeight: 900 }}>
             {title}
           </div>
         </div>
