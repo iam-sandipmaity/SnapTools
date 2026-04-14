@@ -84,9 +84,9 @@ const staticRoutes = [
   },
   {
     path: "/changelog",
-    title: "Changelog - What's New | SnapTools",
+    title: "Changelog - What is New | SnapTools",
     description:
-      "See what's new in SnapTools. Regular updates with new features, bug fixes, and improved tools.",
+      "See what is new in SnapTools. Regular updates with new features, bug fixes, and improved tools.",
     image: `${BASE_URL}/og-image.jpg`,
   },
 ];
@@ -253,77 +253,39 @@ function generateHTML(metaTags: MetaTags, originalHTML: string): string {
 }
 
 async function generateStaticPages() {
-    console.log('🚀 Generating static pages with dynamic meta tags...');
+  console.log("🚀 Generating static pages with dynamic meta tags...");
 
-    // Read the base index.html
-    const indexPath = path.join(DIST_DIR, 'index.html');
-    if (!fs.existsSync(indexPath)) {
-        console.error('❌ index.html not found in dist directory. Please run build first.');
-        process.exit(1);
-    }
-
-    const baseHTML = fs.readFileSync(indexPath, 'utf-8');
-    let pagesGenerated = 0;
-
-    // Generate pages for static routes
-    for (const route of staticRoutes) {
-        const routeMetaTags = getMetaTagsForRoute(route.path);
-        const routeHTML = generateHTML(routeMetaTags, baseHTML);
-
-        if (route.path === '/') {
-            // Overwrite root index.html with homepage meta tags
-            fs.writeFileSync(indexPath, routeHTML);
-            pagesGenerated++;
-            console.log(`✅ Generated: ${route.path} (homepage)`);
-        } else {
-            // Create directory and index.html for other routes
-            const routeDir = path.join(DIST_DIR, route.path.replace(/^\//, ''));
-            fs.mkdirSync(routeDir, { recursive: true });
-            fs.writeFileSync(path.join(routeDir, 'index.html'), routeHTML);
-            pagesGenerated++;
-            console.log(`✅ Generated: ${route.path}`);
-        }
-    }
-
-    // Generate pages for each category
-    for (const category of toolCategories) {
-        const categoryPath = `/tools/${category.id}`;
-        const categoryMetaTags = getMetaTagsForRoute(categoryPath);
-        const categoryHTML = generateHTML(categoryMetaTags, baseHTML);
-
-        // Create directory
-        const categoryDir = path.join(DIST_DIR, 'tools', category.id);
-        fs.mkdirSync(categoryDir, { recursive: true });
-
-        // Write index.html for category
-        fs.writeFileSync(path.join(categoryDir, 'index.html'), categoryHTML);
-        pagesGenerated++;
-        console.log(`✅ Generated: ${categoryPath}`);
-
-        // Generate pages for each tool in the category
-        if (category.subTools) {
-            for (const tool of category.subTools) {
-                const toolPath = `/tools/${category.id}/${tool.id}`;
-                const toolMetaTags = getMetaTagsForRoute(toolPath);
-                const toolHTML = generateHTML(toolMetaTags, baseHTML);
-
-                // Create directory
-                const toolDir = path.join(DIST_DIR, 'tools', category.id, tool.id);
-                fs.mkdirSync(toolDir, { recursive: true });
-
-                // Write index.html for tool
-                fs.writeFileSync(path.join(toolDir, 'index.html'), toolHTML);
-                pagesGenerated++;
-                console.log(`✅ Generated: ${toolPath}`);
-            }
-        }
-    }
-
-    console.log(`\n🎉 Successfully generated ${pagesGenerated} static pages!`);
-}
+  // Read the base index.html
+  const indexPath = path.join(DIST_DIR, "index.html");
+  if (!fs.existsSync(indexPath)) {
+    console.error(
+      "❌ index.html not found in dist directory. Please run build first.",
+    );
+    process.exit(1);
+  }
 
   const baseHTML = fs.readFileSync(indexPath, "utf-8");
   let pagesGenerated = 0;
+
+  // Generate pages for static routes
+  for (const route of staticRoutes) {
+    const routeMetaTags = getMetaTagsForRoute(route.path);
+    const routeHTML = generateHTML(routeMetaTags, baseHTML);
+
+    if (route.path === "/") {
+      // Overwrite root index.html with homepage meta tags
+      fs.writeFileSync(indexPath, routeHTML);
+      pagesGenerated++;
+      console.log(`✅ Generated: ${route.path} (homepage)`);
+    } else {
+      // Create directory and index.html for other routes
+      const routeDir = path.join(DIST_DIR, route.path.replace(/^\//, ""));
+      fs.mkdirSync(routeDir, { recursive: true });
+      fs.writeFileSync(path.join(routeDir, "index.html"), routeHTML);
+      pagesGenerated++;
+      console.log(`✅ Generated: ${route.path}`);
+    }
+  }
 
   // Generate pages for each category
   for (const category of toolCategories) {
