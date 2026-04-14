@@ -4,7 +4,7 @@ export const config = {
   runtime: "nodejs",
 };
 
-export default function handler(req) {
+export default async function handler(req) {
   try {
     const url = new URL(req.url);
     const title = url.searchParams.get("title") || "SnapTools";
