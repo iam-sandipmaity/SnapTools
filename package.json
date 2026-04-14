@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run generate:sitemap && npm run generate:rss && npm run generate:timezones && cross-env NODE_OPTIONS=--max-old-space-size=4096 vite build && npm run generate:static-pages",
+    "build": "npm run generate:sitemap && npm run generate:rss && npm run generate:timezones && cross-env NODE_OPTIONS=--max-old-space-size=4096 vite build && npm run generate:static-pages && npm run generate:og-images",
     "build:dev": "cross-env NODE_OPTIONS=--max-old-space-size=4096 vite build --mode development",
     "lint": "cross-env NODE_OPTIONS=--max-old-space-size=4096 eslint .",
     "typecheck": "cross-env NODE_OPTIONS=--max-old-space-size=4096 tsc -p tsconfig.app.json --noEmit",
@@ -13,7 +13,8 @@
     "generate:sitemap": "tsx scripts/generate-sitemap.ts",
     "generate:rss": "tsx scripts/generate-rss.ts",
     "generate:timezones": "tsx scripts/export-timezones-json.ts",
-    "generate:static-pages": "tsx scripts/generate-static-pages.ts"
+    "generate:static-pages": "tsx scripts/generate-static-pages.ts",
+    "generate:og-images": "tsx scripts/generate-og-images.ts"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
