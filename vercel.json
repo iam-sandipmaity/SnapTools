@@ -1,4 +1,9 @@
 {
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/tools/:path*", "destination": "/tools/:path*/index.html" }
+  ],
   "headers": [
     {
       "source": "/assets/:path*",
