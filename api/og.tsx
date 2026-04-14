@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import { ImageResponse } from "@vercel/og";
 
 const categoryGradients: Record<string, { from: string; to: string }> = {
