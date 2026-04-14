@@ -1,3 +1,0 @@
-# Vercel ignore rules
-# Exclude api from static build - handled by @vercel/node
-api/**
