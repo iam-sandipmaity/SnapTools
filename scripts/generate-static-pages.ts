@@ -186,9 +186,9 @@ function generateHTML(metaTags: MetaTags, originalHTML: string): string {
   // Replace title
   html = html.replace(/<title>([\s\S]*?)<\/title>/i, `<title>${title}</title>`);
 
-  // Replace meta description
+  // Replace meta description (handle multi-line)
   html = html.replace(
-    /<meta\s+name="description"\s+content="[^"]*"\s*\/?>/is,
+    /<meta\s+name="description"[\s\S]*?\/>/is,
     `<meta name="description" content="${description}" />`,
   );
 
@@ -198,24 +198,24 @@ function generateHTML(metaTags: MetaTags, originalHTML: string): string {
     `<link rel="canonical" href="${url}" />`,
   );
 
-  // Replace Open Graph tags
+  // Replace Open Graph tags (handle multi-line)
   html = html.replace(
-    /<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/is,
+    /<meta\s+property="og:title"[\s\S]*?\/>/is,
     `<meta property="og:title" content="${title}" />`,
   );
 
   html = html.replace(
-    /<meta\s+property="og:description"[\s\S]*?content="[^"]*"\s*\/?>/is,
+    /<meta\s+property="og:description"[\s\S]*?\/>/is,
     `<meta property="og:description" content="${description}" />`,
   );
 
   html = html.replace(
-    /<meta\s+property="og:url"\s+content="[^"]*"\s*\/?>/is,
+    /<meta\s+property="og:url"[\s\S]*?\/>/is,
     `<meta property="og:url" content="${url}" />`,
   );
 
   html = html.replace(
-    /<meta\s+property="og:image"\s+content="[^"]*"\s*\/?>/is,
+    /<meta\s+property="og:image"[\s\S]*?\/>/is,
     `<meta property="og:image" content="${image}" />`,
   );
 
@@ -224,28 +224,28 @@ function generateHTML(metaTags: MetaTags, originalHTML: string): string {
   const imageType = isDynamicImage ? "image/png" : "image/jpeg";
 
   html = html.replace(
-    /<meta\s+property="og:image:type"\s+content="[^"]*"\s*\/?>/is,
+    /<meta\s+property="og:image:type"[\s\S]*?\/>/is,
     `<meta property="og:image:type" content="${imageType}" />`,
   );
 
   html = html.replace(
-    /<meta\s+property="og:image:alt"\s+content="[^"]*"\s*\/?>/is,
+    /<meta\s+property="og:image:alt"[\s\S]*?\/>/is,
     `<meta property="og:image:alt" content="${escapeHtml(metaTags.title)}" />`,
   );
 
-  // Replace Twitter Card tags
+  // Replace Twitter Card tags (handle multi-line)
   html = html.replace(
-    /<meta\s+name="twitter:title"\s+content="[^"]*"\s*\/?>/is,
+    /<meta\s+name="twitter:title"[\s\S]*?\/>/is,
     `<meta name="twitter:title" content="${title}" />`,
   );
 
   html = html.replace(
-    /<meta\s+name="twitter:description"\s+content="[^"]*"\s*\/?>/is,
+    /<meta\s+name="twitter:description"[\s\S]*?\/>/is,
     `<meta name="twitter:description" content="${description}" />`,
   );
 
   html = html.replace(
-    /<meta\s+name="twitter:image"\s+content="[^"]*"\s*\/?>/is,
+    /<meta\s+name="twitter:image"[\s\S]*?\/>/is,
     `<meta name="twitter:image" content="${image}" />`,
   );
 
