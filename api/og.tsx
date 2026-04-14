@@ -4,7 +4,7 @@ export const config = {
   runtime: "nodejs",
 };
 
-export default async function handler(req: Request) {
+export default function handler(req) {
   try {
     const url = new URL(req.url);
     const title = url.searchParams.get("title") || "SnapTools";
@@ -21,7 +21,13 @@ export default async function handler(req: Request) {
             justifyContent: "center",
           }}
         >
-          <div style={{ fontSize: 80, color: "white", fontWeight: 900 }}>
+          <div
+            style={{
+              fontSize: 80,
+              color: "white",
+              fontWeight: 900,
+            }}
+          >
             {title}
           </div>
         </div>
