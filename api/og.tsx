@@ -144,7 +144,15 @@ export default async function handler(req: Request) {
                   boxShadow: `0 8px 32px ${gradient.from}44`,
                 }}
               >
-                <div style={{ fontSize: "64px", lineHeight: "1" }}>🛠️</div>
+                <div
+                  style={{
+                    fontSize: "64px",
+                    fontWeight: 900,
+                    color: "#ffffff",
+                  }}
+                >
+                  PDF
+                </div>
               </div>
             </div>
           </div>
