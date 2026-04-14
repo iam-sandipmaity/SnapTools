@@ -1,7 +1,3 @@
-export const config = {
-  runtime: "nodejs",
-};
-
 import { ImageResponse } from "@vercel/og";
 
 const categoryGradients: Record<string, { from: string; to: string }> = {
