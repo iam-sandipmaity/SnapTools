@@ -26,7 +26,7 @@ const ToolList = lazy(() => import("./pages/ToolList"));
 const ToolCategoryPage = lazy(() => import("./pages/ToolCategoryPage"));
 const About = lazy(() => import("./pages/AboutPage"));
 const Documentation = lazy(() => import("./pages/DocumentationPage"));
-const Pricing = lazy(() => import("./pages/Pricing"));
+const Pricing = lazy(() => import("./pages/pricing"));
 const Features = lazy(() => import("./pages/Features"));
 const Changelog = lazy(() => import("./pages/Changelog"));
 const Donate = lazy(() => import("./pages/Donate"));
