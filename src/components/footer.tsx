@@ -27,6 +27,7 @@ const exploreLinks = [
   { label: "Get Help", to: "/contact" },
   { label: "Pricing", to: "/pricing" },
   { label: "Workstation", to: "/workstation" },
+  { label: "Self-Host", to: "/self-host" },
   { label: "Changelog", to: "/changelog" },
 ];
 
