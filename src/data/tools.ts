@@ -840,11 +840,6 @@ export const toolCategories: ToolCategory[] = [
         description: "Elliptic Curve Digital Signature Algorithm (placeholder)",
       },
       {
-        id: "sha3",
-        title: "SHA-3",
-        description: "Keccak / SHA-3 hashing (placeholder)",
-      },
-      {
         id: "blake2",
         title: "BLAKE2",
         description: "BLAKE2 hashing (placeholder)",
