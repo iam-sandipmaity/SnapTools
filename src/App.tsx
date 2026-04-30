@@ -14,8 +14,8 @@ const Providers = lazy(() => import("@/components/Providers"));
 const Analytics = lazy(() => import("@vercel/analytics/react").then(m => ({ default: m.Analytics })));
 
 // Lazy-load all pages including Index
-const Index = lazy(() => import("./pages/Index"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+const Index = lazy(() => import("./pages/index"));
+const NotFound = lazy(() => import("./pages/notfound"));
 
 // Lazy load non-critical pages
 const ToolPage = lazy(() => import("./pages/toolpage"));
@@ -35,7 +35,7 @@ const SelfHost = lazy(() => import("./pages/selfhost"));
 const BlogRouter = lazy(() => import("./blog/router"));
 const ShareFileView = lazy(() => import("./components/tools/file-sharing/ShareFileView"));
 const ShareTextView = lazy(() => import("./components/tools/text-sharing/ShareTextView"));
-const Workstation = lazy(() => import("./pages/Workstation"));
+const Workstation = lazy(() => import("./pages/workstation"));
 
 const App = () => (
   <Suspense fallback={<PageLoader />}>
