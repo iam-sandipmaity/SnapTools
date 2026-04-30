@@ -26,11 +26,12 @@ const ToolList = lazy(() => import("./pages/ToolList"));
 const ToolCategoryPage = lazy(() => import("./pages/ToolCategoryPage"));
 const About = lazy(() => import("./pages/AboutPage"));
 const Documentation = lazy(() => import("./pages/DocumentationPage"));
-const Pricing = lazy(() => import("./pages/pricing"));
-const Features = lazy(() => import("./pages/features"));
+const Pricing = lazy(() => import("./pages/Pricing"));
+const Features = lazy(() => import("./pages/Features"));
 const Changelog = lazy(() => import("./pages/Changelog"));
 const Donate = lazy(() => import("./pages/Donate"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
+const SelfHost = lazy(() => import("./pages/SelfHost"));
 const BlogRouter = lazy(() => import("./blog/router"));
 const ShareFileView = lazy(() => import("./components/tools/file-sharing/ShareFileView"));
 const ShareTextView = lazy(() => import("./components/tools/text-sharing/ShareTextView"));
@@ -62,6 +63,7 @@ const App = () => (
             <Route path="/changelog" element={<Changelog />} />
             <Route path="/donate" element={<Donate />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
+            <Route path="/self-host" element={<SelfHost />} />
             <Route path="/s/:peerId" element={<ShareFileView />} />
             <Route path="/t/:peerId" element={<ShareTextView />} />
             <Route path="/blog/*" element={<BlogRouter />} />
