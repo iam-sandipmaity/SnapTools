@@ -1,320 +1,214 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Copy, Trash2, Sparkles, Loader2, CheckCircle2, Code2 } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Code2, Copy, Loader2, Sparkles } from "lucide-react";
+import { toast } from "sonner";
+import {
+  ToolCodeBlock,
+  ToolMetricGrid,
+  ToolPanel,
+  ToolTagList,
+  ToolWorkbench,
+} from "./tool-workbench";
+
+type Analysis = {
+  summary: string;
+  patterns: string[];
+  walkthrough: string[];
+  cautions: string[];
+};
+
+const languageExamples: Record<string, string> = {
+  javascript: `function fibonacci(limit) {\n  const series = [0, 1];\n  for (let index = 2; index < limit; index += 1) {\n    series.push(series[index - 1] + series[index - 2]);\n  }\n  return series;\n}\n\nconsole.log(fibonacci(8));`,
+  python: `def normalize(values):\n    total = sum(values)\n    return [value / total for value in values if total]\n\nprint(normalize([2, 3, 5]))`,
+  typescript: `interface User {\n  id: number;\n  active: boolean;\n}\n\nfunction getActiveUsers(users: User[]) {\n  return users.filter((user) => user.active);\n}`,
+};
+
+const analyzeCode = (code: string, language: string, detail: string): Analysis => {
+  const lines = code.split("\n").map((line) => line.trim()).filter(Boolean);
+  const patterns: string[] = [];
+  const cautions: string[] = [];
+
+  if (/(function|=>|def )/.test(code)) patterns.push("Defines reusable logic through one or more functions.");
+  if (/(for|while|map|filter|forEach)/.test(code)) patterns.push("Iterates over values to transform or inspect data.");
+  if (/(if|else|switch)/.test(code)) patterns.push("Uses control flow to branch on conditions.");
+  if (/(interface|type|class)/.test(code)) patterns.push("Introduces explicit structure for data or behavior.");
+  if (/(fetch|axios|await|async)/.test(code)) patterns.push("Contains asynchronous or network-oriented behavior.");
+  if (patterns.length === 0) patterns.push("Uses straightforward statements without complex branching.");
+
+  if (!/return/.test(code) && /(function|def )/.test(code)) cautions.push("Functions are defined, but not all branches appear to return a value.");
+  if (/console\.log|print\(/.test(code)) cautions.push("Logging statements are present and may be temporary debugging output.");
+  if (lines.length > 12) cautions.push("The snippet is long enough that splitting it into smaller units might improve readability.");
+
+  const walkthrough = lines.slice(0, detail === "advanced" ? 8 : detail === "intermediate" ? 5 : 3).map((line, index) => {
+    let note = "Executes a plain statement.";
+    if (/function|def /.test(line)) note = "Declares a reusable block of logic.";
+    else if (/for|while/.test(line)) note = "Begins an iteration step.";
+    else if (/return/.test(line)) note = "Hands a value back to the caller.";
+    else if (/if|else/.test(line)) note = "Branches execution based on a condition.";
+    else if (/interface|type|class/.test(line)) note = "Describes the shape of data or a custom abstraction.";
+    return `Line ${index + 1}: ${line} — ${note}`;
+  });
+
+  return {
+    summary: `This ${language} snippet is primarily concerned with ${patterns[0].toLowerCase()}`,
+    patterns,
+    walkthrough,
+    cautions,
+  };
+};
 
 const AiCodeExplainer = () => {
-  const [code, setCode] = useState<string>('');
-  const [language, setLanguage] = useState<string>('javascript');
-  const [explanation, setExplanation] = useState<string>('');
+  const [code, setCode] = useState("");
+  const [language, setLanguage] = useState("javascript");
+  const [detailLevel, setDetailLevel] = useState<"basic" | "intermediate" | "advanced">("intermediate");
+  const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [isExplaining, setIsExplaining] = useState(false);
-  const [detailLevel, setDetailLevel] = useState<'basic' | 'intermediate' | 'advanced'>('intermediate');
 
-  // Supported languages
-  const languages = [
-    { value: 'javascript', label: 'JavaScript' },
-    { value: 'typescript', label: 'TypeScript' },
-    { value: 'python', label: 'Python' },
-    { value: 'java', label: 'Java' },
-    { value: 'cpp', label: 'C++' },
-    { value: 'csharp', label: 'C#' },
-    { value: 'go', label: 'Go' },
-    { value: 'rust', label: 'Rust' },
-    { value: 'php', label: 'PHP' },
-    { value: 'ruby', label: 'Ruby' },
-  ];
+  const lineCount = code.split("\n").filter((line) => line.trim()).length;
 
-  // Simulated AI code explanation
   const explainCode = async () => {
     if (!code.trim()) {
-      toast.error('Please enter code to explain');
+      toast.error("Paste code before requesting an explanation.");
       return;
     }
 
     setIsExplaining(true);
 
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      // Generate explanation based on code analysis (demo)
-      let explanationText = `# Code Explanation (${detailLevel} level)\n\n`;
-
-      // Detect common patterns
-      if (code.includes('function') || code.includes('=>')) {
-        explanationText += `## Functions\n\n`;
-        explanationText += `This code defines ${detailLevel === 'basic' ? 'one or more functions' : 'function(s) which are reusable blocks of code that perform specific tasks'}.\n\n`;
-      }
-
-      if (code.includes('if') || code.includes('else')) {
-        explanationText += `## Control Flow\n\n`;
-        explanationText += `Conditional logic is used ${detailLevel === 'basic' ? 'to make decisions' : 'to control the execution path based on certain conditions'}.\n\n`;
-      }
-
-      if (code.includes('for') || code.includes('while') || code.includes('map') || code.includes('forEach')) {
-        explanationText += `## Loops\n\n`;
-        explanationText += `Iterative structures are present ${detailLevel === 'basic' ? 'to repeat tasks' : 'to iterate over collections or repeat operations multiple times'}.\n\n`;
-      }
-
-      if (code.includes('class') || code.includes('interface') || code.includes('type')) {
-        explanationText += `## Data Structures\n\n`;
-        explanationText += `Object-oriented or type definitions found ${detailLevel === 'basic' ? 'to organize data' : 'to define custom data structures with properties and methods'}.\n\n`;
-      }
-
-      // Add line-by-line analysis for advanced mode
-      if (detailLevel === 'advanced') {
-        explanationText += `## Line-by-Line Analysis\n\n`;
-        const lines = code.split('\n').filter(l => l.trim());
-        lines.forEach((line, idx) => {
-          if (line.trim()) {
-            explanationText += `**Line ${idx + 1}:** \`${line.trim().substring(0, 50)}${line.length > 50 ? '...' : ''}\`\n`;
-            explanationText += `- ${getLineExplanation(line, language)}\n\n`;
-          }
-        });
-      }
-
-      explanationText += `## Summary\n\n`;
-      explanationText += `This ${language} code ${detailLevel === 'basic' ? 'does something useful' : 'implements functionality that can be understood by analyzing its components. The code structure follows standard patterns and can be maintained or extended as needed'}.\n\n`;
-
-      explanationText += `---\n\n*Explanation generated by SnapTools AI*`;
-
-      setExplanation(explanationText);
-      toast.success('Code explained successfully!');
-    } catch (error) {
-      toast.error('Error explaining code');
+      await new Promise((resolve) => setTimeout(resolve, 900));
+      setAnalysis(analyzeCode(code, language, detailLevel));
+      toast.success("Explanation ready.");
     } finally {
       setIsExplaining(false);
     }
   };
 
-  // Helper to explain individual lines
-  const getLineExplanation = (line: string, lang: string): string => {
-    if (line.includes('//') || line.includes('#')) return 'Contains a comment';
-    if (line.includes('import') || line.includes('require')) return 'Imports external module';
-    if (line.includes('return')) return 'Returns a value from function';
-    if (line.includes('console.log') || line.includes('print')) return 'Outputs data to console';
-    if (line.includes('if') || line.includes('else')) return 'Conditional statement';
-    if (line.includes('for') || line.includes('while')) return 'Loop iteration';
-    if (line.trim().startsWith('//') || line.trim().startsWith('#')) return 'Comment line';
-    return 'Code statement';
-  };
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(explanation);
-    toast.success('Explanation copied to clipboard!');
-  };
-
-  const clearAll = () => {
-    setCode('');
-    setExplanation('');
-  };
-
-  const loadExample = () => {
-    const examples: Record<string, string> = {
-      javascript: `function fibonacci(n) {
-  if (n <= 1) return n;
-  let a = 0, b = 1;
-  for (let i = 2; i <= n; i++) {
-    const temp = b;
-    b = a + b;
-    a = temp;
-  }
-  return b;
-}
-
-console.log(fibonacci(10));`,
-      python: `def quick_sort(arr):
-    if len(arr) <= 1:
-        return arr
-    pivot = arr[len(arr) // 2]
-    left = [x for x in arr if x < pivot]
-    middle = [x for x in arr if x == pivot]
-    right = [x for x in arr if x > pivot]
-    return quick_sort(left) + middle + quick_sort(right)
-
-print(quick_sort([3, 6, 8, 10, 1, 2, 1]))`,
-      typescript: `interface User {
-  id: number;
-  name: string;
-  email: string;
-  isActive: boolean;
-}
-
-function getActiveUsers(users: User[]): User[] {
-  return users.filter(user => user.isActive);
-}
-
-const users: User[] = [
-  { id: 1, name: "Alice", email: "alice@example.com", isActive: true },
-  { id: 2, name: "Bob", email: "bob@example.com", isActive: false },
-];
-
-console.log(getActiveUsers(users));`,
-    };
-
-    setCode(examples[language] || examples.javascript);
-  };
-
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5" />
-            AI Code Explainer - Professional Grade
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Language & Settings */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>Programming Language</Label>
-              <Select value={language} onValueChange={setLanguage}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {languages.map(lang => (
-                    <SelectItem key={lang.value} value={lang.value}>
-                      {lang.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Explanation Detail Level</Label>
-              <div className="flex gap-2">
-                {(['basic', 'intermediate', 'advanced'] as const).map(level => (
+      <ToolWorkbench
+        icon={Code2}
+        eyebrow="AI Code Explainer"
+        title="Translate raw code into a clearer walkthrough."
+        description="Use the explainer to identify patterns, summarize intent, and get a line-level read of an unfamiliar snippet."
+        badges={["Language-aware examples", "Detail presets", "Pattern detection"]}
+        metrics={[
+          { label: "Language", value: language },
+          { label: "Lines", value: lineCount },
+          { label: "Detail", value: detailLevel },
+        ]}
+        aside={
+          <div className="space-y-4">
+            <ToolPanel title="Analysis depth" description="Raise the depth when you want a longer walkthrough.">
+              <div className="flex flex-wrap gap-2">
+                {(["basic", "intermediate", "advanced"] as const).map((value) => (
                   <Badge
-                    key={level}
-                    variant={detailLevel === level ? 'default' : 'outline'}
-                    className="cursor-pointer capitalize"
-                    onClick={() => setDetailLevel(level)}
+                    key={value}
+                    variant={detailLevel === value ? "default" : "outline"}
+                    className="cursor-pointer rounded-full px-3 py-1 capitalize"
+                    onClick={() => setDetailLevel(value)}
                   >
-                    {level}
+                    {value}
                   </Badge>
                 ))}
               </div>
-              <p className="text-xs text-muted-foreground">
-                {detailLevel === 'basic' && 'Simple explanations for beginners'}
-                {detailLevel === 'intermediate' && 'Balanced technical detail'}
-                {detailLevel === 'advanced' && 'In-depth analysis with line-by-line breakdown'}
-              </p>
-            </div>
+            </ToolPanel>
+            <ToolPanel title="Typical use cases" description="Useful when onboarding into unfamiliar logic or preparing review notes.">
+              <ToolTagList tags={["Learning", "Code review prep", "Interview study", "Documentation support", "Handoff notes", "Debugging context"]} />
+            </ToolPanel>
           </div>
-
-          {/* Code Input */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="code-input">Code to Explain</Label>
-              <Button variant="ghost" size="sm" onClick={loadExample}>
-                Load Example
-              </Button>
+        }
+      >
+        <ToolPanel
+          title="Snippet input"
+          description="Paste the code you want explained. Load an example to preview the analysis format."
+          actions={
+            <Button variant="ghost" size="sm" onClick={() => setCode(languageExamples[language] ?? languageExamples.javascript)}>
+              Load example
+            </Button>
+          }
+        >
+          <div className="space-y-4">
+            <div className="flex flex-wrap gap-2">
+              {["javascript", "typescript", "python", "java", "go", "rust"].map((value) => (
+                <Badge
+                  key={value}
+                  variant={language === value ? "default" : "outline"}
+                  className="cursor-pointer rounded-full px-3 py-1"
+                  onClick={() => setLanguage(value)}
+                >
+                  {value}
+                </Badge>
+              ))}
             </div>
             <Textarea
-              id="code-input"
               value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder="Paste or type your code here..."
-              className="min-h-[250px] font-mono text-sm"
+              onChange={(event) => setCode(event.target.value)}
+              placeholder="Paste the code you want explained..."
+              className="min-h-[260px] rounded-3xl border-black/10 bg-white/80 font-mono text-sm leading-7 shadow-sm dark:border-white/10 dark:bg-white/[0.03]"
             />
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>{code.split('\n').length} lines</span>
-              <span>{code.split(/\s+/).filter(w => w.length > 0).length} tokens</span>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="text-xs text-muted-foreground">
+                The current explainer is a local heuristic pass, so it is strongest on structure and intent.
+              </p>
+              <Button onClick={explainCode} disabled={isExplaining || !code.trim()} className="rounded-2xl px-6">
+                {isExplaining ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+                Explain code
+              </Button>
             </div>
           </div>
+        </ToolPanel>
+      </ToolWorkbench>
 
-          <Button
-            onClick={explainCode}
-            disabled={isExplaining || !code.trim()}
-            className="w-full"
+      {analysis ? (
+        <>
+          <ToolPanel
+            title="Code summary"
+            description="A concise explanation of the snippet's main responsibility."
+            actions={
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  navigator.clipboard
+                    .writeText([analysis.summary, ...analysis.patterns, ...analysis.walkthrough].join("\n"))
+                    .then(() => toast.success("Explanation copied."))
+                }
+              >
+                <Copy className="mr-2 h-4 w-4" />
+                Copy
+              </Button>
+            }
           >
-            {isExplaining ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Analyzing Code...
-              </>
-            ) : (
-              <>
-                <Sparkles className="mr-2 h-4 w-4" />
-                Explain Code
-              </>
-            )}
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* Explanation Output */}
-      {explanation && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                Code Explanation
-              </span>
-              <div className="flex gap-2">
-                <Button variant="ghost" size="sm" onClick={copyToClipboard}>
-                  <Copy className="h-3 w-3" />
-                </Button>
-                <Button variant="ghost" size="sm" onClick={clearAll}>
-                  <Trash2 className="h-3 w-3" />
-                </Button>
-              </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="p-4 bg-muted rounded-lg">
-              <pre className="whitespace-pre-wrap text-sm font-mono">
-                {explanation}
-              </pre>
+            <div className="space-y-5">
+              <p className="text-sm leading-7 text-muted-foreground">{analysis.summary}</p>
+              <ToolMetricGrid
+                metrics={[
+                  { label: "Patterns", value: analysis.patterns.length },
+                  { label: "Walkthrough lines", value: analysis.walkthrough.length },
+                  { label: "Cautions", value: analysis.cautions.length },
+                ]}
+              />
             </div>
-          </CardContent>
-        </Card>
-      )}
+          </ToolPanel>
 
-      {/* Info Card */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="space-y-4">
-            <h3 className="font-semibold flex items-center gap-2">
-              <Code2 className="h-4 w-4" />
-              About AI Code Explainer
-            </h3>
-            <div className="text-sm text-muted-foreground space-y-2">
-              <p>
-                <strong>How it works:</strong> Our AI analyzes your code structure, 
-                identifies patterns, and provides clear explanations tailored to your skill level.
-              </p>
-              <p>
-                <strong>Features:</strong> Multiple programming languages, adjustable detail levels, 
-                line-by-line analysis, and copy-to-clipboard functionality.
-              </p>
-              <p>
-                <strong>Note:</strong> This demo uses pattern matching. In production, 
-                this would connect to advanced AI models like GPT-4, Claude, or Sarvam AI 
-                for human-like code explanations.
-              </p>
-            </div>
+          <ToolPanel title="Detected patterns" description="High-level behavior surfaced from the current snippet.">
+            <ToolTagList tags={analysis.patterns} />
+          </ToolPanel>
 
-            <div className="pt-4 border-t">
-              <p className="text-sm font-medium mb-2">Perfect for:</p>
-              <div className="flex flex-wrap gap-2">
-                {['Learning Code', 'Code Reviews', 'Documentation', 'Debugging', 'Teaching', 'Interviews'].map(use => (
-                  <Badge key={use} variant="outline">{use}</Badge>
-                ))}
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          <ToolPanel title="Walkthrough" description="A line-by-line explanation for the first visible logic blocks.">
+            <ToolCodeBlock value={analysis.walkthrough.join("\n")} className="max-h-none bg-slate-900" />
+          </ToolPanel>
+
+          {analysis.cautions.length > 0 ? (
+            <ToolPanel title="Cautions" description="Potential review notes to verify before shipping.">
+              <ToolTagList tags={analysis.cautions} />
+            </ToolPanel>
+          ) : null}
+        </>
+      ) : null}
     </div>
   );
 };

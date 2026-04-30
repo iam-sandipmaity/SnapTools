@@ -1,405 +1,231 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { Copy, Trash2, Sparkles, Loader2, CheckCircle2, Wallet, Key, AlertTriangle } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState } from "react";
+import CryptoJS from "crypto-js";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
+import { Copy, Loader2, ShieldAlert, Wallet } from "lucide-react";
+import { toast } from "sonner";
+import {
+  ToolCodeBlock,
+  ToolMetricGrid,
+  ToolPanel,
+  ToolTagList,
+  ToolWorkbench,
+} from "../ai/tool-workbench";
 
-interface Wallet {
+type Network = "ethereum" | "bitcoin" | "solana" | "polygon";
+
+type GeneratedWallet = {
   address: string;
   privateKey: string;
   publicKey: string;
-  mnemonic?: string;
-  path?: string;
-}
+  mnemonic: string;
+  path: string;
+};
+
+const mnemonicWords = [
+  "anchor", "binary", "canvas", "delta", "ember", "fossil", "galaxy", "harbor",
+  "island", "jungle", "kernel", "lunar", "matrix", "nectar", "orbit", "pixel",
+  "quantum", "radar", "signal", "tidal", "uplift", "vector", "window", "zenith",
+];
+
+const hexFromBytes = (bytes: Uint8Array) => Array.from(bytes).map((value) => value.toString(16).padStart(2, "0")).join("");
+const randomHex = (bytes: number) => hexFromBytes(globalThis.crypto.getRandomValues(new Uint8Array(bytes)));
+const deriveHex = (seed: string, label: string, length = 64) => CryptoJS.SHA256(`${label}:${seed}`).toString().slice(0, length);
+
+const buildMnemonic = (seed: string) => {
+  const hash = CryptoJS.SHA256(`mnemonic:${seed}`).toString();
+  return Array.from({ length: 12 }, (_, index) => {
+    const slice = hash.slice(index * 2, index * 2 + 2);
+    return mnemonicWords[parseInt(slice, 16) % mnemonicWords.length];
+  }).join(" ");
+};
+
+const makeAddress = (network: Network, seed: string) => {
+  const core = deriveHex(seed, `${network}:address`, network === "solana" ? 44 : 40);
+  if (network === "bitcoin") return `bc1q${core.slice(0, 38)}`;
+  if (network === "solana") return core;
+  return `0x${core}`;
+};
+
+const derivationPath = (network: Network) =>
+  network === "bitcoin"
+    ? "m/84'/0'/0'/0/0"
+    : network === "solana"
+      ? "m/44'/501'/0'/0'"
+      : "m/44'/60'/0'/0/0";
 
 const CryptoWalletGenerator = () => {
-  const [blockchain, setBlockchain] = useState<'ethereum' | 'bitcoin' | 'solana' | 'polygon' | 'bsc'>('ethereum');
-  const [wallets, setWallets] = useState<Wallet[]>([]);
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [network, setNetwork] = useState<Network>("ethereum");
   const [count, setCount] = useState(1);
-  const [showPrivateKeys, setShowPrivateKeys] = useState(false);
-  const [mnemonic, setMnemonic] = useState<string>('');
+  const [mnemonic, setMnemonic] = useState("");
+  const [showSecrets, setShowSecrets] = useState(false);
+  const [wallets, setWallets] = useState<GeneratedWallet[]>([]);
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  // Simulated wallet generation
-  const generateWallet = async () => {
-    if (count < 1 || count > 10) {
-      toast.error('Please generate between 1-10 wallets');
+  const generateWallets = async () => {
+    if (count < 1 || count > 5) {
+      toast.error("Choose between 1 and 5 wallets.");
       return;
     }
 
     setIsGenerating(true);
 
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise((resolve) => setTimeout(resolve, 900));
+      const nextWallets = Array.from({ length: count }, (_, index) => {
+        const seed = mnemonic.trim() ? `${mnemonic.trim()}#${network}#${index}` : randomHex(32);
+        const derivedMnemonic = mnemonic.trim() || buildMnemonic(seed);
+        return {
+          address: makeAddress(network, seed),
+          privateKey: deriveHex(seed, "private"),
+          publicKey: deriveHex(seed, "public", 66),
+          mnemonic: derivedMnemonic,
+          path: derivationPath(network),
+        };
+      });
 
-      const newWallets: Wallet[] = [];
-      
-      for (let i = 0; i < count; i++) {
-        const wallet = generateSingleWallet(blockchain, mnemic);
-        newWallets.push(wallet);
-      }
-
-      setWallets(newWallets);
-      toast.success(`${count} wallet${count > 1 ? 's' : ''} generated successfully!`);
-    } catch (error) {
-      toast.error('Error generating wallet');
+      setWallets(nextWallets);
+      toast.success(`${nextWallets.length} wallet${nextWallets.length > 1 ? "s" : ""} prepared.`);
     } finally {
       setIsGenerating(false);
     }
   };
 
-  // Simulated single wallet generation
-  const generateSingleWallet = (chain: string, mnemonicPhrase?: string): Wallet => {
-    // Generate random bytes (simulated)
-    const randomBytes = () => {
-      const bytes = new Uint8Array(32);
-      for (let i = 0; i < 32; i++) {
-        bytes[i] = Math.floor(Math.random() * 256);
-      }
-      return bytes;
-    };
-
-    const bytesToHex = (bytes: Uint8Array): string => {
-      return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
-    };
-
-    const generateAddress = (chain: string): string => {
-      const prefix = chain === 'ethereum' ? '0x' :
-                        chain === 'bitcoin' ? '1' :
-                        chain === 'solana' ? '' :
-                        chain === 'polygon' ? '0x' :
-                        chain === 'bsc' ? '0x' : '0x';
-      
-      const random = bytesToHex(randomBytes()).substring(0, chain === 'solana' ? 32 : 40);
-      return prefix + random;
-    };
-
-    const generatePrivateKey = (): string => {
-      return bytesToHex(randomBytes());
-    };
-
-    const generatePublicKey = (): string => {
-      return bytesToHex(randomBytes());
-    };
-
-    return {
-      address: generateAddress(chain),
-      privateKey: generatePrivateKey(),
-      publicKey: generatePublicKey(),
-      mnemonic: mnemonicPhrase || (Math.random() > 0.5 ? generateMnemonic() : undefined),
-      path: `m/44'/${chain === 'ethereum' ? '60' : chain === 'bitcoin' ? '0' : '501'}/0'/0'/0`,
-    };
-  };
-
-  const generateMnemonic = (): string => {
-    const words = ['abandon', 'ability', 'able', 'about', 'above', 'absent', 'absorb', 'abstract', 'absurd', 'abuse',
-                    'access', 'accident', 'acquire', 'across', 'act', 'action', 'actor', 'actress', 'actual',
-                    'adapt', 'add', 'addict', 'address', 'adjust', 'admit', 'adult', 'advance', 'advice'];
-    const selected = [];
-    for (let i = 0; i < 12; i++) {
-      selected.push(words[Math.floor(Math.random() * words.length)]);
-    }
-    return selected.join(' ');
-  };
-
-  const generateFromMnemonic = () => {
-    if (!mnemonic.trim()) {
-      toast.error('Please enter a mnemonic phrase');
-      return;
-    }
-    const wallet = generateSingleWallet(blockchain, mnemic);
-    setWallets([wallet]);
-    toast.success('Wallet generated from mnemonic!');
-  };
-
-  const copyToClipboard = (text: string, label: string) => {
-    navigator.clipboard.writeText(text);
-    toast.success(`${label} copied to clipboard!`);
-  };
-
-  const clearAll = () => {
-    setWallets([]);
-    setMnemonic('');
-  };
-
-  const getBlockchainColor = (chain: string): string => {
-    switch (chain) {
-      case 'ethereum': return 'bg-blue-100 text-blue-800';
-      case 'bitcoin': return 'bg-orange-100 text-orange-800';
-      case 'solana': return 'bg-purple-100 text-purple-800';
-      case 'polygon': return 'bg-indigo-100 text-indigo-800';
-      case 'bsc': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5" />
-            Crypto Wallet Generator - Professional Grade
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Tabs defaultValue="generate">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="generate">Generate New</TabsTrigger>
-              <TabsTrigger value="mnemonic">From Mnemonic</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="generate" className="space-y-4 mt-4">
-              <div className="space-y-2">
-                <Label>Blockchain</Label>
-                <div className="flex gap-2 flex-wrap">
-                  {(['ethereum', 'bitcoin', 'solana', 'polygon', 'bsc'] as const).map((chain) => (
-                    <Badge
-                      key={chain}
-                      variant={blockchain === chain ? 'default' : 'outline'}
-                      className="cursor-pointer capitalize"
-                      onClick={() => setBlockchain(chain)}
-                    >
-                      {chain}
-                    </Badge>
-                  ))}
-                </div>
+      <ToolWorkbench
+        icon={Wallet}
+        eyebrow="Wallet Generator"
+        title="Generate deterministic demo wallets in a cleaner operator layout."
+        description="This workspace is designed for sandboxed Web3 flows. It generates deterministic demo credentials locally so the UI can be exercised without a backend signer."
+        accent="amber"
+        badges={["Local-only generation", "Deterministic from mnemonic", "Security-first disclosure toggle"]}
+        metrics={[
+          { label: "Network", value: network },
+          { label: "Wallets", value: wallets.length },
+          { label: "Secrets", value: showSecrets ? "Visible" : "Masked" },
+        ]}
+        aside={
+          <div className="space-y-4">
+            <ToolPanel title="Supported flows" description="Switch between pure random demo generation and mnemonic-seeded derivation.">
+              <ToolTagList tags={["Ethereum", "Bitcoin", "Solana", "Polygon"]} />
+            </ToolPanel>
+            <ToolPanel title="Important note" description="These credentials are for demo UX and preview environments only.">
+              <div className="rounded-3xl border border-amber-500/20 bg-amber-500/5 p-4 text-sm leading-6 text-muted-foreground">
+                Never store real funds behind a preview wallet generated by a browser-only demo tool.
               </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="count">Number of Wallets (1-10)</Label>
-                  <Input
-                    id="count"
-                    type="number"
-                    min="1"
-                    max="10"
-                    value={count}
-                    onChange={(e) => setCount(parseInt(e.target.value) || 1)}
-                  />
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="mnemonic" className="space-y-4 mt-4">
+            </ToolPanel>
+          </div>
+        }
+      >
+        <ToolPanel
+          title="Generation controls"
+          description="Pick a network, set how many wallets you want, and optionally provide a mnemonic to keep outputs reproducible."
+        >
+          <div className="space-y-5">
+            <div className="flex flex-wrap gap-2">
+              {(["ethereum", "bitcoin", "solana", "polygon"] as const).map((value) => (
+                <Badge
+                  key={value}
+                  variant={network === value ? "default" : "outline"}
+                  className="cursor-pointer rounded-full px-3 py-1 capitalize"
+                  onClick={() => setNetwork(value)}
+                >
+                  {value}
+                </Badge>
+              ))}
+            </div>
+            <div className="grid gap-4 md:grid-cols-[160px_minmax(0,1fr)]">
               <div className="space-y-2">
-                <Label htmlFor="mnemonic">Mnemonic Phrase (12/24 words)</Label>
-                <textarea
+                <Label htmlFor="count">Wallet count</Label>
+                <Input
+                  id="count"
+                  type="number"
+                  min="1"
+                  max="5"
+                  value={count}
+                  onChange={(event) => setCount(Math.max(1, Math.min(5, Number(event.target.value) || 1)))}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="mnemonic">Seed mnemonic (optional)</Label>
+                <Textarea
                   id="mnemonic"
                   value={mnemonic}
-                  onChange={(e) => setMnemonic(e.target.value)}
-                  placeholder="Enter your 12 or 24-word mnemonic phrase here..."
-                  className="min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-mono"
+                  onChange={(event) => setMnemonic(event.target.value)}
+                  placeholder="Leave empty for random demo wallets, or add a seed phrase for repeatable output."
+                  className="min-h-[96px] rounded-3xl border-black/10 bg-white/80 text-sm leading-7 shadow-sm dark:border-white/10 dark:bg-white/[0.03]"
                 />
-                <p className="text-xs text-muted-foreground">
-                  Enter an existing BIP39 mnemonic to derive the same wallet
-                </p>
               </div>
-
-              <Button
-                onClick={generateFromMnemonic}
-                disabled={isGenerating || !mnemonic.trim()}
-                className="w-full"
-              >
-                {isGenerating ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Generating from Mnemonic...
-                  </>
-                ) : (
-                  <>
-                    <Key className="mr-2 h-4 w-4" />
-                    Generate from Mnemonic
-                  </>
-                )}
+            </div>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <label className="flex items-center gap-3 text-sm font-medium">
+                <Switch checked={showSecrets} onCheckedChange={setShowSecrets} />
+                Reveal secret material in results
+              </label>
+              <Button onClick={generateWallets} disabled={isGenerating} className="rounded-2xl px-6">
+                {isGenerating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wallet className="mr-2 h-4 w-4" />}
+                Generate wallets
               </Button>
-            </TabsContent>
-          </Tabs>
-
-          <Button
-            onClick={generateWallet}
-            disabled={isGenerating}
-            className="w-full"
-          >
-            {isGenerating ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Generating {count} Wallet{count > 1 ? 's' : ''}...
-              </>
-            ) : (
-              <>
-                <Wallet className="mr-2 h-4 w-4" />
-                Generate {count} Wallet{count > 1 ? 's' : ''}
-              </>
-            )}
-          </Button>
-
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="show-keys"
-              checked={showPrivateKeys}
-              onChange={(e) => setShowPrivateKeys(e.target.checked)}
-              className="rounded"
-            />
-            <Label htmlFor="show-keys" className="text-sm cursor-pointer">
-              Show Private Keys (⚠️ Security Risk)
-            </Label>
+            </div>
           </div>
-        </CardContent>
-      </Card>
+        </ToolPanel>
+      </ToolWorkbench>
 
-      {/* Generated Wallets */}
-      {wallets.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                Generated Wallets ({wallets.length})
-              </span>
-              <Badge className={getBlockchainColor(blockchain)}>
-                {blockchain}
-              </Badge>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {wallets.map((wallet, idx) => (
-              <div key={idx} className="p-4 bg-muted rounded-lg space-y-3">
-                <div className="flex items-center justify-between">
-                  <Badge variant="outline">Wallet {idx + 1}</Badge>
-                  {wallet.mnemonic && (
-                    <Badge variant="secondary">From Mnemonic</Badge>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label className="text-xs">Address</Label>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => copyToClipboard(wallet.address, 'Address')}
-                    >
-                      <Copy className="h-3 w-3" />
-                    </Button>
+      {wallets.length > 0 ? (
+        <ToolPanel title="Generated wallets" description="Each card shows the deterministic output for the current run.">
+          <div className="space-y-4">
+            {wallets.map((wallet, index) => (
+              <div key={wallet.address} className="rounded-[2rem] border border-black/5 bg-white/70 p-5 shadow-sm dark:border-white/10 dark:bg-white/[0.03]">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <div className="text-xs font-black uppercase tracking-[0.24em] text-muted-foreground">Wallet {index + 1}</div>
+                    <div className="mt-2 text-lg font-bold">{network}</div>
                   </div>
-                  <code className="block p-2 bg-background rounded text-sm break-all font-mono">
-                    {wallet.address}
-                  </code>
+                  <Button variant="outline" size="sm" onClick={() => navigator.clipboard.writeText(wallet.address).then(() => toast.success("Address copied."))}>
+                    <Copy className="mr-2 h-4 w-4" />
+                    Copy address
+                  </Button>
                 </div>
-
-                {showPrivateKeys && (
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label className="text-xs text-red-600">Private Key (⚠️ Keep Secret!)</Label>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => copyToClipboard(wallet.privateKey, 'Private Key')}
-                      >
-                        <Copy className="h-3 w-3" />
-                      </Button>
+                <div className="mt-4 space-y-4">
+                  <ToolCodeBlock value={wallet.address} className="max-h-none bg-slate-900 p-4" />
+                  <ToolMetricGrid
+                    metrics={[
+                      { label: "Path", value: wallet.path },
+                      { label: "Mnemonic words", value: wallet.mnemonic.split(" ").length },
+                      { label: "Key display", value: showSecrets ? "Expanded" : "Masked" },
+                    ]}
+                  />
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div>
+                      <div className="mb-2 text-xs font-bold uppercase tracking-[0.22em] text-muted-foreground">Mnemonic</div>
+                      <div className="rounded-3xl border border-black/5 bg-background p-4 text-sm leading-7 dark:border-white/10">
+                        {wallet.mnemonic}
+                      </div>
                     </div>
-                    <code className="block p-2 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded text-sm break-all font-mono">
-                      {wallet.privateKey}
-                    </code>
+                    <div>
+                      <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-muted-foreground">
+                        <ShieldAlert className="h-3.5 w-3.5" />
+                        Key material
+                      </div>
+                      <div className="rounded-3xl border border-black/5 bg-background p-4 font-mono text-xs leading-6 dark:border-white/10">
+                        <div>Public: {wallet.publicKey}</div>
+                        <div className="mt-3">
+                          Private: {showSecrets ? wallet.privateKey : `${wallet.privateKey.slice(0, 10)}••••••••••••••••`}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                )}
-
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label className="text-xs">Public Key</Label>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => copyToClipboard(wallet.publicKey, 'Public Key')}
-                    >
-                      <Copy className="h-3 w-3" />
-                    </Button>
-                  </div>
-                  <code className="block p-2 bg-background rounded text-sm break-all font-mono text-xs">
-                    {wallet.publicKey.substring(0, 40)}...
-                  </code>
                 </div>
-
-                {wallet.path && (
-                  <div className="text-xs text-muted-foreground">
-                    <strong>Derivation Path:</strong> {wallet.path}
-                  </div>
-                )}
               </div>
             ))}
-
-            <div className="flex gap-2 pt-4 border-t">
-              <Button variant="outline" onClick={clearAll} className="flex-1">
-                <Trash2 className="mr-2 h-4 w-4" />
-                Clear All
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Info Card */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="space-y-4">
-            <h3 className="font-semibold flex items-center gap-2">
-              <Wallet className="h-4 w-4" />
-              About Crypto Wallet Generator
-            </h3>
-            <div className="text-sm text-muted-foreground space-y-2">
-              <p>
-                <strong>How it works:</strong> Generates cryptographic key pairs for various 
-                blockchains using industry-standard algorithms (secp256k1 for Ethereum/Bitcoin).
-              </p>
-              <p>
-                <strong>Features:</strong> Multiple blockchains, batch generation, mnemonic support, 
-                derivation paths, and copy-to-clipboard functionality.
-              </p>
-              <p>
-                <strong>Security Note:</strong> This demo uses simulated generation. In production, 
-                use proper cryptographic libraries like ethers.js, web3.js, or @solana/web3.js. 
-                Never share your private keys!
-              </p>
-            </div>
-
-            <div className="pt-4 border-t">
-              <p className="text-sm font-medium mb-2">Supported Blockchains:</p>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { name: 'Ethereum', color: 'bg-blue-100 text-blue-800' },
-                  { name: 'Bitcoin', color: 'bg-orange-100 text-orange-800' },
-                  { name: 'Solana', color: 'bg-purple-100 text-purple-800' },
-                  { name: 'Polygon', color: 'bg-indigo-100 text-indigo-800' },
-                  { name: 'BSC', color: 'bg-yellow-100 text-yellow-800' },
-                ].map(chain => (
-                  <Badge key={chain.name} className={chain.color}>
-                    {chain.name}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-
-            <div className="p-3 bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-              <div className="flex items-start gap-2">
-                <AlertTriangle className="h-4 w-4 text-yellow-600 mt-0.5" />
-                <div className="text-sm text-yellow-800 dark:text-yellow-200">
-                  <strong>⚠️ Security Warning:</strong> Never share your private keys! 
-                  Anyone with access to your private key can control your funds. 
-                  Always store them securely (hardware wallet, encrypted storage).
-                </div>
-              </div>
-            </div>
           </div>
-        </CardContent>
-      </Card>
+        </ToolPanel>
+      ) : null}
     </div>
   );
 };

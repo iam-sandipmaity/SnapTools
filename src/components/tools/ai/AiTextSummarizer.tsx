@@ -1,278 +1,230 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Copy, Trash2, Sparkles, Loader2, CheckCircle2 } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Copy, Loader2, RotateCcw, Sparkles } from "lucide-react";
+import { toast } from "sonner";
+import {
+  ToolCodeBlock,
+  ToolMetricGrid,
+  ToolPanel,
+  ToolTagList,
+  ToolWorkbench,
+} from "./tool-workbench";
+
+const sampleText = `SnapTools helps teams move through browser-based utility work without sending every task to a desktop app. The platform brings PDF, image, text, and data workflows into one interface, which makes it easier to stay focused and avoid context switching. Teams usually reach for summarization when they need the key signal from a long brief, customer note, or technical article without reading every line twice. A strong summary should preserve meaning, surface action items, and cut repetition so the next decision becomes obvious.`;
+
+const splitSentences = (text: string) => {
+  const matches = text.match(/[^.!?\n]+[.!?]?/g) ?? [];
+  return matches.map((part) => part.trim()).filter(Boolean);
+};
+
+const normalizeSentence = (sentence: string) => {
+  const trimmed = sentence.trim();
+  if (!trimmed) return trimmed;
+  return /[.!?]$/.test(trimmed) ? trimmed : `${trimmed}.`;
+};
 
 const AiTextSummarizer = () => {
-  const [inputText, setInputText] = useState<string>('');
-  const [summary, setSummary] = useState<string>('');
+  const [inputText, setInputText] = useState("");
+  const [summary, setSummary] = useState("");
   const [isSummarizing, setIsSummarizing] = useState(false);
-  const [summaryLength, setSummaryLength] = useState<'short' | 'medium' | 'long'>('medium');
-  const [summaryFormat, setSummaryFormat] = useState<'paragraph' | 'bullets' | 'key-points'>('paragraph');
-  const [wordCount, setWordCount] = useState({ original: 0, summary: 0 });
+  const [summaryLength, setSummaryLength] = useState<"brief" | "balanced" | "detailed">("balanced");
+  const [summaryFormat, setSummaryFormat] = useState<"paragraph" | "bullets" | "highlights">("paragraph");
 
-  // Simulated AI summarization (in production, this would call an AI API)
+  const inputWords = inputText.trim().split(/\s+/).filter(Boolean);
+  const summaryWords = summary.trim().split(/\s+/).filter(Boolean);
+  const reduction =
+    inputWords.length > 0
+      ? Math.max(0, Math.round((1 - summaryWords.length / inputWords.length) * 100))
+      : 0;
+
   const summarizeText = async () => {
     if (!inputText.trim()) {
-      toast.error('Please enter text to summarize');
+      toast.error("Paste or type text before summarizing.");
       return;
     }
 
     setIsSummarizing(true);
-    
+
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise((resolve) => setTimeout(resolve, 850));
 
-      // Simple extractive summarization (demo purposes)
-      const sentences = inputText.match(/[^\.!?]+[.!?]+/g) || [];
-      const words = inputText.split(/\s+/).filter(w => w.length > 0);
-      
-      let summaryText = '';
-      
-      if (summaryLength === 'short') {
-        // Take first 1-2 sentences
-        summaryText = sentences.slice(0, Math.min(2, sentences.length)).join(' ');
-      } else if (summaryLength === 'medium') {
-        // Take key sentences from beginning, middle, end
-        const selected = [
-          sentences[0],
-          sentences[Math.floor(sentences.length / 2)],
-          sentences[sentences.length - 1],
-        ].filter(Boolean);
-        summaryText = selected.join(' ');
-      } else {
-        // Take more sentences
-        summaryText = sentences.slice(0, Math.min(5, sentences.length)).join(' ');
+      const sentences = splitSentences(inputText);
+      const fallback = inputText
+        .split(/\n+/)
+        .map((line) => line.trim())
+        .filter(Boolean);
+      const workingSet = sentences.length > 0 ? sentences : fallback;
+      const pickCount = summaryLength === "brief" ? 2 : summaryLength === "balanced" ? 4 : 6;
+
+      const selected = [
+        workingSet[0],
+        workingSet[Math.floor(workingSet.length / 3)],
+        workingSet[Math.floor((workingSet.length * 2) / 3)],
+        workingSet[workingSet.length - 1],
+      ]
+        .filter(Boolean)
+        .filter((value, index, list) => list.indexOf(value) === index)
+        .slice(0, Math.min(pickCount, workingSet.length))
+        .map(normalizeSentence);
+
+      let nextSummary = selected.join(" ");
+
+      if (summaryFormat === "bullets") {
+        nextSummary = selected.map((sentence) => `• ${sentence}`).join("\n");
+      } else if (summaryFormat === "highlights") {
+        nextSummary = selected
+          .slice(0, 3)
+          .map((sentence, index) => `${index + 1}. ${sentence}`)
+          .join("\n");
       }
 
-      // Format output
-      if (summaryFormat === 'bullets') {
-        const points = summaryText.split('. ').filter(s => s.trim());
-        summaryText = points.map(p => `• ${p.trim()}.`).join('\n');
-      } else if (summaryFormat === 'key-points') {
-        const points = summaryText.split('. ').filter(s => s.trim()).slice(0, 3);
-        summaryText = points.map((p, i) => `${i + 1}. ${p.trim()}`).join('\n');
-      }
-
-      setSummary(summaryText);
-      setWordCount({
-        original: words.length,
-        summary: summaryText.split(/\s+/).filter(w => w.length > 0).length,
-      });
-
-      toast.success('Text summarized successfully!');
-    } catch (error) {
-      toast.error('Error summarizing text');
+      setSummary(nextSummary);
+      toast.success("Summary ready.");
+    } catch {
+      toast.error("Something interrupted the summary pass.");
     } finally {
       setIsSummarizing(false);
     }
   };
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(summary);
-    toast.success('Summary copied to clipboard!');
-  };
-
   const clearAll = () => {
-    setInputText('');
-    setSummary('');
-    setWordCount({ original: 0, summary: 0 });
+    setInputText("");
+    setSummary("");
   };
 
-  const calculateCompression = () => {
-    if (wordCount.original === 0) return 0;
-    return Math.round((1 - wordCount.summary / wordCount.original) * 100);
+  const loadSample = () => {
+    setInputText(sampleText);
+    toast.success("Sample text loaded.");
   };
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5" />
-            AI Text Summarizer - Professional Grade
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Tabs defaultValue="input">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="input">Input Text</TabsTrigger>
-              <TabsTrigger value="settings">Settings</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="input" className="space-y-4 mt-4">
-              <div className="space-y-2">
-                <Label htmlFor="input-text">Text to Summarize</Label>
-                <Textarea
-                  id="input-text"
-                  value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
-                  placeholder="Paste or type the text you want to summarize... (minimum 100 words recommended)"
-                  className="min-h-[250px] font-mono text-sm"
-                />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>{inputText.split(/\s+/).filter(w => w.length > 0).length} words</span>
-                  <span>{inputText.length} characters</span>
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="settings" className="space-y-4 mt-4">
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Summary Length</Label>
-                  <div className="flex gap-2">
-                    {(['short', 'medium', 'long'] as const).map((len) => (
-                      <Badge
-                        key={len}
-                        variant={summaryLength === len ? 'default' : 'outline'}
-                        className="cursor-pointer capitalize"
-                        onClick={() => setSummaryLength(len)}
-                      >
-                        {len}
-                      </Badge>
-                    ))}
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {summaryLength === 'short' && '1-2 sentences (very concise)'}
-                    {summaryLength === 'medium' && '3-4 sentences (balanced)'}
-                    {summaryLength === 'long' && '5+ sentences (detailed)'}
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Output Format</Label>
-                  <div className="flex gap-2">
-                    {(['paragraph', 'bullets', 'key-points'] as const).map((fmt) => (
-                      <Badge
-                        key={fmt}
-                        variant={summaryFormat === fmt ? 'default' : 'outline'}
-                        className="cursor-pointer capitalize"
-                        onClick={() => setSummaryFormat(fmt)}
-                      >
-                        {fmt.replace('-', ' ')}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-          </Tabs>
-
-          <Button
-            onClick={summarizeText}
-            disabled={isSummarizing || !inputText.trim()}
-            className="w-full"
-          >
-            {isSummarizing ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Summarizing...
-              </>
-            ) : (
-              <>
-                <Sparkles className="mr-2 h-4 w-4" />
-                Summarize Text
-              </>
-            )}
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* Results */}
-      {summary && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                Summary
-              </span>
-              <div className="flex gap-2">
-                <Button variant="ghost" size="sm" onClick={copyToClipboard}>
-                  <Copy className="h-3 w-3" />
-                </Button>
-                <Button variant="ghost" size="sm" onClick={clearAll}>
-                  <Trash2 className="h-3 w-3" />
-                </Button>
-              </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="p-4 bg-muted rounded-lg">
-              <pre className="whitespace-pre-wrap text-sm font-mono">
-                {summary}
-              </pre>
-            </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 pt-4 border-t">
-              <div className="text-center">
-                <div className="text-2xl font-bold">{wordCount.original}</div>
-                <div className="text-xs text-muted-foreground">Original Words</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">{wordCount.summary}</div>
-                <div className="text-xs text-muted-foreground">Summary Words</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-green-600">{calculateCompression()}%</div>
-                <div className="text-xs text-muted-foreground">Compression</div>
-              </div>
-            </div>
-
-            <div className="p-3 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg">
-              <p className="text-sm text-green-800 dark:text-green-200">
-                <strong>✓ Compression Rate:</strong> Reduced from {wordCount.original} to {wordCount.summary} words 
-                ({calculateCompression()}% reduction)
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Info Card */}
-      <Card>
-        <CardContent className="pt-6">
+      <ToolWorkbench
+        icon={Sparkles}
+        eyebrow="AI Summarizer"
+        title="Condense long writing into a fast decision brief."
+        description="Trim articles, meeting notes, and internal docs into a tighter output while keeping the highest-signal statements visible."
+        badges={["Extractive demo engine", "Length presets", "Bullet or paragraph output"]}
+        metrics={[
+          { label: "Source words", value: inputWords.length, hint: "Live count from the input buffer." },
+          { label: "Summary words", value: summaryWords.length, hint: "Updates after each generation pass." },
+          { label: "Reduction", value: `${reduction}%`, hint: "Estimated shrink from source to output." },
+        ]}
+        aside={
           <div className="space-y-4">
-            <h3 className="font-semibold flex items-center gap-2">
-              <Sparkles className="h-4 w-4" />
-              About AI Text Summarizer
-            </h3>
-            <div className="text-sm text-muted-foreground space-y-2">
-              <p>
-                <strong>How it works:</strong> Our AI analyzes your text and extracts the most important 
-                information to create a concise summary while preserving key points.
-              </p>
-              <p>
-                <strong>Features:</strong> Multiple summary lengths, various output formats, 
-                real-time compression stats, and copy-to-clipboard functionality.
-              </p>
-              <p>
-                <strong>Note:</strong> This demo uses extractive summarization. In production, 
-                this would connect to advanced AI models like GPT-4, Claude, or Sarvam AI for 
-                abstractive summarization.
-              </p>
-            </div>
-
-            <div className="pt-4 border-t">
-              <p className="text-sm font-medium mb-2">Perfect for:</p>
-              <div className="flex flex-wrap gap-2">
-                {['Research Papers', 'News Articles', 'Meeting Notes', 'Legal Documents', 'Blog Posts', 'Reports'].map((use) => (
-                  <Badge key={use} variant="outline">{use}</Badge>
-                ))}
+            <ToolPanel
+              title="Output tuning"
+              description="Choose how compressed the summary should feel and how it should be structured."
+            >
+              <div className="space-y-5">
+                <div className="space-y-2">
+                  <Label>Length profile</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {(["brief", "balanced", "detailed"] as const).map((value) => (
+                      <Badge
+                        key={value}
+                        variant={summaryLength === value ? "default" : "outline"}
+                        className="cursor-pointer rounded-full px-3 py-1 capitalize"
+                        onClick={() => setSummaryLength(value)}
+                      >
+                        {value}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label>Delivery format</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {(["paragraph", "bullets", "highlights"] as const).map((value) => (
+                      <Badge
+                        key={value}
+                        variant={summaryFormat === value ? "default" : "outline"}
+                        className="cursor-pointer rounded-full px-3 py-1 capitalize"
+                        onClick={() => setSummaryFormat(value)}
+                      >
+                        {value}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
               </div>
+            </ToolPanel>
+            <ToolPanel title="Best fit" description="Useful when speed matters more than full nuance.">
+              <ToolTagList
+                tags={["Research intake", "Client briefs", "Release notes", "Long-form drafts", "Meeting notes", "Support transcripts"]}
+              />
+            </ToolPanel>
+          </div>
+        }
+      >
+        <ToolPanel
+          title="Source text"
+          description="Paste a long passage, report section, or article excerpt. The demo engine will extract the strongest lines and compress them."
+          actions={
+            <div className="flex gap-2">
+              <Button variant="ghost" size="sm" onClick={loadSample}>
+                Load sample
+              </Button>
+              <Button variant="ghost" size="sm" onClick={clearAll}>
+                <RotateCcw className="mr-2 h-4 w-4" />
+                Reset
+              </Button>
+            </div>
+          }
+        >
+          <div className="space-y-4">
+            <Textarea
+              value={inputText}
+              onChange={(event) => setInputText(event.target.value)}
+              placeholder="Paste the text you want to condense..."
+              className="min-h-[260px] rounded-3xl border-black/10 bg-white/80 text-sm leading-7 shadow-sm dark:border-white/10 dark:bg-white/[0.03]"
+            />
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="text-xs text-muted-foreground">
+                Best results come from 3 or more sentences with a clear argument or narrative.
+              </p>
+              <Button onClick={summarizeText} disabled={isSummarizing || !inputText.trim()} className="rounded-2xl px-6">
+                {isSummarizing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+                Generate summary
+              </Button>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </ToolPanel>
+      </ToolWorkbench>
+
+      {summary ? (
+        <ToolPanel
+          title="Summary output"
+          description="A compressed pass designed for quick scanning and handoff."
+          actions={
+            <Button variant="outline" size="sm" onClick={() => navigator.clipboard.writeText(summary).then(() => toast.success("Summary copied."))}>
+              <Copy className="mr-2 h-4 w-4" />
+              Copy
+            </Button>
+          }
+        >
+          <div className="space-y-5">
+            <ToolCodeBlock value={summary} className="max-h-none bg-slate-900" />
+            <ToolMetricGrid
+              metrics={[
+                { label: "Sentences used", value: splitSentences(summary).length || summary.split("\n").filter(Boolean).length },
+                { label: "Output style", value: summaryFormat },
+                { label: "Profile", value: summaryLength },
+              ]}
+            />
+          </div>
+        </ToolPanel>
+      ) : null}
+
+      <ToolPanel
+        title="How this demo behaves"
+        description="This is a client-side extractive summarizer, so it works best when the source already contains clear signal sentences."
+      >
+        <ToolTagList tags={["Preserves original phrasing", "No external API call", "Fast preview before model hookup"]} />
+      </ToolPanel>
     </div>
   );
 };

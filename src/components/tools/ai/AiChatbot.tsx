@@ -1,373 +1,226 @@
-import { useState, useRef, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Sparkles, Loader2, User, Bot, Trash2, Copy, RefreshCw } from 'lucide-react';
-import { toast } from 'sonner';
+import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Bot, Copy, Loader2, MessageSquare, RotateCcw, SendHorizonal, User } from "lucide-react";
+import { toast } from "sonner";
+import { ToolPanel, ToolTagList, ToolWorkbench } from "./tool-workbench";
 
-interface Message {
+type Mode = "general" | "code" | "creative" | "analysis";
+
+type Message = {
   id: number;
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
-  timestamp: Date;
-}
+};
+
+const suggestions: Record<Mode, string[]> = {
+  general: ["Summarize what SnapTools does in two sentences.", "What should I test before a release?"],
+  code: ["Explain debounce vs throttle.", "How would you structure a retry helper?"],
+  creative: ["Give me three launch slogans.", "Rewrite this intro to sound sharper."],
+  analysis: ["What metrics should a tools page track?", "How do I compare two rollout options?"],
+};
+
+const createResponse = (mode: Mode, prompt: string) => {
+  const shortPrompt = prompt.trim();
+
+  if (mode === "code") {
+    return `Here is the coding read on "${shortPrompt}":\n\n1. Start by defining the core input and output.\n2. Separate pure transformation logic from side effects.\n3. Add one fast example or test so behavior is obvious.\n\nIf you want, I can turn this into a starter implementation next.`;
+  }
+
+  if (mode === "creative") {
+    return `A more creative angle for "${shortPrompt}" would be:\n\n• Lead with contrast instead of features.\n• Use one strong image or metaphor.\n• End with a small, low-friction action.\n\nThat keeps the message vivid without losing clarity.`;
+  }
+
+  if (mode === "analysis") {
+    return `Quick analysis for "${shortPrompt}":\n\n• Decision lens: speed, trust, maintenance cost.\n• Main risk: solving the surface issue while leaving workflow friction intact.\n• Next step: compare the smallest viable change against the most durable one.`;
+  }
+
+  return `Here is the short answer for "${shortPrompt}":\n\nFocus on the user's next action, remove avoidable friction, and make the outcome legible within a few seconds. When the interface is calm and the path is obvious, adoption goes up fast.`;
+};
 
 const AiChatbot = () => {
+  const [mode, setMode] = useState<Mode>("general");
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      role: 'assistant',
-      content: 'Hello! I\'m SnapBot, your AI assistant. How can I help you today?',
-      timestamp: new Date(),
-    }
+      role: "assistant",
+      content: "Local assistant ready. Pick a mode, ask a question, and I will respond with a structured demo answer.",
+    },
   ]);
-  const [inputMessage, setInputMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [model, setModel] = useState<'general' | 'code' | 'creative' | 'analytical'>('general');
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [draft, setDraft] = useState("");
+  const [isSending, setIsSending] = useState(false);
+  const endRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to bottom
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Simulated AI responses based on model type
-  const getAiResponse = (userMessage: string, selectedModel: string): string => {
-    const lowerMessage = userMessage.toLowerCase();
+  const sendMessage = async (nextDraft?: string) => {
+    const prompt = (nextDraft ?? draft).trim();
+    if (!prompt) return;
 
-    // Code-related responses
-    if (selectedModel === 'code' || lowerMessage.includes('code') || lowerMessage.includes('function') || lowerMessage.includes('programming')) {
-      if (lowerMessage.includes('javascript') || lowerMessage.includes('js')) {
-        return `Here's a JavaScript example for you:
-
-\`\`\`javascript
-// Function to calculate factorial
-function factorial(n) {
-  if (n <= 1) return 1;
-  return n * factorial(n - 1);
-}
-
-console.log(factorial(5)); // Output: 120
-\`\`\`
-
-This is a recursive function that calculates the factorial of a number. Would you like me to explain how it works?`;
-      }
-      if (lowerMessage.includes('python')) {
-        return `Here's a Python solution:
-
-\`\`\`python
-# Function to calculate factorial
-def factorial(n):
-    if n <= 1:
-        return 1
-    return n * factorial(n - 1)
-
-print(factorial(5))  # Output: 120
-\`\`\`
-
-Python uses indentation instead of braces. Need help with any other Python concepts?`;
-      }
-      return `I can help with coding! I support:
-• JavaScript/TypeScript
-• Python
-• Java, C++, C#
-• And many more languages
-
-What specific coding help do you need?`;
-    }
-
-    // Creative responses
-    if (selectedModel === 'creative') {
-      return `That's an interesting topic! Let me share a creative perspective:
-
-✨ **Creative Idea**: ${userMessage.split(' ').slice(0, 3).join(' ').toUpperCase()} - A New Approach
-
-Imagine if we could reimagine this completely. What if the solution isn't in the obvious path, but in exploring uncharted territories?
-
-Here are some creative angles to consider:
-1. **Think backwards** - Start from the desired outcome
-2. **Combine unrelated concepts** - Innovation often comes from fusion
-3. **Break the rules** - Sometimes constraints limit creativity
-
-Would you like me to elaborate on any of these? 🎨`;
-    }
-
-    // Analytical responses
-    if (selectedModel === 'analytical') {
-      return `Let me analyze this systematically:
-
-**Analysis of: "${userMessage.substring(0, 50)}${userMessage.length > 50 ? '...' : ''}"**
-
-📊 **Key Components:**
-• Input factors: Multiple variables identified
-• Process flow: Linear with potential optimization points
-• Output expectations: Measurable results needed
-
-📈 **Data Points:**
-• Complexity: ${userMessage.length > 100 ? 'High' : userMessage.length > 50 ? 'Medium' : 'Low'}
-• Scope: ${userMessage.split(' ').length} words analyzed
-• Sentiment: ${lowerMessage.includes('good') || lowerMessage.includes('great') ? 'Positive' : lowerMessage.includes('bad') || lowerMessage.includes('terrible') ? 'Negative' : 'Neutral'}
-
-**Recommendation:** Proceed with structured approach, monitoring key metrics.
-
-Need deeper analysis on any specific aspect?`;
-    }
-
-    // General responses (default)
-    if (lowerMessage.includes('hello') || lowerMessage.includes('hi ') || lowerMessage.includes('hey')) {
-      return `Hello there! 👋 Great to meet you! I'm here to help with:
-      
-• **General questions** - Ask me anything
-• **Code help** - Switch to Code mode for programming help
-• **Creative ideas** - Try Creative mode for brainstorming
-• **Analysis** - Use Analytical mode for data-driven insights
-
-What would you like to explore today?`;
-    }
-
-    if (lowerMessage.includes('help')) {
-      return `I'd be happy to help! Here's what I can do:
-
-🔧 **General Assistance**
-• Answer questions on various topics
-• Provide explanations and summaries
-• Help with research and learning
-
-💻 **Code Mode** (switch above)
-• Generate code examples
-• Debug issues
-• Explain programming concepts
-
-🎨 **Creative Mode**
-• Brainstorm ideas
-• Write content
-• Creative problem-solving
-
-📊 **Analytical Mode**
-• Data analysis
-• Structured breakdowns
-• Metric-based insights
-
-Just ask your question or switch modes above!`;
-    }
-
-    // Default response
-    return `That's an interesting point about "${userMessage.substring(0, 30)}${userMessage.length > 30 ? '...' : ''}". 
-
-Let me share my thoughts:
-
-**Key Insights:**
-1. This topic has multiple dimensions to consider
-2. Context matters - could you provide more details?
-3. I can offer a more targeted response with additional information
-
-**Suggested Next Steps:**
-• Ask a specific question
-• Switch to a specialized mode (Code/Creative/Analytical)
-• Provide more context for deeper analysis
-
-What aspect would you like to explore further? 🤔`;
-  };
-
-  const sendMessage = async () => {
-    if (!inputMessage.trim()) return;
-
-    const userMessage: Message = {
-      id: Date.now(),
-      role: 'user',
-      content: inputMessage,
-      timestamp: new Date(),
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-    setInputMessage('');
-    setIsLoading(true);
+    const userMessage: Message = { id: Date.now(), role: "user", content: prompt };
+    setMessages((current) => [...current, userMessage]);
+    setDraft("");
+    setIsSending(true);
 
     try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
-
-      const aiResponse: Message = {
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      const assistantMessage: Message = {
         id: Date.now() + 1,
-        role: 'assistant',
-        content: getAiResponse(inputMessage, model),
-        timestamp: new Date(),
+        role: "assistant",
+        content: createResponse(mode, prompt),
       };
-
-      setMessages(prev => [...prev, aiResponse]);
-      toast.success('Response generated!');
-    } catch (error) {
-      toast.error('Error generating response');
+      setMessages((current) => [...current, assistantMessage]);
     } finally {
-      setIsLoading(false);
+      setIsSending(false);
     }
-  };
-
-  const clearChat = () => {
-    setMessages([
-      {
-        id: 1,
-        role: 'assistant',
-        content: 'Hello! I\'m SnapBot, your AI assistant. How can I help you today?',
-        timestamp: new Date(),
-      }
-    ]);
-    toast.success('Chat cleared!');
-  };
-
-  const copyMessage = (content: string) => {
-    navigator.clipboard.writeText(content);
-    toast.success('Message copied!');
-  };
-
-  const formatTime = (date: Date): string => {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <span className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5" />
-              AI Chatbot - Professional Grade
-            </span>
-            <Badge variant="outline" className="capitalize">{model} Mode</Badge>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Model Selection */}
-          <div className="space-y-2">
-            <Label>Chat Mode</Label>
-            <Select value={model} onValueChange={(v) => setModel(v as any)}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="general">🔧 General - All-purpose assistant</SelectItem>
-                <SelectItem value="code">💻 Code - Programming help</SelectItem>
-                <SelectItem value="creative">🎨 Creative - Brainstorming</SelectItem>
-                <SelectItem value="analytical">📊 Analytical - Data-driven insights</SelectItem>
-              </SelectContent>
-            </Select>
+      <ToolWorkbench
+        icon={MessageSquare}
+        eyebrow="AI Chatbot"
+        title="Use a compact local assistant to sketch answers and next steps."
+        description="This chat workspace is tuned for short, mode-based demo responses so the UI feels like a real operator console instead of a generic form."
+        badges={["Conversation history", "Mode presets", "Quick prompts"]}
+        metrics={[
+          { label: "Messages", value: messages.length },
+          { label: "Mode", value: mode },
+          { label: "Draft chars", value: draft.length },
+        ]}
+        aside={
+          <div className="space-y-4">
+            <ToolPanel title="Modes" description="Shift the assistant's stance based on the type of help you need.">
+              <div className="flex flex-wrap gap-2">
+                {(["general", "code", "creative", "analysis"] as const).map((value) => (
+                  <Badge
+                    key={value}
+                    variant={mode === value ? "default" : "outline"}
+                    className="cursor-pointer rounded-full px-3 py-1 capitalize"
+                    onClick={() => setMode(value)}
+                  >
+                    {value}
+                  </Badge>
+                ))}
+              </div>
+            </ToolPanel>
+            <ToolPanel title="Suggested prompts" description="Use one to see the response style immediately.">
+              <div className="space-y-2">
+                {suggestions[mode].map((prompt) => (
+                  <button
+                    key={prompt}
+                    type="button"
+                    onClick={() => {
+                      setDraft(prompt);
+                      toast.success("Prompt loaded into the composer.");
+                    }}
+                    className="w-full rounded-2xl border border-black/5 bg-white/70 px-4 py-3 text-left text-sm shadow-sm transition-colors hover:border-primary/20 hover:bg-primary/5 dark:border-white/10 dark:bg-white/[0.03]"
+                  >
+                    {prompt}
+                  </button>
+                ))}
+              </div>
+            </ToolPanel>
+            <ToolPanel title="Great for" description="Treat this as a local response sandbox before model integration.">
+              <ToolTagList tags={["Answer framing", "Support macros", "Reasoning scaffolds", "Prompt testing"]} />
+            </ToolPanel>
           </div>
-
-          {/* Chat Messages */}
-          <div className="h-[400px] overflow-y-auto space-y-4 p-4 bg-muted rounded-lg">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
+        }
+      >
+        <ToolPanel
+          title="Conversation"
+          description="Write a prompt, send it, and the local responder will return a mode-aware answer."
+          actions={
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setMessages([
+                  {
+                    id: 1,
+                    role: "assistant",
+                    content: "Local assistant ready. Pick a mode, ask a question, and I will respond with a structured demo answer.",
+                  },
+                ]);
+                setDraft("");
+              }}
+            >
+              <RotateCcw className="mr-2 h-4 w-4" />
+              Reset
+            </Button>
+          }
+        >
+          <div className="space-y-4">
+            <div className="max-h-[420px] space-y-3 overflow-auto rounded-3xl border border-black/5 bg-white/70 p-4 shadow-inner dark:border-white/10 dark:bg-white/[0.03]">
+              {messages.map((message) => (
                 <div
-                  className={`max-w-[80%] p-3 rounded-lg ${
-                    message.role === 'user'
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-background border'
-                  }`}
+                  key={message.id}
+                  className={`flex ${message.role === "assistant" ? "justify-start" : "justify-end"}`}
                 >
-                  <div className="flex items-center gap-2 mb-2">
-                    {message.role === 'assistant' ? (
-                      <Bot className="h-4 w-4" />
-                    ) : (
-                      <User className="h-4 w-4" />
-                    )}
-                    <span className="text-xs opacity-70">{formatTime(message.timestamp)}</span>
+                  <div
+                    className={`max-w-[85%] rounded-3xl px-4 py-3 text-sm leading-7 shadow-sm ${
+                      message.role === "assistant"
+                        ? "border border-black/5 bg-background dark:border-white/10"
+                        : "bg-primary text-primary-foreground"
+                    }`}
+                  >
+                    <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] opacity-70">
+                      {message.role === "assistant" ? <Bot className="h-3.5 w-3.5" /> : <User className="h-3.5 w-3.5" />}
+                      {message.role}
+                    </div>
+                    <div className="whitespace-pre-wrap">{message.content}</div>
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="ml-auto h-6 w-6 p-0"
-                      onClick={() => copyMessage(message.content)}
+                      className="mt-2 h-7 px-2 text-xs"
+                      onClick={() => navigator.clipboard.writeText(message.content).then(() => toast.success("Message copied."))}
                     >
-                      <Copy className="h-3 w-3" />
+                      <Copy className="mr-2 h-3 w-3" />
+                      Copy
                     </Button>
                   </div>
-                  <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                 </div>
-              </div>
-            ))}
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="bg-background border p-3 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <Bot className="h-4 w-4" />
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    <span className="text-sm text-muted-foreground">Thinking...</span>
+              ))}
+              {isSending ? (
+                <div className="flex justify-start">
+                  <div className="rounded-3xl border border-black/5 bg-background px-4 py-3 text-sm shadow-sm dark:border-white/10">
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Thinking through a response...
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Input */}
-          <div className="flex gap-2">
-            <Input
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), sendMessage())}
-              placeholder={
-                model === 'general' ? 'Ask me anything...' :
-                model === 'code' ? 'Ask about programming...' :
-                model === 'creative' ? 'Share your creative ideas...' :
-                'Enter data for analysis...'
-              }
-              disabled={isLoading}
-              className="flex-1"
-            />
-            <Button onClick={sendMessage} disabled={isLoading || !inputMessage.trim()}>
-              {isLoading ? 'Sending...' : 'Send'}
-            </Button>
-            <Button variant="outline" onClick={clearChat}>
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </div>
-
-          <p className="text-xs text-muted-foreground text-center">
-            Press Enter to send, Shift+Enter for new line
-          </p>
-        </CardContent>
-      </Card>
-
-      {/* Info Card */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="space-y-4">
-            <h3 className="font-semibold flex items-center gap-2">
-              <Sparkles className="h-4 w-4" />
-              About AI Chatbot
-            </h3>
-            <div className="text-sm text-muted-foreground space-y-2">
-              <p>
-                <strong>How it works:</strong> Our AI assistant provides intelligent responses 
-                tailored to your selected mode - General, Code, Creative, or Analytical.
-              </p>
-              <p>
-                <strong>Features:</strong> Multiple chat modes, conversation history, 
-                copy-to-clipboard, real-time responses, and mode-specific expertise.
-              </p>
-              <p>
-                <strong>Note:</strong> This demo uses pattern matching. In production, 
-                this would connect to advanced AI models like GPT-4, Claude, or Sarvam AI 
-                for human-like conversations.
-              </p>
+              ) : null}
+              <div ref={endRef} />
             </div>
 
-            <div className="pt-4 border-t">
-              <p className="text-sm font-medium mb-2">Perfect for:</p>
-              <div className="flex flex-wrap gap-2">
-                {['Quick Questions', 'Code Help', 'Brainstorming', 'Data Analysis', 'Learning', 'Problem-Solving'].map(use => (
-                  <Badge key={use} variant="outline">{use}</Badge>
-                ))}
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="chat-input">Prompt</Label>
+              <Textarea
+                id="chat-input"
+                value={draft}
+                onChange={(event) => setDraft(event.target.value)}
+                placeholder="Ask a question or describe what you need..."
+                className="min-h-[120px] rounded-3xl border-black/10 bg-white/80 text-sm leading-7 shadow-sm dark:border-white/10 dark:bg-white/[0.03]"
+              />
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="text-xs text-muted-foreground">
+                Enter sends a message only when you press the button, so you can draft multi-line prompts without interruption.
+              </p>
+              <Button onClick={() => sendMessage()} disabled={isSending || !draft.trim()} className="rounded-2xl px-6">
+                {isSending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <SendHorizonal className="mr-2 h-4 w-4" />}
+                Send prompt
+              </Button>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </ToolPanel>
+      </ToolWorkbench>
     </div>
   );
 };

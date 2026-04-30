@@ -1,350 +1,191 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Copy, Trash2, Sparkles, Loader2, CheckCircle2, Code2 } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Code2, Copy, Loader2, Sparkles } from "lucide-react";
+import { toast } from "sonner";
+import {
+  ToolCodeBlock,
+  ToolMetricGrid,
+  ToolPanel,
+  ToolTagList,
+  ToolWorkbench,
+} from "./tool-workbench";
+
+const examplePrompts: Record<string, string> = {
+  javascript: "Create a fetch helper with retry logic and JSON parsing.",
+  typescript: "Create a typed utility that filters active users from a list.",
+  python: "Write a function that groups items by category and counts them.",
+};
+
+const buildCode = (language: string, prompt: string, includeComments: boolean, includeTests: boolean) => {
+  const header = includeComments ? `// Generated for: ${prompt}\n` : "";
+  const tests = includeTests ? `\n\n// Quick test\nconsole.log(example());\n` : "";
+
+  if (language === "python") {
+    const pyHeader = includeComments ? `# Generated for: ${prompt}\n` : "";
+    const pyTests = includeTests ? `\n\nif __name__ == "__main__":\n    print(example())\n` : "";
+    return `${pyHeader}def example():\n    """${prompt}"""\n    items = ["alpha", "beta", "gamma"]\n    return [item.upper() for item in items]\n${pyTests}`;
+  }
+
+  if (language === "typescript") {
+    return `${header}type Item = { id: number; active: boolean };\n\nexport function example(items: Item[]): Item[] {\n  return items.filter((item) => item.active);\n}${tests}`;
+  }
+
+  return `${header}export function example() {\n  const values = ["alpha", "beta", "gamma"];\n  return values.map((value) => value.toUpperCase());\n}${tests}`;
+};
 
 const AiCodeGenerator = () => {
-  const [prompt, setPrompt] = useState<string>('');
-  const [language, setLanguage] = useState<string>('javascript');
-  const [generatedCode, setGeneratedCode] = useState<string>('');
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [complexity, setComplexity] = useState<'simple' | 'moderate' | 'advanced'>('moderate');
+  const [prompt, setPrompt] = useState("");
+  const [language, setLanguage] = useState("javascript");
+  const [complexity, setComplexity] = useState<"simple" | "moderate" | "advanced">("moderate");
   const [includeComments, setIncludeComments] = useState(true);
   const [includeTests, setIncludeTests] = useState(false);
+  const [generatedCode, setGeneratedCode] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  // Supported languages
-  const languages = [
-    { value: 'javascript', label: 'JavaScript', icon: 'JS' },
-    { value: 'typescript', label: 'TypeScript', icon: 'TS' },
-    { value: 'python', label: 'Python', icon: 'PY' },
-    { value: 'java', label: 'Java', icon: 'JA' },
-    { value: 'cpp', label: 'C++', icon: 'C+' },
-    { value: 'csharp', label: 'C#', icon: 'C#' },
-    { value: 'go', label: 'Go', icon: 'GO' },
-    { value: 'rust', label: 'Rust', icon: 'RS' },
-    { value: 'php', label: 'PHP', icon: 'PHP' },
-    { value: 'ruby', label: 'Ruby', icon: 'RB' },
-  ];
-
-  // Simulated AI code generation
   const generateCode = async () => {
     if (!prompt.trim()) {
-      toast.error('Please describe what code you need');
+      toast.error("Describe the code you need first.");
       return;
     }
 
     setIsGenerating(true);
 
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      // Generate code based on prompt and language (demo)
-      let code = '';
-
-      if (language === 'javascript') {
-        code = generateJavaScript(prompt, complexity, includeComments, includeTests);
-      } else if (language === 'python') {
-        code = generatePython(prompt, complexity, includeComments, includeTests);
-      } else if (language === 'typescript') {
-        code = generateTypeScript(prompt, complexity, includeComments, includeTests);
-      } else {
-        code = generateGeneric(prompt, language, complexity, includeComments, includeTests);
-      }
-
-      setGeneratedCode(code);
-      toast.success('Code generated successfully!');
-    } catch (error) {
-      toast.error('Error generating code');
+      await new Promise((resolve) => setTimeout(resolve, 900));
+      const next = buildCode(language, prompt, includeComments, includeTests);
+      setGeneratedCode(next);
+      toast.success("Code draft generated.");
     } finally {
       setIsGenerating(false);
     }
   };
 
-  // Code generation helpers (simulated AI output)
-  const generateJavaScript = (prompt: string, complexity: string, comments: boolean, tests: boolean): string => {
-    const comment = comments ? '// Generated by SnapTools AI\n' : '';
-    const testCode = tests ? '\n\n// Tests\nconsole.log("Testing...");\n' : '';
-    
-    if (prompt.toLowerCase().includes('function') || prompt.toLowerCase().includes('fibonacci')) {
-      return `${comment}function fibonacci(n) {
-  if (n <= 1) return n;
-  
-  let a = 0, b = 1;
-  for (let i = 2; i <= n; i++) {
-    const temp = b;
-    b = a + b;
-    a = temp;
-  }
-  
-  return b;
-}
-
-// Example usage
-console.log(fibonacci(10));${testCode}`;
-    }
-
-    if (prompt.toLowerCase().includes('api') || prompt.toLowerCase().includes('fetch')) {
-      return `${comment}async function fetchData(url) {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(\`HTTP error! status: \${response.status}\`);
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    throw error;
-  }
-}
-
-// Example usage
-fetchData('https://api.example.com/data')
-  .then(data => console.log(data))
-  .catch(err => console.error(err));${testCode}`;
-    }
-
-    return `${comment}// ${prompt}\nfunction solution() {\n  // Implementation here\n  console.log('Hello from generated code!');\n}\n\nsolution();${testCode}`;
-  };
-
-  const generatePython = (prompt: string, complexity: string, comments: boolean, tests: boolean): string => {
-    const comment = comments ? '# Generated by SnapTools AI\n' : '';
-    const testCode = tests ? '\n\n# Tests\nif __name__ == "__main__":\n    print("Testing...")\n' : '';
-    
-    if (prompt.toLowerCase().includes('sort')) {
-      return `${comment}def quick_sort(arr):\n    if len(arr) <= 1:\n        return arr\n    \n    pivot = arr[len(arr) // 2]\n    left = [x for x in arr if x < pivot]\n    middle = [x for x in arr if x == pivot]\n    right = [x for x in arr if x > pivot]\n    \n    return quick_sort(left) + middle + quick_sort(right)\n\n# Example usage\nprint(quick_sort([3, 6, 8, 10, 1, 2, 1]))\n${testCode}`;
-    }
-
-    return `${comment}# ${prompt}\ndef solution():\n    # Implementation here\n    print("Hello from generated code!")\n\nsolution()\n${testCode}`;
-  };
-
-  const generateTypeScript = (prompt: string, complexity: string, comments: boolean, tests: boolean): string => {
-    const comment = comments ? '// Generated by SnapTools AI\n' : '';
-    const testCode = tests ? '\n\n// Tests\nconsole.log("Testing...");\n' : '';
-    
-    return `${comment}interface Config {\n  id: number;\n  name: string;\n  active: boolean;\n}\n\nfunction processData(items: Config[]): Config[] {\n  return items.filter(item => item.active);\n}\n\n// Example usage\nconst data: Config[] = [\n  { id: 1, name: "Item 1", active: true },\n  { id: 2, name: "Item 2", active: false },\n];\n\nconsole.log(processData(data));${testCode}`;
-  };
-
-  const generateGeneric = (prompt: string, lang: string, complexity: string, comments: boolean, tests: boolean): string => {
-    const commentChar = lang === 'java' || lang === 'cpp' || lang === 'csharp' ? '//' : '#';
-    const comment = comments ? `${comment} Generated by SnapTools AI\n` : '';
-    return `${comment}${comment} ${prompt}\n${comment} Implementation in ${lang}\n\n// Code would be generated here based on your description\n\n${tests ? `\n${comment} Tests\n${comment} Add test cases here\n` : ''}`;
-  };
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(generatedCode);
-    toast.success('Code copied to clipboard!');
-  };
-
-  const clearAll = () => {
-    setPrompt('');
-    setGeneratedCode('');
-  };
-
-  const loadExample = () => {
-    const examples: Record<string, string> = {
-      javascript: 'Create a function to calculate fibonacci sequence',
-      python: 'Write a function to sort an array using quick sort',
-      typescript: 'Create an interface and function to process user data',
-    };
-    setPrompt(examples[language] || examples.javascript);
-  };
-
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5" />
-            AI Code Generator - Professional Grade
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Language & Settings */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <Label>Programming Language</Label>
-              <Select value={language} onValueChange={setLanguage}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {languages.map(lang => (
-                    <SelectItem key={lang.value} value={lang.value}>
-                      <span className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-xs">{lang.icon}</Badge>
-                        {lang.label}
-                      </span>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Complexity Level</Label>
-              <div className="flex gap-2">
-                {(['simple', 'moderate', 'advanced'] as const).map(lev => (
-                  <Badge
-                    key={lev}
-                    variant={complexity === lev ? 'default' : 'outline'}
-                    className="cursor-pointer capitalize"
-                    onClick={() => setComplexity(lev)}
-                  >
-                    {lev}
-                  </Badge>
-                ))}
+      <ToolWorkbench
+        icon={Code2}
+        eyebrow="AI Code Generator"
+        title="Move from vague request to a structured code draft."
+        description="Set the language, choose how much scaffolding to include, and generate a starting implementation you can refine by hand."
+        badges={["Language presets", "Comment toggle", "Optional quick tests"]}
+        metrics={[
+          { label: "Language", value: language },
+          { label: "Complexity", value: complexity },
+          { label: "Lines", value: generatedCode ? generatedCode.split("\n").length : 0 },
+        ]}
+        aside={
+          <div className="space-y-4">
+            <ToolPanel title="Generation options" description="These toggles shape how much structure the draft includes.">
+              <div className="space-y-5">
+                <div className="space-y-2">
+                  <Label>Complexity</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {(["simple", "moderate", "advanced"] as const).map((value) => (
+                      <Badge
+                        key={value}
+                        variant={complexity === value ? "default" : "outline"}
+                        className="cursor-pointer rounded-full px-3 py-1 capitalize"
+                        onClick={() => setComplexity(value)}
+                      >
+                        {value}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label>Extras</Label>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge
+                      variant={includeComments ? "default" : "outline"}
+                      className="cursor-pointer rounded-full px-3 py-1"
+                      onClick={() => setIncludeComments((value) => !value)}
+                    >
+                      Comments
+                    </Badge>
+                    <Badge
+                      variant={includeTests ? "default" : "outline"}
+                      className="cursor-pointer rounded-full px-3 py-1"
+                      onClick={() => setIncludeTests((value) => !value)}
+                    >
+                      Quick test
+                    </Badge>
+                  </div>
+                </div>
               </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Options</Label>
-              <div className="flex gap-4">
-                <label className="flex items-center gap-2 text-sm cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={includeComments}
-                    onChange={(e) => setIncludeComments(e.target.checked)}
-                    className="rounded"
-                  />
-                  Comments
-                </label>
-                <label className="flex items-center gap-2 text-sm cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={includeTests}
-                    onChange={(e) => setIncludeTests(e.target.checked)}
-                    className="rounded"
-                  />
-                  Tests
-                </label>
-              </div>
-            </div>
+            </ToolPanel>
+            <ToolPanel title="Good prompts" description="Ask for one contained behavior, one environment, and one expected output.">
+              <ToolTagList tags={["API helper", "Data transform", "Typed utility", "UI helper", "Formatter", "Validation rule"]} />
+            </ToolPanel>
           </div>
-
-          {/* Prompt Input */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="prompt">Describe the Code You Need</Label>
-              <Button variant="ghost" size="sm" onClick={loadExample}>
-                Load Example
-              </Button>
+        }
+      >
+        <ToolPanel
+          title="Prompt"
+          description="Describe the function, utility, or component you need. Load a sample if you want to preview the code style."
+          actions={
+            <Button variant="ghost" size="sm" onClick={() => setPrompt(examplePrompts[language] ?? examplePrompts.javascript)}>
+              Load example
+            </Button>
+          }
+        >
+          <div className="space-y-4">
+            <div className="flex flex-wrap gap-2">
+              {["javascript", "typescript", "python", "java", "go", "rust"].map((value) => (
+                <Badge
+                  key={value}
+                  variant={language === value ? "default" : "outline"}
+                  className="cursor-pointer rounded-full px-3 py-1"
+                  onClick={() => setLanguage(value)}
+                >
+                  {value}
+                </Badge>
+              ))}
             </div>
             <Textarea
-              id="prompt"
               value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Describe what you want the code to do... (e.g., 'Create a function to fetch data from an API with error handling')"
-              className="min-h-[120px]"
+              onChange={(event) => setPrompt(event.target.value)}
+              placeholder="Describe the code you want generated..."
+              className="min-h-[220px] rounded-3xl border-black/10 bg-white/80 text-sm leading-7 shadow-sm dark:border-white/10 dark:bg-white/[0.03]"
+            />
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="text-xs text-muted-foreground">
+                This demo emits starter code. Expect to refine naming, edge cases, and production hardening.
+              </p>
+              <Button onClick={generateCode} disabled={isGenerating || !prompt.trim()} className="rounded-2xl px-6">
+                {isGenerating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+                Generate code
+              </Button>
+            </div>
+          </div>
+        </ToolPanel>
+      </ToolWorkbench>
+
+      {generatedCode ? (
+        <ToolPanel
+          title="Generated code"
+          description="A starter implementation based on the current prompt and options."
+          actions={
+            <Button variant="outline" size="sm" onClick={() => navigator.clipboard.writeText(generatedCode).then(() => toast.success("Code copied."))}>
+              <Copy className="mr-2 h-4 w-4" />
+              Copy
+            </Button>
+          }
+        >
+          <div className="space-y-5">
+            <ToolCodeBlock value={generatedCode} className="max-h-none" />
+            <ToolMetricGrid
+              metrics={[
+                { label: "Lines", value: generatedCode.split("\n").length },
+                { label: "Comments", value: includeComments ? "On" : "Off" },
+                { label: "Quick test", value: includeTests ? "Included" : "Skipped" },
+              ]}
             />
           </div>
-
-          <Button
-            onClick={generateCode}
-            disabled={isGenerating || !prompt.trim()}
-            className="w-full"
-          >
-            {isGenerating ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Generating Code...
-              </>
-            ) : (
-              <>
-                <Sparkles className="mr-2 h-4 w-4" />
-                Generate Code
-              </>
-            )}
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* Generated Code */}
-      {generatedCode && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                Generated Code
-              </span>
-              <div className="flex gap-2">
-                <Badge variant="outline">{language}</Badge>
-                <Button variant="ghost" size="sm" onClick={copyToClipboard}>
-                  <Copy className="h-3 w-3" />
-                </Button>
-                <Button variant="ghost" size="sm" onClick={clearAll}>
-                  <Trash2 className="h-3 w-3" />
-                </Button>
-              </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="p-4 bg-muted rounded-lg overflow-x-auto">
-              <pre className="text-sm font-mono whitespace-pre-wrap">
-                <code>{generatedCode}</code>
-              </pre>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4 pt-4 border-t">
-              <div className="text-center">
-                <div className="text-2xl font-bold">{generatedCode.split('\n').length}</div>
-                <div className="text-xs text-muted-foreground">Lines</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">{language.toUpperCase()}</div>
-                <div className="text-xs text-muted-foreground">Language</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-green-600">{complexity}</div>
-                <div className="text-xs text-muted-foreground">Level</div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Info Card */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="space-y-4">
-            <h3 className="font-semibold flex items-center gap-2">
-              <Code2 className="h-4 w-4" />
-              About AI Code Generator
-            </h3>
-            <div className="text-sm text-muted-foreground space-y-2">
-              <p>
-                <strong>How it works:</strong> Our AI analyzes your description and generates 
-                functional code in your chosen programming language.
-              </p>
-              <p>
-                <strong>Features:</strong> Multiple languages, adjustable complexity, 
-                optional comments and tests, and copy-to-clipboard functionality.
-              </p>
-              <p>
-                <strong>Note:</strong> This demo uses template-based generation. In production, 
-                this would connect to advanced AI models like GPT-4, Claude, or Sarvam AI 
-                for human-like code generation.
-              </p>
-            </div>
-
-            <div className="pt-4 border-t">
-              <p className="text-sm font-medium mb-2">Perfect for:</p>
-              <div className="flex flex-wrap gap-2">
-                {['Prototyping', 'Learning', 'Boilerplate', 'Algorithms', 'API Integration', 'Automation'].map(use => (
-                  <Badge key={use} variant="outline">{use}</Badge>
-                ))}
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+        </ToolPanel>
+      ) : null}
     </div>
   );
 };

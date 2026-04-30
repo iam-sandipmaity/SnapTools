@@ -306,8 +306,7 @@ const RegexTester = () => {
                         /{item.pattern}/{item.flags}
                       </code>
                     </div>
-                     ))}
-                </div>
+                  ))}
                 </div>
               </div>
             </CardContent>

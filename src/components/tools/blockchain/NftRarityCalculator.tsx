@@ -1,346 +1,233 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Copy, Trash2, Sparkles, Loader2, CheckCircle2, Image, BarChart3 } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState } from "react";
+import CryptoJS from "crypto-js";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { BarChart3, Copy, Loader2, Sparkles } from "lucide-react";
+import { toast } from "sonner";
+import {
+  ToolMetricGrid,
+  ToolPanel,
+  ToolTagList,
+  ToolWorkbench,
+} from "../ai/tool-workbench";
 
-interface NFTRarity {
+type TraitResult = {
   trait: string;
   value: string;
-  rarity: 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
-  percentage: number;
+  frequency: number;
   score: number;
-}
+  tier: "common" | "uncommon" | "rare" | "epic" | "legendary";
+};
+
+const sampleTraits = `Background: Midnight Blue\nEyes: Laser Grid\nAccessory: Gold Chain\nJacket: Tuxedo\nMood: Calm\nCompanion: Hover Drone`;
+
+const tierColor = {
+  common: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200",
+  uncommon: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300",
+  rare: "bg-sky-100 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300",
+  epic: "bg-violet-100 text-violet-700 dark:bg-violet-950/40 dark:text-violet-300",
+  legendary: "bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300",
+};
+
+const computeTier = (frequency: number): TraitResult["tier"] => {
+  if (frequency < 1) return "legendary";
+  if (frequency < 3) return "epic";
+  if (frequency < 8) return "rare";
+  if (frequency < 18) return "uncommon";
+  return "common";
+};
+
+const scoreTrait = (collection: string, trait: string, value: string): TraitResult => {
+  const hash = CryptoJS.SHA256(`${collection}:${trait}:${value}`).toString();
+  const numeric = parseInt(hash.slice(0, 8), 16);
+  const frequency = Math.max(0.4, ((numeric % 2600) / 100) + 0.4);
+  const roundedFrequency = Math.round(frequency * 10) / 10;
+  const tier = computeTier(roundedFrequency);
+  return {
+    trait,
+    value,
+    frequency: roundedFrequency,
+    score: Math.round((100 / roundedFrequency) * 100) / 100,
+    tier,
+  };
+};
 
 const NftRarityCalculator = () => {
-  const [nftData, setNftData] = useState<string>('');
-  const [collectionName, setCollectionName] = useState<string>('');
-  const [rarityResults, setRarityResults] = useState<NFTRarity[]>([]);
+  const [collectionName, setCollectionName] = useState("");
+  const [traitsInput, setTraitsInput] = useState("");
+  const [collectionSize, setCollectionSize] = useState(10000);
+  const [results, setResults] = useState<TraitResult[]>([]);
   const [isCalculating, setIsCalculating] = useState(false);
-  const [overallScore, setOverallScore] = useState<number>(0);
 
-  // Simulated NFT rarity calculation
   const calculateRarity = async () => {
-    if (!nftData.trim()) {
-      toast.error('Please enter NFT metadata or traits');
+    if (!traitsInput.trim()) {
+      toast.error("Add at least one trait before calculating.");
       return;
     }
 
     setIsCalculating(true);
 
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      // Parse input (expecting trait:value format)
-      const lines = nftData.split('\n').filter(l => l.trim());
-      const results: NFTRarity[] = [];
-      let totalScore = 0;
-
-      // Simulate rarity calculation
-      const rarityLevels: Array<'common' | 'uncommon' | 'rare' | 'epic' | 'legendary'> = 
-        ['common', 'uncommon', 'rare', 'epic', 'legendary'];
-      const rarityWeights = { common: 1, uncommon: 2, rare: 5, epic: 10, legendary: 25 };
-
-      lines.forEach((line, idx) => {
-        const [trait, value] = line.split(':').map(s => s.trim());
-        if (!trait || !value) return;
-
-        // Simulate rarity based on "rarity" keyword or random
-        const isRare = value.toLowerCase().includes('rare') || 
-                        value.toLowerCase().includes('legendary') ||
-                        Math.random() > 0.7;
-        
-        const rarity = isRare ? 
-          (Math.random() > 0.7 ? 'legendary' : Math.random() > 0.5 ? 'epic' : 'rare') :
-          (Math.random() > 0.5 ? 'uncommon' : 'common');
-        
-        const percentage = rarity === 'common' ? 40 + Math.random() * 30 :
-                         rarity === 'uncommon' ? 20 + Math.random() * 20 :
-                         rarity === 'rare' ? 5 + Math.random() * 15 :
-                         rarity === 'epic' ? 1 + Math.random() * 4 :
-                         0.1 + Math.random() * 0.9;
-        
-        const score = rarityWeights[rarity] * (100 / (percentage || 1));
-        totalScore += score;
-
-        results.push({
-          trait: trait || `Trait ${idx + 1}`,
-          value: value || 'Unknown',
-          rarity,
-          percentage: Math.round(percentage * 100) / 100,
-          score: Math.round(score * 100) / 100,
+      await new Promise((resolve) => setTimeout(resolve, 900));
+      const collection = collectionName.trim() || "Untitled Collection";
+      const nextResults = traitsInput
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map((line, index) => {
+          const [trait, ...rest] = line.split(":");
+          return scoreTrait(collection, trait?.trim() || `Trait ${index + 1}`, rest.join(":").trim() || "Unknown");
         });
-      });
 
-      setRarityResults(results);
-      setOverallScore(Math.round(totalScore * 100) / 100);
-      toast.success('Rarity calculated successfully!');
-    } catch (error) {
-      toast.error('Error calculating rarity');
+      setResults(nextResults.sort((a, b) => b.score - a.score));
+      toast.success("Rarity profile generated.");
     } finally {
       setIsCalculating(false);
     }
   };
 
-  const getRarityColor = (rarity: string): string => {
-    switch (rarity) {
-      case 'common': return 'bg-gray-100 text-gray-800';
-      case 'uncommon': return 'bg-green-100 text-green-800';
-      case 'rare': return 'bg-blue-100 text-blue-800';
-      case 'epic': return 'bg-purple-100 text-purple-800';
-      case 'legendary': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const copyToClipboard = () => {
-    const text = rarityResults.map(r => 
-      `${r.trait}: ${r.value} - ${r.rarity} (${r.percentage}%, Score: ${r.score})`
-    ).join('\n');
-    navigator.clipboard.writeText(text);
-    toast.success('Rarity data copied!');
-  };
-
-  const clearAll = () => {
-    setNftData('');
-    setCollectionName('');
-    setRarityResults([]);
-    setOverallScore(0);
-  };
-
-  const loadExample = () => {
-    setCollectionName('Cool Cats Collection');
-    setNftData(`Background: Blue
-Fur: Rare Orange
-Eyes: Laser
-Hat: Crown
-Accessory: Gold Chain
-Mouth: Cigar
-Clothes: Tuxedo`);
-  };
+  const overallScore =
+    results.length > 0 ? Math.round((results.reduce((total, result) => total + result.score, 0) / results.length) * 100) / 100 : 0;
+  const rarest = results[0];
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5" />
-            NFT Rarity Calculator - Professional Grade
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="collection">Collection Name (Optional)</Label>
-            <Input
-              id="collection"
-              value={collectionName}
-              onChange={(e) => setCollectionName(e.target.value)}
-              placeholder="e.g., Bored Ape Yacht Club"
-            />
+      <ToolWorkbench
+        icon={BarChart3}
+        eyebrow="NFT Rarity"
+        title="Turn raw metadata into a cleaner rarity readout."
+        description="Paste trait lines, calculate a deterministic rarity profile, and inspect which properties are carrying the strongest rarity weight."
+        accent="amber"
+        badges={["Deterministic scoring", "Trait-by-trait breakdown", "Collection-aware seed"]}
+        metrics={[
+          { label: "Traits", value: results.length },
+          { label: "Avg score", value: overallScore || 0 },
+          { label: "Rarest tier", value: rarest?.tier ?? "—" },
+        ]}
+        aside={
+          <div className="space-y-4">
+            <ToolPanel title="Tier map" description="Lower simulated frequency means higher rarity weight.">
+              <ToolTagList tags={["Legendary <1%", "Epic <3%", "Rare <8%", "Uncommon <18%", "Common 18%+"]} />
+            </ToolPanel>
+            <ToolPanel title="Best use" description="Helpful for previewing a ranking UI before wiring real collection data.">
+              <ToolTagList tags={["Metadata QA", "Rarity mockups", "Trait ranking", "Collection preview"]} />
+            </ToolPanel>
           </div>
-
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="nft-data">NFT Traits (trait: value format)</Label>
-              <Button variant="ghost" size="sm" onClick={loadExample}>
-                Load Example
+        }
+      >
+        <ToolPanel
+          title="Collection input"
+          description="Enter the collection context and list each trait as `trait: value` on its own line."
+          actions={
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setCollectionName("SnapTools Genesis");
+                setTraitsInput(sampleTraits);
+                toast.success("Sample metadata loaded.");
+              }}
+            >
+              Load sample
+            </Button>
+          }
+        >
+          <div className="space-y-5">
+            <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_180px]">
+              <div className="space-y-2">
+                <Label htmlFor="collection-name">Collection name</Label>
+                <Input
+                  id="collection-name"
+                  value={collectionName}
+                  onChange={(event) => setCollectionName(event.target.value)}
+                  placeholder="e.g. SnapTools Genesis"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="collection-size">Collection size</Label>
+                <Input
+                  id="collection-size"
+                  type="number"
+                  value={collectionSize}
+                  onChange={(event) => setCollectionSize(Number(event.target.value) || 10000)}
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="traits">Traits</Label>
+              <Textarea
+                id="traits"
+                value={traitsInput}
+                onChange={(event) => setTraitsInput(event.target.value)}
+                placeholder="Background: Blue&#10;Eyes: Laser&#10;Accessory: Gold Chain"
+                className="min-h-[220px] rounded-3xl border-black/10 bg-white/80 font-mono text-sm leading-7 shadow-sm dark:border-white/10 dark:bg-white/[0.03]"
+              />
+            </div>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="text-xs text-muted-foreground">
+                The current score is deterministic and collection-seeded, but it is still a demo substitute for live marketplace statistics.
+              </p>
+              <Button onClick={calculateRarity} disabled={isCalculating || !traitsInput.trim()} className="rounded-2xl px-6">
+                {isCalculating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+                Calculate rarity
               </Button>
             </div>
-            <div className="text-xs text-muted-foreground mb-2">
-              Enter each trait on a new line as "trait: value"
-            </div>
-            <textarea
-              id="nft-data"
-              value={nftData}
-              onChange={(e) => setNftData(e.target.value)}
-              placeholder="Background: Blue&#10;Fur: Rare Orange&#10;Eyes: Laser&#10;Hat: Crown"
-              className="min-h-[200px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-mono"
-            />
           </div>
+        </ToolPanel>
+      </ToolWorkbench>
 
-          <Button
-            onClick={calculateRarity}
-            disabled={isCalculating || !nftData.trim()}
-            className="w-full"
-          >
-            {isCalculating ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Calculating Rarity...
-              </>
-            ) : (
-              <>
-                <BarChart3 className="mr-2 h-4 w-4" />
-                Calculate Rarity
-              </>
-            )}
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* Results */}
-      {rarityResults.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                Rarity Analysis
-              </span>
-              <div className="flex gap-2">
-                <Badge variant="outline" className="text-lg">
-                  Score: {overallScore}
-                </Badge>
-                <Button variant="ghost" size="sm" onClick={copyToClipboard}>
-                  <Copy className="h-3 w-3" />
-                </Button>
-                <Button variant="ghost" size="sm" onClick={clearAll}>
-                  <Trash2 className="h-3 w-3" />
-                </Button>
-              </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {collectionName && (
-                <h3 className="font-medium">{collectionName}</h3>
-              )}
-              
-              <Tabs defaultValue="list">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="list">Trait List</TabsTrigger>
-                  <TabsTrigger value="visual">Visual View</TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="list" className="space-y-3 mt-4">
-                  {rarityResults.map((result, idx) => (
-                    <div key={idx} className="p-4 bg-muted rounded-lg space-y-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Badge className={getRarityColor(result.rarity)}>
-                            {result.rarity}
-                          </Badge>
-                          <span className="font-medium">{result.trait}</span>
-                        </div>
-                        <Badge variant="outline">Score: {result.score}</Badge>
-                      </div>
-                      <div className="text-sm pl-2">
-                        <strong>Value:</strong> {result.value}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="flex-1 bg-background rounded-full h-2">
-                          <div 
-                            className={`h-full rounded-full ${
-                              result.rarity === 'common' ? 'bg-gray-500' :
-                              result.rarity === 'uncommon' ? 'bg-green-500' :
-                              result.rarity === 'rare' ? 'bg-blue-500' :
-                              result.rarity === 'epic' ? 'bg-purple-500' :
-                              'bg-yellow-500'
-                            }`}
-                            style={{ width: `${Math.min(100, result.percentage * 5)}%` }}
-                          />
-                        </div>
-                        <span className="text-xs text-muted-foreground">
-                          {result.percentage}%
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </TabsContent>
-
-                <TabsContent value="visual" className="mt-4">
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-5 gap-2 text-center">
-                      {(['common', 'uncommon', 'rare', 'epic', 'legendary'] as const).map(rarity => {
-                        const count = rarityResults.filter(r => r.rarity === rarity).length;
-                        return (
-                          <div key={rarity} className="p-3 bg-muted rounded-lg">
-                            <div className="text-2xl font-bold">{count}</div>
-                            <Badge className={getRarityColor(rarity)}>{rarity}</Badge>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    <div className="p-4 bg-muted rounded-lg">
-                      <div className="text-sm font-medium mb-2">Rarity Distribution</div>
-                      <div className="space-y-2">
-                        {rarityResults.map((r, idx) => (
-                          <div key={idx} className="flex items-center gap-2">
-                            <div className="w-24 text-xs truncate">{r.trait}:</div>
-                            <div className="flex-1 bg-background rounded-full h-3">
-                              <div 
-                                className={`h-full rounded-full ${
-                                  r.rarity === 'common' ? 'bg-gray-500' :
-                                  r.rarity === 'uncommon' ? 'bg-green-500' :
-                                  r.rarity === 'rare' ? 'bg-blue-500' :
-                                  r.rarity === 'epic' ? 'bg-purple-500' :
-                                  'bg-yellow-500'
-                                }`}
-                                style={{ width: `${Math.min(100, r.score / 2)}%` }}
-                              />
-                            </div>
-                            <div className="w-12 text-xs text-right">{r.score}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Info Card */}
-      <Card>
-        <CardContent className="pt-6">
+      {results.length > 0 ? (
+        <ToolPanel
+          title="Rarity breakdown"
+          description={`Simulated against a collection size of ${collectionSize.toLocaleString()} items.`}
+          actions={
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                navigator.clipboard
+                  .writeText(results.map((result) => `${result.trait}: ${result.value} — ${result.frequency}% (${result.score})`).join("\n"))
+                  .then(() => toast.success("Rarity profile copied."))
+              }
+            >
+              <Copy className="mr-2 h-4 w-4" />
+              Copy
+            </Button>
+          }
+        >
           <div className="space-y-4">
-            <h3 className="font-semibold flex items-center gap-2">
-              <Image className="h-4 w-4" />
-              About NFT Rarity Calculator
-            </h3>
-            <div className="text-sm text-muted-foreground space-y-2">
-              <p>
-                <strong>How it works:</strong> Enter your NFT's traits in "trait: value" format, 
-                and our algorithm calculates the rarity score for each trait and overall.
-              </p>
-              <p>
-                <strong>Features:</strong> Multiple rarity tiers, visual distribution charts, 
-                overall score calculation, and copy-to-clipboard functionality.
-              </p>
-              <p>
-                <strong>Note:</strong> This demo uses simulated rarity. In production, 
-                this would connect to real NFT APIs (OpenSea, LooksRare) and calculate 
-                actual rarity based on collection data.
-              </p>
-            </div>
-
-            <div className="pt-4 border-t">
-              <p className="text-sm font-medium mb-2">Rarity Tiers:</p>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { tier: 'Common', color: 'bg-gray-100 text-gray-800', desc: '40-70%' },
-                  { tier: 'Uncommon', color: 'bg-green-100 text-green-800', desc: '20-40%' },
-                  { tier: 'Rare', color: 'bg-blue-100 text-blue-800', desc: '5-20%' },
-                  { tier: 'Epic', color: 'bg-purple-100 text-purple-800', desc: '1-5%' },
-                  { tier: 'Legendary', color: 'bg-yellow-100 text-yellow-800', desc: '<1%' },
-                ].map(t => (
-                  <Badge key={t.tier} className={t.color}>
-                    {t.tier} ({t.desc})
-                  </Badge>
-                ))}
+            {results.map((result) => (
+              <div key={`${result.trait}-${result.value}`} className="rounded-[2rem] border border-black/5 bg-white/70 p-5 shadow-sm dark:border-white/10 dark:bg-white/[0.03]">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <div className="text-lg font-bold">{result.trait}</div>
+                    <div className="text-sm text-muted-foreground">{result.value}</div>
+                  </div>
+                  <Badge className={tierColor[result.tier]}>{result.tier}</Badge>
+                </div>
+                <div className="mt-4 space-y-3">
+                  <div className="h-3 overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
+                    <div
+                      className="h-full rounded-full bg-primary"
+                      style={{ width: `${Math.min(100, Math.max(6, result.score))}%` }}
+                    />
+                  </div>
+                  <ToolMetricGrid
+                    metrics={[
+                      { label: "Frequency", value: `${result.frequency}%` },
+                      { label: "Rarity score", value: result.score },
+                      { label: "Est. holders", value: Math.round((collectionSize * result.frequency) / 100) },
+                    ]}
+                  />
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-        </CardContent>
-      </Card>
+        </ToolPanel>
+      ) : null}
     </div>
   );
 };

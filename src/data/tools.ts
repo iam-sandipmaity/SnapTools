@@ -1530,49 +1530,49 @@ export const toolCategories: ToolCategory[] = [
         title: "AI Text Summarizer",
         description:
           "Summarize text with AI online free. Get concise summaries of long articles and documents.",
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         id: "ai-paraphraser",
         title: "AI Paraphrasing Tool",
         description:
           "Paraphrase text with AI online free. Rewrite content while maintaining meaning.",
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         id: "ai-content-generator",
         title: "AI Content Generator",
         description:
           "Generate content with AI online free. Create articles, blog posts, and marketing copy.",
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         id: "ai-grammar-checker",
         title: "AI Grammar Checker",
         description:
           "Check grammar with AI online free. Fix grammar, spelling, and punctuation errors.",
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         id: "ai-code-explainer",
         title: "AI Code Explainer",
         description:
           "Explain code with AI. Get detailed explanations of any code snippet.",
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         id: "ai-code-generator",
         title: "AI Code Generator",
         description:
           "Generate code with AI. Create functions, components, and utilities.",
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         id: "ai-chatbot",
         title: "AI Chatbot",
         description:
           "Chat with AI. Get answers to questions and have conversations.",
-        comingSoon: true,
+        comingSoon: false,
       },
     ],
   },
@@ -1598,14 +1598,14 @@ export const toolCategories: ToolCategory[] = [
         title: "NFT Rarity Calculator",
         description:
           "Calculate NFT rarity online free. Determine rarity score and rank of NFT traits.",
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         id: "wallet-generator",
         title: "Crypto Wallet Generator",
         description:
           "Generate crypto wallets online free. Create new cryptocurrency wallet addresses.",
-        comingSoon: true,
+        comingSoon: false,
       },
     ],
   },
