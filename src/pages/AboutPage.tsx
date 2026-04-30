@@ -3,7 +3,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Zap, Shield, Users, Heart, Command, Globe, Code2 } from "lucide-react";
+import { Zap, Shield, Users, Heart, Command, Globe, Code2, Server } from "lucide-react";
 
 const AboutPage = () => {
   const values = [
@@ -24,8 +24,8 @@ const AboutPage = () => {
     },
     {
       icon: Code2,
-      title: "Technical Precision",
-      description: "Tools engineered by developers, for developers. We focus on raw performance and output fidelity."
+      title: "Developer Freedom",
+      description: "Open source by design. Fork, self-host, modify. Your tools, your rules, your infrastructure."
     }
   ];
 
@@ -97,28 +97,31 @@ const AboutPage = () => {
           <section className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
             <div className="relative bg-black dark:bg-white rounded-[4rem] p-12 md:p-24 text-white dark:text-black text-center overflow-hidden shadow-2xl">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-primary/10 opacity-30 blur-[100px]" />
-
+              
               <div className="relative z-10 max-w-3xl mx-auto">
                 <div className="w-20 h-20 rounded-full bg-white/10 dark:bg-black/10 mx-auto flex items-center justify-center mb-8 backdrop-blur-3xl">
                   <Heart className="w-8 h-8 text-primary fill-current" />
                 </div>
                 <h2 className="text-4xl md:text-6xl font-serif font-black tracking-tighter mb-8 leading-[0.9]">
-                  Join the <br />
-                  <em className="italic font-light opacity-80">Community</em>
+                  Own Your<br />
+                  <em className="italic font-light opacity-80">Infrastructure</em>
                 </h2>
                 <p className="text-lg opacity-70 mb-12 max-w-xl mx-auto leading-relaxed">
-                  SnapTools is a community-first platform. Help us maintain this ecosystem by contributing modules, reporting bugs, or supporting our infrastructure.
+                  Privacy means more than promises—it means control. That's why SnapTools is 100% open-source. 
+                  Deploy on your own servers, modify any tool, and ensure zero data leaves your infrastructure. 
+                  True privacy for developers, by developers.
                 </p>
-
+               
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                  <Link to="/tools" className="w-full sm:w-auto">
-                    <Button className="h-16 px-12 rounded-2xl bg-primary text-white font-black text-[10px] uppercase tracking-widest shadow-2xl w-full sm:w-auto">
-                      Explore Ecosystem
+                  <Link to="/self-host" className="w-full sm:w-auto">
+                    <Button className="h-16 px-12 rounded-2xl bg-white text-black font-black text-[10px] uppercase tracking-widest shadow-2xl w-full sm:w-auto hover:scale-[1.02] transition-all">
+                      <Server className="w-4 h-4 mr-2" />
+                      Self-Host Guide
                     </Button>
                   </Link>
-                  <Link to="/donate" className="w-full sm:w-auto">
+                  <Link to="/tools" className="w-full sm:w-auto">
                     <Button variant="outline" className="h-16 px-12 rounded-2xl border-white/20 dark:border-black/20 font-black text-[10px] uppercase tracking-widest w-full sm:w-auto hover:bg-white/10 dark:hover:bg-black/10">
-                      Support Our Work
+                      Explore Tools
                     </Button>
                   </Link>
                 </div>
