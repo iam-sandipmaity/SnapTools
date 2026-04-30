@@ -21,6 +21,7 @@ const navItems: NavItem[] = [
   { label: "Donate", href: "/donate" },
   { label: "Blog", href: "/blog" },
   { label: "Workstation", href: "/workstation" },
+  { label: "Self-Host", href: "/self-host" },
   // Code Runner removed per request
 ];
 
