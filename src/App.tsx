@@ -35,7 +35,7 @@ const SelfHost = lazy(() => import("./pages/selfhost"));
 const BlogRouter = lazy(() => import("./blog/router"));
 const ShareFileView = lazy(() => import("./components/tools/file-sharing/ShareFileView"));
 const ShareTextView = lazy(() => import("./components/tools/text-sharing/ShareTextView"));
-const Workstation = lazy(() => import("./pages/workstation"));
+const Workstation = lazy(() => import("./pages/Workstation"));
 
 const App = () => (
   <Suspense fallback={<PageLoader />}>
