@@ -2,14 +2,16 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import { Code2, Copy, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
+import { generateTextWithProvider } from "@/lib/ai/runtime";
+import { AIProviderConsole } from "./provider-console";
+import { useAIProviderSettings } from "./use-ai-provider-settings";
 import {
+  ToolChoiceGrid,
   ToolCodeBlock,
   ToolMetricGrid,
   ToolPanel,
-  ToolTagList,
   ToolWorkbench,
 } from "./tool-workbench";
 
@@ -17,23 +19,6 @@ const examplePrompts: Record<string, string> = {
   javascript: "Create a fetch helper with retry logic and JSON parsing.",
   typescript: "Create a typed utility that filters active users from a list.",
   python: "Write a function that groups items by category and counts them.",
-};
-
-const buildCode = (language: string, prompt: string, includeComments: boolean, includeTests: boolean) => {
-  const header = includeComments ? `// Generated for: ${prompt}\n` : "";
-  const tests = includeTests ? `\n\n// Quick test\nconsole.log(example());\n` : "";
-
-  if (language === "python") {
-    const pyHeader = includeComments ? `# Generated for: ${prompt}\n` : "";
-    const pyTests = includeTests ? `\n\nif __name__ == "__main__":\n    print(example())\n` : "";
-    return `${pyHeader}def example():\n    """${prompt}"""\n    items = ["alpha", "beta", "gamma"]\n    return [item.upper() for item in items]\n${pyTests}`;
-  }
-
-  if (language === "typescript") {
-    return `${header}type Item = { id: number; active: boolean };\n\nexport function example(items: Item[]): Item[] {\n  return items.filter((item) => item.active);\n}${tests}`;
-  }
-
-  return `${header}export function example() {\n  const values = ["alpha", "beta", "gamma"];\n  return values.map((value) => value.toUpperCase());\n}${tests}`;
 };
 
 const AiCodeGenerator = () => {
@@ -44,6 +29,7 @@ const AiCodeGenerator = () => {
   const [includeTests, setIncludeTests] = useState(false);
   const [generatedCode, setGeneratedCode] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const { settings, setSettings } = useAIProviderSettings();
 
   const generateCode = async () => {
     if (!prompt.trim()) {
@@ -54,10 +40,27 @@ const AiCodeGenerator = () => {
     setIsGenerating(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 900));
-      const next = buildCode(language, prompt, includeComments, includeTests);
+      const next = await generateTextWithProvider({
+        settings,
+        temperature: 0.35,
+        maxOutputTokens: complexity === "simple" ? 500 : complexity === "moderate" ? 900 : 1500,
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are a senior software engineer. Return code only unless brief inline comments are explicitly requested.",
+          },
+          {
+            role: "user",
+            content: `Generate ${language} code for the following request.\n\nPrompt: ${prompt}\nComplexity: ${complexity}\nInclude comments: ${includeComments ? "yes" : "no"}\nInclude tests or examples: ${includeTests ? "yes" : "no"}\n\nRequirements:\n- Use clear naming\n- Handle obvious edge cases\n- Return a complete snippet`,
+          },
+        ],
+      });
+
       setGeneratedCode(next);
       toast.success("Code draft generated.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Code generation failed.");
     } finally {
       setIsGenerating(false);
     }
@@ -76,51 +79,7 @@ const AiCodeGenerator = () => {
           { label: "Complexity", value: complexity },
           { label: "Lines", value: generatedCode ? generatedCode.split("\n").length : 0 },
         ]}
-        aside={
-          <div className="space-y-4">
-            <ToolPanel title="Generation options" description="These toggles shape how much structure the draft includes.">
-              <div className="space-y-5">
-                <div className="space-y-2">
-                  <Label>Complexity</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {(["simple", "moderate", "advanced"] as const).map((value) => (
-                      <Badge
-                        key={value}
-                        variant={complexity === value ? "default" : "outline"}
-                        className="cursor-pointer rounded-full px-3 py-1 capitalize"
-                        onClick={() => setComplexity(value)}
-                      >
-                        {value}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label>Extras</Label>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge
-                      variant={includeComments ? "default" : "outline"}
-                      className="cursor-pointer rounded-full px-3 py-1"
-                      onClick={() => setIncludeComments((value) => !value)}
-                    >
-                      Comments
-                    </Badge>
-                    <Badge
-                      variant={includeTests ? "default" : "outline"}
-                      className="cursor-pointer rounded-full px-3 py-1"
-                      onClick={() => setIncludeTests((value) => !value)}
-                    >
-                      Quick test
-                    </Badge>
-                  </div>
-                </div>
-              </div>
-            </ToolPanel>
-            <ToolPanel title="Good prompts" description="Ask for one contained behavior, one environment, and one expected output.">
-              <ToolTagList tags={["API helper", "Data transform", "Typed utility", "UI helper", "Formatter", "Validation rule"]} />
-            </ToolPanel>
-          </div>
-        }
+        aside={<AIProviderConsole settings={settings} onChange={setSettings} />}
       >
         <ToolPanel
           title="Prompt"
@@ -132,18 +91,53 @@ const AiCodeGenerator = () => {
           }
         >
           <div className="space-y-4">
-            <div className="flex flex-wrap gap-2">
-              {["javascript", "typescript", "python", "java", "go", "rust"].map((value) => (
-                <Badge
-                  key={value}
-                  variant={language === value ? "default" : "outline"}
-                  className="cursor-pointer rounded-full px-3 py-1"
-                  onClick={() => setLanguage(value)}
-                >
-                  {value}
-                </Badge>
-              ))}
-            </div>
+            <ToolChoiceGrid
+              label="Language"
+              value={language}
+              onChange={setLanguage}
+              columns="3"
+              options={[
+                { value: "javascript", title: "JavaScript", description: "Fast general-purpose browser and Node snippets." },
+                { value: "typescript", title: "TypeScript", description: "Typed helpers and app-ready utilities." },
+                { value: "python", title: "Python", description: "Clean scripting and backend-style logic." },
+                { value: "java", title: "Java", description: "Verbose but structured enterprise-style code." },
+                { value: "go", title: "Go", description: "Lean services and concurrency-friendly helpers." },
+                { value: "rust", title: "Rust", description: "Performance-focused systems code." },
+              ]}
+            />
+            <ToolChoiceGrid
+              label="Complexity"
+              value={complexity}
+              onChange={setComplexity}
+              columns="3"
+              options={[
+                { value: "simple", title: "Simple", description: "Tight implementation with minimal scaffolding." },
+                { value: "moderate", title: "Moderate", description: "Balanced structure for everyday production use." },
+                { value: "advanced", title: "Advanced", description: "More edge cases, guards, and completeness." },
+              ]}
+            />
+            <ToolChoiceGrid
+              label="Extras"
+              value={includeComments ? "comments" : includeTests ? "tests" : "clean"}
+              onChange={(next) => {
+                if (next === "comments") {
+                  setIncludeComments(true);
+                  setIncludeTests(false);
+                } else if (next === "tests") {
+                  setIncludeComments(false);
+                  setIncludeTests(true);
+                } else {
+                  setIncludeComments(false);
+                  setIncludeTests(false);
+                }
+              }}
+              columns="3"
+              options={[
+                { value: "comments", title: "Comments", description: "Include brief guidance inside the snippet." },
+                { value: "tests", title: "Quick Test", description: "Append a tiny usage or test example." },
+                { value: "clean", title: "Clean Output", description: "Return the bare implementation only." },
+              ]}
+            />
             <Textarea
               value={prompt}
               onChange={(event) => setPrompt(event.target.value)}
@@ -152,7 +146,7 @@ const AiCodeGenerator = () => {
             />
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className="text-xs text-muted-foreground">
-                This demo emits starter code. Expect to refine naming, edge cases, and production hardening.
+                Provider quality differs a lot here. Stronger reasoning models usually produce cleaner first drafts.
               </p>
               <Button onClick={generateCode} disabled={isGenerating || !prompt.trim()} className="rounded-2xl px-6">
                 {isGenerating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
