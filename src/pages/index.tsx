@@ -33,7 +33,7 @@ const Index = () => {
       <InteractiveGrid />
       {showLoader && <SystemDiagnosticLoader />}
       <SEO
-        title="SnapTools - 100+ Free Online PDF, Image & Converter Tools"
+        title="SnapTools - 200+ Free Online PDF, Image & Converter Tools"
         description="Free online tools for PDF merge/split/compress, image compression, QR codes, calculators & more. No registration. Fast, secure & privacy-focused."
       />
       <Header />
