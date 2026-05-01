@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { AlertTriangle, CheckCircle2, Copy, Loader2, RotateCcw, Sparkles } from "lucide-react";
+import { Copy, Loader2, RotateCcw, Sparkles } from "lucide-react";
 import { toast } from "sonner";
+import { extractJsonObject, generateTextWithProvider } from "@/lib/ai/runtime";
+import { AIProviderConsole } from "./provider-console";
+import { useAIProviderSettings } from "./use-ai-provider-settings";
 import {
   ToolCodeBlock,
   ToolMetricGrid,
@@ -13,100 +14,26 @@ import {
   ToolWorkbench,
 } from "./tool-workbench";
 
-type Issue = {
-  id: string;
-  type: string;
-  label: string;
-  replacement: string;
-  start: number;
-  end: number;
+type GrammarResult = {
+  corrected_text: string;
+  issues: string[];
+  notes: string[];
 };
 
 const sampleText =
   "snaptools  helps teams move faster. it keeps repeated utility work in one place. dont let tiny formatting problems slow the team team down.";
 
-const collectIssues = (text: string): Issue[] => {
-  const issues: Issue[] = [];
-
-  for (const match of text.matchAll(/ {2,}/g)) {
-    issues.push({
-      id: `space-${match.index}`,
-      type: "Spacing",
-      label: "Collapse repeated spaces.",
-      replacement: " ",
-      start: match.index ?? 0,
-      end: (match.index ?? 0) + match[0].length,
-    });
-  }
-
-  for (const match of text.matchAll(/\b(dont|cant|wont|im)\b/gi)) {
-    const replacements: Record<string, string> = {
-      dont: "don't",
-      cant: "can't",
-      wont: "won't",
-      im: "I'm",
-    };
-    const key = match[0].toLowerCase();
-    issues.push({
-      id: `word-${match.index}`,
-      type: "Usage",
-      label: `Replace "${match[0]}" with standard punctuation.`,
-      replacement: replacements[key],
-      start: match.index ?? 0,
-      end: (match.index ?? 0) + match[0].length,
-    });
-  }
-
-  for (const match of text.matchAll(/\b(\w+)\s+(\1)\b/gi)) {
-    const replacement = match[1];
-    issues.push({
-      id: `repeat-${match.index}`,
-      type: "Repetition",
-      label: `Remove the repeated word "${match[1]}".`,
-      replacement,
-      start: match.index ?? 0,
-      end: (match.index ?? 0) + match[0].length,
-    });
-  }
-
-  let capitalizeNext = true;
-  for (let index = 0; index < text.length; index += 1) {
-    const char = text[index];
-    if (capitalizeNext && /[a-z]/.test(char)) {
-      issues.push({
-        id: `caps-${index}`,
-        type: "Capitalization",
-        label: "Capitalize the start of the sentence.",
-        replacement: char.toUpperCase(),
-        start: index,
-        end: index + 1,
-      });
-      capitalizeNext = false;
-      continue;
-    }
-
-    if (/[A-Z]/.test(char) || /\w/.test(char)) {
-      capitalizeNext = false;
-    }
-
-    if (/[.!?]/.test(char)) {
-      capitalizeNext = true;
-    }
-  }
-
-  return issues.sort((a, b) => a.start - b.start);
-};
-
-const applyIssues = (text: string, issues: Issue[]) =>
-  [...issues]
-    .sort((a, b) => b.start - a.start)
-    .reduce((current, issue) => `${current.slice(0, issue.start)}${issue.replacement}${current.slice(issue.end)}`, text);
+const fallbackResult = (text: string): GrammarResult => ({
+  corrected_text: text,
+  issues: ["The provider did not return structured grammar data."],
+  notes: [],
+});
 
 const AiGrammarChecker = () => {
   const [inputText, setInputText] = useState("");
-  const [correctedText, setCorrectedText] = useState("");
-  const [issues, setIssues] = useState<Issue[]>([]);
+  const [result, setResult] = useState<GrammarResult | null>(null);
   const [isChecking, setIsChecking] = useState(false);
+  const { settings, setSettings } = useAIProviderSettings();
 
   const words = inputText.trim().split(/\s+/).filter(Boolean).length;
 
@@ -119,33 +46,31 @@ const AiGrammarChecker = () => {
     setIsChecking(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 850));
-      const nextIssues = collectIssues(inputText);
-      setIssues(nextIssues);
-      setCorrectedText(applyIssues(inputText, nextIssues));
-      toast.success(nextIssues.length ? `Flagged ${nextIssues.length} potential issues.` : "No issues detected.");
+      const raw = await generateTextWithProvider({
+        settings,
+        temperature: 0.2,
+        maxOutputTokens: 900,
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are a grammar and style checker. Return strict JSON with keys corrected_text, issues, notes. issues and notes must be arrays of strings.",
+          },
+          {
+            role: "user",
+            content: `Review the following text for grammar, capitalization, repeated words, punctuation, and awkward phrasing. Correct it and summarize the issues.\n\nText:\n${inputText}`,
+          },
+        ],
+      });
+
+      const parsed = extractJsonObject<GrammarResult>(raw) ?? fallbackResult(raw);
+      setResult(parsed);
+      toast.success(parsed.issues.length ? `Flagged ${parsed.issues.length} issues.` : "No issues detected.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Grammar check failed.");
     } finally {
       setIsChecking(false);
     }
-  };
-
-  const rerunWithText = (nextText: string) => {
-    const nextIssues = collectIssues(nextText);
-    setInputText(nextText);
-    setIssues(nextIssues);
-    setCorrectedText(applyIssues(nextText, nextIssues));
-  };
-
-  const applyIssue = (issue: Issue) => {
-    const nextText = `${inputText.slice(0, issue.start)}${issue.replacement}${inputText.slice(issue.end)}`;
-    rerunWithText(nextText);
-    toast.success("Correction applied.");
-  };
-
-  const applyAll = () => {
-    const nextText = applyIssues(inputText, issues);
-    rerunWithText(nextText);
-    toast.success("All corrections applied.");
   };
 
   return (
@@ -153,28 +78,19 @@ const AiGrammarChecker = () => {
       <ToolWorkbench
         icon={Sparkles}
         eyebrow="AI Grammar Checker"
-        title="Catch small writing defects before they leave the page."
-        description="Audit a paragraph for repeated words, collapsed punctuation, spacing drift, and basic sentence-start capitalization."
-        badges={["Rule-based review", "One-click fixes", "Live corrected preview"]}
+        title="Catch writing defects with a real model-backed review pass."
+        description="Audit a paragraph for grammar, punctuation, repetition, clarity, and sentence-level cleanup."
+        badges={["Real provider calls", "Corrected preview", "Issue summary"]}
         metrics={[
           { label: "Words", value: words },
-          { label: "Issues", value: issues.length },
-          { label: "Ready state", value: issues.length === 0 && correctedText ? "Clean" : "Needs pass" },
+          { label: "Issues", value: result?.issues.length ?? 0 },
+          { label: "Ready state", value: result ? (result.issues.length === 0 ? "Clean" : "Review") : "Idle" },
         ]}
-        aside={
-          <div className="space-y-4">
-            <ToolPanel title="Strongest use cases" description="Helpful as a final polish step for shorter text.">
-              <ToolTagList tags={["Emails", "Blog drafts", "Announcements", "Support replies", "Internal notes", "Landing copy"]} />
-            </ToolPanel>
-            <ToolPanel title="Coverage" description="This demo focuses on surface-level cleanup rather than full linguistic analysis.">
-              <ToolTagList tags={["Spacing", "Repeated words", "Missing apostrophes", "Sentence starts"]} />
-            </ToolPanel>
-          </div>
-        }
+        aside={<AIProviderConsole settings={settings} onChange={setSettings} />}
       >
         <ToolPanel
           title="Text under review"
-          description="Paste a paragraph and run a local audit. Use the sample if you want to see the fixer pass immediately."
+          description="Paste a paragraph and run an AI review. Use the sample if you want to see the correction flow immediately."
           actions={
             <div className="flex gap-2">
               <Button variant="ghost" size="sm" onClick={() => setInputText(sampleText)}>
@@ -185,8 +101,7 @@ const AiGrammarChecker = () => {
                 size="sm"
                 onClick={() => {
                   setInputText("");
-                  setCorrectedText("");
-                  setIssues([]);
+                  setResult(null);
                 }}
               >
                 <RotateCcw className="mr-2 h-4 w-4" />
@@ -204,7 +119,7 @@ const AiGrammarChecker = () => {
             />
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className="text-xs text-muted-foreground">
-                Run the audit after each major rewrite pass to catch last-mile issues.
+                Stronger editorial models generally produce better issue summaries and smoother corrected text.
               </p>
               <Button onClick={runAudit} disabled={isChecking || !inputText.trim()} className="rounded-2xl px-6">
                 {isChecking ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
@@ -215,68 +130,42 @@ const AiGrammarChecker = () => {
         </ToolPanel>
       </ToolWorkbench>
 
-      {correctedText ? (
-        <ToolPanel
-          title="Corrected preview"
-          description="A synthesized output after applying all currently detected fixes."
-          actions={
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={applyAll} disabled={issues.length === 0}>
-                Apply all
-              </Button>
-              <Button variant="outline" size="sm" onClick={() => navigator.clipboard.writeText(correctedText).then(() => toast.success("Corrected text copied."))}>
+      {result ? (
+        <>
+          <ToolPanel
+            title="Corrected preview"
+            description="A synthesized output after the AI correction pass."
+            actions={
+              <Button variant="outline" size="sm" onClick={() => navigator.clipboard.writeText(result.corrected_text).then(() => toast.success("Corrected text copied."))}>
                 <Copy className="mr-2 h-4 w-4" />
                 Copy
               </Button>
+            }
+          >
+            <div className="space-y-5">
+              <ToolCodeBlock value={result.corrected_text} className="max-h-none bg-slate-900" />
+              <ToolMetricGrid
+                metrics={[
+                  { label: "Detected issues", value: result.issues.length },
+                  { label: "Characters", value: result.corrected_text.length },
+                  { label: "Status", value: result.issues.length === 0 ? "Clean" : "Review" },
+                ]}
+              />
             </div>
-          }
-        >
-          <div className="space-y-5">
-            <ToolCodeBlock value={correctedText} className="max-h-none bg-slate-900" />
-            <ToolMetricGrid
-              metrics={[
-                { label: "Detected issues", value: issues.length },
-                { label: "Characters", value: correctedText.length },
-                { label: "Status", value: issues.length === 0 ? "Clean" : "Review" },
-              ]}
-            />
-          </div>
-        </ToolPanel>
-      ) : null}
+          </ToolPanel>
 
-      {issues.length > 0 ? (
-        <ToolPanel title="Issue queue" description="Apply fixes individually if you want to keep tighter editorial control.">
-          <div className="space-y-3">
-            {issues.map((issue) => (
-              <div
-                key={issue.id}
-                className="rounded-3xl border border-amber-500/20 bg-amber-500/5 p-4 shadow-sm"
-              >
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <AlertTriangle className="h-4 w-4 text-amber-600" />
-                      <span className="font-semibold">{issue.label}</span>
-                    </div>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      Suggested replacement: <span className="font-mono text-foreground">{issue.replacement}</span>
-                    </p>
-                  </div>
-                  <Button variant="outline" size="sm" onClick={() => applyIssue(issue)}>
-                    Apply fix
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </ToolPanel>
-      ) : correctedText ? (
-        <ToolPanel title="Clean pass" description="No remaining issues are currently flagged by the local rule set.">
-          <div className="flex items-center gap-3 text-emerald-600">
-            <CheckCircle2 className="h-5 w-5" />
-            <p className="text-sm font-medium">This draft is clean against the checks currently enabled.</p>
-          </div>
-        </ToolPanel>
+          {result.issues.length > 0 ? (
+            <ToolPanel title="Issue summary" description="High-level items the model flagged during the pass.">
+              <ToolTagList tags={result.issues} />
+            </ToolPanel>
+          ) : null}
+
+          {result.notes.length > 0 ? (
+            <ToolPanel title="Notes" description="Extra style or clarity suggestions from the model.">
+              <ToolTagList tags={result.notes} />
+            </ToolPanel>
+          ) : null}
+        </>
       ) : null}
     </div>
   );
