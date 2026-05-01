@@ -770,6 +770,30 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/miscellaneous/regex-tester</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/miscellaneous/jwt-decoder</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/miscellaneous/hash-generator</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://snaptools.xyz/tools/miscellaneous/cron-builder</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
   <!-- encryption Tools Tools -->
   <url>
@@ -1114,24 +1138,6 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/network/regex-tester</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/network/hash-generator</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/network/cron-builder</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
 
   <!-- Finance Tools Tools -->
   <url>
@@ -1260,12 +1266,6 @@
   </url>
   <url>
     <loc>https://snaptools.xyz/tools/media/audio-joiner</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://snaptools.xyz/tools/media/video-to-gif</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
