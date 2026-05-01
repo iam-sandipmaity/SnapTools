@@ -96,7 +96,7 @@ const SEOContentSection = () => {
   ];
 
   const stats = [
-    { icon: Cpu, value: "100+", label: "Specialist Modules" },
+    { icon: Cpu, value: "200+", label: "Specialist Modules" },
     { icon: Users, value: "1M+", label: "Secure Sessions" },
     { icon: Workflow, value: "50+", label: "Logic Categories" },
     { icon: Award, value: "4.9/5", label: "Trust Rating" }
@@ -110,7 +110,7 @@ const SEOContentSection = () => {
   ];
 
   const howItWorks = [
-    { step: "01", title: "Select Module", description: "Identify the appropriate logic category or search our directory of 100+ specialized technical tools." },
+    { step: "01", title: "Select Module", description: "Identify the appropriate logic category or search our directory of 200+ specialized technical tools." },
     { step: "02", title: "Initialize Logic", description: "Upload or input your source data directly into the browser. No data ever hits our remote infrastructure." },
     { step: "03", title: "Secure Output", description: "Retrieve your processed assets instantly. Fast, secure, and engineered for professional precision." }
   ];
@@ -442,7 +442,7 @@ const SEOContentSection = () => {
                       <span className="text-white/60">at Community Cost</span>
                     </h4>
                     <p className="text-xs md:text-sm leading-relaxed font-medium opacity-80 max-w-sm">
-                      Access 100+ specialized modules without limitations. Our ecosystem is built to scale with your technical requirements.
+                      Access 200+ specialized modules without limitations. Our ecosystem is built to scale with your technical requirements.
                     </p>
                     <Link to="/tools">
                       <Button className="w-full h-14 md:h-16 rounded-xl md:rounded-2xl bg-white text-primary font-black text-[9px] md:text-[10px] uppercase tracking-[0.2em] shadow-xl hover:bg-neutral-100">
