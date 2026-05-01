@@ -8,6 +8,10 @@ const networktools = {
   "port-checker": lazy(() => import('./PortChecker')),
   "mac-lookup": lazy(() => import('./MacLookup')),
   "ping-tool": lazy(() => import('./PingTool')),
+  "regex-tester": lazy(() => import('./RegexTester')),
+  "hash-generator": lazy(() => import('./HashGenerator')),
+  "cron-builder": lazy(() => import('./CronExpressionBuilder')),
+  "url-encoder-decoder": lazy(() => import('./UrlEncoderDecoder')),
 };
 
 export default networktools;
