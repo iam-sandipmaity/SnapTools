@@ -23,7 +23,7 @@ const changelogData = [
             { type: "new", text: "Luxury Architectural Design System with advanced glassmorphism and neural gradients." },
             { type: "new", text: "State-of-the-art Search Terminal with keyboard-aware logic and dynamic suggestions." },
             { type: "improved", text: "High-fidelity Mobile Responsiveness overhaul for the 'Technical Superiority' section." },
-            { type: "improved", text: "Performance-optimized 'Unified Ecosystem' with 100+ technical modules." },
+            { type: "improved", text: "Performance-optimized 'Unified Ecosystem' with 200+ technical modules." },
             { type: "new", text: "FOSS Manifesto & Open Infrastructure integration for community auditability." },
             { type: "fixed", text: "Sanitized focus-state artifacts and visual 'wired' edge anomalies across all terminals." }
         ]
