@@ -30,7 +30,7 @@ const NotFound = () => {
     <>
       <Helmet>
         <title>404 - Page Not Found | SnapTools</title>
-        <meta name="description" content="The page you're looking for doesn't exist. Return to SnapTools homepage to explore 100+ free online tools." />
+        <meta name="description" content="The page you're looking for doesn't exist. Return to SnapTools homepage to explore 200+ free online tools." />
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
@@ -67,7 +67,7 @@ const NotFound = () => {
               >
                 <div>
                   <h3 className="font-bold text-lg mb-1">Return to Repository</h3>
-                  <p className="text-xs text-muted-foreground">Browse all 100+ active modules</p>
+                  <p className="text-xs text-muted-foreground">Browse all 200+ active modules</p>
                 </div>
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                   <Monitor size={18} />
