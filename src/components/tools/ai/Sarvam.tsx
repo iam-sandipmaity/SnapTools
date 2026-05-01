@@ -1476,6 +1476,13 @@ export default function Sarvam() {
         setMounted(true);
     }, []);
 
+    const handleSetKey = useCallback(() => {
+        if (keyInput.trim()) {
+            setApiKey(keyInput.trim());
+            setKeySet(true);
+        }
+    }, [keyInput]);
+
     // Prevent rendering until mounted to avoid hydration mismatch
     if (!mounted) {
         return (
@@ -1484,13 +1491,6 @@ export default function Sarvam() {
             </div>
         );
     }
-
-    const handleSetKey = useCallback(() => {
-        if (keyInput.trim()) {
-            setApiKey(keyInput.trim());
-            setKeySet(true);
-        }
-    }, [keyInput]);
 
     const TABS: { id: Tab; label: string; icon: (props: any) => JSX.Element; desc: string }[] = [
         { id: "chat", label: "Chat", icon: Icons.Chat, desc: "Sarvam-M LLM" },
