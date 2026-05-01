@@ -73,7 +73,7 @@ export default {
 						dark: '#1e3a8a',
 						light: '#93c5fd',
 						secondary: '#2563eb',
-						tertiary: '#1d4ed8',
+						tertiary: '#1e40af',
 						vivid: '#1d4ed8'
 					},
 					gray: {
@@ -83,7 +83,7 @@ export default {
 						charcoal: '#221F26'
 					},
 					soft: {
-						green: '#F2FCE2',
+						green: '#D1FAE5',
 						yellow: '#FEF7CD',
 						orange: '#FEC6A1',
 						purple: '#E0F7FA',

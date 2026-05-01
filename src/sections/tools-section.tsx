@@ -77,7 +77,7 @@ const ToolsSection = () => {
               <em className="italic font-light text-primary">Intelligence</em>
             </h2>
             <p className="text-xl text-muted-foreground/80 leading-relaxed max-w-2xl mx-auto font-medium">
-              Explore our architecture of 100+ specialized processing modules. From professional PDF workflows to high-fidelity conversions.
+              Explore our architecture of 200+ specialized processing modules. From professional PDF workflows to high-fidelity conversions.
             </p>
           </AnimatedElement>
         </div>

@@ -14,27 +14,29 @@ const Providers = lazy(() => import("@/components/Providers"));
 const Analytics = lazy(() => import("@vercel/analytics/react").then(m => ({ default: m.Analytics })));
 
 // Lazy-load all pages including Index
-const Index = lazy(() => import("./pages/Index"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+const Index = lazy(() => import("./pages/index"));
+const NotFound = lazy(() => import("./pages/notfound"));
 
 // Lazy load non-critical pages
-const ToolPage = lazy(() => import("./pages/ToolPage"));
-const Contact = lazy(() => import("./pages/Contact"));
-const Privacy = lazy(() => import("./pages/Privacy"));
-const Terms = lazy(() => import("./pages/Terms"));
-const ToolList = lazy(() => import("./pages/ToolList"));
-const ToolCategoryPage = lazy(() => import("./pages/ToolCategoryPage"));
-const About = lazy(() => import("./pages/AboutPage"));
-const Documentation = lazy(() => import("./pages/DocumentationPage"));
+const ToolPage = lazy(() => import("./pages/toolpage"));
+const Contact = lazy(() => import("./pages/contact"));
+const Privacy = lazy(() => import("./pages/privacy"));
+const Terms = lazy(() => import("./pages/terms"));
+const ToolList = lazy(() => import("./pages/toollist"));
+const ToolCategoryPage = lazy(() => import("./pages/toolcategorypage"));
+const About = lazy(() => import("./pages/aboutpage"));
+const Documentation = lazy(() => import("./pages/documentationpage"));
 const Pricing = lazy(() => import("./pages/pricing"));
 const Features = lazy(() => import("./pages/features"));
-const Changelog = lazy(() => import("./pages/Changelog"));
-const Donate = lazy(() => import("./pages/Donate"));
-const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
+const Changelog = lazy(() => import("./pages/changelog"));
+const Donate = lazy(() => import("./pages/donate"));
+const PaymentSuccess = lazy(() => import("./pages/paymentsuccess"));
+const SelfHost = lazy(() => import("./pages/selfhost"));
 const BlogRouter = lazy(() => import("./blog/router"));
 const ShareFileView = lazy(() => import("./components/tools/file-sharing/ShareFileView"));
 const ShareTextView = lazy(() => import("./components/tools/text-sharing/ShareTextView"));
-const Workstation = lazy(() => import("./pages/Workstation"));
+const Workstation = lazy(() => import("./pages/workstation"));
+const analyticsDisabled = import.meta.env.VITE_DISABLE_ANALYTICS === "true";
 
 const App = () => (
   <Suspense fallback={<PageLoader />}>
@@ -62,6 +64,7 @@ const App = () => (
             <Route path="/changelog" element={<Changelog />} />
             <Route path="/donate" element={<Donate />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
+            <Route path="/self-host" element={<SelfHost />} />
             <Route path="/s/:peerId" element={<ShareFileView />} />
             <Route path="/t/:peerId" element={<ShareTextView />} />
             <Route path="/blog/*" element={<BlogRouter />} />
@@ -70,8 +73,8 @@ const App = () => (
           </Routes>
         </Suspense>
       </BrowserRouter>
-      {/* Only load Analytics in production (Vercel deployment) */}
-      {import.meta.env.PROD && (
+      {/* Only load Analytics in production when not explicitly disabled */}
+      {import.meta.env.PROD && !analyticsDisabled && (
         <Suspense fallback={null}>
           <Analytics />
         </Suspense>

@@ -41,7 +41,7 @@ const SEO = ({ title, description, categoryId, toolId, type, imageUrl, canonical
       `Free online ${tool.title} tool by SnapTools. ${tool.description || `Use our ${tool.title.toLowerCase()} tool online for free. No registration required, fast, secure, and privacy-focused.`}` :
       type === "category" && category ?
         `Explore ${category.title} tools on SnapTools. Free online ${category.title.toLowerCase()} tools with no ads, no registration required. Fast, secure, and privacy-focused.` :
-        "SnapTools offers 100+ free online tools for PDF, images, converters, calculators, and more. No registration, no ads. Fast, secure, and privacy-focused.");
+        "SnapTools offers 200+ free online tools for PDF, images, converters, calculators, and more. No registration, no ads. Fast, secure, and privacy-focused.");
 
   const structuredData = {
     "@context": "https://schema.org",

@@ -312,7 +312,7 @@ const ToolSEO = ({ tool }: ToolSEOProps) => {
   // Base URL: production domain in prod, current origin in dev
   const BASE_URL = import.meta.env.PROD
     ? 'https://snaptools.xyz'
-    : (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5173');
+    : (typeof window !== 'undefined' ? window.location.origin : 'https://snaptools.xyz');
 
   // Generate canonical URL (always canonical production URL for SEO)
   const canonicalUrl = `https://snaptools.xyz/tools/${tool.category.toLowerCase().replace(/\s+/g, '-')}/${tool.id}`;

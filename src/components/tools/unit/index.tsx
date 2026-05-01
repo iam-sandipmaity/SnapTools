@@ -3,7 +3,6 @@ import { lazy } from 'react';
 const unitTools = {
   "length-converter": lazy(() => import("./LengthConverter")),
   "temperature-converter": lazy(() => import("./TemperatureConverter")),
-  "currency-converter": lazy(() => import("./CurrencyConverter")),
   "weight-converter": lazy(() => import("./WeightConverter")),
   "speed-converter": lazy(() => import("./SpeedConverter")),
   "area-converter": lazy(() => import("./AreaConverter")),

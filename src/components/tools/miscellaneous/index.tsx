@@ -8,6 +8,7 @@ const miscellaneousTools = {
   "random-ip-generator": lazy(() => import('./RandomIpGenerator')),
   "webcam-test": lazy(() => import('./WebcamTest')),
   "ascii-art-generator": lazy(() => import('./ASCIIArtGenerator')),
+  "ai-excalidraw": lazy(() => import('./ExcalidrawWhiteboard')),
 };
 
 export default miscellaneousTools;

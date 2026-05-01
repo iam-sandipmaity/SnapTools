@@ -179,7 +179,7 @@ const Features = () => {
                   <span className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Avg Response</span>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <span className="text-3xl font-bold tracking-tighter">100+</span>
+                  <span className="text-3xl font-bold tracking-tighter">200+</span>
                   <span className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Free Modules</span>
                 </div>
               </div>

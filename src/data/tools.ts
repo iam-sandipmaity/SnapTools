@@ -8,7 +8,6 @@ import {
   PaintBucket,
   Ruler,
   IndianRupee,
-  FileType,
   Eye,
   Youtube,
   Globe,
@@ -32,12 +31,13 @@ import {
   Brain,
   Bitcoin,
   ShieldCheck,
+  type LucideIcon,
 } from "lucide-react";
 
 export type ToolCategory = {
   id: string;
   title: string;
-  icon: any;
+  icon: LucideIcon;
   description?: string;
   color?: string;
   comingSoon?: boolean;
@@ -508,19 +508,6 @@ export const toolCategories: ToolCategory[] = [
     ],
   },
   {
-    id: "document",
-    title: "Document Converters",
-    icon: FileType,
-    iconName: "file-type",
-    color: "bg-tooltopia-soft-green",
-    subTools: [
-      { id: "word-pdf", title: "Word to PDF / PDF to Word" },
-      { id: "excel-pdf", title: "Excel to PDF / PDF to Excel" },
-      { id: "ppt-pdf", title: "PPT to PDF / PDF to PPT" },
-      { id: "txt-pdf", title: "TXT to PDF / PDF to TXT" },
-    ],
-  },
-  {
     id: "social",
     title: "social media",
     icon: Youtube,
@@ -666,32 +653,11 @@ export const toolCategories: ToolCategory[] = [
           "Generate ASCII art online free. Convert text and images into ASCII art characters.",
       },
       {
-        id: "regex-tester",
-        title: "Regex Tester",
+        id: "ai-excalidraw",
+        title: "Excalidraw Whiteboard",
         description:
-          "Test regular expressions online free. Validate and debug your regex patterns.",
-        comingSoon: true,
-      },
-      {
-        id: "jwt-decoder",
-        title: "JWT Decoder",
-        description:
-          "Decode JWT tokens online free. View JWT payload and header.",
-        comingSoon: true,
-      },
-      {
-        id: "hash-generator",
-        title: "Hash Generator",
-        description:
-          "Generate hashes online free. Create MD5, SHA-1, SHA-256, SHA-512 hashes.",
-        comingSoon: true,
-      },
-      {
-        id: "cron-builder",
-        title: "Cron Expression Builder",
-        description:
-          "Build cron expressions online free. Create and validate cron schedules.",
-        comingSoon: true,
+          "Sketch diagrams, flows, and whiteboard notes with an embedded Excalidraw canvas.",
+        comingSoon: false,
       },
     ],
   },
@@ -838,11 +804,6 @@ export const toolCategories: ToolCategory[] = [
         id: "ecdsa",
         title: "ECDSA",
         description: "Elliptic Curve Digital Signature Algorithm (placeholder)",
-      },
-      {
-        id: "sha3",
-        title: "SHA-3",
-        description: "Keccak / SHA-3 hashing (placeholder)",
       },
       {
         id: "blake2",
@@ -1089,6 +1050,30 @@ export const toolCategories: ToolCategory[] = [
         title: "Ping Tool",
         description:
           "Ping online free. Test network connectivity and measure latency to any server.",
+      },
+      {
+        id: "regex-tester",
+        title: "Regex Tester",
+        description:
+          "Test regular expressions online free. Validate and debug your regex patterns.",
+      },
+      {
+        id: "hash-generator",
+        title: "Hash Generator",
+        description:
+          "Generate hashes online free. Create MD5, SHA-1, SHA-256, SHA-512 hashes.",
+      },
+      {
+        id: "cron-builder",
+        title: "Cron Expression Builder",
+        description:
+          "Build cron expressions online free. Create and validate cron schedules.",
+      },
+      {
+        id: "url-encoder-decoder",
+        title: "URL Encoder / Decoder",
+        description:
+          "Encode and decode URL strings online free. Convert special characters safely for web use.",
       },
     ],
   },
@@ -1535,49 +1520,49 @@ export const toolCategories: ToolCategory[] = [
         title: "AI Text Summarizer",
         description:
           "Summarize text with AI online free. Get concise summaries of long articles and documents.",
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         id: "ai-paraphraser",
         title: "AI Paraphrasing Tool",
         description:
           "Paraphrase text with AI online free. Rewrite content while maintaining meaning.",
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         id: "ai-content-generator",
         title: "AI Content Generator",
         description:
           "Generate content with AI online free. Create articles, blog posts, and marketing copy.",
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         id: "ai-grammar-checker",
         title: "AI Grammar Checker",
         description:
           "Check grammar with AI online free. Fix grammar, spelling, and punctuation errors.",
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         id: "ai-code-explainer",
         title: "AI Code Explainer",
         description:
           "Explain code with AI. Get detailed explanations of any code snippet.",
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         id: "ai-code-generator",
         title: "AI Code Generator",
         description:
           "Generate code with AI. Create functions, components, and utilities.",
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         id: "ai-chatbot",
         title: "AI Chatbot",
         description:
           "Chat with AI. Get answers to questions and have conversations.",
-        comingSoon: true,
+        comingSoon: false,
       },
     ],
   },
@@ -1603,14 +1588,14 @@ export const toolCategories: ToolCategory[] = [
         title: "NFT Rarity Calculator",
         description:
           "Calculate NFT rarity online free. Determine rarity score and rank of NFT traits.",
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         id: "wallet-generator",
         title: "Crypto Wallet Generator",
         description:
           "Generate crypto wallets online free. Create new cryptocurrency wallet addresses.",
-        comingSoon: true,
+        comingSoon: false,
       },
     ],
   },
