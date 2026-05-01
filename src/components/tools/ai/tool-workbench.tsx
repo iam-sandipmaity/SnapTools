@@ -210,3 +210,77 @@ export function ToolCodeBlock({
     </pre>
   );
 }
+
+export function ToolChoiceGrid<T extends string>({
+  label,
+  value,
+  onChange,
+  options,
+  columns = "3",
+}: {
+  label: string;
+  value: T;
+  onChange: (next: T) => void;
+  options: Array<{
+    value: T;
+    title: string;
+    description: string;
+  }>;
+  columns?: "2" | "3" | "5";
+}) {
+  const gridClass =
+    columns === "2"
+      ? "md:grid-cols-2"
+      : columns === "5"
+        ? "md:grid-cols-2 xl:grid-cols-5"
+        : "md:grid-cols-3";
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between gap-3">
+        <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
+          {label}
+        </div>
+        <div className="rounded-full border border-primary/15 bg-primary/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.24em] text-primary">
+          {value}
+        </div>
+      </div>
+      <div className={cn("grid gap-3", gridClass)}>
+        {options.map((option) => {
+          const active = option.value === value;
+
+          return (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => onChange(option.value)}
+              className={cn(
+                "group rounded-3xl border p-4 text-left transition-all",
+                active
+                  ? "border-primary/30 bg-primary/[0.08] shadow-sm ring-1 ring-primary/10"
+                  : "border-black/5 bg-white/70 hover:border-primary/20 hover:bg-primary/[0.03] dark:border-white/10 dark:bg-white/[0.03]",
+              )}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <div className="text-sm font-bold capitalize tracking-tight">{option.title}</div>
+                  <div className="mt-2 text-xs leading-5 text-muted-foreground">
+                    {option.description}
+                  </div>
+                </div>
+                <div
+                  className={cn(
+                    "mt-0.5 h-3 w-3 rounded-full border transition-all",
+                    active
+                      ? "border-primary bg-primary shadow-[0_0_0_4px_rgba(59,130,246,0.12)]"
+                      : "border-black/15 bg-transparent dark:border-white/20",
+                  )}
+                />
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
