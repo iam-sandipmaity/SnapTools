@@ -2,7 +2,7 @@ import { useState } from "react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
   Github, 
@@ -48,22 +48,28 @@ const SelfHost = () => {
     },
     {
       title: "Configure Environment",
-      description: "Set up your environment variables for full control",
+      description: "Configure analytics behavior and any optional third-party integrations you want to keep",
       command: "cp .env.example .env && nano .env",
       icon: <Code className="w-6 h-6" />
     },
     {
-      title: "Build & Deploy",
-      description: "Compile and start your own private instance",
-      command: "npm run build && npm run preview",
+      title: "Build the Static App",
+      description: "Compile the frontend assets you can deploy on infrastructure you control",
+      command: "npm run build",
       icon: <Server className="w-6 h-6" />
+    },
+    {
+      title: "Serve in Production",
+      description: "Host dist/ with Nginx, Docker, or another production web server",
+      command: "# Example: serve ./dist with Nginx or a container image",
+      icon: <Globe className="w-6 h-6" />
     }
   ];
 
   const features = [
     {
-      title: "Complete Data Privacy",
-      description: "All processing happens on your server. No external analytics, no tracking, no data leaves your infrastructure.",
+      title: "Privacy-First by Design",
+      description: "Many tools run entirely in the browser, and analytics can be disabled for your deployment. External services should be treated as opt-in.",
       icon: <Shield className="w-8 h-8 text-green-500" />
     },
     {
@@ -77,8 +83,8 @@ const SelfHost = () => {
       icon: <Terminal className="w-8 h-8 text-purple-500" />
     },
     {
-      title: "Self-Contained",
-      description: "No external dependencies for core functionality. Works offline, behind firewalls, in air-gapped networks.",
+      title: "Self-Hostable Frontend",
+      description: "The Vite app can run on your own infrastructure. Full offline or air-gapped use depends on which tools and integrations you enable.",
       icon: <Lock className="w-8 h-8 text-orange-500" />
     }
   ];
@@ -122,9 +128,7 @@ const SelfHost = () => {
             </h1>
             
             <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto mb-12">
-              Deploy your own private instance of SnapTools on your infrastructure. 
-              Complete privacy, zero tracking, full source access. Perfect for privacy-conscious 
-              professionals, developers, and organizations with strict data policies.
+              Deploy SnapTools on infrastructure you control. The frontend is self-hostable and open source, with many browser-native tools and optional external integrations that you can enable, replace, or remove.
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4">
@@ -162,7 +166,7 @@ const SelfHost = () => {
                 Why Choose <em className="italic text-primary">Self-Hosting?</em>
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Join the movement of developers and privacy advocates who demand complete control over their tools
+                A practical setup for teams that want control over deployment, source code, and data flow visibility
               </p>
             </div>
 
@@ -199,7 +203,7 @@ const SelfHost = () => {
                 Quick <em className="italic text-primary">Setup</em> Guide
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Get your private SnapTools instance running in under 5 minutes
+                Build the app, then serve it with production infrastructure you manage
               </p>
             </div>
 
@@ -273,16 +277,15 @@ const SelfHost = () => {
                   </h2>
                   
                   <p className="text-lg text-muted-foreground leading-relaxed mb-12">
-                    Customize your self-hosted SnapTools with environment variables. 
-                    Control analytics, API endpoints, and feature flags. Full flexibility for power users.
+                    Configure your deployment explicitly. Browser-native tools work without third-party services, while provider-backed features need their own endpoints or API keys.
                   </p>
 
                   <div className="bg-black/5 dark:bg-white/5 rounded-2xl p-6 md:p-8 text-left font-mono text-sm overflow-x-auto">
                     <div className="text-muted-foreground mb-2"># .env</div>
-                    <div><span className="text-blue-500">VITE_APP_TITLE</span>=<span className="text-green-500">"My Private Tools"</span></div>
                     <div><span className="text-blue-500">VITE_DISABLE_ANALYTICS</span>=<span className="text-green-500">true</span></div>
-                    <div><span className="text-blue-500">VITE_ENABLE_RAZORPAY</span>=<span className="text-green-500">false</span></div>
-                    <div><span className="text-blue-500">VITE_CUSTOM_DOMAIN</span>=<span className="text-green-500">"tools.yourdomain.com"</span></div>
+                    <div><span className="text-blue-500">VITE_YOUTUBE_API_KEY</span>=<span className="text-green-500">your_key_if_needed</span></div>
+                    <div><span className="text-blue-500">VITE_EXCHANGERATE_API_KEY</span>=<span className="text-green-500">your_key_if_needed</span></div>
+                    <div><span className="text-blue-500">VITE_APIFLASH_API_KEY</span>=<span className="text-green-500">your_key_if_needed</span></div>
                   </div>
 
                   <Button
@@ -290,16 +293,26 @@ const SelfHost = () => {
                     className="mt-8 h-14 px-10 rounded-2xl font-black text-[10px] uppercase tracking-widest"
                     onClick={() => {
                       const envExample = `# SnapTools Environment Configuration
-VITE_APP_TITLE=My Private Tools
 VITE_DISABLE_ANALYTICS=true
-VITE_ENABLE_RAZORPAY=false
-VITE_CUSTOM_DOMAIN=tools.yourdomain.com`;
+VITE_YOUTUBE_API_KEY=your_key_if_needed
+VITE_EXCHANGERATE_API_KEY=your_key_if_needed
+VITE_APIFLASH_API_KEY=your_key_if_needed`;
                       copyToClipboard(envExample, 'Environment Example');
                     }}
                   >
                     <Copy className="w-4 h-4 mr-2" />
                     Copy .env Example
                   </Button>
+
+                  <div className="mt-8 rounded-2xl border border-primary/15 bg-background/60 p-6 text-left">
+                    <h3 className="text-lg font-bold mb-3">What &quot;self-hosted&quot; means here</h3>
+                    <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+                      <p>You can build and serve the SnapTools frontend on infrastructure you control.</p>
+                      <p>Many utilities are browser-native and keep processing on the client device.</p>
+                      <p>Some tools depend on third-party APIs or public services unless you replace them with your own backend or local provider.</p>
+                      <p>For production, use a real web server or container platform instead of <code>npm run preview</code>, which is only for local verification.</p>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -320,8 +333,7 @@ VITE_CUSTOM_DOMAIN=tools.yourdomain.com`;
                     Ready to Deploy Your Own?
                   </h2>
                   <p className="text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">
-                    Join thousands of developers who've taken control of their tooling infrastructure. 
-                    Open source, privacy-first, and built for the modern web.
+                    Open source, self-hostable, and easier to trust because the deployment story and integration boundaries are explicit.
                   </p>
                   
                   <div className="flex flex-wrap items-center justify-center gap-4">

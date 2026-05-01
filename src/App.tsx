@@ -36,6 +36,7 @@ const BlogRouter = lazy(() => import("./blog/router"));
 const ShareFileView = lazy(() => import("./components/tools/file-sharing/ShareFileView"));
 const ShareTextView = lazy(() => import("./components/tools/text-sharing/ShareTextView"));
 const Workstation = lazy(() => import("./pages/workstation"));
+const analyticsDisabled = import.meta.env.VITE_DISABLE_ANALYTICS === "true";
 
 const App = () => (
   <Suspense fallback={<PageLoader />}>
@@ -72,8 +73,8 @@ const App = () => (
           </Routes>
         </Suspense>
       </BrowserRouter>
-      {/* Only load Analytics in production (Vercel deployment) */}
-      {import.meta.env.PROD && (
+      {/* Only load Analytics in production when not explicitly disabled */}
+      {import.meta.env.PROD && !analyticsDisabled && (
         <Suspense fallback={null}>
           <Analytics />
         </Suspense>

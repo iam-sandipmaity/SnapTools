@@ -89,7 +89,7 @@ const SEOContentSection = () => {
   const keyFeatures = [
     { icon: ShieldCheck, title: "100% Free Ecosystem", desc: "No hidden tiers or paywalled logic. Every module is available for global deployment at zero cost." },
     { icon: Sparkles, title: "Instant Access Protocol", desc: "Start processing in milliseconds. No registration, no identity verification, just immediate technical utility." },
-    { icon: Lock, title: "Privacy Primitive", desc: "All logic is executed locally within your browser's secure sandbox. Data never leaves your hardware." },
+    { icon: Lock, title: "Privacy Primitive", desc: "Many core tools run locally in your browser. Integrations that rely on external services should be configured and disclosed explicitly." },
     { icon: Zap, title: "Edge Performance", desc: "Optimized for millisecond-latency through a worldwide CDN and hardware-accelerated JavaScript." },
     { icon: Users, title: "Global Trust", desc: "Trusted by millions of architects, developers, and designers for high-stakes digital manipulation." },
     { icon: Globe, title: "Cross-Platform Sync", desc: "Responsive workstation design that adapts perfectly to desktop, tablet, and high-performance mobile nodes." }
@@ -111,7 +111,7 @@ const SEOContentSection = () => {
 
   const howItWorks = [
     { step: "01", title: "Select Module", description: "Identify the appropriate logic category or search our directory of 200+ specialized technical tools." },
-    { step: "02", title: "Initialize Logic", description: "Upload or input your source data directly into the browser. No data ever hits our remote infrastructure." },
+    { step: "02", title: "Initialize Logic", description: "Upload or input data directly in the browser. Browser-native tools stay local, while optional integrations may contact the providers you configure." },
     { step: "03", title: "Secure Output", description: "Retrieve your processed assets instantly. Fast, secure, and engineered for professional precision." }
   ];
 
@@ -135,7 +135,7 @@ const SEOContentSection = () => {
               <em className="italic font-light text-primary">Superiority</em>
             </h2>
             <p className="text-xl text-muted-foreground/80 leading-relaxed font-medium">
-              SnapTools is architected to be the most comprehensive free technical workstation. From **PDF consolidation** to **neural image reduction**, we provide the mission-critical modules you need for digital precision.
+              SnapTools is architected to be a comprehensive free technical workstation. From PDF consolidation to image utilities, we focus on fast browser-native workflows with optional provider-based extensions where needed.
             </p>
           </AnimatedElement>
         </div>
@@ -206,7 +206,7 @@ const SEOContentSection = () => {
                   Engineered for <br /><em className="italic font-light text-primary">Professionals</em>
                 </h3>
                 <p className="text-lg text-muted-foreground/80 max-w-2xl mx-auto font-medium">
-                  Zero compromise on technical fidelity. Our workstation is engineered to meet the requirements of modern digital architects.
+                  Strong browser-native tooling where possible, with clear room for self-hosted or provider-backed extensions when a workflow needs more than a static frontend.
                 </p>
               </AnimatedElement>
             </header>
