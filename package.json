@@ -18,6 +18,13 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+    "@embedpdf/core": "^2.14.2",
+    "@embedpdf/engines": "^2.14.2",
+    "@embedpdf/plugin-document-manager": "^2.14.2",
+    "@embedpdf/plugin-render": "^2.14.2",
+    "@embedpdf/plugin-scroll": "^2.14.2",
+    "@embedpdf/plugin-viewport": "^2.14.2",
+    "@embedpdf/snippet": "^2.14.2",
     "@excalidraw/excalidraw": "^0.18.1",
     "@faker-js/faker": "^10.4.0",
     "@ffmpeg/ffmpeg": "^0.12.15",
