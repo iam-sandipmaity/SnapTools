@@ -23,7 +23,7 @@ const ToolCategoryPage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState<ToolCategory | null>(null);
-  const [filteredTools, setFilteredTools] = useState<any[]>([]);
+  const [filteredTools, setFilteredTools] = useState<NonNullable<ToolCategory["subTools"]>>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -222,8 +222,18 @@ const ToolCategoryPage = () => {
                     transition={{ duration: 0.4, delay: idx * 0.05 }}
                   >
                     <Link
-                      to={`/tools/${category.id}/${tool.id}`}
-                      className="group relative block p-10 rounded-[3rem] border border-black/5 dark:border-white/5 bg-white/50 dark:bg-white/[0.02] backdrop-blur-xl hover:bg-white dark:hover:bg-white/[0.03] transition-all duration-500 shadow-sm hover:shadow-2xl hover:shadow-primary/5 h-full overflow-hidden"
+                      to={tool.comingSoon ? "#" : `/tools/${category.id}/${tool.id}`}
+                      aria-disabled={tool.comingSoon}
+                      onClick={(event) => {
+                        if (tool.comingSoon) {
+                          event.preventDefault();
+                        }
+                      }}
+                      className={`group relative block p-10 rounded-[3rem] border border-black/5 dark:border-white/5 bg-white/50 dark:bg-white/[0.02] backdrop-blur-xl transition-all duration-500 shadow-sm h-full overflow-hidden ${
+                        tool.comingSoon
+                          ? "cursor-not-allowed opacity-75"
+                          : "hover:bg-white dark:hover:bg-white/[0.03] hover:shadow-2xl hover:shadow-primary/5"
+                      }`}
                     >
                       {/* Decorative Element */}
                       <div
@@ -253,8 +263,16 @@ const ToolCategoryPage = () => {
                       )}
 
                       <div className="mt-auto pt-8 border-t border-black/5 dark:border-white/5 flex items-center justify-between opacity-40 group-hover:opacity-100 transition-opacity">
-                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-primary">Initialize Module</span>
-                        <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-primary">
+                          {tool.comingSoon ? "Unavailable" : "Initialize Module"}
+                        </span>
+                        {tool.comingSoon ? (
+                          <span className="text-[8px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-400">
+                            Coming Soon
+                          </span>
+                        ) : (
+                          <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                        )}
                       </div>
                     </Link>
                   </motion.div>
