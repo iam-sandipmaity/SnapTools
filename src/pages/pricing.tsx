@@ -85,7 +85,7 @@ const Pricing = () => {
       price: "Free",
       description: "Experiment with our ecosystem core and standard modules.",
       features: [
-        "100+ standard browser tools",
+        "200+ standard browser tools",
         "Limited cloud processing bits",
         "Standard latency guarantees",
         "Public node community access",
