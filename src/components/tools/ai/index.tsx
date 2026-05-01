@@ -9,7 +9,7 @@ const aiTools = {
   'ai-code-explainer': lazy(() => import('./AiCodeExplainer')),
   'ai-code-generator': lazy(() => import('./AiCodeGenerator')),
   'ai-chatbot': lazy(() => import('./AiChatbot')),
+  'ai-excalidraw': lazy(() => import('./AiExcalidraw')),
 };
 
 export default aiTools;
-

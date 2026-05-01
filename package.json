@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+    "@excalidraw/excalidraw": "^0.18.1",
     "@faker-js/faker": "^10.4.0",
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",

@@ -1574,6 +1574,13 @@ export const toolCategories: ToolCategory[] = [
           "Chat with AI. Get answers to questions and have conversations.",
         comingSoon: false,
       },
+      {
+        id: "ai-excalidraw",
+        title: "Excalidraw Whiteboard",
+        description:
+          "Sketch diagrams, flows, and visual notes with the official Excalidraw whiteboard embedded in SnapTools.",
+        comingSoon: false,
+      },
     ],
   },
   {
