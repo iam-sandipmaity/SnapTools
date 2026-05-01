@@ -196,16 +196,30 @@ const ToolList = () => {
                           transition={{ duration: 0.2 }}
                         >
                           <Link
-                            to={`/tools/${category.id}/${tool.id}`}
-                            onClick={() => trackEvent({ type: 'navigation:module_opened', category: category.id, tool: tool.id })}
-                            className="group relative h-full p-8 rounded-[2rem] border border-black/5 dark:border-white/5 bg-white/70 dark:bg-white/[0.01] hover:bg-white dark:hover:bg-white/[0.03] transition-all duration-500 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)] hover:-translate-y-2 block overflow-hidden"
+                            to={tool.comingSoon ? "#" : `/tools/${category.id}/${tool.id}`}
+                            onClick={(event) => {
+                              if (tool.comingSoon) {
+                                event.preventDefault();
+                                return;
+                              }
+
+                              trackEvent({ type: 'navigation:module_opened', category: category.id, tool: tool.id });
+                            }}
+                            aria-disabled={tool.comingSoon}
+                            className={`group relative h-full p-8 rounded-[2rem] border border-black/5 dark:border-white/5 bg-white/70 dark:bg-white/[0.01] transition-all duration-500 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] block overflow-hidden ${
+                              tool.comingSoon
+                                ? "cursor-not-allowed opacity-70"
+                                : "hover:bg-white dark:hover:bg-white/[0.03] hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)] hover:-translate-y-2"
+                            }`}
                           >
                             <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-black/5 dark:via-white/10 to-transparent" />
                             <Zap className="absolute -right-4 -top-4 w-24 h-24 text-primary opacity-0 group-hover:opacity-[0.03] -rotate-12 transition-all duration-700 group-hover:rotate-0 group-hover:-translate-x-4" />
 
                             <h3 className="text-xl font-bold mb-3 tracking-tight group-hover:text-primary transition-colors flex items-center gap-2">
                               {tool.title}
-                              <ArrowRight className="w-4 h-4 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
+                              {!tool.comingSoon ? (
+                                <ArrowRight className="w-4 h-4 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
+                              ) : null}
                             </h3>
 
                             {tool.description && (
@@ -214,11 +228,21 @@ const ToolList = () => {
                               </p>
                             )}
 
+                            {tool.comingSoon ? (
+                              <div className="mt-5 inline-flex rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-[9px] font-black uppercase tracking-[0.2em] text-amber-600 dark:text-amber-400">
+                                Coming Soon
+                              </div>
+                            ) : null}
+
                             <div className="mt-8 flex items-center justify-between">
                               <span className="text-[9px] font-black uppercase tracking-[0.2em] text-primary/40 group-hover:text-primary transition-colors">
-                                Launch Module
+                                {tool.comingSoon ? "Unavailable" : "Launch Module"}
                               </span>
-                              <div className="w-8 h-8 rounded-full bg-muted/50 dark:bg-white/[0.03] flex items-center justify-center text-muted-foreground group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                              <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
+                                tool.comingSoon
+                                  ? "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                                  : "bg-muted/50 dark:bg-white/[0.03] text-muted-foreground group-hover:bg-primary group-hover:text-white"
+                              }`}>
                                 <Command size={14} />
                               </div>
                             </div>
