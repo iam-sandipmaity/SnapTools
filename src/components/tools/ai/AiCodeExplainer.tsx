@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import { Code2, Copy, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
+import { extractJsonObject, generateTextWithProvider } from "@/lib/ai/runtime";
+import { AIProviderConsole } from "./provider-console";
+import { useAIProviderSettings } from "./use-ai-provider-settings";
 import {
+  ToolChoiceGrid,
   ToolCodeBlock,
   ToolMetricGrid,
   ToolPanel,
@@ -26,39 +28,12 @@ const languageExamples: Record<string, string> = {
   typescript: `interface User {\n  id: number;\n  active: boolean;\n}\n\nfunction getActiveUsers(users: User[]) {\n  return users.filter((user) => user.active);\n}`,
 };
 
-const analyzeCode = (code: string, language: string, detail: string): Analysis => {
-  const lines = code.split("\n").map((line) => line.trim()).filter(Boolean);
-  const patterns: string[] = [];
-  const cautions: string[] = [];
-
-  if (/(function|=>|def )/.test(code)) patterns.push("Defines reusable logic through one or more functions.");
-  if (/(for|while|map|filter|forEach)/.test(code)) patterns.push("Iterates over values to transform or inspect data.");
-  if (/(if|else|switch)/.test(code)) patterns.push("Uses control flow to branch on conditions.");
-  if (/(interface|type|class)/.test(code)) patterns.push("Introduces explicit structure for data or behavior.");
-  if (/(fetch|axios|await|async)/.test(code)) patterns.push("Contains asynchronous or network-oriented behavior.");
-  if (patterns.length === 0) patterns.push("Uses straightforward statements without complex branching.");
-
-  if (!/return/.test(code) && /(function|def )/.test(code)) cautions.push("Functions are defined, but not all branches appear to return a value.");
-  if (/console\.log|print\(/.test(code)) cautions.push("Logging statements are present and may be temporary debugging output.");
-  if (lines.length > 12) cautions.push("The snippet is long enough that splitting it into smaller units might improve readability.");
-
-  const walkthrough = lines.slice(0, detail === "advanced" ? 8 : detail === "intermediate" ? 5 : 3).map((line, index) => {
-    let note = "Executes a plain statement.";
-    if (/function|def /.test(line)) note = "Declares a reusable block of logic.";
-    else if (/for|while/.test(line)) note = "Begins an iteration step.";
-    else if (/return/.test(line)) note = "Hands a value back to the caller.";
-    else if (/if|else/.test(line)) note = "Branches execution based on a condition.";
-    else if (/interface|type|class/.test(line)) note = "Describes the shape of data or a custom abstraction.";
-    return `Line ${index + 1}: ${line} — ${note}`;
-  });
-
-  return {
-    summary: `This ${language} snippet is primarily concerned with ${patterns[0].toLowerCase()}`,
-    patterns,
-    walkthrough,
-    cautions,
-  };
-};
+const fallbackAnalysis = (text: string): Analysis => ({
+  summary: text.trim(),
+  patterns: ["AI response could not be parsed into structured sections."],
+  walkthrough: [],
+  cautions: [],
+});
 
 const AiCodeExplainer = () => {
   const [code, setCode] = useState("");
@@ -66,6 +41,7 @@ const AiCodeExplainer = () => {
   const [detailLevel, setDetailLevel] = useState<"basic" | "intermediate" | "advanced">("intermediate");
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [isExplaining, setIsExplaining] = useState(false);
+  const { settings, setSettings } = useAIProviderSettings();
 
   const lineCount = code.split("\n").filter((line) => line.trim()).length;
 
@@ -78,9 +54,27 @@ const AiCodeExplainer = () => {
     setIsExplaining(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 900));
-      setAnalysis(analyzeCode(code, language, detailLevel));
+      const raw = await generateTextWithProvider({
+        settings,
+        temperature: 0.25,
+        maxOutputTokens: detailLevel === "basic" ? 700 : detailLevel === "intermediate" ? 1100 : 1600,
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are a code explainer. Return strict JSON with keys summary, patterns, walkthrough, cautions. Each non-summary field must be an array of strings.",
+          },
+          {
+            role: "user",
+            content: `Explain this ${language} snippet at a ${detailLevel} level.\n\nCode:\n${code}`,
+          },
+        ],
+      });
+
+      setAnalysis(extractJsonObject<Analysis>(raw) ?? fallbackAnalysis(raw));
       toast.success("Explanation ready.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Code explanation failed.");
     } finally {
       setIsExplaining(false);
     }
@@ -93,33 +87,13 @@ const AiCodeExplainer = () => {
         eyebrow="AI Code Explainer"
         title="Translate raw code into a clearer walkthrough."
         description="Use the explainer to identify patterns, summarize intent, and get a line-level read of an unfamiliar snippet."
-        badges={["Language-aware examples", "Detail presets", "Pattern detection"]}
+        badges={["Real provider calls", "Detail presets", "Structured analysis"]}
         metrics={[
           { label: "Language", value: language },
           { label: "Lines", value: lineCount },
           { label: "Detail", value: detailLevel },
         ]}
-        aside={
-          <div className="space-y-4">
-            <ToolPanel title="Analysis depth" description="Raise the depth when you want a longer walkthrough.">
-              <div className="flex flex-wrap gap-2">
-                {(["basic", "intermediate", "advanced"] as const).map((value) => (
-                  <Badge
-                    key={value}
-                    variant={detailLevel === value ? "default" : "outline"}
-                    className="cursor-pointer rounded-full px-3 py-1 capitalize"
-                    onClick={() => setDetailLevel(value)}
-                  >
-                    {value}
-                  </Badge>
-                ))}
-              </div>
-            </ToolPanel>
-            <ToolPanel title="Typical use cases" description="Useful when onboarding into unfamiliar logic or preparing review notes.">
-              <ToolTagList tags={["Learning", "Code review prep", "Interview study", "Documentation support", "Handoff notes", "Debugging context"]} />
-            </ToolPanel>
-          </div>
-        }
+        aside={<AIProviderConsole settings={settings} onChange={setSettings} />}
       >
         <ToolPanel
           title="Snippet input"
@@ -131,18 +105,31 @@ const AiCodeExplainer = () => {
           }
         >
           <div className="space-y-4">
-            <div className="flex flex-wrap gap-2">
-              {["javascript", "typescript", "python", "java", "go", "rust"].map((value) => (
-                <Badge
-                  key={value}
-                  variant={language === value ? "default" : "outline"}
-                  className="cursor-pointer rounded-full px-3 py-1"
-                  onClick={() => setLanguage(value)}
-                >
-                  {value}
-                </Badge>
-              ))}
-            </div>
+            <ToolChoiceGrid
+              label="Language"
+              value={language}
+              onChange={setLanguage}
+              columns="3"
+              options={[
+                { value: "javascript", title: "JavaScript", description: "Dynamic runtime logic and common app code." },
+                { value: "typescript", title: "TypeScript", description: "Typed application and UI-heavy code." },
+                { value: "python", title: "Python", description: "Readable scripts and data-friendly logic." },
+                { value: "java", title: "Java", description: "Class-heavy, explicit backend patterns." },
+                { value: "go", title: "Go", description: "Compact service code and utility packages." },
+                { value: "rust", title: "Rust", description: "Ownership-heavy, low-level detail." },
+              ]}
+            />
+            <ToolChoiceGrid
+              label="Detail level"
+              value={detailLevel}
+              onChange={setDetailLevel}
+              columns="3"
+              options={[
+                { value: "basic", title: "Basic", description: "Quick summary and broad interpretation." },
+                { value: "intermediate", title: "Intermediate", description: "Balanced explanation with clearer structure." },
+                { value: "advanced", title: "Advanced", description: "More walkthrough depth and caution notes." },
+              ]}
+            />
             <Textarea
               value={code}
               onChange={(event) => setCode(event.target.value)}
@@ -151,7 +138,7 @@ const AiCodeExplainer = () => {
             />
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className="text-xs text-muted-foreground">
-                The current explainer is a local heuristic pass, so it is strongest on structure and intent.
+                Structured output depends on the selected model following the JSON instruction reliably.
               </p>
               <Button onClick={explainCode} disabled={isExplaining || !code.trim()} className="rounded-2xl px-6">
                 {isExplaining ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
@@ -198,9 +185,11 @@ const AiCodeExplainer = () => {
             <ToolTagList tags={analysis.patterns} />
           </ToolPanel>
 
-          <ToolPanel title="Walkthrough" description="A line-by-line explanation for the first visible logic blocks.">
-            <ToolCodeBlock value={analysis.walkthrough.join("\n")} className="max-h-none bg-slate-900" />
-          </ToolPanel>
+          {analysis.walkthrough.length > 0 ? (
+            <ToolPanel title="Walkthrough" description="A line-by-line explanation for the first visible logic blocks.">
+              <ToolCodeBlock value={analysis.walkthrough.join("\n")} className="max-h-none bg-slate-900" />
+            </ToolPanel>
+          ) : null}
 
           {analysis.cautions.length > 0 ? (
             <ToolPanel title="Cautions" description="Potential review notes to verify before shipping.">
