@@ -8,7 +8,6 @@ import {
   PaintBucket,
   Ruler,
   IndianRupee,
-  FileType,
   Eye,
   Youtube,
   Globe,
@@ -32,12 +31,13 @@ import {
   Brain,
   Bitcoin,
   ShieldCheck,
+  type LucideIcon,
 } from "lucide-react";
 
 export type ToolCategory = {
   id: string;
   title: string;
-  icon: any;
+  icon: LucideIcon;
   description?: string;
   color?: string;
   comingSoon?: boolean;
@@ -508,19 +508,6 @@ export const toolCategories: ToolCategory[] = [
     ],
   },
   {
-    id: "document",
-    title: "Document Converters",
-    icon: FileType,
-    iconName: "file-type",
-    color: "bg-tooltopia-soft-green",
-    subTools: [
-      { id: "word-pdf", title: "Word to PDF / PDF to Word" },
-      { id: "excel-pdf", title: "Excel to PDF / PDF to Excel" },
-      { id: "ppt-pdf", title: "PPT to PDF / PDF to PPT" },
-      { id: "txt-pdf", title: "TXT to PDF / PDF to TXT" },
-    ],
-  },
-  {
     id: "social",
     title: "social media",
     icon: Youtube,
@@ -666,32 +653,11 @@ export const toolCategories: ToolCategory[] = [
           "Generate ASCII art online free. Convert text and images into ASCII art characters.",
       },
       {
-        id: "regex-tester",
-        title: "Regex Tester",
+        id: "ai-excalidraw",
+        title: "Excalidraw Whiteboard",
         description:
-          "Test regular expressions online free. Validate and debug your regex patterns.",
-        comingSoon: true,
-      },
-      {
-        id: "jwt-decoder",
-        title: "JWT Decoder",
-        description:
-          "Decode JWT tokens online free. View JWT payload and header.",
-        comingSoon: true,
-      },
-      {
-        id: "hash-generator",
-        title: "Hash Generator",
-        description:
-          "Generate hashes online free. Create MD5, SHA-1, SHA-256, SHA-512 hashes.",
-        comingSoon: true,
-      },
-      {
-        id: "cron-builder",
-        title: "Cron Expression Builder",
-        description:
-          "Build cron expressions online free. Create and validate cron schedules.",
-        comingSoon: true,
+          "Sketch diagrams, flows, and whiteboard notes with an embedded Excalidraw canvas.",
+        comingSoon: false,
       },
     ],
   },
@@ -1084,6 +1050,30 @@ export const toolCategories: ToolCategory[] = [
         title: "Ping Tool",
         description:
           "Ping online free. Test network connectivity and measure latency to any server.",
+      },
+      {
+        id: "regex-tester",
+        title: "Regex Tester",
+        description:
+          "Test regular expressions online free. Validate and debug your regex patterns.",
+      },
+      {
+        id: "hash-generator",
+        title: "Hash Generator",
+        description:
+          "Generate hashes online free. Create MD5, SHA-1, SHA-256, SHA-512 hashes.",
+      },
+      {
+        id: "cron-builder",
+        title: "Cron Expression Builder",
+        description:
+          "Build cron expressions online free. Create and validate cron schedules.",
+      },
+      {
+        id: "url-encoder-decoder",
+        title: "URL Encoder / Decoder",
+        description:
+          "Encode and decode URL strings online free. Convert special characters safely for web use.",
       },
     ],
   },
@@ -1572,13 +1562,6 @@ export const toolCategories: ToolCategory[] = [
         title: "AI Chatbot",
         description:
           "Chat with AI. Get answers to questions and have conversations.",
-        comingSoon: false,
-      },
-      {
-        id: "ai-excalidraw",
-        title: "Excalidraw Whiteboard",
-        description:
-          "Sketch diagrams, flows, and visual notes with the official Excalidraw whiteboard embedded in SnapTools.",
         comingSoon: false,
       },
     ],
