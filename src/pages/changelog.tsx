@@ -17,29 +17,30 @@ const changelogData = [
     {
         version: "0.3.0",
         date: "May 1, 2026",
-        title: "The PDF Workstation Upgrade",
-        description: "A tooling-focused release centered on the new PDF workstation, AI runtime wiring, and a more accurate live catalog of implemented tools.",
+        title: "Self-Host and PDF Workstation Update",
+        description: "This release combined UI and sharing improvements with the new self-hosting messaging pass and the upgraded EmbedPDF-based PDF workstation that landed on the feature/self-host branch.",
         items: [
-            { type: "new", text: "EmbedPDF-powered PDF Viewer with full editing surface, richer annotations, and direct export of the edited document state." },
-            { type: "new", text: "Standalone PDF Encryption and PDF Decryption tools with direct upload, local processing, and browser-based secure downloads." },
-            { type: "new", text: "Embedded Excalidraw whiteboard and URL Encoder/Decoder added to the live tool catalog." },
-            { type: "improved", text: "AI workspaces were rewired to the shared provider runtime with upgraded controls, compact provider settings, and a cleaner workbench flow." },
-            { type: "improved", text: "Tool loaders and category registries were aligned so implemented tools surface correctly across category pages and the main listing." },
-            { type: "fixed", text: "Password-removal exports now rebuild a fresh unlocked PDF and safely tolerate malformed source metadata such as invalid date strings." }
+            { type: "improved", text: "UI updates and theme color refinements across the SnapTools experience." },
+            { type: "new", text: "Text sharing improvements and a refreshed file sharing flow with updated logic and interface changes." },
+            { type: "new", text: "ETH Validation Checker added to the tool collection." },
+            { type: "improved", text: "Self-hosting documentation, privacy messaging, and deployment guidance were clarified for more accurate infrastructure expectations." },
+            { type: "new", text: "The PDF Viewer was upgraded to EmbedPDF with richer editing capabilities, broader annotation tooling, and edited-document export support." },
+            { type: "new", text: "Standalone PDF Encryption and PDF Decryption flows were added for direct upload, password protection, password removal, and local downloads." },
+            { type: "fixed", text: "PDF password-removal exports were hardened to rebuild fresh unlocked files and tolerate malformed source metadata during decrypt workflows." }
         ]
     },
     {
         version: "0.2.0",
-        date: "April 30, 2026",
-        title: "The Platform Expansion",
-        description: "A broad platform release that expanded SnapTools with new AI, blockchain, privacy, and developer utilities while tightening the catalog structure underneath them.",
+        date: "February 23, 2026",
+        title: "The Tool Catalog Expansion",
+        description: "A large feature release that expanded SnapTools across sharing, PDF, finance, date, media, business, AI, UI, and Open Graph improvements, matching the official v0.2.0 release notes.",
         items: [
-            { type: "new", text: "A new AI-powered tools suite landed with dedicated workspaces for content generation, grammar checking, summarization, paraphrasing, code generation, and code explanation." },
-            { type: "new", text: "Blockchain coverage expanded with new tools and registry support, alongside Hash Generator and Cron Expression Builder for developer workflows." },
-            { type: "new", text: "Privacy and security additions included modern crypto utilities such as AES-GCM, Argon2, BLAKE2, BLAKE3, Ed25519, X25519, ECDH, and ECDSA-related tooling." },
-            { type: "improved", text: "Tool indexes and category metadata were reorganized to support the growing AI, blockchain, network, and developer tool inventory." },
-            { type: "improved", text: "Existing workflow tools picked up targeted quality-of-life upgrades, including persistence improvements and compatibility fixes across conversion, image, password, and sharing flows." },
-            { type: "fixed", text: "Duplicate registry entries, SHA-3 wiring issues, and several tool-specific compatibility problems were cleaned up as the catalog expanded." }
+            { type: "new", text: "Major tool additions across sharing, PDF, finance, date, SEO, media, business, and AI categories." },
+            { type: "improved", text: "Open Graph generation and OG image handling were expanded through multiple iterations and UI updates." },
+            { type: "improved", text: "Contact, privacy, terms, navbar, fonts, and broader interface polish landed across the site." },
+            { type: "new", text: "Contributor-facing updates and package support for API-based OG generation were added." },
+            { type: "fixed", text: "Deployment issues and crypto polyfill compatibility problems were addressed during the release cycle." },
+            { type: "improved", text: "Encryption-related tooling received another round of updates near the end of the release." }
         ]
     },
     {
