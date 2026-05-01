@@ -15,17 +15,31 @@ import { Badge } from "@/components/ui/badge";
 
 const changelogData = [
     {
-        version: "0.2.0",
-        date: "February 18, 2026",
-        title: "The Architectural Evolution",
-        description: "A complete reconstruction of the SnapTools ecosystem, transitioning from simple utilities to a high-performance luxury workstation.",
+        version: "0.3.0",
+        date: "May 1, 2026",
+        title: "The PDF Workstation Upgrade",
+        description: "A tooling-focused release centered on the new PDF workstation, AI runtime wiring, and a more accurate live catalog of implemented tools.",
         items: [
-            { type: "new", text: "Luxury Architectural Design System with advanced glassmorphism and neural gradients." },
-            { type: "new", text: "State-of-the-art Search Terminal with keyboard-aware logic and dynamic suggestions." },
-            { type: "improved", text: "High-fidelity Mobile Responsiveness overhaul for the 'Technical Superiority' section." },
-            { type: "improved", text: "Performance-optimized 'Unified Ecosystem' with 200+ technical modules." },
-            { type: "new", text: "FOSS Manifesto & Open Infrastructure integration for community auditability." },
-            { type: "fixed", text: "Sanitized focus-state artifacts and visual 'wired' edge anomalies across all terminals." }
+            { type: "new", text: "EmbedPDF-powered PDF Viewer with full editing surface, richer annotations, and direct export of the edited document state." },
+            { type: "new", text: "Standalone PDF Encryption and PDF Decryption tools with direct upload, local processing, and browser-based secure downloads." },
+            { type: "new", text: "Embedded Excalidraw whiteboard and URL Encoder/Decoder added to the live tool catalog." },
+            { type: "improved", text: "AI workspaces were rewired to the shared provider runtime with upgraded controls, compact provider settings, and a cleaner workbench flow." },
+            { type: "improved", text: "Tool loaders and category registries were aligned so implemented tools surface correctly across category pages and the main listing." },
+            { type: "fixed", text: "Password-removal exports now rebuild a fresh unlocked PDF and safely tolerate malformed source metadata such as invalid date strings." }
+        ]
+    },
+    {
+        version: "0.2.0",
+        date: "April 30, 2026",
+        title: "The Platform Expansion",
+        description: "A broad platform release that expanded SnapTools with new AI, blockchain, privacy, and developer utilities while tightening the catalog structure underneath them.",
+        items: [
+            { type: "new", text: "A new AI-powered tools suite landed with dedicated workspaces for content generation, grammar checking, summarization, paraphrasing, code generation, and code explanation." },
+            { type: "new", text: "Blockchain coverage expanded with new tools and registry support, alongside Hash Generator and Cron Expression Builder for developer workflows." },
+            { type: "new", text: "Privacy and security additions included modern crypto utilities such as AES-GCM, Argon2, BLAKE2, BLAKE3, Ed25519, X25519, ECDH, and ECDSA-related tooling." },
+            { type: "improved", text: "Tool indexes and category metadata were reorganized to support the growing AI, blockchain, network, and developer tool inventory." },
+            { type: "improved", text: "Existing workflow tools picked up targeted quality-of-life upgrades, including persistence improvements and compatibility fixes across conversion, image, password, and sharing flows." },
+            { type: "fixed", text: "Duplicate registry entries, SHA-3 wiring issues, and several tool-specific compatibility problems were cleaned up as the catalog expanded." }
         ]
     },
     {
