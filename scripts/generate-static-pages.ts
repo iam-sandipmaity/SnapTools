@@ -24,7 +24,7 @@ function getMetaTagsForRoute(pathname: string): MetaTags {
       "SnapTools - Free Online PDF, Image & Converter Tools | 100+ Free Tools",
     description:
       "Free online tools for PDF (merge, split, compress), image processing (compress, convert, edit), converters, calculators, QR codes & more. No registration required. Fast, secure & privacy-focused. Try SnapTools now!",
-    image: `${BASE_URL}/og-image.jpg`,
+    image: `${BASE_URL}/api/og?title=SnapTools&description=${encodeURIComponent("100+ Free Online PDF, Image & Converter Tools")}&category=default`,
     url: BASE_URL,
   };
 
@@ -46,7 +46,7 @@ function getMetaTagsForRoute(pathname: string): MetaTags {
           const desc =
             tool.description ||
             `Free online ${tool.title} tool by SnapTools. Use our ${tool.title.toLowerCase()} tool online for free. No registration required, fast, secure, and privacy-focused.`;
-          const ogImageUrl = `${BASE_URL}/og-image.jpg`;
+          const ogImageUrl = `${BASE_URL}/api/og?title=${encodeURIComponent(tool.title)}&description=${encodeURIComponent(desc)}&category=${categoryId}`;
 
           metaTags = {
             title: `${tool.title} - Free Online Tool | SnapTools`,
@@ -58,7 +58,7 @@ function getMetaTagsForRoute(pathname: string): MetaTags {
       } else {
         // Category page
         const desc = `Explore ${category.title} tools on SnapTools. Free online ${category.title.toLowerCase()} tools with no ads, no registration required. Fast, secure, and privacy-focused.`;
-        const ogImageUrl = `${BASE_URL}/og-image.jpg`;
+        const ogImageUrl = `${BASE_URL}/api/og?title=${encodeURIComponent(category.title)}&description=${encodeURIComponent(desc)}&category=${categoryId}`;
 
         metaTags = {
           title: `${category.title} Tools - Free Online ${category.title} Tools | SnapTools`,

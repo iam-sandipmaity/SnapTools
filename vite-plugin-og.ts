@@ -47,6 +47,41 @@ const categoryGradients: Record<string, { from: string; to: string }> = {
   privacy: { from: '#10b981', to: '#3b82f6' },
 };
 
+// Category emojis mapping
+const categoryEmojis: Record<string, string> = {
+  image: "🖼️",
+  pdf: "📄",
+  calculator: "🔢",
+  conversion: "🔄",
+  code: "💻",
+  qr: "📱",
+  password: "🔑",
+  color: "🎨",
+  unit: "📏",
+  currency: "💵",
+  social: "📢",
+  seoandweb: "🔍",
+  miscellaneous: "🛠️",
+  encryption: "🔒",
+  clock: "⏰",
+  file: "📁",
+  internet: "🌐",
+  markdown: "📝",
+  text: "✍️",
+  network: "🕸️",
+  finance: "📈",
+  datetime: "📅",
+  media: "🎥",
+  data: "📊",
+  link: "🔗",
+  random: "🎲",
+  health: "❤️",
+  business: "💼",
+  ai: "🧠",
+  blockchain: "🪙",
+  privacy: "🛡️",
+};
+
 // ---------------------------------------------------------------------------
 // Try to load a font buffer from @fontsource/inter (installed locally)
 // Satori requires OTF or WOFF (not WOFF2) font data.
@@ -76,6 +111,7 @@ function buildTree(
   categoryId: string,
 ) {
   const gradient = categoryGradients[categoryId] ?? categoryGradients.miscellaneous;
+  const emoji = categoryEmojis[categoryId] || '🛠️';
 
   return {
     type: 'div',
@@ -201,7 +237,7 @@ function buildTree(
                                   type: 'div',
                                   props: {
                                     style: { fontSize: '64px', lineHeight: '1' },
-                                    children: '🛠️',
+                                    children: emoji,
                                   },
                                 },
                               ],
