@@ -14,7 +14,7 @@ export const useFFmpeg = () => {
         const ffmpeg = ffmpegRef.current;
 
         ffmpeg.on('log', ({ message }) => {
-            if (messageRef.current) messageRef.current.innerHTML = message;
+            if (messageRef.current) messageRef.current.textContent = message;
             console.log(message);
         });
 
@@ -39,7 +39,7 @@ export const useFFmpeg = () => {
             setLoaded(true);
         } catch (error) {
             console.error('Failed to load FFmpeg:', error);
-            if (messageRef.current) messageRef.current.innerHTML = `Error: ${error instanceof Error ? error.message : String(error)}`;
+            if (messageRef.current) messageRef.current.textContent = `Error: ${error instanceof Error ? error.message : String(error)}`;
         } finally {
             setIsLoading(false);
         }

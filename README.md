@@ -6,7 +6,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-> **SnapTools** is a professional-grade architectural workstation providing 100+ specialized modules for developers, designers, and digital architects. Engineered for technical precision, it offers a seamless high-fidelity experience with **zero ads**, **zero tracking**, and **local-first execution**.
+> **SnapTools** is a professional-grade architectural workstation providing 200+ specialized modules for developers, designers, and digital architects. Engineered for technical precision, it offers a seamless high-fidelity experience with **zero ads**, **local-first execution**, and optional analytics that can be disabled.
 
 🔗 **[Live Demo](https://snaptools.xyz)** | 📖 **[Documentation](https://snaptools.xyz/documentation)** | 🐛 **[Report Bug](https://github.com/iam-sandipmaity/SnapTools/issues)** | ✨ **[Request Feature](https://github.com/iam-sandipmaity/SnapTools/issues)**
 
@@ -23,9 +23,9 @@
 - **Unified Registry**: Over 100+ specialist tools organized into professional categories.
 
 ### Core Principles
-- **100+ Mission-Critical Modules**: A comprehensive directory of pro-grade utilities.
+- **200+ Mission-Critical Modules**: A comprehensive directory of pro-grade utilities.
 - **Architectural Workstation UI**: Premium glassmorphic interface with advanced motion design.
-- **Privacy-First Protocol**: Client-side execution ensures your data never leaves your hardware.
+- **Privacy-First Protocol**: Most tools run in the browser. Optional analytics can be turned off with `VITE_DISABLE_ANALYTICS=true`.
 - **Edge Performance**: Globally distributed assets and millisecond-latency processing.
 - **Technical Typography**: Oversized serif headers and precise mono-spaced data displays.
 
@@ -33,7 +33,7 @@
 
 ### Frontend Architecture
 - **Framework**: React 18 (TypeScript)
-- **Engine**: Vite 5.x (Hardware-accelerated HMR)
+- **Engine**: Vite 6.x (Hardware-accelerated HMR)
 - **Design System**: Tailwind CSS (Architectural Workstation Protocol)
 - **Motion Engine**: Framer Motion (High-fidelity micro-interactions)
 - **UI Primitives**: Radix UI & shadcn/ui

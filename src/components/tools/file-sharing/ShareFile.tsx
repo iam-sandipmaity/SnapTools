@@ -107,8 +107,9 @@ const ICE_SERVERS = [
   { urls: 'turn:a.relay.metered.ca:443?transport=tcp', username: 'openrelayproject', credential: 'openrelayproject' },
 ];
 
-function genId(len = 6) {
-  return Array.from({ length: len }, () => 'abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random() * 36)]).join('');
+function genId(len = 8) {
+  const length = Math.max(8, Math.min(16, len));
+  return Array.from({ length }, () => 'abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random() * 36)]).join('');
 }
 
 function fmtBytes(b: number, d = 1): string {
@@ -463,7 +464,7 @@ const FileSharer: React.FC = () => {
 
   // Settings
   const [customId, setCustomId] = useState('');
-  const [idLength, setIdLength] = useState(6);
+  const [idLength, setIdLength] = useState(8);
   const [passwordEnabled, setPasswordEnabled] = useState(false);
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -606,6 +607,7 @@ const FileSharer: React.FC = () => {
                 } else {
                   conn.send({ type: 'auth-failed', data: {} });
                   addLog(`${info.name} failed auth`, 'warn');
+                  conn.close();
                 }
                 break;
               case 'receiver-name':
@@ -927,7 +929,7 @@ const FileSharer: React.FC = () => {
                           <div className="flex justify-between text-xs text-muted-foreground">
                             <span>Auto-ID length</span><span className="font-mono">{idLength} chars</span>
                           </div>
-                          <input type="range" min="3" max="12" value={idLength}
+                          <input type="range" min="8" max="16" value={idLength}
                             onChange={e => setIdLength(+e.target.value)} className="w-full accent-primary h-1" />
                         </div>
                       )}

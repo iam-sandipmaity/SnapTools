@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ScrollToTop from "@/components/scroll-to-top";
 import ScrollToTopButton from "@/components/ui/scroll-to-top";
 import { lazy, Suspense } from "react";
@@ -53,10 +53,11 @@ const App = () => (
             <Route path="/tools" element={<ToolList />} />
             <Route path="/tools/:categoryId" element={<ToolCategoryPage />} />
             <Route path="/tools/:categoryId/:toolId" element={<ToolPage />} />
-            <Route path="/tools/:toolId" element={<ToolPage />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/Privacy" element={<Privacy />} />
-            <Route path="/Terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/Privacy" element={<Navigate to="/privacy" replace />} />
+            <Route path="/Terms" element={<Navigate to="/terms" replace />} />
             <Route path="/about" element={<About />} />
             <Route path="/documentation" element={<Documentation />} />
             <Route path="/pricing" element={<Pricing />} />

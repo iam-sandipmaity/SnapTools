@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -11,27 +11,23 @@ import { cn } from '@/lib/utils';
 import Breadcrumbs from '@/components/ui/breadcrumbs';
 import { toast } from 'sonner';
 import { track } from '@vercel/analytics';
+import type { PaymentDetails } from '@/types/payment';
 
-export interface PaymentDetails {
-  razorpay_payment_id: string;
-  amount: string;
-  currency: string;
-  status: string;
-  timestamp: string;
-  name?: string;
-  email?: string;
-  mobile?: string;
-  message?: string;
-}
+export type { PaymentDetails };
 
 const PaymentSuccess = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const paymentDetails = location.state?.paymentDetails as PaymentDetails;
+  const paymentDetails = location.state?.paymentDetails as PaymentDetails | undefined;
   const [isCopied, setIsCopied] = useState(false);
 
+  useEffect(() => {
+    if (!paymentDetails) {
+      navigate('/donate', { replace: true });
+    }
+  }, [paymentDetails, navigate]);
+
   if (!paymentDetails) {
-    navigate('/donate');
     return null;
   }
 
@@ -77,7 +73,7 @@ const PaymentSuccess = () => {
         });
         track('milestone_shared', { method: 'native_share', id: paymentDetails.razorpay_payment_id });
       } else {
-        await navigator.clipboard.writeText(`${shareText} https://snaptools.info`);
+        await navigator.clipboard.writeText(`${shareText} https://snaptools.xyz`);
         toast.success("Share link copied to clipboard");
         track('milestone_shared', { method: 'clipboard', id: paymentDetails.razorpay_payment_id });
       }

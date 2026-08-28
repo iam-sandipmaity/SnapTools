@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import AnimatedElement from "@/components/animated-element";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import mammoth from "mammoth";
+import DOMPurify from "dompurify";
 // @ts-ignore - html2pdf.js doesn't have proper TypeScript definitions
 import html2pdf from "html2pdf.js";
 import { loadPdfDocument, downloadBlob } from "@/lib/pdf-utils";
@@ -154,7 +155,7 @@ const PdfToWord = () => {
 
       // Convert Word to HTML using mammoth
       const result = await mammoth.convertToHtml({ arrayBuffer });
-      let htmlContent = result.value;
+      let htmlContent = DOMPurify.sanitize(result.value);
 
       // Pre-process: Detect likely tabbed patterns (names/IDs, TOC)
       htmlContent = htmlContent.replace(

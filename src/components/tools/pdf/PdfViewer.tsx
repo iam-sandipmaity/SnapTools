@@ -231,7 +231,9 @@ const PdfViewer = () => {
     if (title) target.setTitle(title);
     if (author) target.setAuthor(author);
     if (subject) target.setSubject(subject);
-    if (keywords && keywords.length > 0) target.setKeywords(keywords);
+    if (keywords && keywords.length > 0) {
+      target.setKeywords(Array.isArray(keywords) ? keywords : keywords.split(/,\s*/).filter(Boolean));
+    }
     if (creator) target.setCreator(creator);
     if (producer) target.setProducer(producer);
     if (creationDate instanceof Date && !Number.isNaN(creationDate.getTime())) {
