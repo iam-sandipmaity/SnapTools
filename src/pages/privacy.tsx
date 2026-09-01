@@ -104,9 +104,10 @@ const Privacy = () => {
 
             <PrivacySection icon={Cookie} title="5. Tracking Technologies" index={5}>
               <p>
-                We use sophisticated tracking identifiers (cookies) to maintain state during your session
-                and to understand cross-module navigation. You retain full control over these identifiers
-                through your browser's security settings.
+                We use optional product analytics (Vercel Analytics in production, unless `VITE_DISABLE_ANALYTICS=true`)
+                to understand aggregate navigation. Session cookies may also be used by the browser for theme and
+                similar preferences. You can disable analytics in a self-hosted build and control cookies through
+                your browser settings.
               </p>
             </PrivacySection>
 

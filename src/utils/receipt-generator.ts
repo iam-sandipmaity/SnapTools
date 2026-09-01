@@ -1,4 +1,4 @@
-import type { PaymentDetails } from '@/pages/PaymentSuccess';
+import type { PaymentDetails } from '@/types/payment';
 
 export const generateReceiptImage = async (paymentDetails: PaymentDetails): Promise<string> => {
   // Create a canvas element

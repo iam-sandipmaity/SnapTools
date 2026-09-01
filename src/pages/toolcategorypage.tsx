@@ -29,10 +29,19 @@ const ToolCategoryPage = () => {
   useEffect(() => {
     setIsLoading(true);
     const foundCategory = toolCategories.find((cat) => cat.id === categoryId);
+    if (!foundCategory && categoryId) {
+      for (const cat of toolCategories) {
+        const foundTool = cat.subTools?.find((tool) => tool.id === categoryId);
+        if (foundTool) {
+          navigate(`/tools/${cat.id}/${foundTool.id}`, { replace: true });
+          return;
+        }
+      }
+    }
     setCategory(foundCategory || null);
     setFilteredTools(foundCategory?.subTools || []);
     setTimeout(() => setIsLoading(false), 800);
-  }, [categoryId]);
+  }, [categoryId, navigate]);
 
   useEffect(() => {
     if (category && category.subTools) {

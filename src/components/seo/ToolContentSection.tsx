@@ -26,7 +26,7 @@ const ToolContentSection = ({ tool }: ToolContentSectionProps) => {
 
         const commonBenefits = [
             { icon: Zap, text: `Millisecond-latency ${toolName.toLowerCase()} execution`, color: 'from-amber-500/20 to-orange-500/20', iconColor: 'text-orange-500' },
-            { icon: ShieldCheck, text: 'Zero-knowledge protocol - Your data never leaves the hardware', color: 'from-blue-500/20 to-cyan-500/20', iconColor: 'text-cyan-500' },
+            { icon: ShieldCheck, text: 'Local-first by default - files stay on your device unless a tool needs a third-party API', color: 'from-blue-500/20 to-cyan-500/20', iconColor: 'text-cyan-500' },
             { icon: Globe, text: 'Edge-optimized workstation for cross-platform deployment', color: 'from-emerald-500/20 to-green-500/20', iconColor: 'text-emerald-500' },
             { icon: Lock, text: 'No identity verification or registration required', color: 'from-purple-500/20 to-pink-500/20', iconColor: 'text-pink-500' },
         ];
@@ -192,7 +192,7 @@ const ToolContentSection = ({ tool }: ToolContentSectionProps) => {
             },
             {
                 question: `Does the ${toolName} engine store my technical assets?`,
-                answer: `Negative. All processing occurs within your hardware's local kernel buffer. We employ a zero-knowledge architecture, meaning your data never leaves the workstation's secure sandbox and is purged immediately upon session termination.`,
+                answer: `Most tools run entirely in your browser. A few modules (currency rates, screenshots, YouTube, donations, optional AI providers) call third-party APIs you configure. Production builds may send anonymous analytics unless VITE_DISABLE_ANALYTICS is set.`,
             },
             {
                 question: `What are the hardware requirements for this module?`,
@@ -284,7 +284,7 @@ const ToolContentSection = ({ tool }: ToolContentSectionProps) => {
                     <div className="prose prose-slate dark:prose-invert max-w-none">
                         <p className="text-xl text-muted-foreground/90 leading-relaxed font-medium mb-6">
                             {tool.name} is architected as a high-fidelity technical workstation designed to {tool.description.toLowerCase()}.
-                            Engineered for millisecond-latency performance, this module operates within a zero-knowledge local environment.
+                            Engineered for millisecond-latency performance, this module prefers local execution unless a third-party API is required.
                         </p>
                         <p className="text-muted-foreground/80 leading-relaxed font-medium">
                             In the modern digital landscape, the requirement for professional manipulation logic is paramount. {tool.name}

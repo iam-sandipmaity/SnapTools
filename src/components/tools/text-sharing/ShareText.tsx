@@ -74,8 +74,9 @@ const ICE_SERVERS = [
 
 const SYNTAX_LANGUAGES = ['plain','javascript','typescript','python','html','css','json','bash','sql','markdown','rust','go','java','cpp'];
 
-function generateId(len = 6) {
-  return Array.from({ length: len }, () => 'abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random() * 36)]).join('');
+function generateId(len = 8) {
+  const length = Math.max(8, Math.min(16, len));
+  return Array.from({ length }, () => 'abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random() * 36)]).join('');
 }
 
 function formatTimer(secs: number) {
@@ -211,7 +212,7 @@ const TextSharer: React.FC = () => {
   const [viewers, setViewers] = useState<ViewerInfo[]>([]);
   const [permissionMode, setPermissionMode] = useState<PermissionMode>('read-only');
   const [customId, setCustomId] = useState('');
-  const [idLength, setIdLength] = useState(5);
+  const [idLength, setIdLength] = useState(8);
   const [password, setPassword] = useState('');
   const [passwordEnabled, setPasswordEnabled] = useState(false);
   const [maxViewers, setMaxViewers] = useState(0);
@@ -426,6 +427,7 @@ const TextSharer: React.FC = () => {
                 } else {
                   conn.send({ type: 'auth-failed', data: {} });
                   addLog(`${info.name} failed auth`, 'warn');
+                  conn.close();
                 }
                 break;
 
@@ -878,7 +880,7 @@ const TextSharer: React.FC = () => {
                       {!customId && (
                         <div className="pt-1 space-y-1.5">
                           <div className="flex justify-between text-xs"><span className="text-muted-foreground">Auto-ID length</span><Badge variant="secondary" className="font-mono">{idLength} chars</Badge></div>
-                          <input type="range" min="3" max="12" value={idLength} onChange={e => setIdLength(+e.target.value)} className="w-full accent-primary" />
+                          <input type="range" min="8" max="16" value={idLength} onChange={e => setIdLength(+e.target.value)} className="w-full accent-primary" />
                         </div>
                       )}
                     </div>

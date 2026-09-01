@@ -61,7 +61,7 @@ const UrlEncoderDecoder = () => {
 
   return (
     <div className="space-y-8">
-      <AnimatedElement animation="fade-up" duration={0.6}>
+      <AnimatedElement animation="fadeIn" duration={0.6}>
         <div className="text-center space-y-3">
           <h1 className="text-4xl font-bold tracking-tight">URL Encoder / Decoder</h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -70,7 +70,7 @@ const UrlEncoderDecoder = () => {
         </div>
       </AnimatedElement>
 
-      <AnimatedElement animation="fade-up" duration={0.6} delay={0.1}>
+      <AnimatedElement animation="fadeIn" duration={0.6} delay={0.1}>
         <Card className="border-0 shadow-lg bg-card/50 backdrop-blur-sm">
           <CardContent className="p-6">
             <Tabs value={activeTab} onValueChange={(value) => handleTabChange(value as "encode" | "decode")}>

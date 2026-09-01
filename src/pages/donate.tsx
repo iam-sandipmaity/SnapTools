@@ -103,6 +103,13 @@ const DonationPage = () => {
 
     setIsProcessing(true);
 
+    const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
+    if (!razorpayKey) {
+      setIsProcessing(false);
+      setError("Donations are not configured. Missing VITE_RAZORPAY_KEY_ID.");
+      return;
+    }
+
     let currentMobile = mobile;
     if (isAnonymous && useRandomMobile) {
       currentMobile = generateRandomMobile();
@@ -110,7 +117,7 @@ const DonationPage = () => {
 
     try {
       const options = {
-        key: "rzp_live_TovZnWYZRmxQm9",
+        key: razorpayKey,
         amount: amount * 100,
         currency: "INR",
         name: "SnapTools",
@@ -462,7 +469,7 @@ const DonationPage = () => {
                   <div className="pt-8 border-t border-border">
                     <p className="text-[10px] text-center text-muted-foreground uppercase font-black tracking-widest leading-relaxed">
                       Securely processed by Razorpay Engine. <br />
-                      SnapTools is a community-owned platform. No personal data is harvested.
+                      SnapTools is a community-owned platform. Razorpay processes the details you enter for the donation.
                     </p>
                   </div>
                 </div>

@@ -16,11 +16,10 @@ export interface TransferProgress {
 
 /**
  * Generate a short random peer ID
- * @param length - Length of the ID (3-10 characters, default: 5)
+ * @param length - Length of the ID (8-16 characters, default: 8)
  */
-function generateShortId(length: number = 5): string {
-    // Validate length
-    const validLength = Math.max(3, Math.min(10, length));
+function generateShortId(length: number = 8): string {
+    const validLength = Math.max(8, Math.min(16, length));
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let id = '';
     for (let i = 0; i < validLength; i++) {
@@ -32,7 +31,7 @@ function generateShortId(length: number = 5): string {
 /**
  * Initialize a new PeerJS instance
  * @param customId - Optional custom peer ID provided by user
- * @param idLength - Optional length for auto-generated ID (3-10 characters)
+ * @param idLength - Optional length for auto-generated ID (8-16 characters)
  */
 export function initializePeer(customId?: string, idLength?: number): Promise<Peer> {
     return new Promise((resolve, reject) => {

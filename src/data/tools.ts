@@ -663,7 +663,7 @@ export const toolCategories: ToolCategory[] = [
   },
   {
     id: "encryption",
-    title: "encryption Tools",
+    title: "Encryption Tools",
     icon: Eye,
     iconName: "eye",
     color: "bg-tooltopia-soft-yellow",
@@ -753,6 +753,12 @@ export const toolCategories: ToolCategory[] = [
         id: "html",
         title: "HTML Encode/ Decode",
         description: "Converts special characters to HTML entities",
+      },
+      {
+        id: "encoding",
+        title: "URL & HTML Encoding",
+        description:
+          "Encode or decode text as URL components or HTML entities in one place",
       },
       {
         id: "ripemd160",
@@ -1037,7 +1043,6 @@ export const toolCategories: ToolCategory[] = [
         title: "Port Checker",
         description:
           "Check open ports online free. Test if a port is open or closed on any server.",
-        comingSoon: true,
       },
       {
         id: "mac-lookup",

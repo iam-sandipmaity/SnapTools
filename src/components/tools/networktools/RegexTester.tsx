@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { CheckCircle2, XCircle, Copy, Trash2, BookOpen, Zap } from 'lucide-react';
 import { toast } from 'sonner';
+import { escapeHtml } from '@/lib/utils';
 
 const RegexTester = () => {
   const [pattern, setPattern] = useState<string>('');
@@ -81,25 +82,25 @@ const RegexTester = () => {
 
   // Highlight matches in test string
   const highlightedText = useMemo(() => {
-    if (!testString || matches.length === 0) return testString;
+    if (!testString || matches.length === 0) return escapeHtml(testString);
 
     let result = [];
     let lastIndex = 0;
 
     const sortedMatches = [...matches].sort((a, b) => (a.index || 0) - (b.index || 0));
 
-    sortedMatches.forEach((match, i) => {
+    sortedMatches.forEach((match) => {
       const index = match.index || 0;
       const matchEnd = index + match[0].length;
 
       // Add text before match
       if (index > lastIndex) {
-        result.push(testString.slice(lastIndex, index));
+        result.push(escapeHtml(testString.slice(lastIndex, index)));
       }
 
       // Add highlighted match
       result.push(
-        `<mark class="bg-yellow-300 dark:bg-yellow-600 px-1 rounded">${match[0]}</mark>`
+        `<mark class="bg-yellow-300 dark:bg-yellow-600 px-1 rounded">${escapeHtml(match[0])}</mark>`
       );
 
       lastIndex = matchEnd;
@@ -107,7 +108,7 @@ const RegexTester = () => {
 
     // Add remaining text
     if (lastIndex < testString.length) {
-      result.push(testString.slice(lastIndex));
+      result.push(escapeHtml(testString.slice(lastIndex)));
     }
 
     return result.join('');

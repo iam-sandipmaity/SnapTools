@@ -16,7 +16,7 @@ We take the security of SnapTools very seriously. If you have discovered or susp
 
 ### How to Report
 
-Please **DO NOT** create a public GitHub issue for security vulnerabilities. Instead, please report them privately by emailing [INSERT EMAIL ADDRESS].
+Please **DO NOT** create a public GitHub issue for security vulnerabilities. Instead, please report them privately by emailing social.sandipmaity@gmail.com.
 
 In your email, please provide:
 

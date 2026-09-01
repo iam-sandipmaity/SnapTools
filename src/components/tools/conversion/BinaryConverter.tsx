@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,10 +10,19 @@ import { toast } from "@/components/ui/sonner";
 import AnimatedElement from "@/components/animated-element";
 
 const BinaryConverter = () => {
+  const { toolId } = useParams();
   const [binary, setBinary] = useState("");
   const [decimal, setDecimal] = useState("");
   const [hex, setHex] = useState("");
-  const [activeTab, setActiveTab] = useState<"binary-decimal" | "binary-hex">("binary-decimal");
+  const [activeTab, setActiveTab] = useState<"binary-decimal" | "binary-hex">(
+    toolId === "binary-hex" ? "binary-hex" : "binary-decimal"
+  );
+
+  useEffect(() => {
+    if (toolId === "binary-hex" || toolId === "binary-decimal") {
+      setActiveTab(toolId);
+    }
+  }, [toolId]);
 
   // Validate binary input
   const validateBinary = (value: string): boolean => {

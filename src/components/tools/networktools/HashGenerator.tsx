@@ -51,21 +51,9 @@ const HashGenerator = () => {
 
       // MD5
       results.md5 = CryptoJS.MD5(textToHash).toString();
-
-      // SHA-1
-      const sha1 = new jsSHA('SHA-1', 'TEXT', { encoding: 'UTF8' });
-      sha1.update(textToHash);
-      results.sha1 = sha1.getHash('HEX');
-
-      // SHA-256
-      const sha256 = new jsSHA('SHA-256', 'TEXT', { encoding: 'UTF8' });
-      sha256.update(textToHash);
-      results.sha256 = sha256.getHash('HEX');
-
-      // SHA-512
-      const sha512 = new jsSHA('SHA-512', 'TEXT', { encoding: 'UTF8' });
-      sha512.update(textToHash);
-      results.sha512 = sha512.getHash('HEX');
+      results.sha1 = simpleSha1(textToHash);
+      results.sha256 = simpleSha256(textToHash);
+      results.sha512 = simpleSha512(textToHash);
 
       // SHA-3 (Keccak)
       results.sha3 = CryptoJS.SHA3(textToHash).toString();
